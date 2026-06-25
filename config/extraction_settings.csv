@@ -1,0 +1,7 @@
+setting_name,setting_value,applies_to,decision_status,notes
+edge_buffer_pixels,0,all plot extractions,default_first_pass,Use fixed plot boundaries for the primary analysis. Do not enlarge plots in the main estimate.
+sensitivity_buffer_pixels,1,all plot extractions,later_sensitivity_test,"A one-pixel buffer may be useful as a sensitivity/context check, but should not be the primary extraction unit."
+continuous_summary_method,weighted_mean,fractional cover,default_first_pass,"For proportional fractional-cover bands, use an area/coverage-weighted mean as the primary plot-level estimate."
+continuous_secondary_method,weighted_median,fractional cover,qa_sensitivity_check,Use a weighted median as a robustness check where small plots or edge pixels may influence means.
+categorical_summary_method,coverage_fraction,inundation classes,default_first_pass,"For categorical water classes, retain class-area proportions before deriving inundated_pct."
+categorical_secondary_method,majority_class,inundation classes,qa_sensitivity_check,Majority class can be useful for QA but may hide partial inundation in small plots.

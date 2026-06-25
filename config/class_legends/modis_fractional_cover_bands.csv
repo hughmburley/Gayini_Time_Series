@@ -1,0 +1,4 @@
+band_number,raw_name,pct_name,display_label,units,nodata_value,source,confirmed,notes
+1,bare_raw,bare_pct,Bare soil,percent,255,Input/modis_fractional_cover/README.txt,TRUE,"Local MODIS README says three-band FC rasters use RGB order for Bare soil, PV and NPV."
+2,pv_raw,pv_pct,Photosynthetic vegetation,percent,255,Input/modis_fractional_cover/README.txt,TRUE,"Local MODIS README says three-band FC rasters use RGB order for Bare soil, PV and NPV."
+3,npv_raw,npv_pct,Non-photosynthetic vegetation,percent,255,Input/modis_fractional_cover/README.txt,TRUE,"Local MODIS README says three-band FC rasters use RGB order for Bare soil, PV and NPV."

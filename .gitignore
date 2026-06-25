@@ -1,0 +1,82 @@
+# R / RStudio local state
+.Rproj.user/
+.Rhistory
+.RData
+.Ruserdata
+.Renviron
+*.RData
+*.rds
+*.Rds
+*.RDS
+*.Rout
+
+# Local/editor/OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+*.tmp
+*.temp
+*.log
+*.bak
+~$*
+
+# Local agent/cache metadata
+.agents/
+.codex/
+
+# Raw and derived data
+Input/
+data_intermediate/
+data_processed/
+
+# Generated outputs, scratch work, and historical output bundles
+Output/
+working/
+archive/
+
+# Non-active script history for the first minimal push
+scripts/archive/
+scripts/obs/
+
+# Common generated geospatial/remote-sensing artifacts
+*.tif
+*.tiff
+*.jp2
+*.ovr
+*.tfw
+*.aux
+*.pyrx
+*.img
+*.rrd
+*.shp
+*.shx
+*.dbf
+*.prj
+*.cpg
+*.gpkg
+
+# Archives and packaged outputs
+*.zip
+*.7z
+*.tar
+*.tar.gz
+*.rar
+
+# Office/PDF deliverables - add explicit exceptions only after review
+*.doc
+*.docx
+*.xls
+*.xlsx
+*.ppt
+*.pptx
+*.pdf
+
+# Databases and local caches
+*.sqlite
+*.sqlite3
+*.db
+*.duckdb
+
+# Internal local notes/instructions for manual review
+Codex_*.txt
+Gayini_Notes

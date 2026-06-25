@@ -1,0 +1,6 @@
+product,class_value,assumed_meaning,confirmed,notes
+landsat_inundation,0,not_inundated_or_background,FALSE,Confirm class legend before deriving inundated_pct.
+landsat_inundation,1,inundated,FALSE,Confirm class legend before deriving inundated_pct.
+landsat_inundation,2,unknown_or_uncertain,FALSE,Confirm class legend before deriving inundated_pct.
+sentinel2_inundation,0,not_inundated,FALSE,Confirm Sentinel-2 binary class meaning.
+sentinel2_inundation,1,inundated,FALSE,Confirm Sentinel-2 binary class meaning.

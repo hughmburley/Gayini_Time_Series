@@ -1,0 +1,4 @@
+band_number,assumed_variable,display_label,units,nodata_value,source,confirmed,notes
+1,bare_ground,Bare ground,percent,255,TERN/JRSRP seasonal ground cover metadata,TRUE,Band 1 is bare ground fraction in percent.
+2,green_vegetation,Green / PV,percent,255,TERN/JRSRP seasonal ground cover metadata,TRUE,Band 2 is green vegetation fraction in percent.
+3,non_green_vegetation,Non-green / NPV,percent,255,TERN/JRSRP seasonal ground cover metadata,TRUE,Band 3 is non-green vegetation fraction in percent.
