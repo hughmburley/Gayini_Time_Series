@@ -788,3 +788,388 @@ compare_raster_mer_to_existing_plot_mer <- function(raster_plot_qa,
       qa_note = "Raster extraction uses smoke-test annual max raster; small differences may reflect polygon extraction method and grid handling."
     )
 }
+
+
+## Production annual maximum helpers ----
+
+
+gayini_mer_year_label <- function(water_year) {
+  paste0("WY", stringr::str_replace_all(water_year, "-", "_"))
+}
+
+
+gayini_mer_period_from_water_year <- function(water_year,
+                                              management_change_date = as.Date("2019-07-01")) {
+  start_year <- as.integer(substr(water_year, 1, 4))
+  water_year_start <- as.Date(sprintf("%04d-07-01", start_year))
+
+  dplyr::case_when(
+    is.na(water_year_start) ~ NA_character_,
+    water_year_start < management_change_date ~ "pre_conservation",
+    TRUE ~ "post_conservation"
+  )
+}
+
+
+gayini_mer_find_reference_grid <- function(root_dir) {
+  candidates <- c(
+    file.path(root_dir, "Output", "rasters", "inundation_pre_post", "post_minus_pre_inundation_frequency_pct_points.tif"),
+    file.path(root_dir, "Output", "rasters", "inundation_pre_post", "pre_conservation_inundation_frequency_pct.tif"),
+    file.path(root_dir, "Output", "rasters", "inundation_pre_post", "post_conservation_inundation_frequency_pct.tif")
+  )
+  hit <- candidates[file.exists(candidates)]
+  if (length(hit) == 0) {
+    stop("No canonical annual occurrence/pre-post reference raster found.", call. = FALSE)
+  }
+
+  normalizePath(hit[[1]], winslash = "/", mustWork = TRUE)
+}
+
+
+gayini_mer_prepare_reference_template <- function(reference_path,
+                                                  boundary_path = NULL) {
+  ref <- terra::rast(reference_path)[[1]]
+
+  if (!is.null(boundary_path) && file.exists(boundary_path)) {
+    boundary <- terra::vect(boundary_path)
+    boundary <- terra::project(boundary, terra::crs(ref))
+    ref <- terra::mask(ref, boundary)
+  }
+
+  template <- terra::ifel(!is.na(ref), 0, NA)
+  names(template) <- "mer_reference_template"
+  template
+}
+
+
+gayini_mer_align_source_to_template <- function(source_path,
+                                                template,
+                                                resample_method = "near") {
+  r <- terra::rast(source_path)[[1]]
+
+  if (terra::crs(r) != terra::crs(template)) {
+    r <- terra::project(r, template, method = resample_method)
+  } else {
+    r <- terra::crop(r, terra::ext(template), snap = "out")
+    r <- terra::resample(r, template, method = resample_method)
+  }
+
+  terra::mask(r, template)
+}
+
+
+gayini_mer_build_annual_products_for_year <- function(year_inventory,
+                                                      template,
+                                                      output_dirs,
+                                                      wet_values = 1,
+                                                      valid_values = c(0, 1, 2),
+                                                      support_thresholds = c(low_max = 5L, moderate_max = 11L),
+                                                      overwrite = FALSE) {
+  if (nrow(year_inventory) == 0) {
+    stop("No source rasters supplied for annual MER build.", call. = FALSE)
+  }
+
+  water_year <- unique(year_inventory$water_year)
+  if (length(water_year) != 1) {
+    stop("Annual MER build requires exactly one water_year.", call. = FALSE)
+  }
+
+  year_label <- gayini_mer_year_label(water_year)
+  annual_max_path <- file.path(output_dirs$annual_max, paste0("mer_annual_max_observed_wet_", year_label, ".tif"))
+  valid_count_path <- file.path(output_dirs$annual_max, paste0("mer_valid_observation_count_", year_label, ".tif"))
+  wet_count_path <- file.path(output_dirs$annual_max, paste0("mer_wet_observation_count_", year_label, ".tif"))
+  support_class_path <- file.path(output_dirs$annual_max, paste0("mer_observation_support_class_", year_label, ".tif"))
+  wet_fraction_path <- file.path(output_dirs$annual_max, paste0("mer_wet_observation_fraction_", year_label, ".tif"))
+
+  output_paths <- c(annual_max_path, valid_count_path, wet_count_path, support_class_path, wet_fraction_path)
+  existing_outputs <- output_paths[file.exists(output_paths)]
+  if (length(existing_outputs) > 0 && !overwrite) {
+    stop("Production output exists and overwrite = FALSE: ", paste(existing_outputs, collapse = "; "), call. = FALSE)
+  }
+
+  valid_count <- template * 0
+  wet_count <- template * 0
+
+  source_log <- vector("list", nrow(year_inventory))
+
+  for (i in seq_len(nrow(year_inventory))) {
+    source_path <- year_inventory$source_raster_path[[i]]
+    aligned <- gayini_mer_align_source_to_template(source_path, template, resample_method = "near")
+
+    valid_increment <- aligned == valid_values[[1]]
+    if (length(valid_values) > 1) {
+      for (v in valid_values[-1]) {
+        valid_increment <- valid_increment | (aligned == v)
+      }
+    }
+
+    wet_increment <- aligned == wet_values[[1]]
+    if (length(wet_values) > 1) {
+      for (v in wet_values[-1]) {
+        wet_increment <- wet_increment | (aligned == v)
+      }
+    }
+
+    wet_increment <- terra::ifel(valid_increment, terra::ifel(wet_increment, 1, 0), 0)
+    valid_increment <- terra::ifel(valid_increment, 1, 0)
+
+    valid_pixel_count <- as.numeric(terra::global(valid_increment, "sum", na.rm = TRUE)[1, 1])
+    wet_pixel_count <- as.numeric(terra::global(wet_increment, "sum", na.rm = TRUE)[1, 1])
+
+    valid_count <- valid_count + valid_increment
+    wet_count <- wet_count + wet_increment
+
+    source_log[[i]] <- tibble::tibble(
+      water_year = water_year,
+      source_raster_path = source_path,
+      source_date = year_inventory$date[[i]],
+      sensor = year_inventory$sensor[[i]],
+      status = "aligned_with_nearest_neighbour",
+      valid_pixel_count = valid_pixel_count,
+      wet_pixel_count = wet_pixel_count,
+      output_reference_grid = terra::sources(template)[[1]] %||% NA_character_
+    )
+  }
+
+  annual_max <- terra::ifel(valid_count > 0, terra::ifel(wet_count > 0, 1, 0), NA)
+  support_class <- terra::ifel(
+    valid_count <= 0,
+    0,
+    terra::ifel(
+      valid_count <= support_thresholds[["low_max"]],
+      1,
+      terra::ifel(valid_count <= support_thresholds[["moderate_max"]], 2, 3)
+    )
+  )
+  wet_fraction <- terra::ifel(valid_count > 0, wet_count / valid_count, NA)
+
+  names(annual_max) <- "annual_max_observed_wet"
+  names(valid_count) <- "valid_observation_count"
+  names(wet_count) <- "wet_observation_count"
+  names(support_class) <- "observation_support_class"
+  names(wet_fraction) <- "observed_wet_fraction"
+
+  terra::writeRaster(annual_max, annual_max_path, overwrite = overwrite, datatype = "INT1U", gdal = c("COMPRESS=LZW"))
+  terra::writeRaster(valid_count, valid_count_path, overwrite = overwrite, datatype = "INT2U", gdal = c("COMPRESS=LZW"))
+  terra::writeRaster(wet_count, wet_count_path, overwrite = overwrite, datatype = "INT2U", gdal = c("COMPRESS=LZW"))
+  terra::writeRaster(support_class, support_class_path, overwrite = overwrite, datatype = "INT1U", gdal = c("COMPRESS=LZW"))
+  terra::writeRaster(wet_fraction, wet_fraction_path, overwrite = overwrite, datatype = "FLT4S", gdal = c("COMPRESS=LZW"))
+
+  tibble::tibble(
+    water_year = water_year,
+    year_label = year_label,
+    annual_max_path = annual_max_path,
+    valid_count_path = valid_count_path,
+    wet_count_path = wet_count_path,
+    support_class_path = support_class_path,
+    wet_fraction_path = wet_fraction_path,
+    n_source_rasters = nrow(year_inventory),
+    first_date = min(year_inventory$date, na.rm = TRUE),
+    last_date = max(year_inventory$date, na.rm = TRUE),
+    status = "built",
+    notes = "Annual maximum observed wet footprint; not hydroperiod, duration, or wet days."
+  ) %>%
+    dplyr::mutate(source_log = list(dplyr::bind_rows(source_log)))
+}
+
+
+gayini_mer_build_period_summary_rasters <- function(annual_manifest,
+                                                    output_dir,
+                                                    management_change_date = as.Date("2019-07-01"),
+                                                    overwrite = FALSE) {
+  dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
+
+  manifest <- annual_manifest %>%
+    dplyr::mutate(period = gayini_mer_period_from_water_year(.data$water_year, management_change_date))
+
+  pre <- manifest %>% dplyr::filter(.data$period == "pre_conservation")
+  post <- manifest %>% dplyr::filter(.data$period == "post_conservation")
+
+  if (nrow(pre) == 0 || nrow(post) == 0) {
+    stop("Need both pre and post annual MER rasters for period summaries.", call. = FALSE)
+  }
+
+  build_frequency <- function(paths) {
+    annual_stack <- terra::rast(paths)
+    valid_year_count <- terra::app(!is.na(annual_stack), sum, na.rm = TRUE)
+    wet_year_count <- terra::app(annual_stack == 1, sum, na.rm = TRUE)
+    frequency <- terra::ifel(valid_year_count > 0, 100 * wet_year_count / valid_year_count, NA)
+    list(frequency = frequency, valid_year_count = valid_year_count, wet_year_count = wet_year_count)
+  }
+
+  pre_summary <- build_frequency(pre$annual_max_path)
+  post_summary <- build_frequency(post$annual_max_path)
+  change <- post_summary$frequency - pre_summary$frequency
+  support_mask <- terra::ifel(pre_summary$valid_year_count > 0 & post_summary$valid_year_count > 0, 1, NA)
+
+  outputs <- c(
+    pre_frequency = file.path(output_dir, "mer_pre_annual_max_observed_frequency_pct.tif"),
+    post_frequency = file.path(output_dir, "mer_post_annual_max_observed_frequency_pct.tif"),
+    change = file.path(output_dir, "mer_post_minus_pre_annual_max_frequency_pct_points.tif"),
+    pre_valid = file.path(output_dir, "mer_pre_valid_year_count.tif"),
+    post_valid = file.path(output_dir, "mer_post_valid_year_count.tif"),
+    support_mask = file.path(output_dir, "mer_period_summary_support_mask.tif")
+  )
+
+  existing_outputs <- outputs[file.exists(outputs)]
+  if (length(existing_outputs) > 0 && !overwrite) {
+    stop("Period summary output exists and overwrite = FALSE: ", paste(existing_outputs, collapse = "; "), call. = FALSE)
+  }
+
+  names(pre_summary$frequency) <- "mer_pre_annual_max_observed_frequency_pct"
+  names(post_summary$frequency) <- "mer_post_annual_max_observed_frequency_pct"
+  names(change) <- "mer_post_minus_pre_annual_max_frequency_pct_points"
+  names(pre_summary$valid_year_count) <- "mer_pre_valid_year_count"
+  names(post_summary$valid_year_count) <- "mer_post_valid_year_count"
+  names(support_mask) <- "mer_period_summary_support_mask"
+
+  terra::writeRaster(pre_summary$frequency, outputs[["pre_frequency"]], overwrite = overwrite, datatype = "FLT4S", gdal = c("COMPRESS=LZW"))
+  terra::writeRaster(post_summary$frequency, outputs[["post_frequency"]], overwrite = overwrite, datatype = "FLT4S", gdal = c("COMPRESS=LZW"))
+  terra::writeRaster(change, outputs[["change"]], overwrite = overwrite, datatype = "FLT4S", gdal = c("COMPRESS=LZW"))
+  terra::writeRaster(pre_summary$valid_year_count, outputs[["pre_valid"]], overwrite = overwrite, datatype = "INT1U", gdal = c("COMPRESS=LZW"))
+  terra::writeRaster(post_summary$valid_year_count, outputs[["post_valid"]], overwrite = overwrite, datatype = "INT1U", gdal = c("COMPRESS=LZW"))
+  terra::writeRaster(support_mask, outputs[["support_mask"]], overwrite = overwrite, datatype = "INT1U", gdal = c("COMPRESS=LZW"))
+
+  tibble::tibble(
+    output_type = names(outputs),
+    path = unname(outputs),
+    exists = file.exists(unname(outputs)),
+    pre_years = paste(pre$water_year, collapse = ";"),
+    post_years = paste(post$water_year, collapse = ";"),
+    notes = "MER period summary based on annual maximum observed wet rasters; not hydroperiod or duration."
+  )
+}
+
+
+gayini_mer_extract_rasters_to_plots <- function(raster_manifest,
+                                                plots_path,
+                                                plot_context_path = NULL) {
+  if (!file.exists(plots_path)) {
+    stop("Missing plot vector: ", plots_path, call. = FALSE)
+  }
+
+  plots <- terra::vect(plots_path)
+  plot_ids <- as.character(as.data.frame(plots)$plot_id)
+
+  annual_rows <- lapply(seq_len(nrow(raster_manifest)), function(i) {
+    row <- raster_manifest[i, ]
+    annual_max <- terra::rast(row$annual_max_path)
+    valid_count <- terra::rast(row$valid_count_path)
+    wet_count <- terra::rast(row$wet_count_path)
+    support_class <- terra::rast(row$support_class_path)
+    wet_fraction <- terra::rast(row$wet_fraction_path)
+    stack <- c(annual_max, valid_count, wet_count, support_class, wet_fraction)
+    names(stack) <- c(
+      "mer_annual_max_observed_wet_pct",
+      "mer_valid_observation_count_mean",
+      "mer_wet_observation_count_mean",
+      "mer_observation_support_class",
+      "mer_wet_observation_fraction_mean"
+    )
+    extracted <- terra::extract(stack, plots, fun = mean, na.rm = TRUE)
+    tibble::tibble(
+      plot_id = plot_ids[extracted$ID],
+      water_year = row$water_year,
+      mer_annual_max_observed_wet_pct = extracted$mer_annual_max_observed_wet_pct * 100,
+      mer_valid_observation_count_mean = extracted$mer_valid_observation_count_mean,
+      mer_wet_observation_count_mean = extracted$mer_wet_observation_count_mean,
+      mer_observation_support_class = extracted$mer_observation_support_class,
+      mer_wet_observation_fraction_mean = extracted$mer_wet_observation_fraction_mean,
+      notes = "Annual maximum observed wet area; not hydroperiod or duration."
+    )
+  })
+
+  annual_by_plot <- dplyr::bind_rows(annual_rows)
+
+  period_stack <- c(
+    terra::rast(file.path(dirname(dirname(raster_manifest$annual_max_path[[1]])), "period_summaries", "mer_pre_annual_max_observed_frequency_pct.tif")),
+    terra::rast(file.path(dirname(dirname(raster_manifest$annual_max_path[[1]])), "period_summaries", "mer_post_annual_max_observed_frequency_pct.tif")),
+    terra::rast(file.path(dirname(dirname(raster_manifest$annual_max_path[[1]])), "period_summaries", "mer_post_minus_pre_annual_max_frequency_pct_points.tif")),
+    terra::rast(file.path(dirname(dirname(raster_manifest$annual_max_path[[1]])), "period_summaries", "mer_pre_valid_year_count.tif")),
+    terra::rast(file.path(dirname(dirname(raster_manifest$annual_max_path[[1]])), "period_summaries", "mer_post_valid_year_count.tif"))
+  )
+  names(period_stack) <- c(
+    "pre_mer_frequency_pct",
+    "post_mer_frequency_pct",
+    "post_minus_pre_mer_frequency_pct_points",
+    "n_pre_valid_years",
+    "n_post_valid_years"
+  )
+  period_extracted <- terra::extract(period_stack, plots, fun = mean, na.rm = TRUE)
+  period_by_plot <- tibble::tibble(
+    plot_id = plot_ids[period_extracted$ID],
+    pre_mer_frequency_pct = period_extracted$pre_mer_frequency_pct,
+    post_mer_frequency_pct = period_extracted$post_mer_frequency_pct,
+    post_minus_pre_mer_frequency_pct_points = period_extracted$post_minus_pre_mer_frequency_pct_points,
+    n_pre_valid_years = period_extracted$n_pre_valid_years,
+    n_post_valid_years = period_extracted$n_post_valid_years,
+    notes = "MER pre/post frequency is based on annual maximum observed wet rasters; not hydroperiod or duration."
+  )
+
+  if (!is.null(plot_context_path) && file.exists(plot_context_path)) {
+    context <- readr::read_csv(plot_context_path, show_col_types = FALSE) %>%
+      dplyr::select(dplyr::any_of(c(
+        "plot_id",
+        "simplified_vegetation_group",
+        "vegetation_adrian_group",
+        "treed_plot_flag",
+        "ground_cover_exclusion_flag",
+        "ground_cover_exclusion_reason",
+        "collapsed_grazing_category"
+      )))
+    annual_by_plot <- annual_by_plot %>% dplyr::left_join(context, by = "plot_id")
+    period_by_plot <- period_by_plot %>% dplyr::left_join(context, by = "plot_id")
+  }
+
+  list(annual_by_plot = annual_by_plot, period_by_plot = period_by_plot)
+}
+
+
+gayini_mer_compare_with_annual_occurrence <- function(mer_period_by_plot,
+                                                      annual_occurrence_plot_path) {
+  annual_occurrence <- readr::read_csv(annual_occurrence_plot_path, show_col_types = FALSE) %>%
+    dplyr::select(dplyr::any_of(c(
+      "plot_id",
+      "vegetation_adrian_group",
+      "pre_conservation_inundation_frequency_pct",
+      "post_conservation_inundation_frequency_pct",
+      "post_minus_pre_inundation_frequency_pct_points"
+    ))) %>%
+    dplyr::rename(annual_occurrence_vegetation_group = "vegetation_adrian_group")
+
+  comparison <- mer_period_by_plot %>%
+    dplyr::left_join(annual_occurrence, by = "plot_id") %>%
+    dplyr::mutate(
+      vegetation_group = dplyr::coalesce(
+        gayini_get_first_existing_column(., c("vegetation_group", "simplified_vegetation_group", "vegetation_adrian_group"), default = NA_character_),
+        .data$annual_occurrence_vegetation_group
+      ),
+      annual_occurrence_post_minus_pre_pct_points = .data$post_minus_pre_inundation_frequency_pct_points,
+      mer_post_minus_pre_pct_points = .data$post_minus_pre_mer_frequency_pct_points,
+      difference_mer_minus_annual_occurrence = .data$mer_post_minus_pre_pct_points - .data$annual_occurrence_post_minus_pre_pct_points,
+      direction_agreement = dplyr::case_when(
+        is.na(.data$mer_post_minus_pre_pct_points) | is.na(.data$annual_occurrence_post_minus_pre_pct_points) ~ "insufficient_support",
+        abs(.data$mer_post_minus_pre_pct_points) < 5 & abs(.data$annual_occurrence_post_minus_pre_pct_points) < 5 ~ "agree_near_zero",
+        abs(.data$mer_post_minus_pre_pct_points) < 5 | abs(.data$annual_occurrence_post_minus_pre_pct_points) < 5 ~ "one_near_zero",
+        .data$mer_post_minus_pre_pct_points > 0 & .data$annual_occurrence_post_minus_pre_pct_points > 0 ~ "agree_positive",
+        .data$mer_post_minus_pre_pct_points < 0 & .data$annual_occurrence_post_minus_pre_pct_points < 0 ~ "agree_negative",
+        TRUE ~ "disagree"
+      ),
+      review_flag = dplyr::case_when(
+        .data$direction_agreement == "disagree" ~ "review_disagreement",
+        .data$direction_agreement == "one_near_zero" ~ "review_one_metric_near_zero",
+        .data$direction_agreement == "insufficient_support" ~ "review_support",
+        TRUE ~ "no_flag"
+      ),
+      notes = "Disagreement between MER annual max and annual occurrence is a review flag, not necessarily an error."
+    )
+
+  summary <- comparison %>%
+    dplyr::count(.data$direction_agreement, .data$review_flag, name = "n_plots") %>%
+    dplyr::mutate(
+      pct_plots = round(100 * .data$n_plots / sum(.data$n_plots), 1),
+      notes = "MER raster comparison against current annual occurrence plot summary."
+    )
+
+  list(plot_comparison = comparison, summary = summary)
+}
