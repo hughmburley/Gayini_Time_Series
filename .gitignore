@@ -32,11 +32,12 @@ data_processed/
 # Generated outputs, scratch work, and historical output bundles
 Output/
 working/
-archive/
+/archive/
+docs/archive/
 
-# Non-active script history for the first minimal push
-scripts/archive/
-scripts/obs/
+# Script history is now tracked through docs/scripts_manifest.csv
+# and scripts/archive/ manifests. Do not add a new scripts/obs/
+# compatibility folder; archive legacy scripts under scripts/archive/.
 
 # Common generated geospatial/remote-sensing artifacts
 *.tif
