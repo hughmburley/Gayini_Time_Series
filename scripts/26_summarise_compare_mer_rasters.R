@@ -10,13 +10,17 @@
 ## MER documentation/assets.
 
 
-MANAGEMENT_CHANGE_DATE <- as.Date("2019-07-01")
-NEAR_ZERO_THRESHOLD_PCT_POINTS <- 5
-
 root_dir <- normalizePath(Sys.getenv("GAYINI_ROOT", "D:/Github_repos/Gayini"), winslash = "/", mustWork = TRUE)
 
 source(file.path(root_dir, "R", "gayini_analysis_base_functions.R"))
 source(file.path(root_dir, "R", "gayini_mer_raster_functions.R"))
+source(file.path(root_dir, "R", "gayini_plotting_helpers.R"))
+source(file.path(root_dir, "R", "gayini_time_helpers.R"))
+source(file.path(root_dir, "R", "gayini_output_helpers.R"))
+source(file.path(root_dir, "R", "gayini_mer_helpers.R"))
+
+MANAGEMENT_CHANGE_DATE <- gayini_management_transition_date()
+NEAR_ZERO_THRESHOLD_PCT_POINTS <- 5
 
 required_packages <- c("dplyr", "tidyr", "readr", "stringr", "magrittr", "tibble", "ggplot2", "terra", "sf")
 gayini_mer_check_packages(required_packages)
@@ -138,9 +142,9 @@ vegetation_summary <- period_by_plot %>%
   ) %>%
   dplyr::arrange(dplyr::desc(.data$post_minus_pre_mer_frequency_mean))
 
-readr::write_csv(annual_by_plot, file.path(csv_dir, "mer_annual_max_by_plot.csv"))
-readr::write_csv(period_by_plot, file.path(csv_dir, "mer_period_summary_by_plot.csv"))
-readr::write_csv(vegetation_summary, file.path(csv_dir, "mer_period_summary_by_vegetation_group.csv"))
+gayini_write_csv(annual_by_plot, file.path(csv_dir, "mer_annual_max_by_plot.csv"))
+gayini_write_csv(period_by_plot, file.path(csv_dir, "mer_period_summary_by_plot.csv"))
+gayini_write_csv(vegetation_summary, file.path(csv_dir, "mer_period_summary_by_vegetation_group.csv"))
 
 ## Comparison with annual occurrence ----
 
@@ -163,8 +167,8 @@ comparison_by_plot <- comparison$plot_comparison %>%
   )))
 comparison_summary <- comparison$summary
 
-readr::write_csv(comparison_by_plot, file.path(csv_dir, "mer_vs_annual_occurrence_raster_comparison_by_plot.csv"))
-readr::write_csv(comparison_summary, file.path(csv_dir, "mer_vs_annual_occurrence_raster_comparison_summary.csv"))
+gayini_write_csv(comparison_by_plot, file.path(csv_dir, "mer_vs_annual_occurrence_raster_comparison_by_plot.csv"))
+gayini_write_csv(comparison_summary, file.path(csv_dir, "mer_vs_annual_occurrence_raster_comparison_summary.csv"))
 
 ## Figure helpers ----
 
@@ -203,15 +207,10 @@ plot_raster_continuous <- function(raster_path,
     {if (!is.null(boundary)) ggplot2::geom_sf(data = boundary, fill = NA, colour = "#333333", linewidth = 0.25, inherit.aes = FALSE)} +
     ggplot2::coord_sf(expand = FALSE) +
     ggplot2::labs(title = title, subtitle = subtitle, fill = fill_label, caption = caption, x = NULL, y = NULL) +
-    ggplot2::theme_void(base_size = 11) +
-    ggplot2::theme(
-      legend.position = "right",
-      plot.title = ggplot2::element_text(face = "bold"),
-      plot.caption = ggplot2::element_text(hjust = 0, colour = "grey35")
-    )
+    gayini_theme_map(base_size = 11, legend_position = "right")
 
   if (!is.null(midpoint)) {
-    p + ggplot2::scale_fill_gradient2(low = "#b44f3f", mid = "#f7f7f7", high = "#2b6cb0", midpoint = midpoint, na.value = "transparent")
+    p + gayini_change_scale_fill(midpoint = midpoint, na.value = "transparent")
   } else if (palette == "wet") {
     p + ggplot2::scale_fill_gradient(low = "#f7f7f7", high = "#2166ac", na.value = "transparent")
   } else {
@@ -251,16 +250,15 @@ p_example <- ggplot2::ggplot(example_df, ggplot2::aes(x = .data$x, y = .data$y, 
     title = "MER annual maximum observed wet footprint examples",
     subtitle = "Each pixel shows whether it was observed wet at least once in the water year",
     fill = "Annual max",
-    caption = "MER annual maximum observed wet extent is not hydroperiod, duration, or depth.",
+    caption = gayini_mer_caveat_text("annual_max"),
     x = NULL,
     y = NULL
   ) +
-  ggplot2::theme_void(base_size = 11) +
-  ggplot2::theme(legend.position = "bottom", plot.title = ggplot2::element_text(face = "bold"), plot.caption = ggplot2::element_text(hjust = 0, colour = "grey35"))
+  gayini_theme_map(base_size = 11)
 
 figure_paths <- list()
 figure_paths$annual_example <- file.path(figure_dir, "mer_annual_max_observed_wet_example.png")
-ggplot2::ggsave(figure_paths$annual_example, p_example, width = 10, height = 5.8, dpi = 220)
+gayini_save_png(figure_paths$annual_example, p_example, width = 10, height = 5.8)
 
 pre_path <- file.path(period_summary_dir, "mer_pre_annual_max_observed_frequency_pct.tif")
 post_path <- file.path(period_summary_dir, "mer_post_annual_max_observed_frequency_pct.tif")
@@ -282,14 +280,13 @@ p_prepost <- ggplot2::ggplot(prepost_df, ggplot2::aes(x = .data$x, y = .data$y, 
     title = "MER pre/post annual maximum observed wet frequency",
     subtitle = "Frequency of water years where each pixel was observed wet at least once",
     fill = "Frequency (%)",
-    caption = "Supplementary MER footprint metric; not hydroperiod or flood duration.",
+    caption = gayini_mer_caveat_text("annual_max"),
     x = NULL,
     y = NULL
   ) +
-  ggplot2::theme_void(base_size = 11) +
-  ggplot2::theme(legend.position = "bottom", plot.title = ggplot2::element_text(face = "bold"), plot.caption = ggplot2::element_text(hjust = 0, colour = "grey35"))
+  gayini_theme_map(base_size = 11)
 figure_paths$prepost <- file.path(figure_dir, "mer_pre_post_annual_max_frequency_main_deck.png")
-ggplot2::ggsave(figure_paths$prepost, p_prepost, width = 10, height = 5.8, dpi = 220)
+gayini_save_png(figure_paths$prepost, p_prepost, width = 10, height = 5.8)
 
 p_change <- plot_raster_continuous(
   raster_path = change_path,
@@ -297,10 +294,10 @@ p_change <- plot_raster_continuous(
   subtitle = "Positive values indicate pixels observed wet in more post-conservation water years",
   fill_label = "Change (pp)",
   midpoint = 0,
-  caption = "Red = less frequent post; blue = more frequent post. MER annual max is supplementary and not hydroperiod."
+  caption = paste("Red = less frequent post; blue = more frequent post.", gayini_mer_caveat_text("summary"))
 )
 figure_paths$change <- file.path(figure_dir, "mer_post_minus_pre_annual_max_change_main_deck.png")
-ggplot2::ggsave(figure_paths$change, p_change, width = 8.8, height = 6.3, dpi = 220)
+gayini_save_png(figure_paths$change, p_change, width = 8.8, height = 6.3)
 
 compare_df <- dplyr::bind_rows(
   raster_to_plot_df(annual_change_path, "change_pct_points") %>% dplyr::mutate(metric = "Annual occurrence change"),
@@ -312,19 +309,18 @@ p_compare <- ggplot2::ggplot(compare_df, ggplot2::aes(x = .data$x, y = .data$y, 
   {if (!is.null(boundary_compare)) ggplot2::geom_sf(data = boundary_compare, fill = NA, colour = "#333333", linewidth = 0.25, inherit.aes = FALSE)} +
   ggplot2::facet_wrap(~ metric) +
   ggplot2::coord_sf(expand = FALSE) +
-  ggplot2::scale_fill_gradient2(low = "#b44f3f", mid = "#f7f7f7", high = "#2b6cb0", midpoint = 0, na.value = "transparent") +
+  gayini_change_scale_fill(midpoint = 0, na.value = "transparent") +
   ggplot2::labs(
     title = "MER raster change compared with annual occurrence change",
     subtitle = "Two related but different observed inundation questions",
     fill = "Change (pp)",
-    caption = "Disagreement is a review flag, not necessarily an error. Neither metric is hydroperiod or depth.",
+    caption = gayini_mer_caveat_text("comparison"),
     x = NULL,
     y = NULL
   ) +
-  ggplot2::theme_void(base_size = 11) +
-  ggplot2::theme(legend.position = "bottom", plot.title = ggplot2::element_text(face = "bold"), plot.caption = ggplot2::element_text(hjust = 0, colour = "grey35"))
+  gayini_theme_map(base_size = 11)
 figure_paths$comparison <- file.path(figure_dir, "mer_raster_vs_annual_occurrence_change_comparison.png")
-ggplot2::ggsave(figure_paths$comparison, p_compare, width = 10.5, height = 5.8, dpi = 220)
+gayini_save_png(figure_paths$comparison, p_compare, width = 10.5, height = 5.8)
 
 water_year_support <- readr::read_csv(water_year_support_path, show_col_types = FALSE)
 p_support <- water_year_support %>%
@@ -342,10 +338,10 @@ p_support <- water_year_support %>%
     subtitle = "Support rasters accompany annual MER products",
     caption = "Sensor cadence differs through time; support is not an ecological response."
   ) +
-  ggplot2::theme_minimal(base_size = 11) +
+  gayini_theme_review(base_size = 11) +
   ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1), panel.grid.minor = ggplot2::element_blank())
 figure_paths$support <- file.path(figure_dir, "mer_observation_support_by_water_year.png")
-ggplot2::ggsave(figure_paths$support, p_support, width = 8.8, height = 5.4, dpi = 220)
+gayini_save_png(figure_paths$support, p_support, width = 8.8, height = 5.4)
 
 p_agreement <- comparison_summary %>%
   ggplot2::ggplot(ggplot2::aes(x = .data$direction_agreement, y = .data$n_plots, fill = .data$direction_agreement)) +
@@ -369,10 +365,10 @@ p_agreement <- comparison_summary %>%
     subtitle = "Direction agreement for post-minus-pre change",
     caption = "Review flags identify different metric behaviour; they do not imply an error."
   ) +
-  ggplot2::theme_minimal(base_size = 11) +
+  gayini_theme_review(base_size = 11) +
   ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 25, hjust = 1), legend.position = "none", panel.grid.minor = ggplot2::element_blank())
 figure_paths$agreement <- file.path(figure_dir, "mer_vs_annual_occurrence_plot_agreement.png")
-ggplot2::ggsave(figure_paths$agreement, p_agreement, width = 8.2, height = 5.2, dpi = 220)
+gayini_save_png(figure_paths$agreement, p_agreement, width = 8.2, height = 5.2)
 
 p_veg <- vegetation_summary %>%
   dplyr::mutate(vegetation_group = stringr::str_wrap(.data$vegetation_group, width = 24)) %>%
@@ -387,10 +383,10 @@ p_veg <- vegetation_summary %>%
     subtitle = "Mean of plot-level supplementary MER raster summaries",
     caption = "Use as supporting context only; management effects are diagnostic/coincident, not causal proof."
   ) +
-  ggplot2::theme_minimal(base_size = 11) +
+  gayini_theme_review(base_size = 11) +
   ggplot2::theme(panel.grid.minor = ggplot2::element_blank())
 figure_paths$vegetation <- file.path(figure_dir, "mer_post_minus_pre_by_vegetation_group.png")
-ggplot2::ggsave(figure_paths$vegetation, p_veg, width = 8.5, height = 5.4, dpi = 220)
+gayini_save_png(figure_paths$vegetation, p_veg, width = 8.5, height = 5.4)
 
 figure_manifest <- tibble::tibble(
   figure_key = names(figure_paths),
@@ -405,9 +401,9 @@ figure_manifest <- tibble::tibble(
     "Supporting review figure",
     "Optional appendix vegetation-group context"
   ),
-  caveat = "MER annual maximum observed wet extent is supplementary and is not hydroperiod, duration, depth or causal proof."
+  caveat = gayini_mer_caveat_text("annual_max")
 )
-readr::write_csv(figure_manifest, file.path(csv_dir, "mer_raster_review_figure_manifest.csv"))
+gayini_write_csv(figure_manifest, file.path(csv_dir, "mer_raster_review_figure_manifest.csv"))
 
 ## Methods note and handoff ----
 
@@ -461,7 +457,7 @@ writeLines(
     "",
     "## Pre/Post Summary",
     "",
-    "Pre/post summaries use the same 2019-07-01 transition framing as the existing annual occurrence analysis.",
+    paste0("Pre/post summaries use the same ", MANAGEMENT_CHANGE_DATE, " transition framing as the existing annual occurrence analysis."),
     "",
     "## Plot Extraction And Comparison",
     "",
@@ -469,12 +465,12 @@ writeLines(
     "",
     "## Limitations",
     "",
-    "- MER annual maximum observed wet extent is not hydroperiod.",
-    "- MER annual wet fraction is observed wet fraction, not full flood duration.",
+    paste0("- ", gayini_mer_caveat_text("annual_max")),
+    paste0("- ", gayini_mer_caveat_text("wet_fraction")),
     "- Annual occurrence frequency is not flood duration or depth.",
     "- Sequence / duration / start-date metrics remain deferred.",
-    "- MER outputs are supplementary unless Adrian decides otherwise.",
-    "- Disagreement between MER and annual occurrence is a review flag, not necessarily an error.",
+    paste0("- ", gayini_mer_caveat_text("summary")),
+    paste0("- ", gayini_mer_caveat_text("comparison")),
     "- Gauge data provide context, not causal proof of management effects.",
     "- Management effects should not be described causally from these raster summaries alone.",
     "",
@@ -533,12 +529,12 @@ writeLines(
     "",
     "## Caveats",
     "",
-    "- MER annual maximum observed wet extent is not hydroperiod.",
-    "- MER observed wet fraction is not flood duration.",
+    paste0("- ", gayini_mer_caveat_text("annual_max")),
+    paste0("- ", gayini_mer_caveat_text("wet_fraction")),
     "- Annual occurrence frequency is not flood duration or depth.",
     "- Sequence / duration / start-date metrics remain deferred.",
-    "- MER outputs are supplementary to the current Gayini annual occurrence / pre-post framework.",
-    "- Disagreement between MER and annual occurrence is a review flag, not necessarily an error.",
+    paste0("- ", gayini_mer_caveat_text("summary")),
+    paste0("- ", gayini_mer_caveat_text("comparison")),
     "- Gauge data were not used in raster building and remain contextual.",
     "- Management effects should not be described causally from these raster summaries alone.",
     "",
@@ -581,7 +577,7 @@ make_asset_row <- function(asset_id, path, title, priority, status, slide, notes
     superseded_by = NA_character_,
     source_script = "scripts/25_build_mer_annual_max_rasters.R; scripts/26_summarise_compare_mer_rasters.R",
     source_data = "Output/rasters/MER/annual_max; Output/rasters/MER/period_summaries; Output/csv/MER",
-    review_caveat = "MER annual maximum observed wet extent is supplementary and is not hydroperiod, duration, depth or causal proof.",
+    review_caveat = gayini_mer_caveat_text("annual_max"),
     notes = notes,
     updated_by_task_8 = FALSE,
     updated_by_task_9 = FALSE,
@@ -612,7 +608,7 @@ if (file.exists(asset_register_path)) {
   updated_register <- existing_register %>%
     dplyr::filter(!.data$asset_id %in% task12_assets$asset_id) %>%
     dplyr::bind_rows(task12_assets)
-  readr::write_csv(updated_register, asset_register_path)
+  gayini_write_csv(updated_register, asset_register_path)
 }
 
 if (dir.exists(asset_pack_root)) {

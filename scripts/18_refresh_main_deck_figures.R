@@ -14,7 +14,13 @@
 
 
 root_dir <- normalizePath(Sys.getenv("GAYINI_ROOT", "D:/Github_repos/Gayini"), winslash = "/", mustWork = TRUE)
-MANAGEMENT_CHANGE_DATE <- as.Date("2019-07-01")
+source(file.path(root_dir, "R", "gayini_analysis_base_functions.R"))
+source(file.path(root_dir, "R", "gayini_plotting_helpers.R"))
+source(file.path(root_dir, "R", "gayini_time_helpers.R"))
+source(file.path(root_dir, "R", "gayini_output_helpers.R"))
+source(file.path(root_dir, "R", "gayini_interpretation_filters.R"))
+
+MANAGEMENT_CHANGE_DATE <- gayini_management_transition_date()
 ZOOM_START_DATE <- as.Date("2013-07-01")
 CHANGE_LIMIT <- 60
 MER_CHANGE_LIMIT <- 60
@@ -28,7 +34,6 @@ required_packages <- c(
   "ggplot2", "sf", "terra", "patchwork", "scales", "grid"
 )
 
-source(file.path(root_dir, "R", "gayini_analysis_base_functions.R"))
 gayini_check_packages(required_packages)
 
 library(dplyr)
@@ -120,42 +125,9 @@ out <- list(
 ## Helpers ----
 
 
-write_csv_message <- function(x, path) {
-  readr::write_csv(x, path)
-  message("Wrote: ", path)
-  invisible(x)
-}
-
-
-theme_deck <- function(base_size = 13) {
-  ggplot2::theme_minimal(base_size = base_size, base_family = "Arial") +
-    ggplot2::theme(
-      panel.grid.minor = ggplot2::element_blank(),
-      plot.background = ggplot2::element_rect(fill = "white", colour = NA),
-      panel.background = ggplot2::element_rect(fill = "white", colour = NA),
-      plot.title = ggplot2::element_text(face = "bold", colour = "#1f2d2a"),
-      plot.subtitle = ggplot2::element_text(colour = "#4d5652"),
-      plot.caption = ggplot2::element_text(hjust = 0, colour = "grey35", size = ggplot2::rel(0.75)),
-      legend.position = "bottom",
-      legend.title = ggplot2::element_text(face = "bold"),
-      plot.margin = ggplot2::margin(14, 18, 14, 18)
-    )
-}
-
-
-theme_map <- function(base_size = 12) {
-  ggplot2::theme_void(base_size = base_size, base_family = "Arial") +
-    ggplot2::theme(
-      plot.background = ggplot2::element_rect(fill = "white", colour = NA),
-      panel.background = ggplot2::element_rect(fill = "white", colour = NA),
-      plot.title = ggplot2::element_text(face = "bold", colour = "#1f2d2a"),
-      plot.subtitle = ggplot2::element_text(colour = "#4d5652"),
-      plot.caption = ggplot2::element_text(hjust = 0, colour = "grey35", size = ggplot2::rel(0.75)),
-      legend.position = "bottom",
-      legend.title = ggplot2::element_text(face = "bold"),
-      plot.margin = ggplot2::margin(14, 18, 14, 18)
-    )
-}
+write_csv_message <- gayini_write_csv
+theme_deck <- gayini_theme_review
+theme_map <- gayini_theme_map
 
 
 safe_mean <- function(x) {
@@ -181,30 +153,8 @@ add_map_context <- function(p, boundary_sf, management_sf, add_paddocks = TRUE) 
 }
 
 
-change_scale <- function(limit = CHANGE_LIMIT, name = "Change (percentage points)") {
-  ggplot2::scale_fill_gradient2(
-    low = "#b84a4a",
-    mid = "white",
-    high = "#2f74b5",
-    midpoint = 0,
-    limits = c(-limit, limit),
-    oob = scales::squish,
-    name = name
-  )
-}
-
-
-change_colour_scale <- function(limit = CHANGE_LIMIT, name = "Change (percentage points)") {
-  ggplot2::scale_colour_gradient2(
-    low = "#b84a4a",
-    mid = "white",
-    high = "#2f74b5",
-    midpoint = 0,
-    limits = c(-limit, limit),
-    oob = scales::squish,
-    name = name
-  )
-}
+change_scale <- gayini_change_scale_fill
+change_colour_scale <- gayini_change_scale_colour
 
 
 frequency_scale <- function(name = "Annual occurrence frequency (%)") {
@@ -681,7 +631,7 @@ ggplot2::ggsave(out$inundation_ts, inundation_ts_fig, width = 13, height = 7.2, 
 
 gc_group_ts <- ground_cover %>%
   dplyr::left_join(plot_context %>% dplyr::select("plot_id", "simplified_vegetation_group", "ground_cover_exclusion_flag"), by = "plot_id") %>%
-  dplyr::filter(.data$ground_cover_exclusion_flag == FALSE) %>%
+  gayini_filter_ground_cover_interpretation() %>%
   dplyr::mutate(month_start = as.Date(format(.data$date_midpoint, "%Y-%m-01"))) %>%
   dplyr::group_by(.data$month_start, .data$simplified_vegetation_group) %>%
   dplyr::summarise(mean_total_veg_pct = safe_mean(.data$total_veg_pct), .groups = "drop")
@@ -716,7 +666,7 @@ ggplot2::ggsave(out$gc_ts, gc_ts_fig, width = 13, height = 7.2, dpi = 220)
 
 
 scatter_data <- gc_interpretation %>%
-  dplyr::filter(.data$ground_cover_exclusion_flag == FALSE) %>%
+  gayini_filter_ground_cover_interpretation() %>%
   dplyr::mutate(
     wetness_group = dplyr::case_when(
       .data$post_minus_pre_inundation_frequency_pct_points >= 10 ~ "Wetter post",
@@ -786,7 +736,8 @@ zoom_inundation <- monthly_inundation %>%
 
 zoom_gc <- ground_cover %>%
   dplyr::left_join(plot_context %>% dplyr::select("plot_id", "ground_cover_exclusion_flag"), by = "plot_id") %>%
-  dplyr::filter(.data$ground_cover_exclusion_flag == FALSE, .data$date_midpoint >= ZOOM_START_DATE) %>%
+  gayini_filter_ground_cover_interpretation() %>%
+  dplyr::filter(.data$date_midpoint >= ZOOM_START_DATE) %>%
   dplyr::group_by(.data$date_midpoint) %>%
   dplyr::summarise(value = safe_mean(.data$total_veg_pct), .groups = "drop") %>%
   dplyr::transmute(panel = "Total vegetation", date = .data$date_midpoint, series = "Non-treed plot mean", value = .data$value)

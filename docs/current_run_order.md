@@ -49,6 +49,16 @@ Do not rerun expensive raster work just to refresh figures or diagnostics. In pa
 
 There is intentionally no parent `08_build_prepost_inundation_products.R` script. The `08a/08b/08c` substeps are the active entries for that stage.
 
+## Shared Helper Modules
+
+Stage 1 code refresh helpers under `R/` support lightweight review, deck and MER summary scripts. They do not add run-order steps and should not be run directly:
+
+- `R/gayini_plotting_helpers.R`
+- `R/gayini_time_helpers.R`
+- `R/gayini_output_helpers.R`
+- `R/gayini_interpretation_filters.R`
+- `R/gayini_mer_helpers.R`
+
 ## Archived Scripts
 
 Historical scripts moved out of the top-level active spine are retained under:
