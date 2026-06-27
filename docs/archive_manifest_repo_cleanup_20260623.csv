@@ -1,0 +1,12 @@
+source_path,destination_path,type,size_mb,status,reason,deck_exclusion_check
+Output/csv/07e_pre_post_inundation_plot_summary.csv,Output/archive/repo_cleanup_20260623/csv/07e_pre_post_inundation_plot_summary.csv,file,0.017,moved,Superseded by canonical 07f fixed plot summary.,not_current_august_review_deck_asset
+Output/csv/12_lag_diagnostics_by_plot.csv,Output/archive/repo_cleanup_20260623/csv/12_lag_diagnostics_by_plot.csv,file,0.253,moved,Lag diagnostics are downstream/statistical and outside active spine.,not_current_august_review_deck_asset
+Output/csv/12_lag_diagnostics_group_summary.csv,Output/archive/repo_cleanup_20260623/csv/12_lag_diagnostics_group_summary.csv,file,0.015,moved,Lag diagnostics are downstream/statistical and outside active spine.,not_current_august_review_deck_asset
+Output/csv/12_lag_plot_support_summary.csv,Output/archive/repo_cleanup_20260623/csv/12_lag_plot_support_summary.csv,file,0.016,moved,Lag diagnostics are downstream/statistical and outside active spine.,not_current_august_review_deck_asset
+Output/csv/plot_count_by_treatment.csv,Output/archive/repo_cleanup_20260623/csv/plot_count_by_treatment.csv,file,0.000,moved,Debug/non-canonical plot count summary.,not_current_august_review_deck_asset
+Output/csv/plot_count_by_vegetation_and_treatment.csv,Output/archive/repo_cleanup_20260623/csv/plot_count_by_vegetation_and_treatment.csv,file,0.001,moved,Debug/non-canonical plot count summary.,not_current_august_review_deck_asset
+Output/csv/plot_count_by_vegetation.csv,Output/archive/repo_cleanup_20260623/csv/plot_count_by_vegetation.csv,file,0.000,moved,Debug/non-canonical plot count summary.,not_current_august_review_deck_asset
+Output/csv/raster_dev_subset_summary.csv,Output/archive/repo_cleanup_20260623/csv/raster_dev_subset_summary.csv,file,0.001,moved,Development subset summary; non-canonical.,not_current_august_review_deck_asset
+Output/csv/raster_product_summary.csv,Output/archive/repo_cleanup_20260623/csv/raster_product_summary.csv,file,0.000,moved,Debug/non-canonical raster summary.,not_current_august_review_deck_asset
+Output/csv/raster_sensor_summary.csv,Output/archive/repo_cleanup_20260623/csv/raster_sensor_summary.csv,file,0.000,moved,Debug/non-canonical raster summary.,not_current_august_review_deck_asset
+Output/figures/12_lag_diagnostics,Output/archive/repo_cleanup_20260623/figures/12_lag_diagnostics,folder,2.125,moved,Lag diagnostic figures are downstream/statistical and outside active review spine.,not_current_august_review_deck_asset

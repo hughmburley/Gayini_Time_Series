@@ -1,0 +1,135 @@
+path,type,size_mb,current_status,recommended_action,destination,reason,safe_to_delete_empty_folder,manual_review_needed
+archive,folder,0.17,archived_or_provenance,preserve_in_archive,,Already archived/provenance material; leave in place unless later compressed.,no,no
+archive/code_pre_refactor_20260615,folder,0.17,archived_or_provenance,preserve_in_archive,,Already archived/provenance material; leave in place unless later compressed.,no,no
+archive/code_pre_refactor_20260615/Output,folder,0.038,archived_or_provenance,preserve_in_archive,,Already archived/provenance material; leave in place unless later compressed.,no,no
+archive/code_pre_refactor_20260615/Output/csv,folder,0.038,archived_or_provenance,preserve_in_archive,,Already archived/provenance material; leave in place unless later compressed.,no,no
+archive/code_pre_refactor_20260615/scripts,folder,0.129,archived_or_provenance,preserve_in_archive,,Already archived/provenance material; leave in place unless later compressed.,no,no
+data_intermediate,folder,177.253,intermediate_data_review,preserve_or_archive_after_manual_review,archive/repo_cleanup_20260623/data_intermediate/,Intermediate data can be large and partly regenerable; keep until reproducibility expectations are agreed.,no,yes
+data_intermediate/extraction_cache,folder,11.598,temporary_or_cache,archive_or_delete_after_manual_confirmation,archive/repo_cleanup_20260623/,Intermediate/cache material can likely be regenerated but should be reviewed before removal.,no,yes
+data_intermediate/extraction_cache/modis_aoi,folder,11.493,temporary_or_cache,archive_or_delete_after_manual_confirmation,archive/repo_cleanup_20260623/,Intermediate/cache material can likely be regenerated but should be reviewed before removal.,no,yes
+data_intermediate/extraction_cache/modis_aoi.zip,compressed_generated_archive,0.104,compressed_generated_archive,manual_review,Output/archive/repo_cleanup_20260623/compressed/,Generated compressed archive; decide whether to retain or move deeper.,no,yes
+data_intermediate/hydrology,folder,164.311,intermediate_data_review,preserve_or_archive_after_manual_review,archive/repo_cleanup_20260623/data_intermediate/,Intermediate data can be large and partly regenerable; keep until reproducibility expectations are agreed.,no,yes
+data_intermediate/raster_catalog,folder,0.285,intermediate_data_review,preserve_or_archive_after_manual_review,archive/repo_cleanup_20260623/data_intermediate/,Intermediate data can be large and partly regenerable; keep until reproducibility expectations are agreed.,no,yes
+data_intermediate/spatial,folder,1.059,intermediate_data_review,preserve_or_archive_after_manual_review,archive/repo_cleanup_20260623/data_intermediate/,Intermediate data can be large and partly regenerable; keep until reproducibility expectations are agreed.,no,yes
+data_intermediate/terra_tmp,folder,0,temporary_or_cache,archive_or_delete_after_manual_confirmation,archive/repo_cleanup_20260623/,Intermediate/cache material can likely be regenerated but should be reviewed before removal.,no,yes
+data_intermediate/terra_tmp/07e_prepost_inundation,folder,0,empty,delete_empty_folder_after_audit,,Confirmed empty and appears non-essential; scripts should create temp/review folders dynamically.,yes,no
+data_processed,folder,83.527,active_processed_data,preserve,,Processed data used by active workflow and downstream review.,no,no
+data_processed/hydrology,folder,38.383,active_processed_data,preserve,,Processed data used by active workflow and downstream review.,no,no
+docs,folder,1.089,active_code_or_docs,preserve,,Active source or documentation folder.,no,no
+docs/archive,folder,0.004,archived_or_provenance,preserve_in_archive,,Already archived/provenance material; leave in place unless later compressed.,no,no
+docs/archive/pre_clean_spine_20260623,folder,0.004,archived_or_provenance,preserve_in_archive,,Already archived/provenance material; leave in place unless later compressed.,no,no
+docs/config,folder,0.001,ambiguous_review,manual_review,,Ambiguous folder; inspect before changing.,no,yes
+docs/docs,folder,0.006,ambiguous_review,manual_review,,Ambiguous folder; inspect before changing.,no,yes
+docs/Gayini_LOOCB_json_conversion_pack.zip,compressed_generated_archive,0.008,compressed_generated_archive,manual_review,Output/archive/repo_cleanup_20260623/compressed/,Generated compressed archive; decide whether to retain or move deeper.,no,yes
+docs/INPUT,folder,0,ambiguous_review,manual_review,,Ambiguous folder; inspect before changing.,no,yes
+docs/INPUT/Gayini,folder,0,ambiguous_review,manual_review,,Ambiguous folder; inspect before changing.,no,yes
+docs/scripts,folder,0.011,ambiguous_review,manual_review,,Ambiguous folder; inspect before changing.,no,yes
+Input,folder,52070.801,active_raw_input_preserve,preserve,,Raw/input material; do not move without manual data-management decision.,no,yes
+Input/ads,folder,25288.68,active_raw_input_preserve,preserve,,Raw/input material; do not move without manual data-management decision.,no,yes
+Input/hydrology,folder,155.535,active_raw_input_preserve,preserve,,Raw/input material; do not move without manual data-management decision.,no,yes
+Input/landsat_fractionalcover3,folder,1247.635,active_raw_input_preserve,preserve,,Raw/input material; do not move without manual data-management decision.,no,yes
+Input/landsat_inundation,folder,112.287,active_raw_input_preserve,preserve,,Raw/input material; do not move without manual data-management decision.,no,yes
+Input/modis_fractional_cover,folder,22752.964,active_raw_input_preserve,preserve,,Raw/input material; do not move without manual data-management decision.,no,yes
+Input/sentinel2_inundation,folder,2390.609,active_raw_input_preserve,preserve,,Raw/input material; do not move without manual data-management decision.,no,yes
+Input/sentinel2_inundation.zip,raw_input_archive,122.322,raw_input_archive,preserve,,Compressed raw/input data; preserve.,no,yes
+Input/sentinel2_inundation/2014-2015,folder,22.135,active_raw_input_preserve,preserve,,Raw/input material; do not move without manual data-management decision.,no,yes
+Input/sentinel2_inundation/2014-2015.zip,raw_input_archive,1.832,raw_input_archive,preserve,,Compressed raw/input data; preserve.,no,yes
+Input/sentinel2_inundation/2015-2016,folder,1.945,active_raw_input_preserve,preserve,,Raw/input material; do not move without manual data-management decision.,no,yes
+Input/sentinel2_inundation/2016-2017,folder,4.744,active_raw_input_preserve,preserve,,Raw/input material; do not move without manual data-management decision.,no,yes
+Input/sentinel2_inundation/2017-2018,folder,3.751,active_raw_input_preserve,preserve,,Raw/input material; do not move without manual data-management decision.,no,yes
+Input/sentinel2_inundation/2018-2019,folder,182.437,active_raw_input_preserve,preserve,,Raw/input material; do not move without manual data-management decision.,no,yes
+Input/sentinel2_inundation/2019-2020,folder,217.975,active_raw_input_preserve,preserve,,Raw/input material; do not move without manual data-management decision.,no,yes
+Input/sentinel2_inundation/2019-2020.zip,raw_input_archive,11.998,raw_input_archive,preserve,,Compressed raw/input data; preserve.,no,yes
+Input/sentinel2_inundation/2020-2021,folder,50.994,active_raw_input_preserve,preserve,,Raw/input material; do not move without manual data-management decision.,no,yes
+Input/sentinel2_inundation/2021-2022,folder,373.648,active_raw_input_preserve,preserve,,Raw/input material; do not move without manual data-management decision.,no,yes
+Input/sentinel2_inundation/2022-2023,folder,51.196,active_raw_input_preserve,preserve,,Raw/input material; do not move without manual data-management decision.,no,yes
+Input/sentinel2_inundation/2023-2024,folder,52.355,active_raw_input_preserve,preserve,,Raw/input material; do not move without manual data-management decision.,no,yes
+Input/sentinel2_inundation/2024-2025,folder,1409.258,active_raw_input_preserve,preserve,,Raw/input material; do not move without manual data-management decision.,no,yes
+Input/sentinel2_inundation/2024-2025.zip,raw_input_archive,6.341,raw_input_archive,preserve,,Compressed raw/input data; preserve.,no,yes
+Input/shapefiles,folder,0.547,active_raw_input_preserve,preserve,,Raw/input material; do not move without manual data-management decision.,no,yes
+Input/shapefiles.7z,raw_input_archive,0.199,raw_input_archive,preserve,,Compressed raw/input data; preserve.,no,yes
+Output,folder,275.7,ambiguous_review,manual_review,,Ambiguous folder; inspect before changing.,no,yes
+Output/archive,folder,95.071,archived_or_provenance,preserve_in_archive,,Already archived/provenance material; leave in place unless later compressed.,no,no
+Output/archive/config,folder,0,archived_or_provenance,preserve_in_archive,,Already archived/provenance material; leave in place unless later compressed.,no,no
+Output/archive/pre_adrian_review_20260616_131036,folder,55.48,archived_or_provenance,preserve_in_archive,,Already archived/provenance material; leave in place unless later compressed.,no,no
+Output/archive/pre_adrian_review_20260616_131036.zip,compressed_generated_archive,39.592,compressed_generated_archive,manual_review,Output/archive/repo_cleanup_20260623/compressed/,Generated compressed archive; decide whether to retain or move deeper.,no,yes
+Output/archive/pre_adrian_review_20260616_131036/Output,folder,55.197,archived_or_provenance,preserve_in_archive,,Already archived/provenance material; leave in place unless later compressed.,no,no
+Output/archive/pre_adrian_review_20260616_131036/Output/csv,folder,6.169,archived_or_provenance,preserve_in_archive,,Already archived/provenance material; leave in place unless later compressed.,no,no
+Output/archive/pre_adrian_review_20260616_131036/Output/csv/review,folder,1.044,archived_or_provenance,preserve_in_archive,,Already archived/provenance material; leave in place unless later compressed.,no,no
+Output/archive/pre_adrian_review_20260616_131036/Output/diagnostics,folder,2.915,archived_or_provenance,preserve_in_archive,,Already archived/provenance material; leave in place unless later compressed.,no,no
+Output/archive/pre_adrian_review_20260616_131036/Output/diagnostics/extraction_checks,folder,2.915,archived_or_provenance,preserve_in_archive,,Already archived/provenance material; leave in place unless later compressed.,no,no
+Output/archive/pre_adrian_review_20260616_131036/Output/figures,folder,46.113,archived_or_provenance,preserve_in_archive,,Already archived/provenance material; leave in place unless later compressed.,no,no
+Output/archive/pre_adrian_review_20260616_131036/Output/figures/07g_prepost_panels,folder,4.317,archived_or_provenance,preserve_in_archive,,Already archived/provenance material; leave in place unless later compressed.,no,no
+Output/archive/pre_adrian_review_20260616_131036/Output/figures/07g_prepost_panels_v2,folder,1.759,archived_or_provenance,preserve_in_archive,,Already archived/provenance material; leave in place unless later compressed.,no,no
+Output/archive/pre_adrian_review_20260616_131036/Output/figures/07h_annual_inundation_panels,folder,1.461,archived_or_provenance,preserve_in_archive,,Already archived/provenance material; leave in place unless later compressed.,no,no
+Output/archive/pre_adrian_review_20260616_131036/Output/figures/07h_annual_inundation_panels_v2,folder,0.302,archived_or_provenance,preserve_in_archive,,Already archived/provenance material; leave in place unless later compressed.,no,no
+Output/archive/pre_adrian_review_20260616_131036/Output/figures/extraction_checks,folder,7.904,archived_or_provenance,preserve_in_archive,,Already archived/provenance material; leave in place unless later compressed.,no,no
+Output/archive/pre_adrian_review_20260616_131036/Output/figures/extraction_checks/fractional_cover,folder,1.437,archived_or_provenance,preserve_in_archive,,Already archived/provenance material; leave in place unless later compressed.,no,no
+Output/archive/pre_adrian_review_20260616_131036/Output/figures/extraction_checks/fractional_cover_full_timeseries,folder,3.716,archived_or_provenance,preserve_in_archive,,Already archived/provenance material; leave in place unless later compressed.,no,no
+Output/archive/pre_adrian_review_20260616_131036/Output/figures/extraction_checks/fractional_cover_full_timeseries.zip,compressed_generated_archive,2.751,compressed_generated_archive,manual_review,Output/archive/repo_cleanup_20260623/compressed/,Generated compressed archive; decide whether to retain or move deeper.,no,yes
+Output/archive/pre_adrian_review_20260616_131036/Output/figures/review,folder,22.2,archived_or_provenance,preserve_in_archive,,Already archived/provenance material; leave in place unless later compressed.,no,no
+Output/archive/pre_adrian_review_20260616_131036/Output/figures/review/daily_inundation_monthly,folder,3.382,archived_or_provenance,preserve_in_archive,,Already archived/provenance material; leave in place unless later compressed.,no,no
+Output/archive/pre_adrian_review_20260616_131036/Output/figures/review/ground_cover_timeseries,folder,2.413,archived_or_provenance,preserve_in_archive,,Already archived/provenance material; leave in place unless later compressed.,no,no
+Output/archive/pre_adrian_review_20260616_131036/Output/figures/review/plot_dashboards,folder,7.316,archived_or_provenance,preserve_in_archive,,Already archived/provenance material; leave in place unless later compressed.,no,no
+Output/archive/pre_adrian_review_20260616_131036/Output/figures/review/plot_maps,folder,9.088,archived_or_provenance,preserve_in_archive,,Already archived/provenance material; leave in place unless later compressed.,no,no
+Output/archive/pre_adrian_review_20260616_131036/Output/maps,folder,0,archived_or_provenance,preserve_in_archive,,Already archived/provenance material; leave in place unless later compressed.,no,no
+Output/csv,folder,62.709,active_or_canonical_output,preserve,,Contains canonical outputs or current review assets used by active workflow.,no,no
+Output/csv/07e_pre_post_inundation_plot_summary.csv,stale_output_file,0.017,stale_output_file,archive_if_not_needed,Output/archive/repo_cleanup_20260623/csv/,Superseded by 07f fixed plot summary.,no,yes
+Output/csv/12_lag_diagnostics_by_plot.csv,downstream_stats_output,0.253,downstream_stats_output,archive_if_not_needed,Output/archive/repo_cleanup_20260623/csv/,Formal lag diagnostics are outside active spine.,no,yes
+Output/csv/12_lag_diagnostics_group_summary.csv,downstream_stats_output,0.015,downstream_stats_output,archive_if_not_needed,Output/archive/repo_cleanup_20260623/csv/,Formal lag diagnostics are outside active spine.,no,yes
+Output/csv/12_lag_plot_support_summary.csv,downstream_stats_output,0.016,downstream_stats_output,archive_if_not_needed,Output/archive/repo_cleanup_20260623/csv/,Formal lag diagnostics are outside active spine.,no,yes
+Output/csv/plot_count_by_treatment.csv,debug_or_dev_output,0,debug_or_dev_output,archive_if_not_needed,Output/archive/repo_cleanup_20260623/csv/,Stale/debug summary listed as non-canonical in current run order.,no,yes
+Output/csv/plot_count_by_vegetation_and_treatment.csv,debug_or_dev_output,0.001,debug_or_dev_output,archive_if_not_needed,Output/archive/repo_cleanup_20260623/csv/,Stale/debug summary listed as non-canonical in current run order.,no,yes
+Output/csv/plot_count_by_vegetation.csv,debug_or_dev_output,0,debug_or_dev_output,archive_if_not_needed,Output/archive/repo_cleanup_20260623/csv/,Stale/debug summary listed as non-canonical in current run order.,no,yes
+Output/csv/raster_dev_subset_summary.csv,debug_or_dev_output,0.001,debug_or_dev_output,archive_if_not_needed,Output/archive/repo_cleanup_20260623/csv/,Stale/debug summary listed as non-canonical in current run order.,no,yes
+Output/csv/raster_product_summary.csv,debug_or_dev_output,0,debug_or_dev_output,archive_if_not_needed,Output/archive/repo_cleanup_20260623/csv/,Stale/debug summary listed as non-canonical in current run order.,no,yes
+Output/csv/raster_sensor_summary.csv,debug_or_dev_output,0,debug_or_dev_output,archive_if_not_needed,Output/archive/repo_cleanup_20260623/csv/,Stale/debug summary listed as non-canonical in current run order.,no,yes
+Output/diagnostics,folder,10.863,active_or_canonical_output,preserve,,Contains canonical outputs or current review assets used by active workflow.,no,no
+Output/diagnostics/05b_MER_inundation,folder,0.008,ambiguous_review,manual_review,,Ambiguous folder; inspect before changing.,no,yes
+Output/diagnostics/05b_MER_inundation.7z,compressed_generated_archive,0.002,compressed_generated_archive,manual_review,Output/archive/repo_cleanup_20260623/compressed/,Generated compressed archive; decide whether to retain or move deeper.,no,yes
+Output/diagnostics/06z_check_prepost_inundation_raster_outputs,folder,0.035,ambiguous_review,manual_review,,Ambiguous folder; inspect before changing.,no,yes
+Output/diagnostics/07_curate_rs_analysis_base,folder,0.006,ambiguous_review,manual_review,,Ambiguous folder; inspect before changing.,no,yes
+Output/diagnostics/07z_check_curated_outputs,folder,0.014,ambiguous_review,manual_review,,Ambiguous folder; inspect before changing.,no,yes
+Output/diagnostics/10a_ground_cover_prepost_response,folder,0.004,ambiguous_review,manual_review,,Ambiguous folder; inspect before changing.,no,yes
+Output/diagnostics/10b_ground_cover_prepost_figures,folder,0.007,ambiguous_review,manual_review,,Ambiguous folder; inspect before changing.,no,yes
+Output/diagnostics/12_lag_diagnostics,folder,0.004,ambiguous_review,manual_review,,Ambiguous folder; inspect before changing.,no,yes
+Output/diagnostics/extraction_checks.zip,compressed_generated_archive,0.375,compressed_generated_archive,manual_review,Output/archive/repo_cleanup_20260623/compressed/,Generated compressed archive; decide whether to retain or move deeper.,no,yes
+Output/diagnostics/hydrology,folder,0.006,ambiguous_review,manual_review,,Ambiguous folder; inspect before changing.,no,yes
+Output/diagnostics/modis_ground_cover,folder,0.007,ambiguous_review,manual_review,,Ambiguous folder; inspect before changing.,no,yes
+Output/diagnostics/step7_figure_luts,folder,0.159,ambiguous_review,manual_review,,Ambiguous folder; inspect before changing.,no,yes
+Output/figures,folder,36.769,ambiguous_review,manual_review,,Ambiguous folder; inspect before changing.,no,yes
+Output/figures/07g_prepost_panels_v2,folder,5.208,review_or_superseded_output,archive_if_not_needed_for_current_deck,Output/archive/repo_cleanup_20260623/,Older Step 7/review/lag figure material appears superseded or outside active spine.,no,yes
+Output/figures/07h_annual_inundation_panels_v2,folder,2.054,review_or_superseded_output,archive_if_not_needed_for_current_deck,Output/archive/repo_cleanup_20260623/,Older Step 7/review/lag figure material appears superseded or outside active spine.,no,yes
+Output/figures/07j_plot_dashboards_v2,folder,4.842,review_or_superseded_output,archive_if_not_needed_for_current_deck,Output/archive/repo_cleanup_20260623/,Older Step 7/review/lag figure material appears superseded or outside active spine.,no,yes
+Output/figures/07k_ground_cover_no_treatment,folder,1.723,review_or_superseded_output,archive_if_not_needed_for_current_deck,Output/archive/repo_cleanup_20260623/,Older Step 7/review/lag figure material appears superseded or outside active spine.,no,yes
+Output/figures/10b_ground_cover_prepost_figures,folder,2.878,active_or_canonical_output,preserve,,Contains canonical outputs or current review assets used by active workflow.,no,no
+Output/figures/12_lag_diagnostics,folder,2.125,review_or_superseded_output,archive_if_not_needed_for_current_deck,Output/archive/repo_cleanup_20260623/,Older Step 7/review/lag figure material appears superseded or outside active spine.,no,yes
+Output/figures/hydrology,folder,1.204,active_or_canonical_output,preserve,,Contains canonical outputs or current review assets used by active workflow.,no,no
+Output/figures/modis_ground_cover,folder,5.94,ambiguous_review,manual_review,,Ambiguous folder; inspect before changing.,no,yes
+Output/figures/modis_ground_cover.7z,compressed_generated_archive,3.049,compressed_generated_archive,manual_review,Output/archive/repo_cleanup_20260623/compressed/,Generated compressed archive; decide whether to retain or move deeper.,no,yes
+Output/figures/review,folder,0,review_or_superseded_output,archive_if_not_needed_for_current_deck,Output/archive/repo_cleanup_20260623/,Older Step 7/review/lag figure material appears superseded or outside active spine.,no,yes
+Output/figures/review/plot_dashboards,folder,0,review_or_superseded_output,archive_if_not_needed_for_current_deck,Output/archive/repo_cleanup_20260623/,Older Step 7/review/lag figure material appears superseded or outside active spine.,no,yes
+Output/figures/review/plot_dashboards/panels_if_no_patchwork,folder,0,empty,delete_empty_folder_after_audit,,Confirmed empty and appears non-essential; scripts should create temp/review folders dynamically.,yes,no
+Output/logs,folder,0.007,ambiguous_review,manual_review,,Ambiguous folder; inspect before changing.,no,yes
+Output/maps,folder,20.872,mixed_maps_output,consolidate_after_manual_review,Output/figures/maps/ or Output/maps/,Maps convention should be decided; current structure mixes maps and figures.,no,yes
+Output/figures/maps/modis_ground_cover,folder,12.409,active_or_canonical_output,preserve,,Contains canonical outputs or current review assets used by active workflow.,no,no
+Output/figures/maps/modis_ground_cover.7z,compressed_generated_archive,8.463,compressed_generated_archive,manual_review,Output/archive/repo_cleanup_20260623/compressed/,Generated compressed archive; decide whether to retain or move deeper.,no,yes
+Output/maps/review,folder,0,mixed_maps_output,consolidate_after_manual_review,Output/figures/maps/ or Output/maps/,Maps convention should be decided; current structure mixes maps and figures.,no,yes
+Output/maps/review/combo_rasters,folder,0,empty,delete_empty_folder_after_audit,,Confirmed empty and appears non-essential; scripts should create temp/review folders dynamically.,yes,no
+Output/rasters,folder,22.372,active_or_canonical_output,preserve,,Contains canonical outputs or current review assets used by active workflow.,no,no
+Output/rasters/inundation_pre_post,folder,18.389,active_or_canonical_output,preserve,,Contains canonical outputs or current review assets used by active workflow.,no,no
+Output/rasters/inundation_pre_post.7z,compressed_generated_archive,3.983,compressed_generated_archive,manual_review,Output/archive/repo_cleanup_20260623/compressed/,Generated compressed archive; decide whether to retain or move deeper.,no,yes
+Output/rasters/inundation_pre_post/annual,folder,13.137,ambiguous_review,manual_review,,Ambiguous folder; inspect before changing.,no,yes
+Output/reports,folder,27.025,mixed_reports_or_dry_run,archive_old_dry_runs_after_manual_review,Output/archive/repo_cleanup_20260623/reports/,Report root contains current assets plus older archive dry-run manifests.,no,yes
+Output/reports/adrian_review_png_assets,folder,9.322,active_or_canonical_output,preserve,,Contains canonical outputs or current review assets used by active workflow.,no,no
+Output/reports/adrian_review_png_assets.7z,compressed_generated_archive,7.013,compressed_generated_archive,manual_review,Output/archive/repo_cleanup_20260623/compressed/,Generated compressed archive; decide whether to retain or move deeper.,no,yes
+Output/reports/archive_dry_run_20260616_130752,folder,0.444,archived_or_provenance,preserve_in_archive,,Already archived/provenance material; leave in place unless later compressed.,no,no
+Output/reports/archive_dry_run_20260616_131036,folder,0.437,archived_or_provenance,preserve_in_archive,,Already archived/provenance material; leave in place unless later compressed.,no,no
+Output/reports/archive_dry_run_20260616_133745,folder,0.177,archived_or_provenance,preserve_in_archive,,Already archived/provenance material; leave in place unless later compressed.,no,no
+R,folder,0.4,active_code_or_docs,preserve,,Active source or documentation folder.,no,no
+R/obs,folder,0.096,archived_or_provenance,preserve_in_archive,,Already archived/provenance material; leave in place unless later compressed.,no,no
+scripts,folder,0.748,active_code_or_docs,preserve,,Active source or documentation folder.,no,no
+scripts/archive,folder,0.241,archived_or_provenance,preserve_in_archive,,Already archived/provenance material; leave in place unless later compressed.,no,no
+scripts/archive/pre_clean_spine_20260623,folder,0.241,archived_or_provenance,preserve_in_archive,,Already archived/provenance material; leave in place unless later compressed.,no,no
+scripts/downstream_stats,folder,0.034,ambiguous_review,manual_review,,Ambiguous folder; inspect before changing.,no,yes
+scripts/obs,folder,0.401,archived_or_provenance,preserve_in_archive,,Already archived/provenance material; leave in place unless later compressed.,no,no

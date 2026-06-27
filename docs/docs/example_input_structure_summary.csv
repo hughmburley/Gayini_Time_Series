@@ -1,0 +1,31 @@
+file,role,top_type,feature_count,geometry_type,property_keys,coordinate_count,bbox_xmin,bbox_ymin,bbox_xmax,bbox_ymax
+INPUT/Allandale_Station/Allandale_Station_planning_areas.json,planning_area,FeatureCollection,1,Polygon,PROPERTY,97,135.3895138,-27.882035,135.8494868,-27.433535
+INPUT/Allandale_Station/Allandale_Station_polygon.json,property_boundary,FeatureCollection,1,Polygon,fid; PROPERTY; PROP_CODE; location; state; DESCRIPT; LIVESTOCK; MANAGEMENT; notes; Area_ha,203,135.0429897,-28.13557,136.03582,-27.26109
+INPUT/Argyle_Farm/Argyle_Farm_planning_areas.json,planning_area,FeatureCollection,1,Polygon,PROPERTY,27,148.4885923,-34.6570598,148.5166018,-34.6395096
+INPUT/Argyle_Farm/Argyle_Farm_polygon.json,property_boundary,FeatureCollection,1,Polygon,fid; PROPERTY; PROP_CODE; location; state; DESCRIPT; LIVESTOCK; MANAGEMENT; notes; Area_ha,51,148.473444,-34.667594,148.532839,-34.612301
+INPUT/Buchanan_Downs/Buchanan_Downs_planning_areas.json,planning_area,FeatureCollection,1,Polygon,PROPERTY,57,132.9019957,-16.925065,133.1342522,-16.7134428
+INPUT/Buchanan_Downs/Buchanan_Downs_polygon.json,property_boundary,FeatureCollection,1,MultiPolygon,fid; PROPERTY; PROP_CODE; location; state; DESCRIPT; LIVESTOCK; MANAGEMENT; notes; Area_ha,212,132.7367251,-16.9974267,133.2115583,-16.5806301
+INPUT/Challa/Challa_planning_areas.json,planning_area,FeatureCollection,1,MultiPolygon,PROPERTY,563,118.240805,-28.5198545,118.6879562,-27.9607045
+INPUT/Challa/Challa_polygon.json,property_boundary,FeatureCollection,1,MultiPolygon,fid; PROPERTY; PROP_CODE; location; state; DESCRIPT; LIVESTOCK; MANAGEMENT; notes; Area_ha,2107,118.2031935,-28.5523536,119.0760623,-27.8874101
+INPUT/Fosterville/Fosterville_planning_areas.json,planning_area,FeatureCollection,1,MultiPolygon,PROPERTY,558,147.357525,-42.0172005,147.4901555,-41.9219639
+INPUT/Fosterville/Fosterville_polygon.json,property_boundary,FeatureCollection,1,MultiPolygon,fid; PROPERTY; PROP_CODE; location; state; DESCRIPT; LIVESTOCK; MANAGEMENT; notes; Area_ha,1715,147.3485552,-42.0232129,147.4987056,-41.9139204
+INPUT/Grantham_Downs/Grantham_Downs_planning_areas.json,planning_area,FeatureCollection,1,Polygon,PROPERTY,23,149.1397258,-27.2324178,149.1921878,-27.1957936
+INPUT/Grantham_Downs/Grantham_Downs_polygon.json,property_boundary,FeatureCollection,1,Polygon,fid; PROPERTY; PROP_CODE; location; state; DESCRIPT; LIVESTOCK; MANAGEMENT; notes; Area_ha,26,149.1219763,-27.2479108,149.2082454,-27.1838276
+INPUT/Kia_Ora/Kia_Ora_planning_areas.json,planning_area,FeatureCollection,1,Polygon,PROPERTY,116,142.4851055,-38.2281848,142.5025723,-38.2085058
+INPUT/Kia_Ora/Kia_Ora_polygon.json,property_boundary,FeatureCollection,1,Polygon,fid; PROPERTY; PROP_CODE; location; state; DESCRIPT; LIVESTOCK; MANAGEMENT; notes; Area_ha,79,142.4742718,-38.2347339,142.5085913,-38.204438
+INPUT/Locmaria/Locmaria_planning_areas.json,planning_area,FeatureCollection,1,MultiPolygon,PROPERTY,42,140.9557089,-37.0030513,141.001086,-36.9746148
+INPUT/Locmaria/Locmaria_polygon.json,property_boundary,FeatureCollection,1,MultiPolygon,fid; PROPERTY; PROP_CODE; location; state; DESCRIPT; LIVESTOCK; MANAGEMENT; notes; Area_ha,44,140.9205504,-37.009935,141.0094053,-36.9110204
+INPUT/Meeblock/Meeblock_planning_areas.json,planning_area,FeatureCollection,1,MultiPolygon,PROPERTY,65,141.7035583,-37.3089072,141.7598011,-37.2767658
+INPUT/Meeblock/Meeblock_polygon.json,property_boundary,FeatureCollection,1,MultiPolygon,fid; PROPERTY; PROP_CODE; location; state; DESCRIPT; LIVESTOCK; MANAGEMENT; notes; Area_ha,228,141.6940869,-37.3118645,141.7634616,-37.2715909
+INPUT/Royston/Royston_planning_areas.json,planning_area,FeatureCollection,1,MultiPolygon,PROPERTY,176,143.8773922,-23.9079666,144.0735898,-23.8513941
+INPUT/Royston/Royston_polygon.json,property_boundary,FeatureCollection,1,MultiPolygon,fid; PROPERTY; PROP_CODE; location; state; DESCRIPT; LIVESTOCK; MANAGEMENT; notes; Area_ha,186,143.8300175,-23.9287115,144.0884935,-23.8337161
+INPUT/Schulz/Schulz_planning_areas.json,planning_area,FeatureCollection,1,Polygon,PROPERTY,5,139.5650095,-35.8811999,139.5972903,-35.8646008
+INPUT/Schulz/Schulz_polygon.json,property_boundary,FeatureCollection,1,MultiPolygon,fid; PROPERTY; PROP_CODE; location; state; DESCRIPT; LIVESTOCK; MANAGEMENT; notes; Area_ha,10,139.5559389,-35.8880231,139.6738258,-35.8320277
+INPUT/Sydenham/Sydenham_planning_areas.json,planning_area,FeatureCollection,1,Polygon,PROPERTY,54,149.3249272,-27.1039656,149.3679848,-27.0619833
+INPUT/Sydenham/Sydenham_polygon.json,property_boundary,FeatureCollection,1,Polygon,fid; PROPERTY; PROP_CODE; location; state; DESCRIPT; LIVESTOCK; MANAGEMENT; notes; Area_ha,51,149.3091164,-27.1181025,149.3868105,-27.0506892
+INPUT/Talaheni/Talaheni_planning_areas.json,planning_area,FeatureCollection,1,Polygon,PROPERTY,52,149.1674413,-34.969566,149.1758452,-34.9520479
+INPUT/Talaheni/Talaheni_polygon.json,property_boundary,FeatureCollection,1,Polygon,fid; PROPERTY; PROP_CODE; location; state; DESCRIPT; LIVESTOCK; MANAGEMENT; notes; Area_ha,13,149.1635291,-34.9727871,149.1797471,-34.9486644
+INPUT/Tolga_Farm/Tolga_Farm_planning_areas.json,planning_area,FeatureCollection,1,MultiPolygon,PROPERTY,198,118.2078559,-32.9195638,118.310515,-32.8360932
+INPUT/Tolga_Farm/Tolga_Farm_polygon.json,property_boundary,FeatureCollection,1,MultiPolygon,fid; PROPERTY; PROP_CODE; location; state; DESCRIPT; LIVESTOCK; MANAGEMENT; notes; Area_ha,196,118.1994099,-32.9265802,118.3189703,-32.8290764
+INPUT/Zeebra_Plains/Zeebra_Plains_planning_areas.json,planning_area,FeatureCollection,1,Polygon,PROPERTY,50,152.4331335,-25.5354028,152.4520328,-25.5267524
+INPUT/Zeebra_Plains/Zeebra_Plains_polygon.json,property_boundary,FeatureCollection,1,Polygon,fid; PROPERTY; PROP_CODE; location; state; DESCRIPT; LIVESTOCK; MANAGEMENT; notes; Area_ha,209,152.4217241,-25.5419273,152.4612798,-25.5195772

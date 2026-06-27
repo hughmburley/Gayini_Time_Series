@@ -1,0 +1,14 @@
+setting,value,notes
+farm_name,Gayini,Folder and file stem used by LOOC-B pipeline
+boundary_path,data/source/gayini_boundary.shp,Full Gayini property or analysis boundary
+planning_area_path,data/source/gayini_grazing_exclusion.shp,Grazing-exclusion / restoration planning area
+output_root,INPUT,LOOC-B expects INPUT/<Farm>/
+location,Murrumbidgee / Gayini,Edit if preferred
+state,NSW,Australian state
+livestock,Grazing,Edit if preferred
+management,Conservation / grazing management,Edit if preferred
+polygon_description,Property boundary,Description stored in properties
+polygon_notes,Prepared for Gayini LOOC-B adaptation; confirm final boundary before API run.,Notes stored in properties
+dissolve_boundary,TRUE,Dissolve boundary source to one feature
+dissolve_planning_area,TRUE,Dissolve planning source to one feature
+simplify_tolerance_m,0,Optional simplification tolerance in metres; leave 0 for no simplification

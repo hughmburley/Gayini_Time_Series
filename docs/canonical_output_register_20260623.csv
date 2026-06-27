@@ -1,0 +1,33 @@
+path,product_type,created_by_script,used_by,keep_reason,notes
+data_processed/raster_catalog.csv,catalog,scripts/02_catalog_rasters.R,all extraction scripts,Canonical raster catalogue,not present in current filesystem
+data_processed/plot_master.csv,vector_table,scripts/01_prepare_vectors.R,all extraction scripts,Canonical plot master,file; 0.007 MB
+Output/csv/04c_fractional_cover_full.csv,ground_cover_csv,scripts/03_extract_ground_cover_full.R,curation and response,Full plot-scale ground-cover extraction,file; 17.760 MB
+data_processed/plot_fractional_cover_timeseries.csv,ground_cover_csv,scripts/03_extract_ground_cover_full.R,curation,Processed ground-cover timeseries,file; 17.760 MB
+Output/csv/05c_landsat_inundation_full.csv,annual_inundation_csv,scripts/04_extract_annual_inundation_full.R,curation and pre/post interpretation,Annual Landsat inundation extraction,file; 8.582 MB
+data_processed/plot_landsat_inundation_timeseries.csv,annual_inundation_csv,scripts/04_extract_annual_inundation_full.R,curation,Processed annual inundation timeseries,file; 8.582 MB
+Output/csv/06c_daily_inundation_full.csv,daily_inundation_csv,scripts/05_extract_daily_inundation_full.R,MER and curation,Daily inundation extraction,file; 8.012 MB
+data_processed/plot_daily_inundation_timeseries.csv,daily_inundation_csv,scripts/05_extract_daily_inundation_full.R,MER and curation,Processed daily inundation timeseries,file; 8.012 MB
+Output/csv/05b_MER_plot_inundation_dynamic_metrics.csv,MER_metric_csv,scripts/06_extract_MER_inundation_metrics.R,curation and figures,Flow_MER-inspired dynamic inundation metrics,file; 0.213 MB
+data_processed/plot_inundation_dynamic_metrics.csv,MER_metric_csv,scripts/06_extract_MER_inundation_metrics.R,curation,Processed MER metrics copy,file; 0.213 MB
+Output/csv/05b_MER_plot_inundation_monthly_seasonal_max.csv,MER_metric_csv,scripts/06_extract_MER_inundation_metrics.R,figures and gauge joins,Monthly/seasonal inundation support summaries,file; 2.445 MB
+data_processed/hydrology/gauge_context_for_deck.csv,gauge_context,scripts/07_import_murrumbidgee_gauge_context.R,review deck and joins,Clean gauge context for deck,file; 0.339 MB
+data_processed/hydrology/plot_rs_gauge_monthly_context.csv,gauge_join,scripts/09a_curate_rs_hydrology_analysis_base.R,figures,Monthly RS/gauge context,file; 31.295 MB
+data_processed/hydrology/plot_rs_gauge_water_year_context.csv,gauge_join,scripts/09a_curate_rs_hydrology_analysis_base.R,figures,Water-year RS/gauge context,file; 6.749 MB
+Output/rasters/inundation_pre_post/pre_conservation_inundation_frequency_pct.tif,prepost_raster,scripts/08a_build_prepost_inundation_products.R,maps and extraction,Pre-conservation annual inundation occurrence frequency,file; 0.812 MB
+Output/rasters/inundation_pre_post/post_conservation_inundation_frequency_pct.tif,prepost_raster,scripts/08a_build_prepost_inundation_products.R,maps and extraction,Post-conservation annual inundation occurrence frequency,file; 0.954 MB
+Output/rasters/inundation_pre_post/post_minus_pre_inundation_frequency_pct_points.tif,prepost_raster,scripts/08a_build_prepost_inundation_products.R,maps and extraction,Post-minus-pre inundation frequency percentage points,file; 0.960 MB
+Output/csv/07f_pre_post_inundation_plot_summary_fixed.csv,prepost_plot_csv,scripts/08c_extract_prepost_inundation_to_plots.R,curation,Fixed plot-level pre/post inundation summary,file; 0.020 MB
+data_processed/plot_pre_post_inundation_frequency_fixed.csv,prepost_plot_csv,scripts/08c_extract_prepost_inundation_to_plots.R,curation,Processed fixed plot-level pre/post table,file; 0.020 MB
+Output/csv/curated_ground_cover_timeseries.csv,curated_csv,scripts/09a_curate_rs_hydrology_analysis_base.R,response figures and downstream,Curated ground-cover timeseries,file; 3.440 MB
+Output/csv/curated_annual_inundation_timeseries.csv,curated_csv,scripts/09a_curate_rs_hydrology_analysis_base.R,response figures and downstream,Curated annual inundation timeseries,file; 8.708 MB
+Output/csv/curated_daily_inundation_monthly.csv,curated_csv,scripts/09a_curate_rs_hydrology_analysis_base.R,review and gauge joins,Curated monthly daily-inundation table,file; 1.274 MB
+Output/csv/plot_rs_analysis_base.csv,analysis_base,scripts/09a_curate_rs_hydrology_analysis_base.R,response figures and downstream,Plot-level RS analysis base,file; 0.039 MB
+Output/diagnostics/07_curate_rs_analysis_base/07_curate_variable_lut.csv,diagnostic_lookup,scripts/09a_curate_rs_hydrology_analysis_base.R,reports,Variable lookup table,file; 0.004 MB
+Output/csv/10a_ground_cover_prepost_plot_summary.csv,response_csv,scripts/10a_prepare_ground_cover_response_and_review_tables.R,review figures,Ground-cover pre/post plot summary,file; 0.023 MB
+Output/csv/10a_ground_cover_prepost_group_summary.csv,response_csv,scripts/10a_prepare_ground_cover_response_and_review_tables.R,review figures,Ground-cover group summary,file; 0.005 MB
+Output/csv/10a_ground_cover_prepost_model_summary.csv,response_csv,scripts/10a_prepare_ground_cover_response_and_review_tables.R,review figures,Ground-cover model summary,file; 0.008 MB
+Output/figures/10b_ground_cover_prepost_figures,review_figures,scripts/10b_make_review_figures_and_dashboards.R,review deck,Current ground-cover review figures,folder; 2.878 MB
+Output/figures/hydrology,review_figures,scripts/10b_make_review_figures_and_dashboards.R,review deck,Current hydrology gauge context figures,folder; 1.204 MB
+Output/reports/adrian_review_png_assets,review_assets,scripts/10b_make_review_figures_and_dashboards.R,review deck,Current review deck PNG asset bundle,folder; 9.322 MB
+Output/figures/maps/modis_ground_cover,review_maps,scripts/10c_make_review_extraction_method_maps.R,review deck appendix,Current MODIS/map review assets,folder; 12.409 MB
+Output/diagnostics/hydrology,diagnostics,scripts/07_import_murrumbidgee_gauge_context.R; scripts/09a_curate_rs_hydrology_analysis_base.R; scripts/10b_make_review_figures_and_dashboards.R,QA,Current hydrology diagnostics,folder; 0.006 MB
