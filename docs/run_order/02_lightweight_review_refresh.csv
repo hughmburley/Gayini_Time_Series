@@ -1,0 +1,10 @@
+step,script_path,script_purpose,heavy_or_light,safe_for_new_user,expected_inputs,expected_outputs,run_by_default,notes
+1,scripts/05_ground_cover/01_prepare_ground_cover_response_and_review_tables.R,Prepare ground-cover response and review tables.,light,yes,Curated analysis-base outputs.,Ground-cover pre/post summary tables.,yes,Keeps treed/bare-ground caveats.
+2,scripts/07_figures_dashboards/03_prepare_plot_context_flags.R,Prepare plot context flags.,light,yes,Plot metadata and curated outputs.,Plot context flag tables.,yes,Support step for figures/deck.
+3,scripts/07_figures_dashboards/01_make_review_figures_and_dashboards.R,Make review figures and dashboards.,light,yes,Curated outputs and context tables.,Review figures and dashboard assets.,yes,Safe after curated outputs exist.
+4,scripts/07_figures_dashboards/02_make_review_extraction_method_maps.R,Make extraction-method maps.,light,yes,Spatial inputs and existing products.,Appendix/method map assets.,optional,Review appendix support.
+5,scripts/07_figures_dashboards/04_integrate_gauge_context_review_figures.R,Integrate gauge-context review figures.,light,yes,Gauge context and curated outputs.,Gauge-context figures.,optional,Context only.
+6,scripts/07_figures_dashboards/05_prepare_background_flood_pattern_matched_years.R,Prepare background matched-year flood pattern figures.,light,yes,Existing inundation products.,Background matched-year review assets.,optional,Review support only.
+7,scripts/07_figures_dashboards/06_refresh_main_deck_figures.R,Refresh selected main-deck figures.,light,yes,"Existing curated outputs, rasters and figures.",Main-deck figure assets and register rows.,optional,Does not rebuild rasters.
+8,scripts/08_review_packages/01_prepare_review_package_spine.R,Prepare review package spine.,light,yes,Existing review assets.,Review package registers/spine.,optional,Package support.
+9,scripts/08_review_packages/02_make_ppt_missing_assets.R,Create missing PPT assets.,light,yes,Existing outputs and spatial inputs.,PPT missing-assets figures/registers.,optional,Safe after outputs exist.

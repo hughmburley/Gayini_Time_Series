@@ -1,0 +1,9 @@
+step,script_path,script_purpose,heavy_or_light,safe_for_new_user,expected_inputs,expected_outputs,run_by_default,notes
+1,scripts/06_mer/01_extract_mer_inundation_metrics.R,Extract MER plot-level observed-footprint metrics.,medium,with caution,Daily inundation extraction outputs.,MER plot metric CSVs/diagnostics.,yes,Supplementary; not hydroperiod.
+2,scripts/06_mer/02_consolidate_mer_metric_review.R,Consolidate MER metric review.,light,yes,MER plot metric outputs.,MER review tables and decision support.,optional,Plot-table MER workflow.
+3,scripts/06_mer/03_build_mer_standalone_package_tables.R,Build MER standalone package tables.,light,yes,MER and review outputs.,MER package tables and copied assets.,optional,Package/deck support.
+4,scripts/06_mer/04_create_mer_methods_note.py,Create MER methods note.,light,yes,MER package context.,MER methods note document artifact.,optional,Python script.
+5,scripts/06_mer/05_census_mer_raster_inputs.R,Census MER raster inputs.,light,yes,Input rasters and MER config.,MER raster readiness diagnostics.,optional,Readiness/census before any raster build.
+6,scripts/06_mer/06_build_mer_annual_max_raster_smoke_test.R,Build MER annual-max raster smoke test.,medium,with caution,Census outputs and selected raster subset.,Smoke-test rasters and QA.,no,Controlled smoke test only.
+7,scripts/06_mer/07_build_mer_annual_max_rasters.R,Build MER annual maximum rasters.,heavy,no,MER raster census outputs and source rasters.,Production MER raster outputs.,no,Explicit production raster build; do not run casually.
+8,scripts/06_mer/08_summarise_compare_mer_rasters.R,Summarise and compare MER rasters.,light,yes,Existing MER rasters and comparison tables.,MER raster summary figures/tables.,optional,Does not build rasters.

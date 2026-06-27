@@ -1,0 +1,2 @@
+step,script_path,script_purpose,heavy_or_light,safe_for_new_user,expected_inputs,expected_outputs,run_by_default,notes
+1,scripts/10_downstream_optional/01_lag_diagnostics_inundation_gc.R,Run descriptive lag diagnostics between inundation and ground cover.,light,yes,Curated outputs.,Lag diagnostic tables/figures.,no,Optional descriptive downstream analysis; not causal modelling.

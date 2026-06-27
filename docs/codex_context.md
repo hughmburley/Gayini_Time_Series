@@ -145,7 +145,7 @@ The next target files are:
 ```text
 tools/archive_legacy_code.ps1
 R/gayini_analysis_base_functions.R
-scripts/09a_curate_rs_hydrology_analysis_base.R
+scripts/03_curate_rs_hydrology_analysis_base.R
 ```
 
 The first Codex task should create these files only.
@@ -442,7 +442,7 @@ Please create:
      - writing row-count diagnostics
      - duplicate-key checks
 
-3. `scripts/09a_curate_rs_hydrology_analysis_base.R`
+3. `scripts/03_curate_rs_hydrology_analysis_base.R`
    - Read existing outputs from 04c, 05c/06c if present, and 07f.
    - Create `Output/csv/curated_ground_cover_timeseries.csv`.
    - Create `Output/csv/curated_annual_inundation_timeseries.csv`.
@@ -455,7 +455,7 @@ Please create:
 After writing the code, run only:
 
 ```powershell
-Rscript --vanilla scripts/09a_curate_rs_hydrology_analysis_base.R
+Rscript --vanilla scripts/03_curate_rs_hydrology_analysis_base.R
 ```
 
 Then report:

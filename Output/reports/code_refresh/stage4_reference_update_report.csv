@@ -1,0 +1,6 @@
+scope,status,notes
+active_scripts,pass,Active source paths and provenance strings updated to sequential Stage 4 paths.
+active_docs,pass,"README.md, scripts/README.md, docs/current_run_order.md and docs/run_order/* use the Stage 4 handoff paths."
+legacy_archive_refs,kept,Historical docs and manifests may retain old scripts/obs or retired path references for provenance.
+archive_wrapper_refs,pass,Active wrappers now source scripts/archive/obs_legacy_20260627 where legacy implementation remains authoritative.
+old_active_path_scan,pass,No old full active script paths or scripts/obs references remain in active handoff files.

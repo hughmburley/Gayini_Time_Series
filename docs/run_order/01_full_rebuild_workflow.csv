@@ -1,0 +1,14 @@
+step,script_path,script_purpose,heavy_or_light,safe_for_new_user,expected_inputs,expected_outputs,run_by_default,notes
+1,scripts/00_setup/01_setup_project.R,"Create project folders, config templates and setup checks.",light,yes,Project root and configuration defaults.,Folder skeleton and setup diagnostics.,yes,Safe setup/check step.
+2,scripts/01_prepare_inputs/01_prepare_vectors.R,Prepare plot and boundary vector inputs.,medium,with caution,Input spatial source files.,Clean vectors and vector diagnostics.,yes,Rerun when spatial inputs change.
+3,scripts/01_prepare_inputs/02_catalog_rasters.R,Catalogue raster products and sensor/date metadata.,light,yes,Input raster folders.,Raster catalogue and support summaries.,yes,Metadata/census step.
+4,scripts/02_extract_heavy/01_extract_ground_cover_full.R,Extract ground-cover time series.,heavy,no,"Raster catalogue, plot vectors and fractional-cover rasters.",Ground-cover extraction CSVs and processed tables.,no,Run only for a full rebuild.
+5,scripts/02_extract_heavy/02_extract_annual_inundation_full.R,Extract annual Landsat inundation.,heavy,no,Annual inundation rasters and plots.,Annual inundation CSVs and processed tables.,no,Run only for a full rebuild.
+6,scripts/02_extract_heavy/03_extract_daily_inundation_full.R,Extract daily inundation.,heavy,no,Daily inundation rasters and plots.,Daily inundation CSVs and processed tables.,no,Run only for a full rebuild; feeds MER metrics.
+7,scripts/06_mer/01_extract_mer_inundation_metrics.R,Create plot-table MER observed-footprint metrics.,medium,with caution,Daily inundation extraction output.,"MER plot metric CSVs, diagnostics and figures.",yes,Supplementary; not hydroperiod.
+8,scripts/04_gauges/01_import_murrumbidgee_gauge_context.R,Import optional Murrumbidgee gauge context.,light,yes,Packaged hydrology database or clean exports.,Gauge context diagnostics and processed tables.,optional,"Context only, not causal proof."
+9,scripts/03_inundation_products/01_build_prepost_inundation_products.R,Build pre/post annual occurrence rasters.,heavy,no,Annual inundation products.,Pre/post inundation rasters.,no,Protected heavy raster build step.
+10,scripts/09_qa/01_check_prepost_inundation_products.R,Check existing pre/post inundation products.,light,yes,Pre/post rasters.,QA diagnostics.,yes,Read-only check.
+11,scripts/03_inundation_products/02_extract_prepost_inundation_to_plots.R,Extract pre/post products to plots.,medium,with caution,Pre/post rasters and plots.,Canonical plot-level pre/post table.,yes,Rerun after pre/post products change.
+12,scripts/03_inundation_products/03_curate_rs_hydrology_analysis_base.R,Build curated RS/hydrology analysis tables.,light,yes,Canonical RS outputs and optional gauge context.,Curated analysis-base CSVs.,yes,Preferred input to review figures.
+13,scripts/09_qa/02_check_curated_rs_hydrology_outputs.R,Check curated RS/hydrology outputs.,light,yes,Curated CSV outputs.,QA diagnostics.,yes,Read-only check.

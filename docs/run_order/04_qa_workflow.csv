@@ -1,0 +1,4 @@
+step,script_path,script_purpose,heavy_or_light,safe_for_new_user,expected_inputs,expected_outputs,run_by_default,notes
+1,scripts/09_qa/01_check_prepost_inundation_products.R,Check existing pre/post inundation products.,light,yes,Existing pre/post rasters.,QA diagnostics.,yes,Read-only.
+2,scripts/09_qa/02_check_curated_rs_hydrology_outputs.R,Check curated RS/hydrology outputs.,light,yes,Curated CSV outputs.,QA diagnostics.,yes,Read-only.
+3,scripts/09_qa/03_cleanup_R_terra_temp.ps1,Inspect or clean R terra temp files.,light,with caution,Local temp folders.,Cleanup log/messages.,no,Maintenance helper; use dry-run/default caution.

@@ -10,7 +10,7 @@ This document records the canonical output set for the current remote-sensing wo
 
 Active script:
 
-- `scripts/02_extract_heavy/03_extract_ground_cover_full.R`
+- `scripts/02_extract_heavy/01_extract_ground_cover_full.R`
 
 Core Landsat source script:
 
@@ -63,7 +63,7 @@ MODIS interpretation note:
 
 Active wrapper:
 
-- `scripts/02_extract_heavy/04_extract_annual_inundation_full.R`
+- `scripts/02_extract_heavy/02_extract_annual_inundation_full.R`
 
 Source script:
 
@@ -84,7 +84,7 @@ Interpretation note:
 
 Active wrapper:
 
-- `scripts/02_extract_heavy/05_extract_daily_inundation_full.R`
+- `scripts/02_extract_heavy/03_extract_daily_inundation_full.R`
 
 Source script:
 
@@ -105,7 +105,7 @@ Interpretation note:
 
 Active wrapper:
 
-- `scripts/03_inundation_products/08a_build_prepost_inundation_products.R`
+- `scripts/03_inundation_products/01_build_prepost_inundation_products.R`
 
 Source script:
 
@@ -125,7 +125,7 @@ Canonical raster outputs:
 
 QA script:
 
-- `scripts/09_qa/08b_check_prepost_inundation_products.R`
+- `scripts/09_qa/01_check_prepost_inundation_products.R`
 
 QA diagnostics:
 
@@ -141,7 +141,7 @@ Interpretation note:
 
 Active wrapper:
 
-- `scripts/03_inundation_products/08c_extract_prepost_inundation_to_plots.R`
+- `scripts/03_inundation_products/02_extract_prepost_inundation_to_plots.R`
 
 Source script:
 
@@ -163,7 +163,7 @@ Use the fixed `07f` output for plot-level interpretation.
 
 Active wrapper:
 
-- `scripts/03_inundation_products/09a_curate_rs_hydrology_analysis_base.R`
+- `scripts/03_inundation_products/03_curate_rs_hydrology_analysis_base.R`
 
 Source script:
 
