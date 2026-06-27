@@ -63,6 +63,75 @@ gayini_change_palette <- function() {
 }
 
 
+gayini_gauge_role_palette <- function(style = c("display", "analysis")) {
+  style <- match.arg(style)
+
+  switch(
+    style,
+    display = c(
+      "Preferred context" = "#2c7f8f",
+      "Preferred context / downstream" = "#66a6b4",
+      "Preferred downstream context" = "#66a6b4",
+      "Secondary / cautious" = "#c56a4a"
+    ),
+    analysis = c(
+      preferred_context = "#2c7f8f",
+      redbank_cautious = "#c56a4a",
+      other_context = "#9fa7a4"
+    )
+  )
+}
+
+
+gayini_wetness_group_palette <- function() {
+  c(
+    "Drier post" = "#b84a4a",
+    "Near no change" = "#777777",
+    "Wetter post" = "#2f74b5"
+  )
+}
+
+
+gayini_deck_candidate_palette <- function() {
+  c(
+    "Main deck candidate" = "#2f74b5",
+    "Appendix candidate" = "#8a8f8d",
+    "Appendix / treed caveat" = "#c56a4a"
+  )
+}
+
+
+gayini_sensor_palette <- function() {
+  c(
+    "Landsat" = "#4c78a8",
+    "Sentinel-2" = "#f58518",
+    "Other" = "#999999"
+  )
+}
+
+
+gayini_mer_agreement_palette <- function() {
+  c(
+    agree_positive = "#2f6f4e",
+    agree_negative = "#6b8fb5",
+    agree_near_zero = "#8a8a8a",
+    one_near_zero = "#d08b2c",
+    disagree = "#b44f3f",
+    insufficient_support = "#555555"
+  )
+}
+
+
+gayini_vegetation_group_palette <- function() {
+  c(
+    "Aeolian Chenopod Shrublands" = "#d9a441",
+    "Floodplain Woodland / Forest" = "#4f7f5d",
+    "Inland Floodplain Shrublands / Swamps" = "#5a9fb1",
+    "Unknown vegetation" = "#bdbdbd"
+  )
+}
+
+
 gayini_change_scale_fill <- function(limit = NULL,
                                      name = "Change (percentage points)",
                                      midpoint = 0,

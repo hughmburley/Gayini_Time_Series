@@ -351,7 +351,7 @@ gauge_map <- ggplot2::ggplot() +
   ggplot2::geom_point(data = gauge_locations, ggplot2::aes(x = .data$longitude, y = .data$latitude, fill = .data$gauge_role), shape = 21, colour = "#1f2d2a", size = 4.2, stroke = 0.45) +
   ggplot2::geom_text(data = gauge_locations, ggplot2::aes(x = .data$longitude, y = .data$latitude, label = .data$label), nudge_y = 0.09, size = 3.4, check_overlap = TRUE, colour = "#1f2d2a") +
   ggplot2::annotate("text", x = gayini_coord[1, "X"] + 0.12, y = gayini_coord[1, "Y"] - 0.08, label = "Gayini", hjust = 0, fontface = "bold", size = 3.8, colour = "#1f2d2a") +
-  ggplot2::scale_fill_manual(values = c("Preferred context" = "#2c7f8f", "Preferred downstream context" = "#66a6b4", "Secondary / cautious" = "#c56a4a"), name = "Gauge role") +
+  ggplot2::scale_fill_manual(values = gayini_gauge_role_palette("display"), name = "Gauge role") +
   ggplot2::coord_equal(xlim = c(143.35, 146.25), ylim = c(-35.05, -34.05), expand = FALSE) +
   ggplot2::labs(
     title = "Gauge context for Gayini",
@@ -373,7 +373,7 @@ gauge_comp_fig <- gauge_completeness %>%
   ggplot2::ggplot(ggplot2::aes(x = reorder(.data$gauge_name_short, .data$mean_missing_flow_pct), y = .data$mean_missing_flow_pct, fill = .data$gauge_context_role)) +
   ggplot2::geom_col(width = 0.68) +
   ggplot2::coord_flip() +
-  ggplot2::scale_fill_manual(values = c("preferred_context" = "#2c7f8f", "redbank_cautious" = "#c56a4a", "other_context" = "#9fa7a4"), name = "Gauge role") +
+  ggplot2::scale_fill_manual(values = gayini_gauge_role_palette("analysis"), name = "Gauge role") +
   ggplot2::labs(
     title = "Gauge completeness for review context",
     subtitle = "Lower missing-flow percentage means stronger context support",
@@ -679,7 +679,7 @@ scatter_wetness <- ggplot2::ggplot(scatter_data, ggplot2::aes(x = .data$post_min
   ggplot2::geom_hline(yintercept = 0, colour = "grey55", linewidth = 0.3) +
   ggplot2::geom_vline(xintercept = 0, colour = "grey55", linewidth = 0.3) +
   ggplot2::geom_point(size = 3.0, alpha = 0.86) +
-  ggplot2::scale_colour_manual(values = c("Drier post" = "#b84a4a", "Near no change" = "#777777", "Wetter post" = "#2f74b5"), name = "Wetness group") +
+  ggplot2::scale_colour_manual(values = gayini_wetness_group_palette(), name = "Wetness group") +
   ggplot2::labs(
     title = "Inundation change versus total vegetation response",
     subtitle = "Non-treed plots only; grouped by wetness-change class",
@@ -712,7 +712,7 @@ scatter_bare <- ggplot2::ggplot(scatter_data, ggplot2::aes(x = .data$post_minus_
   ggplot2::geom_hline(yintercept = 0, colour = "grey55", linewidth = 0.3) +
   ggplot2::geom_vline(xintercept = 0, colour = "grey55", linewidth = 0.3) +
   ggplot2::geom_point(size = 3.0, alpha = 0.86) +
-  ggplot2::scale_colour_manual(values = c("Drier post" = "#b84a4a", "Near no change" = "#777777", "Wetter post" = "#2f74b5"), name = "Wetness group") +
+  ggplot2::scale_colour_manual(values = gayini_wetness_group_palette(), name = "Wetness group") +
   ggplot2::labs(
     title = "Appendix: inundation change versus bare ground",
     subtitle = "Non-treed plots only; appendix/supporting use",
@@ -874,7 +874,7 @@ candidate_fig <- candidate_dashboard %>%
   ggplot2::ggplot(ggplot2::aes(x = reorder(.data$plot_label, .data$post_minus_pre_inundation_frequency_pct_points), y = .data$post_minus_pre_inundation_frequency_pct_points, fill = .data$deck_recommendation)) +
   ggplot2::geom_col(width = 0.7) +
   ggplot2::coord_flip() +
-  ggplot2::scale_fill_manual(values = c("Main deck candidate" = "#2f74b5", "Appendix candidate" = "#8a8f8d", "Appendix / treed caveat" = "#c56a4a")) +
+  ggplot2::scale_fill_manual(values = gayini_deck_candidate_palette()) +
   ggplot2::labs(
     title = "Candidate dashboard set for review",
     subtitle = "Summary uses plot ID, vegetation group, inundation class and treed/exclusion status",

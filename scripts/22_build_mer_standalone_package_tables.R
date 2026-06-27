@@ -24,6 +24,8 @@ task_date <- Sys.Date()
 required_packages <- c("dplyr", "readr", "stringr", "magrittr", "tibble")
 
 source(file.path(root_dir, "R", "gayini_analysis_base_functions.R"))
+source(file.path(root_dir, "R", "gayini_output_helpers.R"))
+source(file.path(root_dir, "R", "gayini_mer_helpers.R"))
 gayini_check_packages(required_packages)
 
 library(dplyr)
@@ -44,10 +46,10 @@ report_dir <- file.path(root_dir, "Output", "reports")
 mer_report_dir <- file.path(report_dir, "MER")
 diagnostics_dir <- file.path(root_dir, "Output", "diagnostics", "22_mer_standalone_package")
 
-dir.create(mer_csv_dir, recursive = TRUE, showWarnings = FALSE)
-dir.create(mer_figure_dir, recursive = TRUE, showWarnings = FALSE)
-dir.create(mer_report_dir, recursive = TRUE, showWarnings = FALSE)
-dir.create(diagnostics_dir, recursive = TRUE, showWarnings = FALSE)
+gayini_ensure_dir(mer_csv_dir)
+gayini_ensure_dir(mer_figure_dir)
+gayini_ensure_dir(mer_report_dir)
+gayini_ensure_dir(diagnostics_dir)
 
 flags_path <- file.path(root_dir, "Output", "diagnostics", "06_MER_inundation", "mer_vs_annual_occurrence_flags.csv")
 review_shortlist_path <- file.path(root_dir, "Output", "diagnostics", "06_MER_inundation", "mer_plot_review_shortlist.csv")
@@ -87,7 +89,7 @@ normalise_path <- function(path) {
 }
 
 copy_with_log <- function(source_path, destination_path, role) {
-  dir.create(dirname(destination_path), recursive = TRUE, showWarnings = FALSE)
+  gayini_ensure_dir(destination_path, path_is_file = TRUE)
   copied <- file.copy(source_path, destination_path, overwrite = TRUE)
   source_info <- file.info(source_path)
   tibble::tibble(
@@ -130,7 +132,7 @@ make_asset_row <- function(asset_id, file_path, title, deck_priority, asset_stat
     superseded_by = NA_character_,
     source_script = "scripts/22_build_mer_standalone_package_tables.R",
     source_data = "Existing MER and annual occurrence outputs",
-    review_caveat = "Plot-based / plot-centroid MER comparison; no true MER raster surface found.",
+    review_caveat = paste("Plot-based / plot-centroid MER comparison.", gayini_mer_caveat_text("comparison")),
     notes = paste(notes, "updated_by_task_9 = TRUE")
   )
 }
@@ -221,8 +223,8 @@ plot_review_flags <- flags %>%
     )
   )
 
-readr::write_csv(agreement_summary, file.path(mer_csv_dir, "mer_vs_annual_occurrence_agreement_summary.csv"))
-readr::write_csv(plot_review_flags, file.path(mer_csv_dir, "mer_vs_annual_occurrence_plot_review_flags.csv"))
+gayini_write_csv(agreement_summary, file.path(mer_csv_dir, "mer_vs_annual_occurrence_agreement_summary.csv"))
+gayini_write_csv(plot_review_flags, file.path(mer_csv_dir, "mer_vs_annual_occurrence_plot_review_flags.csv"))
 
 
 ## Metric and inventory tables ----
@@ -303,12 +305,12 @@ keep_defer_archive <- keep_defer %>%
     )
   )
 
-readr::write_csv(metric_definitions, file.path(mer_csv_dir, "mer_metric_definitions.csv"))
-readr::write_csv(input_files, file.path(mer_csv_dir, "mer_input_files_inventory.csv"))
-readr::write_csv(output_files, file.path(mer_csv_dir, "mer_output_files_inventory.csv"))
-readr::write_csv(recommended_figures, file.path(mer_csv_dir, "mer_recommended_figures.csv"))
-readr::write_csv(adrian_questions, file.path(mer_csv_dir, "mer_adrian_questions.csv"))
-readr::write_csv(keep_defer_archive, file.path(mer_csv_dir, "mer_keep_defer_archive_decisions.csv"))
+gayini_write_csv(metric_definitions, file.path(mer_csv_dir, "mer_metric_definitions.csv"))
+gayini_write_csv(input_files, file.path(mer_csv_dir, "mer_input_files_inventory.csv"))
+gayini_write_csv(output_files, file.path(mer_csv_dir, "mer_output_files_inventory.csv"))
+gayini_write_csv(recommended_figures, file.path(mer_csv_dir, "mer_recommended_figures.csv"))
+gayini_write_csv(adrian_questions, file.path(mer_csv_dir, "mer_adrian_questions.csv"))
+gayini_write_csv(keep_defer_archive, file.path(mer_csv_dir, "mer_keep_defer_archive_decisions.csv"))
 
 
 ## Figure copies ----
@@ -354,7 +356,7 @@ figure_copy_log <- dplyr::bind_rows(
   }
 )
 
-readr::write_csv(figure_copy_log, file.path(diagnostics_dir, "task9_mer_figure_copy_log.csv"))
+gayini_write_csv(figure_copy_log, file.path(diagnostics_dir, "task9_mer_figure_copy_log.csv"))
 
 
 ## Asset pack and register updates ----
@@ -381,7 +383,7 @@ asset_pack_copy_log <- dplyr::bind_rows(
   if (file.exists(file.path(mer_figure_dir, "mer_annual_max_heatmap_appendix.png"))) copy_with_log(file.path(mer_figure_dir, "mer_annual_max_heatmap_appendix.png"), file.path(appendix_destination_dir, "mer_annual_max_heatmap_appendix.png"), "asset_pack_appendix") else tibble::tibble()
 )
 
-readr::write_csv(asset_pack_copy_log, file.path(diagnostics_dir, "task9_mer_asset_pack_copy_log.csv"))
+gayini_write_csv(asset_pack_copy_log, file.path(diagnostics_dir, "task9_mer_asset_pack_copy_log.csv"))
 
 if (file.exists(asset_register_path)) {
   asset_register <- readr::read_csv(asset_register_path, show_col_types = FALSE) %>%
@@ -408,7 +410,7 @@ if (file.exists(asset_register_path)) {
     dplyr::bind_rows(task9_asset_rows) %>%
     dplyr::arrange(.data$analysis_module, .data$deck_priority, .data$filename)
 
-  readr::write_csv(updated_register, asset_register_path)
+  gayini_write_csv(updated_register, asset_register_path)
 }
 
 
@@ -450,7 +452,7 @@ checks <- tibble::tibble(
   )
 )
 
-readr::write_csv(checks, file.path(diagnostics_dir, "task9_mer_package_table_checks.csv"))
+gayini_write_csv(checks, file.path(diagnostics_dir, "task9_mer_package_table_checks.csv"))
 
 if (any(checks$status == "fail")) {
   stop("Task 9 MER package table checks failed. See diagnostics.", call. = FALSE)

@@ -329,7 +329,7 @@ p_support <- water_year_support %>%
   dplyr::mutate(sensor_group = dplyr::recode(.data$sensor_group, n_landsat = "Landsat", n_sentinel2 = "Sentinel-2", n_other_sensor = "Other")) %>%
   ggplot2::ggplot(ggplot2::aes(x = .data$water_year, y = .data$n_observations, fill = .data$sensor_group)) +
   ggplot2::geom_col(width = 0.72) +
-  ggplot2::scale_fill_manual(values = c("Landsat" = "#4c78a8", "Sentinel-2" = "#f58518", "Other" = "#999999")) +
+  ggplot2::scale_fill_manual(values = gayini_sensor_palette()) +
   ggplot2::labs(
     x = "Water year",
     y = "Selected source rasters",
@@ -347,17 +347,7 @@ p_agreement <- comparison_summary %>%
   ggplot2::ggplot(ggplot2::aes(x = .data$direction_agreement, y = .data$n_plots, fill = .data$direction_agreement)) +
   ggplot2::geom_col(width = 0.68) +
   ggplot2::geom_text(ggplot2::aes(label = .data$n_plots), vjust = -0.35, size = 3.3) +
-  ggplot2::scale_fill_manual(
-    values = c(
-      agree_positive = "#2f6f4e",
-      agree_negative = "#6b8fb5",
-      agree_near_zero = "#8a8a8a",
-      one_near_zero = "#d08b2c",
-      disagree = "#b44f3f",
-      insufficient_support = "#555555"
-    ),
-    drop = FALSE
-  ) +
+  ggplot2::scale_fill_manual(values = gayini_mer_agreement_palette(), drop = FALSE) +
   ggplot2::labs(
     x = NULL,
     y = "Plots",

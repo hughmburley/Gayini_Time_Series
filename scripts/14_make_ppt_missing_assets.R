@@ -14,8 +14,9 @@
 
 
 root_dir <- normalizePath(Sys.getenv("GAYINI_ROOT", "D:/Github_repos/Gayini"), winslash = "/", mustWork = TRUE)
+source(file.path(root_dir, "R", "gayini_time_helpers.R"))
 ASSET_PACK_DATE <- format(Sys.Date(), "%Y%m%d")
-MANAGEMENT_CHANGE_DATE <- as.Date("2019-07-01")
+MANAGEMENT_CHANGE_DATE <- gayini_management_transition_date()
 
 
 ## Required packages ----
@@ -34,6 +35,8 @@ required_packages <- c(
 )
 
 source(file.path(root_dir, "R", "gayini_analysis_base_functions.R"))
+source(file.path(root_dir, "R", "gayini_output_helpers.R"))
+source(file.path(root_dir, "R", "gayini_plotting_helpers.R"))
 gayini_check_packages(required_packages)
 
 library(dplyr)
@@ -57,9 +60,9 @@ diagnostics_dir <- file.path(root_dir, "Output", "diagnostics", "14_ppt_missing_
 spatial_dir <- file.path(root_dir, "data_intermediate", "spatial")
 raster_dir <- file.path(root_dir, "Output", "rasters")
 
-dir.create(figure_dir, recursive = TRUE, showWarnings = FALSE)
-dir.create(report_dir, recursive = TRUE, showWarnings = FALSE)
-dir.create(diagnostics_dir, recursive = TRUE, showWarnings = FALSE)
+gayini_ensure_dir(figure_dir)
+gayini_ensure_dir(report_dir)
+gayini_ensure_dir(diagnostics_dir)
 
 boundary_path <- file.path(spatial_dir, "boundary_clean.gpkg")
 plots_path <- file.path(spatial_dir, "plots_clean.gpkg")
@@ -110,39 +113,18 @@ if (length(missing_inputs) > 0L) {
 ## Helpers ----
 
 
-write_csv_message <- function(x, path) {
-  readr::write_csv(x, path)
-  message("Wrote: ", path)
-  invisible(x)
-}
+write_csv_message <- gayini_write_csv
 
 
 theme_deck_map <- function(base_size = 13) {
-  ggplot2::theme_void(base_size = base_size) +
-    ggplot2::theme(
-      plot.background = ggplot2::element_rect(fill = "white", colour = NA),
-      panel.background = ggplot2::element_rect(fill = "white", colour = NA),
-      legend.position = "right",
-      legend.title = ggplot2::element_text(face = "bold"),
-      plot.title = ggplot2::element_text(face = "bold", colour = "#1f2d2a"),
-      plot.subtitle = ggplot2::element_text(colour = "#4d5652"),
-      plot.caption = ggplot2::element_text(hjust = 0, colour = "grey35", size = ggplot2::rel(0.75)),
-      plot.margin = ggplot2::margin(14, 20, 14, 26)
-    )
+  gayini_theme_map(base_size = base_size, legend_position = "right") +
+    ggplot2::theme(plot.margin = ggplot2::margin(14, 20, 14, 26))
 }
 
 
 theme_deck_chart <- function(base_size = 13) {
-  ggplot2::theme_minimal(base_size = base_size) +
-    ggplot2::theme(
-      panel.grid.minor = ggplot2::element_blank(),
-      plot.background = ggplot2::element_rect(fill = "white", colour = NA),
-      panel.background = ggplot2::element_rect(fill = "white", colour = NA),
-      plot.title = ggplot2::element_text(face = "bold", colour = "#1f2d2a"),
-      plot.subtitle = ggplot2::element_text(colour = "#4d5652"),
-      plot.caption = ggplot2::element_text(hjust = 0, colour = "grey35", size = ggplot2::rel(0.75)),
-      plot.margin = ggplot2::margin(14, 20, 14, 26)
-    )
+  gayini_theme_review(base_size = base_size, legend_position = "right") +
+    ggplot2::theme(plot.margin = ggplot2::margin(14, 20, 14, 26))
 }
 
 
@@ -318,12 +300,7 @@ gayini_point_ll <- boundary_ll %>%
 gayini_coord <- sf::st_coordinates(gayini_point_ll)[1, ]
 boundary_bbox <- sf::st_bbox(boundary_sf)
 
-vegetation_palette <- c(
-  "Aeolian Chenopod Shrublands" = "#d9a441",
-  "Floodplain Woodland / Forest" = "#4f7f5d",
-  "Inland Floodplain Shrublands / Swamps" = "#5a9fb1",
-  "Unknown vegetation" = "#bdbdbd"
-)
+vegetation_palette <- gayini_vegetation_group_palette()
 
 management_fill <- "#f5f3ea"
 boundary_colour <- "#243331"
@@ -484,7 +461,7 @@ gauge_map <- ggplot2::ggplot() +
   ) +
   ggplot2::annotate("text", x = gayini_coord[["X"]] + 0.12, y = gayini_coord[["Y"]] - 0.08, label = "Gayini", hjust = 0, fontface = "bold", size = 3.8, colour = "#1f2d2a") +
   ggplot2::scale_fill_manual(
-    values = c("Preferred context" = "#2c7f8f", "Preferred context / downstream" = "#66a6b4", "Secondary / cautious" = "#c56a4a"),
+    values = gayini_gauge_role_palette("display"),
     name = "Gauge role"
   ) +
   ggplot2::coord_equal(xlim = c(143.35, 146.25), ylim = c(-35.05, -34.05), expand = FALSE) +
