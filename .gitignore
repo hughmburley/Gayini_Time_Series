@@ -35,6 +35,7 @@ working/
 /archive/
 _local_archive/
 docs/archive/
+R/obs/
 
 # Script history is now tracked through docs/scripts_manifest.csv
 # and scripts/archive/ manifests. Do not add a new scripts/obs/

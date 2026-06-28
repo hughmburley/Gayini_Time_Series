@@ -135,11 +135,32 @@ if (Test-Path (Join-Path $Root "scripts/archive")) {
   Add-Check "archive_obs" "scripts_archive_absent" "pass" "scripts/archive" "scripts/archive is absent."
 }
 
+if (Test-Path (Join-Path $Root "R/obs")) {
+  Add-Check "archive_obs" "r_obs_absent" "fail" "R/obs" "R/obs exists in the visible handoff." "error"
+} else {
+  Add-Check "archive_obs" "r_obs_absent" "pass" "R/obs" "R/obs is absent."
+}
+
 $activeArchiveRefs = @()
 foreach ($f in $activeScriptFiles) {
   $text = Get-Content -Raw -Path $f.FullName
   if ($text -match "scripts[/\\](archive|obs)") {
     $activeArchiveRefs += $f
+  }
+}
+
+$activeRObsRefs = @()
+foreach ($f in $activeScriptFiles) {
+  $text = Get-Content -Raw -Path $f.FullName
+  if ($text -match "R[/\\]obs") {
+    $activeRObsRefs += $f
+  }
+}
+if ($activeRObsRefs.Count -eq 0) {
+  Add-Check "archive_obs" "active_code_r_obs_refs_absent" "pass" "scripts" "Active code does not reference R/obs."
+} else {
+  foreach ($f in $activeRObsRefs) {
+    Add-Check "archive_obs" "active_code_r_obs_ref_$($f.Name)" "fail" (ConvertTo-RepoPath $f.FullName.Substring($Root.Length).TrimStart("\", "/")) "Active code references R/obs." "error"
   }
 }
 if ($activeArchiveRefs.Count -eq 0) {
