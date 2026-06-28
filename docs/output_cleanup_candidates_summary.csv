@@ -1,0 +1,6 @@
+"classification","recommended_action","risk_level","manual_review_required","file_count"
+"legacy_old_diagnostic","manual_review","medium","True","39"
+"legacy_task_output","move_to_local_archive","medium","False","15"
+"local_package_bundle","move_to_local_archive","medium","False","318"
+"manual_review","manual_review","high","True","3"
+"manual_review","manual_review","medium","True","14"
