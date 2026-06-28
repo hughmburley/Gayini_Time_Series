@@ -1,8 +1,21 @@
-## -----------------------------------------------------------------------------
-## Gayini remote sensing workflow
-## 02_consolidate_mer_metric_review.R
-## -----------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+# Script: scripts/06_mer/02_consolidate_mer_metric_review.R
+# Purpose: Consolidate MER metric review.
+# Workflow stage: 06_mer
+# Run mode: lightweight_review
+# Heavy processing: no
+# Key inputs:
+#   - MER plot metric outputs.
+# Key outputs:
+#   - MER review tables and decision support.
+# Notes:
+#   - MER observed wet extent metrics are supplementary and are not
+#     hydroperiod.
+# ------------------------------------------------------------------------------
 
+# ------------------------------------------------------------------------------
+# Load configuration and execute workflow step
+# ------------------------------------------------------------------------------
 
 ## Purpose:
 ## Consolidate current MER / Flow_MER-inspired inundation outputs against the
@@ -234,7 +247,7 @@ scripts_reviewed <- tibble::tibble(
     "scripts/03_inundation_products/01_build_prepost_inundation_products.R",
     "scripts/09_qa/01_check_prepost_inundation_products.R",
     "scripts/03_inundation_products/02_extract_prepost_inundation_to_plots.R",
-    "scripts/archive/pre_clean_spine_20260623/05b_MER_extract_inundation.R"
+    "Git history: 05b_MER_extract_inundation.R"
   ),
   exists = file.exists(file.path(root_dir, script_or_doc)),
   action_this_task = c(
@@ -475,7 +488,7 @@ decision_table <- tibble::tribble(
   "MER longest observed wet sequence days", "metric", "defer", "technical QA only", "Can help timing review but is not hydroperiod or true duration.", "Satellite timing/gap-rule dependent.",
   "scripts/06_mer/01_extract_mer_inundation_metrics.R", "active script", "keep_active", "workflow step 06", "Clean active driver sourcing R/gayini_mer_inundation_functions.R.", "Should remain RS-only; no gauge dependency.",
   "R/gayini_mer_inundation_functions.R", "active implementation", "keep_active", "workflow implementation", "Reusable live MER logic now outside archive.", "Contains supplementary metrics; avoid promoting all outputs to headline.",
-  "scripts/archive/pre_clean_spine_20260623/05b_MER_extract_inundation.R", "archived script", "keep_provenance_archive_later", "none", "Historical provenance only; active scripts should not source it.", "Do not delete without a later archive policy.",
+  "Git history: 05b_MER_extract_inundation.R", "archived script", "removed_from_handoff", "none", "Historical provenance only; active scripts should not source it.", "Trace through docs/removed_archive_obs_manifest_20260628.csv and Git history.",
   "Output/diagnostics/05b_MER_inundation", "historical diagnostics", "archive_later_if_cleanup_requested", "none", "Superseded by Output/diagnostics/06_MER_inundation.", "Keep for provenance until cleanup instruction.",
   "MER deck candidate ranked/scatter figures", "figure set", "keep_supplementary_review", "technical appendix or backup slide", "Useful to explain metric agreement and footprint change.", "Not stronger than annual occurrence for main story.",
   "MER heatmap/monthly-seasonal products", "figure/output set", "defer", "technical appendix only", "Visually rich but risks overclaiming event timing.", "Needs observation-support sensitivity before deck headline use."
@@ -716,7 +729,7 @@ report_lines <- c(
   "",
   "- No new external Andres/Sutton code was incorporated in Task 4.",
   "- The active Gayini implementation is Flow_MER-inspired and lives in `R/gayini_mer_inundation_functions.R`.",
-  "- The archived `scripts/archive/pre_clean_spine_20260623/05b_MER_extract_inundation.R` is provenance only.",
+  "- The former `05b_MER_extract_inundation.R` script is provenance only and is traceable through Git history.",
   "- The Andres-style approach mostly provides a robust supplementary implementation of observed inundation footprint/timing summaries; it does not overturn the annual-occurrence story.",
   "",
   "## Outputs",

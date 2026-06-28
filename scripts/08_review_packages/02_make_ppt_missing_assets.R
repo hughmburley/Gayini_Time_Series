@@ -1,8 +1,20 @@
-## -----------------------------------------------------------------------------
-## Gayini remote sensing workflow
-## 02_make_ppt_missing_assets.R
-## -----------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+# Script: scripts/08_review_packages/02_make_ppt_missing_assets.R
+# Purpose: Create missing PPT assets.
+# Workflow stage: 08_review_packages
+# Run mode: lightweight_review
+# Heavy processing: no
+# Key inputs:
+#   - Existing outputs and spatial inputs.
+# Key outputs:
+#   - PPT missing-assets figures/registers.
+# Notes:
+#   - Keep stable output filenames for downstream reports.
+# ------------------------------------------------------------------------------
 
+# ------------------------------------------------------------------------------
+# Load configuration and execute workflow step
+# ------------------------------------------------------------------------------
 
 ## Purpose:
 ## Create lightweight, presentation-ready missing PowerPoint assets from existing

@@ -1,8 +1,21 @@
-## -----------------------------------------------------------------------------
-## Gayini remote sensing workflow
-## 08_summarise_compare_mer_rasters.R
-## -----------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+# Script: scripts/06_mer/08_summarise_compare_mer_rasters.R
+# Purpose: Summarise and compare MER rasters.
+# Workflow stage: 06_mer
+# Run mode: lightweight_review
+# Heavy processing: no
+# Key inputs:
+#   - Existing MER rasters and comparison tables.
+# Key outputs:
+#   - MER raster summary figures/tables.
+# Notes:
+#   - MER observed wet extent metrics are supplementary and are not
+#     hydroperiod.
+# ------------------------------------------------------------------------------
 
+# ------------------------------------------------------------------------------
+# Load configuration and execute workflow step
+# ------------------------------------------------------------------------------
 
 ## Purpose:
 ## Summarise production MER annual maximum observed wet rasters to plots,

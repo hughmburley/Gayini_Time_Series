@@ -1,3 +1,20 @@
+# ------------------------------------------------------------------------------
+# Script: scripts/00_setup/01_setup_project.R
+# Purpose: Create project folders, config templates and setup checks.
+# Workflow stage: 00_setup
+# Run mode: lightweight_review
+# Heavy processing: no
+# Key inputs:
+#   - Project root and configuration defaults.
+# Key outputs:
+#   - Folder skeleton and setup diagnostics.
+# Notes:
+#   - Keep stable output filenames for downstream reports.
+# ------------------------------------------------------------------------------
+
+# ------------------------------------------------------------------------------
+# Load configuration and execute workflow step
+# ------------------------------------------------------------------------------
 ####################################################################################################
 
 

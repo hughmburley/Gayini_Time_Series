@@ -1,8 +1,20 @@
-## -----------------------------------------------------------------------------
-## Gayini remote sensing workflow
-## 01_import_murrumbidgee_gauge_context.R
-## -----------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+# Script: scripts/04_gauges/01_import_murrumbidgee_gauge_context.R
+# Purpose: Import optional Murrumbidgee gauge context.
+# Workflow stage: 04_gauges
+# Run mode: lightweight_review
+# Heavy processing: no
+# Key inputs:
+#   - Packaged hydrology database or clean exports.
+# Key outputs:
+#   - Gauge context diagnostics and processed tables.
+# Notes:
+#   - Gauge context is supporting context only, not causal proof.
+# ------------------------------------------------------------------------------
 
+# ------------------------------------------------------------------------------
+# Load configuration and execute workflow step
+# ------------------------------------------------------------------------------
 
 ## Purpose:
 ## Optional Murrumbidgee gauge-context import for later RS review stages. This
@@ -147,7 +159,7 @@ standardise_db_water_year <- function(water_year_flow, gauge_sites) {
 
 if (is.na(database_path)) {
   message("No packaged gauge database found; falling back to clean CSV exports from: ", source_root)
-  source(file.path(root_dir, "scripts", "archive", "pre_clean_spine_20260623", "17a_import_murrumbidgee_gauge_data.R"), chdir = FALSE)
+  source(file.path(root_dir, "scripts", "04_gauges", "internal", "01_import_murrumbidgee_gauge_data_impl.R"), chdir = FALSE)
 
   database_manifest <- tibble::tibble(
     import_mode = "clean_csv_fallback",

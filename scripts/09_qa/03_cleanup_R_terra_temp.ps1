@@ -1,3 +1,20 @@
+# ------------------------------------------------------------------------------
+# Script: scripts/09_qa/03_cleanup_R_terra_temp.ps1
+# Purpose: Inspect or clean R terra temp files.
+# Workflow stage: 09_qa
+# Run mode: qa
+# Heavy processing: no
+# Key inputs:
+#   - Local temp folders.
+# Key outputs:
+#   - Cleanup log/messages.
+# Notes:
+#   - QA step should read existing products and avoid rebuilding outputs.
+# ------------------------------------------------------------------------------
+
+# ------------------------------------------------------------------------------
+# Load configuration and execute workflow step
+# ------------------------------------------------------------------------------
 <#
 03_cleanup_R_terra_temp.ps1
 

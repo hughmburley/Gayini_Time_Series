@@ -1,3 +1,23 @@
+# ------------------------------------------------------------------------------
+# Script: scripts/02_extract_heavy/internal/02_extract_daily_inundation_full_impl.R
+# Purpose: Internal implementation module for 02_extract_heavy: extract daily
+#          inundation full impl.
+# Workflow stage: 02_extract_heavy
+# Run mode: heavy
+# Heavy processing: yes
+# Key inputs:
+#   - Inputs are supplied by the active wrapper or existing workflow outputs.
+# Key outputs:
+#   - Outputs are written by the implementation module for its active wrapper.
+# Notes:
+#   - Internal module; run the wrapper script in the parent folder unless
+#     debugging.
+#   - Heavy step; do not run casually and never from the smoke test.
+# ------------------------------------------------------------------------------
+
+# ------------------------------------------------------------------------------
+# Load configuration and execute workflow step
+# ------------------------------------------------------------------------------
 ## 06c daily inundation full extraction ----
 
 ## Purpose:

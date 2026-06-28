@@ -1,8 +1,20 @@
-## -----------------------------------------------------------------------------
-## Gayini remote sensing workflow
-## 04_integrate_gauge_context_review_figures.R
-## -----------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+# Script: scripts/07_figures_dashboards/04_integrate_gauge_context_review_figures.R
+# Purpose: Integrate gauge-context review figures.
+# Workflow stage: 07_figures_dashboards
+# Run mode: lightweight_review
+# Heavy processing: no
+# Key inputs:
+#   - Gauge context and curated outputs.
+# Key outputs:
+#   - Gauge-context figures.
+# Notes:
+#   - Keep stable output filenames for downstream reports.
+# ------------------------------------------------------------------------------
 
+# ------------------------------------------------------------------------------
+# Load configuration and execute workflow step
+# ------------------------------------------------------------------------------
 
 ## Purpose:
 ## Integrate already-imported Murrumbidgee gauge context into Gayini review

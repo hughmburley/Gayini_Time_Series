@@ -1,8 +1,20 @@
-## -----------------------------------------------------------------------------
-## Gayini remote sensing workflow
-## 02_extract_annual_inundation_full.R
-## -----------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+# Script: scripts/02_extract_heavy/02_extract_annual_inundation_full.R
+# Purpose: Extract annual Landsat inundation.
+# Workflow stage: 02_extract_heavy
+# Run mode: heavy
+# Heavy processing: yes
+# Key inputs:
+#   - Annual inundation rasters and plots.
+# Key outputs:
+#   - Annual inundation CSVs and processed tables.
+# Notes:
+#   - Heavy step; do not run casually and never from the smoke test.
+# ------------------------------------------------------------------------------
 
+# ------------------------------------------------------------------------------
+# Load configuration and execute workflow step
+# ------------------------------------------------------------------------------
 
 ## Purpose:
 ## Thin compatibility wrapper for the current full annual inundation extraction

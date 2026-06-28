@@ -1,8 +1,21 @@
-## -----------------------------------------------------------------------------
-## Gayini remote sensing workflow
-## 06_build_mer_annual_max_raster_smoke_test.R
-## -----------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+# Script: scripts/06_mer/06_build_mer_annual_max_raster_smoke_test.R
+# Purpose: Build MER annual-max raster smoke test.
+# Workflow stage: 06_mer
+# Run mode: lightweight_review
+# Heavy processing: no
+# Key inputs:
+#   - Census outputs and selected raster subset.
+# Key outputs:
+#   - Smoke-test rasters and QA.
+# Notes:
+#   - MER observed wet extent metrics are supplementary and are not
+#     hydroperiod.
+# ------------------------------------------------------------------------------
 
+# ------------------------------------------------------------------------------
+# Load configuration and execute workflow step
+# ------------------------------------------------------------------------------
 
 ## Purpose:
 ## Controlled one-water-year smoke test for MER annual maximum observed inundation

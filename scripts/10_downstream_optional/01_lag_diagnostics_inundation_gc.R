@@ -1,8 +1,21 @@
-## -----------------------------------------------------------------------------
-## Gayini remote sensing workflow
-## 01_lag_diagnostics_inundation_gc.R
-## -----------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+# Script: scripts/10_downstream_optional/01_lag_diagnostics_inundation_gc.R
+# Purpose: Run descriptive lag diagnostics between inundation and ground
+#          cover.
+# Workflow stage: 10_downstream_optional
+# Run mode: downstream_optional
+# Heavy processing: no
+# Key inputs:
+#   - Curated outputs.
+# Key outputs:
+#   - Lag diagnostic tables/figures.
+# Notes:
+#   - Keep stable output filenames for downstream reports.
+# ------------------------------------------------------------------------------
 
+# ------------------------------------------------------------------------------
+# Load configuration and execute workflow step
+# ------------------------------------------------------------------------------
 
 ## Purpose:
 ## Lightweight missingness and lag diagnostics linking inundation support to

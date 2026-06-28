@@ -93,7 +93,6 @@ expected_dirs <- c(
   "scripts/08_review_packages",
   "scripts/09_qa",
   "scripts/10_downstream_optional",
-  "scripts/archive",
   "docs",
   "docs/run_order"
 )
@@ -101,6 +100,16 @@ expected_dirs <- c(
 for (relative_path in expected_dirs) {
   check_path_exists("structure", paste0("folder_", relative_path), file.path(root_dir, relative_path), "fail")
 }
+
+archive_path <- file.path(root_dir, "scripts", "archive")
+add_result(
+  "structure",
+  "folder_scripts/archive_absent",
+  if (dir.exists(archive_path)) "fail" else "pass",
+  archive_path,
+  if (dir.exists(archive_path)) "scripts/archive should not be visible in the active handoff." else "scripts/archive is absent from the active handoff.",
+  if (dir.exists(archive_path)) "fail" else "info"
+)
 
 expected_inputs <- c(
   "Input",

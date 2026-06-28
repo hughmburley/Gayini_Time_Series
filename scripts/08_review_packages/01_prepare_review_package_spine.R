@@ -1,8 +1,20 @@
-## -----------------------------------------------------------------------------
-## Gayini remote sensing workflow
-## 01_prepare_review_package_spine.R
-## -----------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+# Script: scripts/08_review_packages/01_prepare_review_package_spine.R
+# Purpose: Prepare review package spine.
+# Workflow stage: 08_review_packages
+# Run mode: lightweight_review
+# Heavy processing: no
+# Key inputs:
+#   - Existing review assets.
+# Key outputs:
+#   - Review package registers/spine.
+# Notes:
+#   - Keep stable output filenames for downstream reports.
+# ------------------------------------------------------------------------------
 
+# ------------------------------------------------------------------------------
+# Load configuration and execute workflow step
+# ------------------------------------------------------------------------------
 
 ## Purpose:
 ## Consolidate Tasks 1-4 and current Gayini review outputs into decision-ready
@@ -513,7 +525,7 @@ missing_figures <- figure_manifest %>%
   dplyr::filter(!.data$exists)
 
 archived_current_refs <- c(variable_lut$source_table, figure_manifest$relative_path, analysis_spine$Main_figure) %>%
-  stringr::str_detect("archive/|Output/archive|scripts/archive") %>%
+  stringr::str_detect("archive/|Output/archive") %>%
   sum(na.rm = TRUE)
 
 biodiversity_refs <- c(variable_lut$source_table, figure_manifest$relative_path, analysis_spine$Notes) %>%

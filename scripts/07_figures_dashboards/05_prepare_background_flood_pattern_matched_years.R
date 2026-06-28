@@ -1,8 +1,20 @@
-## -----------------------------------------------------------------------------
-## Gayini remote sensing workflow
-## 05_prepare_background_flood_pattern_matched_years.R
-## -----------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+# Script: scripts/07_figures_dashboards/05_prepare_background_flood_pattern_matched_years.R
+# Purpose: Prepare background matched-year flood pattern figures.
+# Workflow stage: 07_figures_dashboards
+# Run mode: lightweight_review
+# Heavy processing: no
+# Key inputs:
+#   - Existing inundation products.
+# Key outputs:
+#   - Background matched-year review assets.
+# Notes:
+#   - Keep stable output filenames for downstream reports.
+# ------------------------------------------------------------------------------
 
+# ------------------------------------------------------------------------------
+# Load configuration and execute workflow step
+# ------------------------------------------------------------------------------
 
 ## Purpose:
 ## Create lightweight review outputs for historical/background inundation patterns

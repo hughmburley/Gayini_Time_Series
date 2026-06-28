@@ -1,8 +1,20 @@
-## -----------------------------------------------------------------------------
-## Gayini remote sensing workflow
-## 01_extract_ground_cover_full.R
-## -----------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+# Script: scripts/02_extract_heavy/01_extract_ground_cover_full.R
+# Purpose: Extract ground-cover time series.
+# Workflow stage: 02_extract_heavy
+# Run mode: heavy
+# Heavy processing: yes
+# Key inputs:
+#   - Raster catalogue, plot vectors and fractional-cover rasters.
+# Key outputs:
+#   - Ground-cover extraction CSVs and processed tables.
+# Notes:
+#   - Heavy step; do not run casually and never from the smoke test.
+# ------------------------------------------------------------------------------
 
+# ------------------------------------------------------------------------------
+# Load configuration and execute workflow step
+# ------------------------------------------------------------------------------
 
 ## Purpose:
 ## Ground-cover extraction orchestrator.
@@ -126,7 +138,7 @@ gayini_run_landsat_ground_cover_full <- function(root = root_dir) {
 
   candidate_scripts <- c(
     file.path(root, "scripts", "04c_extract_fractional_cover_full.R"),
-    file.path(root, "scripts", "archive", "obs_legacy_20260627", "04c_extract_fractional_cover_full.R")
+    file.path(root, "scripts", "02_extract_heavy", "internal", "03_extract_fractional_cover_full_impl.R")
   )
 
   landsat_script <- candidate_scripts[file.exists(candidate_scripts)][1]

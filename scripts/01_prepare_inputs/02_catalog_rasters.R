@@ -1,3 +1,20 @@
+# ------------------------------------------------------------------------------
+# Script: scripts/01_prepare_inputs/02_catalog_rasters.R
+# Purpose: Catalogue raster products and sensor/date metadata.
+# Workflow stage: 01_prepare_inputs
+# Run mode: lightweight_review
+# Heavy processing: no
+# Key inputs:
+#   - Input raster folders.
+# Key outputs:
+#   - Raster catalogue and support summaries.
+# Notes:
+#   - Keep stable output filenames for downstream reports.
+# ------------------------------------------------------------------------------
+
+# ------------------------------------------------------------------------------
+# Load configuration and execute workflow step
+# ------------------------------------------------------------------------------
 ####################################################################################################
 
 

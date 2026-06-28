@@ -1,0 +1,2 @@
+old_path,action,reason,safe_to_restore_from_git,notes
+scripts/archive/one_off_utilities_20260627/utility_cleanup_empty_folders_20260623.R,git_rm_with_archive,Local packaging/output-bundling utility or generated handoff report is not part of reproducible active workflow.,yes,Traceable through Git history if needed.

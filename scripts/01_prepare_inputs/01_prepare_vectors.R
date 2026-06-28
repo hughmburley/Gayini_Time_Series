@@ -1,3 +1,20 @@
+# ------------------------------------------------------------------------------
+# Script: scripts/01_prepare_inputs/01_prepare_vectors.R
+# Purpose: Prepare plot and boundary vector inputs.
+# Workflow stage: 01_prepare_inputs
+# Run mode: lightweight_review
+# Heavy processing: no
+# Key inputs:
+#   - Input spatial source files.
+# Key outputs:
+#   - Clean vectors and vector diagnostics.
+# Notes:
+#   - Keep stable output filenames for downstream reports.
+# ------------------------------------------------------------------------------
+
+# ------------------------------------------------------------------------------
+# Load configuration and execute workflow step
+# ------------------------------------------------------------------------------
 ####################################################################################################
 
 

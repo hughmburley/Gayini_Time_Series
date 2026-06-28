@@ -37,9 +37,9 @@ Raw inputs live under `Input/` and are ignored by Git. Generated outputs live
 under `Output/` and are also ignored by Git. Heavy extraction and raster build
 scripts are not run by the smoke test and should not be run casually.
 
-Legacy scripts are retained under `scripts/archive/` for provenance only. Local
-packaging utilities were removed from the shared GitHub workflow during the
-scripts-folder rationalisation.
+Legacy script provenance is retained through Git history and the Stage 5 removal
+manifests under `docs/`. Local packaging utilities were removed from the shared
+GitHub workflow during the scripts-folder rationalisation.
 
 ## Package-Style Scaffold
 

@@ -1,8 +1,21 @@
-## -----------------------------------------------------------------------------
-## Gayini remote sensing workflow
-## 03_build_mer_standalone_package_tables.R
-## -----------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+# Script: scripts/06_mer/03_build_mer_standalone_package_tables.R
+# Purpose: Build MER standalone package tables.
+# Workflow stage: 06_mer
+# Run mode: lightweight_review
+# Heavy processing: no
+# Key inputs:
+#   - MER and review outputs.
+# Key outputs:
+#   - MER package tables and copied assets.
+# Notes:
+#   - MER observed wet extent metrics are supplementary and are not
+#     hydroperiod.
+# ------------------------------------------------------------------------------
 
+# ------------------------------------------------------------------------------
+# Load configuration and execute workflow step
+# ------------------------------------------------------------------------------
 ## Purpose:
 ## Build the lightweight tables, figure copies, and asset-pack updates needed for
 ## the standalone MER / Flow-MER-inspired communication package. This script reads

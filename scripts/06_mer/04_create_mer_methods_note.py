@@ -1,3 +1,21 @@
+# ------------------------------------------------------------------------------
+# Script: scripts/06_mer/04_create_mer_methods_note.py
+# Purpose: Create MER methods note.
+# Workflow stage: 06_mer
+# Run mode: lightweight_review
+# Heavy processing: no
+# Key inputs:
+#   - MER package context.
+# Key outputs:
+#   - MER methods note document artifact.
+# Notes:
+#   - MER observed wet extent metrics are supplementary and are not
+#     hydroperiod.
+# ------------------------------------------------------------------------------
+
+# ------------------------------------------------------------------------------
+# Load configuration and execute workflow step
+# ------------------------------------------------------------------------------
 """Create the Task 9 MER methods and interpretation Word note.
 
 This is a lightweight documentation builder. It reads the Task 9 CSV outputs and

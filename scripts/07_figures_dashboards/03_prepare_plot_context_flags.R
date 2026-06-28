@@ -1,8 +1,20 @@
-## -----------------------------------------------------------------------------
-## Gayini remote sensing workflow
-## 03_prepare_plot_context_flags.R
-## -----------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+# Script: scripts/07_figures_dashboards/03_prepare_plot_context_flags.R
+# Purpose: Prepare plot context flags.
+# Workflow stage: 07_figures_dashboards
+# Run mode: lightweight_review
+# Heavy processing: no
+# Key inputs:
+#   - Plot metadata and curated outputs.
+# Key outputs:
+#   - Plot context flag tables.
+# Notes:
+#   - Keep stable output filenames for downstream reports.
+# ------------------------------------------------------------------------------
 
+# ------------------------------------------------------------------------------
+# Load configuration and execute workflow step
+# ------------------------------------------------------------------------------
 
 ## Purpose:
 ## Prepare Adrian review context flags for vegetation groups, treed-plot

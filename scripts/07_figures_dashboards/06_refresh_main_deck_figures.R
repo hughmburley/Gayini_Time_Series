@@ -1,8 +1,20 @@
-## -----------------------------------------------------------------------------
-## Gayini remote sensing workflow
-## 06_refresh_main_deck_figures.R
-## -----------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+# Script: scripts/07_figures_dashboards/06_refresh_main_deck_figures.R
+# Purpose: Refresh selected main-deck figures.
+# Workflow stage: 07_figures_dashboards
+# Run mode: lightweight_review
+# Heavy processing: no
+# Key inputs:
+#   - Existing curated outputs, rasters and figures.
+# Key outputs:
+#   - Main-deck figure assets and register rows.
+# Notes:
+#   - Keep stable output filenames for downstream reports.
+# ------------------------------------------------------------------------------
 
+# ------------------------------------------------------------------------------
+# Load configuration and execute workflow step
+# ------------------------------------------------------------------------------
 
 ## Purpose:
 ## Regenerate deck-critical, Adrian-aligned review figures from existing outputs.

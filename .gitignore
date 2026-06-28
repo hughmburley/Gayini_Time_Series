@@ -33,6 +33,7 @@ data_processed/
 Output/
 working/
 /archive/
+_local_archive/
 docs/archive/
 
 # Script history is now tracked through docs/scripts_manifest.csv
@@ -62,6 +63,9 @@ docs/archive/
 *.tar
 *.tar.gz
 *.rar
+*package_latest*
+*utility_zip_recent*
+*codex_bundle*
 
 # Office/PDF deliverables - add explicit exceptions only after review
 *.doc

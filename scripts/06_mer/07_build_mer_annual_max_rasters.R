@@ -1,8 +1,22 @@
-## -----------------------------------------------------------------------------
-## Gayini remote sensing workflow
-## 07_build_mer_annual_max_rasters.R
-## -----------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+# Script: scripts/06_mer/07_build_mer_annual_max_rasters.R
+# Purpose: Build MER annual maximum rasters.
+# Workflow stage: 06_mer
+# Run mode: heavy
+# Heavy processing: yes
+# Key inputs:
+#   - MER raster census outputs and source rasters.
+# Key outputs:
+#   - Production MER raster outputs.
+# Notes:
+#   - Heavy step; do not run casually and never from the smoke test.
+#   - MER observed wet extent metrics are supplementary and are not
+#     hydroperiod.
+# ------------------------------------------------------------------------------
 
+# ------------------------------------------------------------------------------
+# Load configuration and execute workflow step
+# ------------------------------------------------------------------------------
 
 ## Purpose:
 ## Production MER / Flow_MER-style annual maximum observed wet raster build from

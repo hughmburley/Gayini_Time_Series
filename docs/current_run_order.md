@@ -1,8 +1,8 @@
 # Current Run Order
 
-Last updated: 2026-06-27
+Last updated: 2026-06-28
 
-This document records the active Gayini RS/hydrology workflow after the Stage 4 handoff renaming pass. Active scripts are grouped by workflow role under `scripts/` and numbered sequentially within each folder. Historical scripts are retained under `scripts/archive/` for provenance and should not be run as active entry points.
+This document records the active Gayini RS/hydrology workflow after the Stage 5 handoff-clean audit. Active scripts are grouped by workflow role under `scripts/` and numbered sequentially within each folder. Historical scripts removed from the visible handoff are traceable through Git history and the Stage 5 removal manifests.
 
 For workflow-specific CSVs, see `docs/run_order/`. Do not rerun expensive raster work just to refresh figures or diagnostics. In particular, `scripts/03_inundation_products/01_build_prepost_inundation_products.R` should only be run when pre/post raster products need to be regenerated.
 
@@ -61,17 +61,16 @@ Stage 1 code refresh helpers under `R/` support lightweight review, deck and MER
 
 ## Archived Scripts
 
-Historical scripts moved out of the active spine are retained under:
+Historical scripts moved out of the active spine are documented under:
 
 ```text
-scripts/archive/pre_clean_spine_20260623/
-scripts/archive/obs_legacy_20260627/
-scripts/archive/one_off_utilities_20260627/
+docs/removed_archive_obs_manifest_20260628.csv
+docs/removed_local_packaging_scripts_20260628.csv
 ```
 
-They are retained for provenance only. The active entry points above are the workflow to run.
+They are retained for provenance through Git history only. The active entry points above are the workflow to run.
 
-The archive includes the former top-level `05b`, `06`, `06z`, `07`, `07z`, `08`, `09`, `10`, `11`, `13`, `15`, and `17a/17b/17c` scripts, retired `obs` development/test scripts, and one-off utilities that should not be active entry points.
+The Stage 5 manifests list the former top-level `05b`, `06`, `06z`, `07`, `07z`, `08`, `09`, `10`, `11`, `13`, `15`, and `17a/17b/17c` scripts, retired `obs` development/test scripts, and one-off utilities that should not be active entry points.
 
 Local PowerShell packaging utilities were removed from the shared branch after being backed up locally under:
 
