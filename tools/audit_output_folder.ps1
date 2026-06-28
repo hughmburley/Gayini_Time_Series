@@ -26,6 +26,10 @@ function Get-Classification {
   $pathLower = $RelativePath.ToLowerInvariant()
   $fileName = [System.IO.Path]::GetFileName($RelativePath).ToLowerInvariant()
 
+  if ($pathLower -match "^output/_archive/") {
+    return @("local_archive", "keep_local_archive", "Local archive created by approved cleanup; retained for traceability.")
+  }
+
   $canonicalOutputs = @(
     "output/csv/04c_fractional_cover_full.csv",
     "output/csv/05c_landsat_inundation_full.csv",
@@ -337,7 +341,10 @@ $handoffRows = $inventoryRows | Where-Object {
 $handoffRows | Export-Csv -NoTypeInformation -Path (Join-Path $reportDir "current_handoff_output_set.csv")
 
 $cleanupRows = $inventoryRows | Where-Object {
-  $_.classification -match "^legacy_|^local_|safe_to_delete_candidate|manual_review" -or $_.recommended_action -match "move_to_local_archive|delete|manual_review"
+  $_.classification -ne "local_archive" -and (
+    $_.classification -match "^legacy_|^local_|safe_to_delete_candidate|manual_review" -or
+    $_.recommended_action -match "move_to_local_archive|delete|manual_review"
+  )
 } | Select-Object @{n="path";e={$_.relative_path}},
   classification,
   recommended_action,

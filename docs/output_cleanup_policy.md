@@ -32,4 +32,6 @@ Tracked handoff summaries:
 
 ## Next cleanup step
 
-Use a future Task 20 to review `output_cleanup_candidates.csv`, approve a low-risk subset, rerun the dry-run helper, and only then implement any controlled archive/delete action.
+Task 20 moved approved local-only archive candidates into `Output/_archive/stage7_output_cleanup_20260629/`.
+
+Future cleanup should review only the residual post-cleanup candidates in `output_cleanup_candidates.csv`: manual-review rows and guardrail-blocked local package files. Do not delete files without a new reviewed manifest and explicit approval.
