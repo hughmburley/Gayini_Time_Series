@@ -170,12 +170,7 @@ change_colour_scale <- gayini_change_scale_colour
 
 
 frequency_scale <- function(name = "Annual occurrence frequency (%)") {
-  ggplot2::scale_fill_gradientn(
-    colours = c("#f7fbff", "#c6dbef", "#6baed6", "#2171b5", "#08306b"),
-    limits = c(0, 100),
-    oob = scales::squish,
-    name = name
-  )
+  gayini_occurrence_scale_fill(name = name)
 }
 
 
