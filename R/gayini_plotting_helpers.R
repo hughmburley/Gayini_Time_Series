@@ -63,6 +63,16 @@ gayini_change_palette <- function() {
 }
 
 
+gayini_occurrence_palette_blue <- function() {
+  c("#f7fbff", "#c6dbef", "#6baed6", "#2171b5", "#08306b")
+}
+
+
+gayini_occurrence_palette_blue_ramp <- function(n = 64) {
+  grDevices::colorRampPalette(gayini_occurrence_palette_blue())(n)
+}
+
+
 gayini_gauge_role_palette <- function(style = c("display", "analysis")) {
   style <- match.arg(style)
 
@@ -110,6 +120,25 @@ gayini_sensor_palette <- function() {
 }
 
 
+gayini_signal_palette <- function() {
+  c(
+    gauge_flow = "#08306B",
+    rs_inundation = "#6BAED6",
+    total_vegetation = "#2E8B57",
+    bare_ground = "#9C6B30"
+  )
+}
+
+
+gayini_grazing_palette <- function() {
+  c(
+    "No grazing" = "#6BAED6",
+    "Any grazing" = "#2E8B57",
+    "Unknown" = "#BDBDBD"
+  )
+}
+
+
 gayini_mer_agreement_palette <- function() {
   c(
     agree_positive = "#2f6f4e",
@@ -127,7 +156,22 @@ gayini_vegetation_group_palette <- function() {
     "Aeolian Chenopod Shrublands" = "#d9a441",
     "Floodplain Woodland / Forest" = "#4f7f5d",
     "Inland Floodplain Shrublands / Swamps" = "#5a9fb1",
-    "Unknown vegetation" = "#bdbdbd"
+    "Riverine Chenopod Shrublands" = "#8c6bb1",
+    "Inland Riverine Forests" = "#4f7f5d",
+    "Unknown vegetation" = "#bdbdbd",
+    "Unknown" = "#bdbdbd"
+  )
+}
+
+
+gayini_collapse_grazing <- function(x) {
+  x_chr <- as.character(x)
+  x_lower <- stringr::str_to_lower(stringr::str_squish(x_chr))
+
+  dplyr::case_when(
+    is.na(x_chr) | !nzchar(x_lower) ~ "Unknown",
+    stringr::str_detect(x_lower, "no grazing|none|ungrazed|no$|^no ") ~ "No grazing",
+    TRUE ~ "Any grazing"
   )
 }
 
@@ -145,6 +189,36 @@ gayini_change_scale_fill <- function(limit = NULL,
     high = palette[["positive"]],
     midpoint = midpoint,
     limits = limits,
+    oob = scales::squish,
+    na.value = na.value,
+    name = name
+  )
+}
+
+
+gayini_occurrence_scale_fill <- function(name = "Annual occurrence (%)",
+                                         limits = c(0, 100),
+                                         breaks = c(0, 25, 50, 75, 100),
+                                         na.value = "transparent") {
+  ggplot2::scale_fill_gradientn(
+    colours = gayini_occurrence_palette_blue(),
+    limits = limits,
+    breaks = breaks,
+    oob = scales::squish,
+    na.value = na.value,
+    name = name
+  )
+}
+
+
+gayini_occurrence_scale_colour <- function(name = "Annual occurrence (%)",
+                                           limits = c(0, 100),
+                                           breaks = c(0, 25, 50, 75, 100),
+                                           na.value = "transparent") {
+  ggplot2::scale_colour_gradientn(
+    colours = gayini_occurrence_palette_blue(),
+    limits = limits,
+    breaks = breaks,
     oob = scales::squish,
     na.value = na.value,
     name = name
@@ -180,5 +254,41 @@ gayini_save_png <- function(filename,
                             ...) {
   dir.create(dirname(filename), recursive = TRUE, showWarnings = FALSE)
   ggplot2::ggsave(filename = filename, plot = plot, width = width, height = height, dpi = dpi, ...)
+  invisible(filename)
+}
+
+
+gayini_save_review_figure <- function(filename,
+                                      plot,
+                                      width = 13.33,
+                                      height = 7.5,
+                                      dpi = 300,
+                                      bg = "white",
+                                      write_pdf = FALSE,
+                                      ...) {
+  dir.create(dirname(filename), recursive = TRUE, showWarnings = FALSE)
+  ggplot2::ggsave(
+    filename = filename,
+    plot = plot,
+    width = width,
+    height = height,
+    dpi = dpi,
+    bg = bg,
+    ...
+  )
+
+  if (isTRUE(write_pdf)) {
+    pdf_path <- sub("\\.png$", ".pdf", filename, ignore.case = TRUE)
+    ggplot2::ggsave(
+      filename = pdf_path,
+      plot = plot,
+      width = width,
+      height = height,
+      bg = bg,
+      ...
+    )
+  }
+
+  message("Wrote: ", filename)
   invisible(filename)
 }

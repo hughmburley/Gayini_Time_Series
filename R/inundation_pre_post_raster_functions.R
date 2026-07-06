@@ -116,6 +116,74 @@ gayini_standardise_combined_inundation_catalog <- function(raster_catalog,
 }
 
 
+gayini_standardise_landsat_background_inundation_catalog <- function(raster_catalog,
+                                                                     root,
+                                                                     period_key,
+                                                                     start_date,
+                                                                     end_date,
+                                                                     water_year_start_month = 7,
+                                                                     prefer_cloud3_duplicates = TRUE) {
+  gayini_check_required_columns(
+    raster_catalog,
+    c("file_path", "file_name", "product", "sensor", "date_start", "date_end"),
+    object_name = "raster_catalog"
+  )
+
+  out <- raster_catalog |>
+    dplyr::mutate(
+      file_path = as.character(.data$file_path),
+      file_path = dplyr::if_else(
+        grepl("^[A-Za-z]:[/\\\\]|^/", .data$file_path),
+        .data$file_path,
+        file.path(root, .data$file_path)
+      ),
+      file_name = basename(.data$file_name),
+      product = as.character(.data$product),
+      sensor = as.character(.data$sensor),
+      date_start = as.Date(.data$date_start),
+      date_end = as.Date(.data$date_end),
+      date_midpoint = .data$date_start + floor(as.numeric(.data$date_end - .data$date_start) / 2),
+      file_exists = file.exists(.data$file_path),
+      has_cloud3_name = gayini_has_cloud3(.data$file_name),
+      has_ors2_name = gayini_has_ors2(.data$file_name),
+      sensor_clean = dplyr::if_else(
+        is.na(.data$sensor) | .data$sensor == "",
+        "landsat",
+        .data$sensor
+      ),
+      analysis_year = gayini_make_water_year(.data$date_midpoint, start_month = water_year_start_month),
+      analysis_year_start = as.Date(paste0(.data$analysis_year - 1L, "-", sprintf("%02d", water_year_start_month), "-01")),
+      analysis_year_end = .data$analysis_year_start + lubridate::years(1) - lubridate::days(1),
+      period = period_key,
+      period_year = paste(.data$period, .data$analysis_year, sep = "__")
+    ) |>
+    dplyr::filter(
+      .data$product == "landsat_inundation",
+      !is.na(.data$date_midpoint),
+      .data$date_midpoint >= start_date,
+      .data$date_midpoint <= end_date
+    )
+
+  if (prefer_cloud3_duplicates && nrow(out) > 0) {
+    out <- out |>
+      dplyr::arrange(
+        .data$product,
+        .data$sensor_clean,
+        .data$date_midpoint,
+        dplyr::desc(.data$has_cloud3_name),
+        dplyr::desc(.data$has_ors2_name),
+        .data$file_name
+      ) |>
+      dplyr::group_by(.data$product, .data$sensor_clean, .data$date_midpoint) |>
+      dplyr::slice(1) |>
+      dplyr::ungroup()
+  }
+
+  out |>
+    dplyr::arrange(.data$analysis_year, .data$date_midpoint, .data$product, .data$sensor_clean, .data$file_name)
+}
+
+
 ## Observation-density summaries ----
 
 gayini_summarise_inundation_observation_density <- function(inundation_catalog) {
