@@ -1,19 +1,26 @@
 # ------------------------------------------------------------------------------
 # Script: scripts/01_prepare_inputs/03_populate_raster_metadata.R
-# Purpose: Tier 0 sub-step 0.2 -- resolve raster CRS / legend metadata debt.
+# Purpose: Tier 0 sub-steps 0.2 + 0.4b -- resolve raster CRS / legend metadata debt.
 #          (1) Read CRS + extent for every raster_asset with terra and write
 #              crs_epsg + crs + xmin/ymin/xmax/ymax + resolution back to the DB.
 #          (2) Classify the null-metric_id assets via gayini_infer_metric_id().
 #          (3) Emit a legend-confirmation sheet for Adrian grouped by product
-#              family, recording the assumed value semantics for each.
+#              family, recording the value semantics / confirmation status of each.
+#          (4) [0.4b] Record the confirmed landsat inundation wet-rule (Adrian
+#              2026-07-07: value 1|2 = wet, value 3 = cloud masked) as
+#              legend_status = confirmed in the catalogue + raster_asset, and
+#              publish the decision record. sentinel2_inundation stays flagged.
 # Workflow stage: 01_prepare_inputs
 # Run mode: light-moderate (reads raster headers only)
 # Key inputs:
 #   - Output/database/Gayini_Results.sqlite  (raster_asset)
 #   - data_intermediate/raster_catalog/raster_catalog.csv (needs_legend_check)
+#   - docs/tier0_legend_decision_record.md  (durable decision record, published to reports)
 # Key outputs:
-#   - raster_asset: crs_epsg/crs/extent/resolution populated, metric_id filled
+#   - raster_asset: crs_epsg/crs/extent/resolution populated, metric_id filled,
+#     product/legend_status/legend_semantics set for the inundation families
 #   - Output/reports/legend_confirmation_for_adrian.md
+#   - Output/reports/legend_decision_record.md  (copy of the tracked docs record)
 # Notes:
 #   - Post-build DB mutation. The Python builder unlinks + rebuilds the DB and
 #     cannot read CRS (no GDAL/proj at build time), so this step must be re-run
@@ -126,6 +133,20 @@ dbDisconnect(con)
 # ------------------------------------------------------------------------------
 message("[0.2] Writing legend confirmation sheet ...")
 catalog <- suppressWarnings(readr::read_csv(CATALOG_CSV, show_col_types = FALSE, progress = FALSE))
+
+# [0.4b] Confirm the landsat_inundation legend in the catalogue BEFORE the sheet is
+# built, so the confirmed family drops off the "needs confirmation" list. The raw
+# {0,1,2,3} legend lives on these source rasters; sentinel2_inundation and the other
+# flagged families stay needs_legend_check until confirmed separately (Tier 3).
+if (!"legend_status" %in% names(catalog)) catalog$legend_status <- NA_character_
+catalog$legend_status[catalog$needs_legend_check %in% c(TRUE, "TRUE")] <- "needs_check"
+landsat_src <- catalog$product == "landsat_inundation"
+catalog$legend_status[landsat_src]      <- "confirmed"
+catalog$needs_legend_check[landsat_src] <- FALSE
+readr::write_csv(catalog, CATALOG_CSV)
+message(sprintf("  [0.4b] catalogue: %d landsat_inundation sources set legend_status = confirmed.",
+                sum(landsat_src)))
+
 flagged <- catalog %>%
   dplyr::filter(.data$needs_legend_check %in% c(TRUE, "TRUE")) %>%
   dplyr::group_by(product) %>%
@@ -135,9 +156,9 @@ flagged <- catalog %>%
 # Assumed value semantics per family (confirmation, not fact -- all "assumed").
 family_notes <- list(
   landsat_inundation = list(
-    assumption = "Integer inundation count {0,1,2}; **count > 0 = wet** (values 1 and 2 both treated as wet), 0 = dry. No NA / no-data cells observed in the 35 canonical rasters. Semantics recorded as `annual_inundation_count`, `legend_status = unconfirmed`.",
-    status     = "assumed",
-    question   = "Is `count > 0 = wet` correct, or should only `== 1` count as wet? What does value **2** represent (e.g. higher-confidence or multiple within-year detections)? (This directly sets the Tier 0.1 wet rule.)"
+    assumption = "Legend {0,1,2,3}: 0 = dry (valid), 1 = inundation (wet), 2 = off-river storage (wet), 3 = cloud shadow (masked). **CONFIRMED (Adrian 2026-07-07)**: values 1 and 2 both count as wet -- 'those pixels were wet just the same'; value 3 masked. wet = value IN (1,2); valid = value IN (0,1,2). The 35 canonical rasters contain {0,1,2} only. `legend_status = confirmed`.",
+    status     = "confirmed",
+    question   = "Confirmed 2026-07-07 -- no outstanding question for Landsat. (Sentinel-2 legend still to be confirmed separately before Tier 3.)"
   ),
   sentinel2_inundation = list(
     assumption = "Assumed to share the Landsat inundation count legend (count > 0 = wet). Not independently confirmed against the Sentinel-2 processing.",
@@ -181,9 +202,10 @@ for (i in seq_len(nrow(flagged))) {
 lines <- c(lines, "",
   "## Notes",
   "",
-  paste0("- The Tier 0.1 unified annual stack builds on the **landsat_inundation** row above: ",
-         "it treats `count > 0` as wet, so a change to that rule (e.g. excluding value 2) would ",
-         "change every downstream wet/occurrence product. Flagged here rather than changed silently."),
+  paste0("- **landsat_inundation is CONFIRMED (Adrian 2026-07-07)** and no longer listed above: ",
+         "wet = value IN (1,2) (inundation + off-river storage), value 3 (cloud shadow) masked. ",
+         "See `Output/reports/legend_decision_record.md`. The Tier 0.1 unified annual stack and ",
+         "all downstream inundation products use this rule."),
   paste0("- CRS/extent metadata for all raster_asset rows was populated in this step ",
          "(all resolve to EPSG:", TARGET_EPSG, "; untagged Transverse-Mercator sources are ",
          "GDA94 / MGA zone 55 and were assigned the code rather than reprojected)."),
@@ -192,3 +214,49 @@ lines <- c(lines, "",
 writeLines(lines, LEGEND_MD)
 message("  wrote ", gayini_relative_path(root_dir, LEGEND_MD))
 message("[0.2] Done.")
+
+# ------------------------------------------------------------------------------
+# 4. Tier 0.4b -- record the confirmed landsat inundation wet-rule in raster_asset
+#    and publish the decision record next to the legend sheet.
+#    Post-build mutation: a full DB rebuild wipes these columns (the builder unlinks
+#    + rebuilds), so this re-runs after any rebuild. The durable record of the
+#    decision is the tracked docs/tier0_legend_decision_record.md.
+# ------------------------------------------------------------------------------
+message("[0.4b] Recording confirmed landsat inundation legend in raster_asset ...")
+LEGEND_RULE <- paste0(
+  "wet = value 1 (inundation) or 2 (off-river storage); value 3 (cloud shadow) ",
+  "masked (neither wet nor valid); 0 = dry (valid). Confirmed with Adrian 2026-07-07."
+)
+
+con <- dbConnect(RSQLite::SQLite(), DB_PATH)
+ra_cols <- dbGetQuery(con, "PRAGMA table_info(raster_asset)")$name
+for (col in c("product", "legend_status", "legend_semantics")) {
+  if (!col %in% ra_cols) {
+    dbExecute(con, sprintf("ALTER TABLE raster_asset ADD COLUMN %s TEXT", col))
+    message("  added column raster_asset.", col)
+  }
+}
+# MER products are their own family (own semantics, own task); every other asset in
+# raster_asset is a landsat inundation product and inherits the confirmed legend.
+n_mer <- dbExecute(con, "UPDATE raster_asset SET product = 'mer_inundation' WHERE metric_id LIKE 'mer\\_%' ESCAPE '\\'")
+n_conf <- dbExecute(con,
+  "UPDATE raster_asset
+      SET product = 'landsat_inundation', legend_status = 'confirmed', legend_semantics = ?
+    WHERE metric_id NOT LIKE 'mer\\_%' ESCAPE '\\'",
+  params = list(LEGEND_RULE))
+message(sprintf("  set legend_status = confirmed for %d landsat_inundation assets (%d MER assets labelled).",
+                n_conf, n_mer))
+dbDisconnect(con)
+
+# Publish the durable, tracked decision record alongside the legend sheet (this copy
+# is the gate 0.4b target; the source of truth is committed under docs/).
+DECISION_SRC <- file.path(root_dir, "docs", "tier0_legend_decision_record.md")
+DECISION_OUT <- file.path(dirname(LEGEND_MD), "legend_decision_record.md")
+if (file.exists(DECISION_SRC)) {
+  file.copy(DECISION_SRC, DECISION_OUT, overwrite = TRUE)
+  message("  published decision record -> ", gayini_relative_path(root_dir, DECISION_OUT))
+} else {
+  warning("Decision record source missing: ", DECISION_SRC,
+          " -- expected the tracked docs/tier0_legend_decision_record.md.", call. = FALSE)
+}
+message("[0.4b] Done.")
