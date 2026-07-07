@@ -86,3 +86,9 @@ R/obs/
 # Internal local notes/instructions for manual review
 Codex_*.txt
 Gayini_Notes
+
+# Exported chat transcripts (reference only, heavy binaries)
+/docs/Chats/
+
+# MER water-index threshold snippet (scratch reference, not runnable)
+scripts/06_mer/MER_threshold_code.txt
