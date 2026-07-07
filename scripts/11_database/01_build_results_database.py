@@ -1874,6 +1874,56 @@ def create_views(con: sqlite3.Connection) -> None:
         FROM fact_plot_year
         GROUP BY plot_id, water_year;
 
+        CREATE VIEW v_plot_year_analysis_spine AS
+        WITH inun AS (
+            SELECT
+                plot_id,
+                water_year,
+                MAX(CASE WHEN metric_id = 'inundation_annual_occurrence_pct' THEN value_numeric END) AS annual_occurrence_pct,
+                MAX(CASE WHEN metric_id = 'inundation_valid_coverage_pct' THEN value_numeric END) AS annual_valid_coverage_pct,
+                MAX(CASE WHEN metric_id = 'inundation_annual_wet_any' THEN value_numeric END) AS annual_wet_any,
+                MAX(CASE WHEN metric_id = 'inundation_annual_valid_any' THEN value_numeric END) AS annual_valid_any
+            FROM fact_plot_year
+            WHERE metric_id IN (
+                'inundation_annual_occurrence_pct',
+                'inundation_valid_coverage_pct',
+                'inundation_annual_wet_any',
+                'inundation_annual_valid_any'
+            )
+            GROUP BY plot_id, water_year
+        ),
+        gc AS (
+            -- Ground cover aggregated to water year using the mean, consistent
+            -- with stg_canonical_ground_cover_timeseries.summary_method_primary.
+            SELECT
+                plot_id,
+                water_year,
+                AVG(total_veg_pct) AS mean_total_veg_pct,
+                AVG(green_pv_pct) AS mean_pv_pct,
+                AVG(non_green_npv_pct) AS mean_npv_pct,
+                AVG(bare_ground_pct) AS mean_bare_ground_pct
+            FROM stg_canonical_ground_cover_timeseries
+            GROUP BY plot_id, water_year
+        )
+        SELECT
+            inun.plot_id,
+            inun.water_year,
+            inun.annual_occurrence_pct,
+            inun.annual_valid_coverage_pct,
+            inun.annual_wet_any,
+            inun.annual_valid_any,
+            gc.mean_total_veg_pct,
+            gc.mean_pv_pct,
+            gc.mean_npv_pct,
+            gc.mean_bare_ground_pct,
+            p.simplified_vegetation_group,
+            p.treed_plot_flag,
+            p.ground_cover_exclusion_flag,
+            p.spatial_review_flag
+        FROM inun
+        LEFT JOIN gc ON gc.plot_id = inun.plot_id AND gc.water_year = inun.water_year
+        LEFT JOIN dim_plot p ON p.plot_id = inun.plot_id;
+
         CREATE VIEW v_plot_timeseries_groundcover AS
         SELECT
             plot_id,
@@ -2086,6 +2136,22 @@ def run_qa(
             f"{table} row count: {count}.",
             "Restore expected CSV output and rerun the database build.",
         )
+
+    spine_rows = con.execute("SELECT COUNT(*) FROM v_plot_year_analysis_spine").fetchone()[0]
+    spine_plots = con.execute("SELECT COUNT(DISTINCT plot_id) FROM v_plot_year_analysis_spine").fetchone()[0]
+    spine_years = con.execute("SELECT COUNT(DISTINCT water_year) FROM v_plot_year_analysis_spine").fetchone()[0]
+    spine_bad = con.execute(
+        "SELECT COUNT(*) FROM v_plot_year_analysis_spine WHERE annual_wet_any = 1 AND annual_valid_any = 0"
+    ).fetchone()[0]
+    spine_ok = spine_rows == 2310 and spine_plots == 66 and spine_years == 35 and spine_bad == 0
+    add_qa(
+        con,
+        "v_plot_year_analysis_spine_shape",
+        "PASS" if spine_ok else "FAIL",
+        "critical",
+        f"v_plot_year_analysis_spine has {spine_rows} rows across {spine_plots} plots x {spine_years} water years; {spine_bad} wet-without-valid.",
+        "Expected 2310 rows (66 plots x 35 inundation years) with no wet-without-valid; check fact_plot_year inundation metrics.",
+    )
 
     duplicate_checks = [
         ("fact_plot_year_duplicates", "fact_plot_year", "plot_id, water_year, metric_id, run_id"),
@@ -2805,6 +2871,8 @@ def expected_key(name: str) -> str:
         return "metric_id"
     if name == "fact_plot_year":
         return "plot_id + water_year + metric_id + run_id"
+    if name == "v_plot_year_analysis_spine":
+        return "plot_id + water_year"
     if name == "fact_plot_month":
         return "plot_id + month_start + metric_id + run_id"
     if name == "fact_plot_observation":
@@ -2835,6 +2903,7 @@ def view_purpose(name: str) -> str:
         "v_plot_current_summary": "One row per plot with current headline RS/MER/ground-cover attributes and QA flags.",
         "v_plot_current_summary_map": "Map-friendly one-row-per-plot current summary used for GeoPackage plot attributes.",
         "v_plot_timeseries_inundation_annual": "Plot-water-year annual inundation and MER time series.",
+        "v_plot_year_analysis_spine": "Modelling-ready plot x water-year spine: annual inundation occurrence/wet/valid joined to water-year-mean ground cover and dim_plot attributes (66 plots x 35 inundation years = 2310 rows).",
         "v_plot_timeseries_groundcover": "Plot-date ground-cover time series.",
         "v_inundation_change_by_vegetation_group": "Hydrological change summarized by vegetation group.",
         "v_groundcover_response_by_hydro_class": "Ground-cover response summarized by hydrological change class.",

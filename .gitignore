@@ -92,3 +92,11 @@ Gayini_Notes
 
 # MER water-index threshold snippet (scratch reference, not runnable)
 scripts/06_mer/MER_threshold_code.txt
+
+# --- Tier 0 guard: data stays out of git ---
+Output/rasters/
+Output/database/*.sqlite
+Output/database/*.gpkg
+data_intermediate/
+*.img
+*.tif
