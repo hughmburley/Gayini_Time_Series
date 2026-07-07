@@ -538,3 +538,62 @@ gayini_write_raster_catalog_outputs <- function(catalog, root = getwd()) {
   invisible(summaries)
 
 }
+
+
+## Metric-id inference ----
+
+
+## Infer a raster_asset.metric_id from an output raster's file name.
+##
+## Rule-based (not per-file): each rule keys off a stable stem token, so a new
+## year or a new pre/post product of the same metric classifies automatically.
+## Rules are ordered most-specific-first; the first match wins. Returns NA when
+## no rule applies (leaving the asset flagged for review rather than mislabelled).
+## Extends the classification previously done only in the Python DB builder
+## (scripts/11_database/01_build_results_database.py::infer_metric_id); keep the
+## two in step so a full DB rebuild reproduces these ids.
+gayini_infer_metric_id <- function(path) {
+
+  name <- tolower(tools::file_path_sans_ext(basename(path)))
+
+  rules <- list(
+    # --- MER period/annual summaries (most specific first) ---
+    list("mer_post_minus_pre_annual_max.*frequency", "mer_post_minus_pre_annual_max_frequency_pct_points"),
+    list("mer_(pre|post)_annual_max.*frequency",      "mer_annual_max_observed_frequency_pct"),
+    list("mer_annual_max",                            "mer_annual_max_observed_wet_pct"),
+    list("mer_wet_observation_fraction",              "mer_wet_observation_fraction"),
+    list("mer_wet_observation_count",                 "mer_wet_observation_count"),
+    list("mer_valid_observation_count",               "mer_valid_observation_count"),
+    list("mer_observation_count",                     "mer_observation_count"),
+    list("mer_observation_support_class",             "mer_observation_support_class"),
+    list("mer_period_summary_support_mask",           "mer_period_summary_support_mask"),
+    list("mer_(pre|post)_valid_year_count",           "mer_valid_year_count"),
+    # --- pre/post conservation frequency products ---
+    list("post_minus_pre_inundation_frequency",       "post_minus_pre_inundation_frequency_pct_points"),
+    list("pre_conservation_inundation_frequency",     "pre_conservation_inundation_frequency_pct"),
+    list("post_conservation_inundation_frequency",    "post_conservation_inundation_frequency_pct"),
+    # --- unified annual stacks (Tier 0.1) -- match before the generic annual rules ---
+    list("annual_wet_any_1988",                       "inundation_wet_any"),
+    list("annual_valid_any_1988",                     "inundation_valid_any"),
+    # --- annual per-year binary layers (pre/post period captured elsewhere) ---
+    list("annual_inundated_any",                      "annual_inundated_any"),
+    list("annual_valid_any",                          "annual_valid_any"),
+    # --- year-count rasters ---
+    list("wet_year_count",                            "wet_year_count"),
+    list("valid_year_count",                          "valid_year_count"),
+    # --- MODIS fractional cover ---
+    list("total_veg",                                 "modis_total_veg_pct"),
+    list("npv",                                       "modis_npv_pct"),
+    list("bare",                                      "modis_bare_pct"),
+    list("(^|_)pv(_|$)",                              "modis_pv_pct")
+  )
+
+  for (rule in rules) {
+    if (grepl(rule[[1]], name)) {
+      return(rule[[2]])
+    }
+  }
+
+  NA_character_
+
+}
