@@ -8,8 +8,15 @@
 # Fixed decisions (docs/tier0_annual_stack_task.md):
 #   - Target CRS   : EPSG:28355 (GDA94 / MGA zone 55).
 #   - Reference grid: the 25 m grid of the first source (lo_1988_1989.img).
-#   - Wet rule     : source cell wet where value > 0; 0 = dry (valid); documented
-#                    no-data codes / NA masked to not-valid.
+#   - Wet rule     : explicit legend (confirmed with Adrian 2026-07-07) applied in
+#                    gayini_make_binary_inundation_layers() (R/inundation_pre_post_
+#                    raster_functions.R): wet = value IN (1,2) (1 = inundation,
+#                    2 = off-river storage -- both wet); valid = value IN (0,1,2);
+#                    value 3 = cloud shadow is MASKED (neither wet nor valid);
+#                    documented no-data codes / NA masked to not-valid. The 35
+#                    canonical Landsat sources contain values {0,1,2} only, so the
+#                    value-3 mask is a no-op here but active for Sentinel-2 (Tier 3).
+#                    This is identical to the earlier implicit `value > 0`.
 #   - Resampling   : nearest-neighbour (layers are categorical / binary).
 #
 # CRS note (discovered on disk): every source is a GDA94 Transverse Mercator zone

@@ -363,17 +363,31 @@ gayini_make_binary_inundation_layers <- function(raster_layer,
   }
 
   if (product == "landsat_inundation") {
+    # Confirmed value legend (NSW SEED metadata + Adrian's ruling, 2026-07-07):
+    #   0 = not inundated     -> dry  (valid observation)
+    #   1 = inundated         -> WET
+    #   2 = off-river storage -> WET  (Adrian: "those pixels were wet just the same")
+    #   3 = cloud shadow      -> MASK (failed observation: neither wet nor valid)
+    # Explicit rule replacing the implicit `x > 0`, which silently counted value 3
+    # (cloud shadow) as wet. wet = value IN (1,2); valid = value IN (0,1,2); value 3
+    # is excluded from both. The vectorised %in% needs no branch on whether value 3
+    # is present in a given raster. For the 35 canonical Landsat sources this is
+    # identical to `x > 0` (they contain values {0,1,2} only), so the value-3 mask is
+    # a no-op here -- but it is active for Sentinel-2 cloud shadow (Tier 3).
+    landsat_valid_values <- c(0L, 1L, 2L)
+    landsat_wet_values   <- c(1L, 2L)
+
     valid <- terra::app(
       raster_layer,
       fun = function(x) {
-        as.integer(!is.na(x) & !(x %in% nodata_values))
+        as.integer(!is.na(x) & !(x %in% nodata_values) & x %in% landsat_valid_values)
       }
     )
 
     wet <- terra::app(
       raster_layer,
       fun = function(x) {
-        as.integer(!is.na(x) & !(x %in% nodata_values) & x > 0)
+        as.integer(!is.na(x) & !(x %in% nodata_values) & x %in% landsat_wet_values)
       }
     )
 
