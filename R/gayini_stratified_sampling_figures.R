@@ -18,6 +18,74 @@
 ####################################################################################################
 
 
+## Relative-band labelling ----
+##
+## Regime bands are WITHIN-COMMUNITY terciles, so "high" is a different absolute
+## flood frequency in each community (they overlap: Aeolian high ~6-76% vs Inland
+## low ~0-19%). Every band figure states this explicitly so the relative choice
+## is never merely implied.
+
+gayini_regime_band_legend_title <- function() "Regime band\n(within-community, relative)"
+
+
+## A compact ggplot "table" of each community's tercile breaks, printed on/beside
+## every band figure. breaks_df = regime_band_breaks.csv (community, freq_min_pct,
+## tercile_1_pct, tercile_2_pct, freq_max_pct).
+
+gayini_tercile_table_plot <- function(breaks_df,
+                                      title = "Within-community tercile breaks — background flood frequency (%)") {
+
+  band_pal <- gayini_regime_band_palette()
+  short    <- gayini_gradient_short_labels()
+
+  bd <- breaks_df
+  bd$short <- ifelse(!is.na(short[bd$community]), short[bd$community], bd$community)
+  n <- nrow(bd)
+
+  ## Explicit x positions so the (long) community names never collide with the
+  ## range columns.
+  x_comm <- 0.4
+  x_band <- c(low = 3.0, mid = 4.0, high = 5.0)
+
+  rng <- function(a, b) sprintf("%.1f–%.1f", a, b)
+  cells_ranges <- do.call(rbind, lapply(seq_len(n), function(i) {
+    r <- bd[i, ]
+    data.frame(
+      x = unname(x_band), row = n - i + 1,
+      label = c(rng(r$freq_min_pct, r$tercile_1_pct),
+                rng(r$tercile_1_pct, r$tercile_2_pct),
+                rng(r$tercile_2_pct, r$freq_max_pct))
+    )
+  }))
+  cells_comm <- data.frame(x = x_comm, row = rev(seq_len(n)), label = bd$short)
+
+  header      <- data.frame(x = unname(x_band), row = n + 1, label = c("low", "mid", "high"))
+  header_fill <- data.frame(x = unname(x_band), row = n + 1,
+                            fill = unname(band_pal[c("low", "mid", "high")]))
+
+  ggplot2::ggplot() +
+    ggplot2::geom_tile(data = header_fill, ggplot2::aes(x = x, y = row),
+                       fill = header_fill$fill, width = 0.9, height = 0.9, alpha = 0.9) +
+    ggplot2::geom_text(data = header, ggplot2::aes(x = x, y = row, label = label),
+                       fontface = "bold", size = 3, colour = c("grey20", "white", "white")) +
+    ggplot2::annotate("text", x = x_comm, y = n + 1, label = "Community", hjust = 0,
+                      fontface = "bold", size = 3, colour = "grey20") +
+    ggplot2::geom_text(data = cells_comm, ggplot2::aes(x = x, y = row, label = label),
+                       hjust = 0, size = 2.9, colour = "grey20") +
+    ggplot2::geom_text(data = cells_ranges, ggplot2::aes(x = x, y = row, label = label),
+                       size = 2.9, colour = "grey20") +
+    ggplot2::scale_x_continuous(limits = c(0.2, 5.6)) +
+    ggplot2::scale_y_continuous(limits = c(0.4, n + 1.7)) +
+    ggplot2::labs(title = title,
+                  subtitle = "Bands are RELATIVE to each community — they OVERLAP across communities") +
+    ggplot2::theme_void(base_size = 10) +
+    ggplot2::theme(
+      plot.title    = ggplot2::element_text(face = "bold", size = 9.5),
+      plot.subtitle = ggplot2::element_text(size = 7.8, colour = "grey35")
+    )
+}
+
+
 ## Raster -> ggplot-ready data frame (aggregated so ggplot stays light) ----
 
 gayini_raster_to_df <- function(r, max_cells = 4e5) {
@@ -168,30 +236,35 @@ gayini_build_f5_concept <- function(out_dir) {
 }
 
 
-## F5 data figure ----
+## F5 data figures — ONE FIGURE = ONE FILE = ONE SLIDE ----
+##
+## Standing convention (from C3): the whole-property map and the band-reference
+## tables are SEPARATE single-slide files. gayini_build_f5_fullfarm_map() is the
+## map only; gayini_build_f5_band_reference() is the points matrix + tercile
+## table. gayini_build_f5_data() is a thin back-compat wrapper that emits both.
 
-gayini_build_f5_data <- function(freq_8058,
-                                 sample,             # list(points, summary)
-                                 boundary,
-                                 communities,
-                                 plots,
-                                 focus_communities,
-                                 out_dir) {
+
+## The one-slide farm overview: surface + band-coloured points + legend + scale
+## bar + north arrow ONLY. No tables, no zoom insets.
+
+gayini_build_f5_fullfarm_map <- function(freq_8058,
+                                         sample,
+                                         boundary,
+                                         communities,
+                                         plots,
+                                         focus_communities,
+                                         out_dir) {
 
   band_pal  <- gayini_regime_band_palette()
   freq_ramp <- gayini_flood_frequency_ramp()
 
   pts        <- sample$points
-  summary_df <- sample$summary
-
   focus_comm <- communities[as.character(communities$simplified_vegetation_group)
                             %in% focus_communities, ]
 
-  ## --- main map (overview) ---
   bnd_v   <- terra::vect(sf::st_geometry(boundary))
-  freq_main <- terra::crop(freq_8058, bnd_v)
-  freq_df   <- gayini_raster_to_df(freq_main, max_cells = 3e5)
-  bbox      <- sf::st_bbox(boundary)
+  freq_df <- gayini_raster_to_df(terra::crop(freq_8058, bnd_v), max_cells = 3e5)
+  bbox    <- sf::st_bbox(boundary)
 
   main_map <- ggplot2::ggplot() +
     ggplot2::geom_raster(data = freq_df, ggplot2::aes(x = x, y = y, fill = freq)) +
@@ -200,79 +273,92 @@ gayini_build_f5_data <- function(freq_8058,
     ggplot2::geom_sf(data = focus_comm, fill = NA, colour = "grey30", linewidth = 0.3) +
     ggplot2::geom_sf(data = boundary, fill = NA, colour = "grey10", linewidth = 0.6) +
     ggplot2::geom_sf(data = plots, fill = NA, colour = "grey15", linewidth = 0.25) +
-    ggplot2::geom_sf(data = pts, ggplot2::aes(colour = regime_band), size = 0.5, alpha = 0.9) +
-    ggplot2::scale_colour_manual(values = band_pal, name = "Regime band",
+    ggplot2::geom_sf(data = pts, ggplot2::aes(colour = regime_band), size = 0.7, alpha = 0.9) +
+    ggplot2::scale_colour_manual(values = band_pal, name = gayini_regime_band_legend_title(),
                                  guide = ggplot2::guide_legend(override.aes = list(size = 2.5))) +
     gayini_scalebar_layers(bbox) +
     gayini_north_arrow_layers(bbox) +
     ggplot2::coord_sf(xlim = c(bbox["xmin"], bbox["xmax"]),
                       ylim = c(bbox["ymin"], bbox["ymax"]), expand = FALSE) +
     ggplot2::labs(
-      title = "F5 · Stratified sampling frame on the background flood-frequency surface",
+      title = "F5 · Stratified sampling frame — whole-farm flood-frequency surface",
       subtitle = "GDA2020 / NSW Lambert (EPSG:8058) · 100 × wet-valid years ÷ valid years, 1988–2023 · points near plots, footprints excluded",
-      caption = "Surface = long-run background flood frequency · points coloured by within-community regime band · plots (outlines) are anchors, not sampled"
+      caption = "Surface = long-run background flood frequency · points coloured by within-community (relative) regime band · plots (outlines) are anchors, not sampled"
     ) +
-    ggplot2::theme_minimal(base_size = 11) +
+    ggplot2::theme_minimal(base_size = 12) +
     ggplot2::theme(
-      panel.grid = ggplot2::element_line(colour = "grey93", linewidth = 0.2),
-      plot.title = ggplot2::element_text(face = "bold", size = 12),
-      plot.subtitle = ggplot2::element_text(size = 8.5, colour = "grey30"),
+      panel.grid    = ggplot2::element_line(colour = "grey93", linewidth = 0.2),
+      plot.title    = ggplot2::element_text(face = "bold", size = 14),
+      plot.subtitle = ggplot2::element_text(size = 9.5, colour = "grey30"),
+      plot.caption  = ggplot2::element_text(size = 8, colour = "grey40"),
       legend.position = "right"
     )
 
-  ## --- per-community zoom insets ---
-  insets <- lapply(focus_communities, function(g) {
-    poly   <- focus_comm[as.character(focus_comm$simplified_vegetation_group) == g, ]
-    g_pts  <- pts[as.character(pts$community) == g, ]
-    g_plt  <- plots[as.character(plots$simplified_vegetation_group) == g, ]
+  paths <- gayini_save_figure(main_map, out_dir, "F5_fullfarm_map_data",
+                              kind = "data", width = 12.5, height = 7.2)
+  list(png = paths$png, pdf = paths$pdf, has_tables = FALSE)
+}
 
-    z <- sf::st_bbox(poly)
-    v <- terra::vect(sf::st_geometry(poly))
-    fr <- terra::mask(terra::crop(freq_8058, v), v)
-    df <- gayini_raster_to_df(fr, max_cells = 1.2e5)
 
-    ggplot2::ggplot() +
-      ggplot2::geom_raster(data = df, ggplot2::aes(x = x, y = y, fill = freq)) +
-      ggplot2::scale_fill_gradientn(colours = freq_ramp, limits = c(0, 100), guide = "none") +
-      ggplot2::geom_sf(data = poly, fill = NA, colour = "grey30", linewidth = 0.3) +
-      ggplot2::geom_sf(data = g_plt, fill = NA, colour = "grey15", linewidth = 0.35) +
-      ggplot2::geom_sf(data = g_pts, ggplot2::aes(colour = regime_band), size = 0.7) +
-      ggplot2::scale_colour_manual(values = band_pal, guide = "none") +
-      ggplot2::coord_sf(xlim = c(z["xmin"], z["xmax"]), ylim = c(z["ymin"], z["ymax"]),
-                        expand = FALSE) +
-      ggplot2::labs(title = paste0(g, "  (", nrow(g_pts), " pts)")) +
-      ggplot2::theme_minimal(base_size = 8) +
-      ggplot2::theme(
-        plot.title = ggplot2::element_text(size = 7.5, face = "bold"),
-        axis.text  = ggplot2::element_text(size = 5, colour = "grey55"),
-        panel.grid = ggplot2::element_line(colour = "grey94", linewidth = 0.15)
-      )
-  })
-  inset_row <- cowplot::plot_grid(plotlist = insets, ncol = 3)
+## The one-slide band reference: points-per-community x band matrix + the
+## within-community tercile-break table (the "bands are relative / they overlap"
+## reference). Its own file.
 
-  ## --- sample-summary panel (points per community x band) ---
+gayini_build_f5_band_reference <- function(sample_summary,
+                                           breaks_df,
+                                           focus_communities,
+                                           out_dir) {
+
   summary_plot <- ggplot2::ggplot(
-    summary_df,
+    sample_summary,
     ggplot2::aes(x = regime_band,
                  y = factor(community, levels = rev(focus_communities)))) +
     ggplot2::geom_tile(ggplot2::aes(fill = n_drawn), colour = "white", linewidth = 0.6) +
-    ggplot2::geom_text(ggplot2::aes(label = n_drawn), size = 3.2, fontface = "bold",
+    ggplot2::geom_text(ggplot2::aes(label = n_drawn), size = 4, fontface = "bold",
                        colour = "grey15") +
     ggplot2::scale_fill_gradient(low = "#EFF3FF", high = "#6BAED6", name = "points drawn") +
     ggplot2::scale_x_discrete(position = "top") +
-    ggplot2::labs(title = "Points drawn per community × regime band",
-                  x = NULL, y = NULL) +
-    ggplot2::theme_minimal(base_size = 9) +
+    ggplot2::labs(title = "Points drawn per community × regime band", x = NULL, y = NULL) +
+    ggplot2::theme_minimal(base_size = 11) +
     ggplot2::theme(
-      plot.title = ggplot2::element_text(face = "bold", size = 9.5),
-      panel.grid = ggplot2::element_blank(),
-      axis.text.y = ggplot2::element_text(size = 8),
+      plot.title  = ggplot2::element_text(face = "bold", size = 11),
+      panel.grid  = ggplot2::element_blank(),
+      axis.text.y = ggplot2::element_text(size = 9),
+      axis.text.x = ggplot2::element_text(size = 10),
       legend.position = "right"
     )
 
-  bottom <- cowplot::plot_grid(inset_row, summary_plot, ncol = 1, rel_heights = c(1, 0.75))
-  full   <- cowplot::plot_grid(main_map, bottom, ncol = 1, rel_heights = c(1.55, 1.35))
+  body <- cowplot::plot_grid(summary_plot, gayini_tercile_table_plot(breaks_df),
+                             ncol = 2, rel_widths = c(1, 1.2))
 
-  gayini_save_figure(full, out_dir, "F5_stratified_sampling_map_data",
-                     kind = "data", width = 11, height = 14)
+  title <- cowplot::ggdraw() +
+    cowplot::draw_label(
+      "F5 · Band reference — how many points per stratum, and what each community's terciles mean",
+      fontface = "bold", size = 13, x = 0.01, hjust = 0)
+
+  full <- cowplot::plot_grid(title, body, ncol = 1, rel_heights = c(0.1, 1))
+
+  gayini_save_figure(full, out_dir, "F5_band_reference_data",
+                     kind = "data", width = 12.5, height = 5.4)
+}
+
+
+## Back-compat wrapper: emits both single-slide files (used by the F5 sampling
+## script, which predates the split). Returns the farm-map paths.
+
+gayini_build_f5_data <- function(freq_8058,
+                                 sample,
+                                 boundary,
+                                 communities,
+                                 plots,
+                                 focus_communities,
+                                 out_dir,
+                                 breaks_df = NULL) {
+
+  farm <- gayini_build_f5_fullfarm_map(freq_8058, sample, boundary, communities,
+                                       plots, focus_communities, out_dir)
+  if (!is.null(breaks_df)) {
+    gayini_build_f5_band_reference(sample$summary, breaks_df, focus_communities, out_dir)
+  }
+  farm
 }
