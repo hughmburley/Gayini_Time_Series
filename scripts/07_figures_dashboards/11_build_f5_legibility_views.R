@@ -1,13 +1,13 @@
 # ------------------------------------------------------------------------------
 # Script: scripts/07_figures_dashboards/11_build_f5_legibility_views.R
-# Purpose: Tier 1 · Task C2. Presentation-only legibility pass on F5. Re-renders
-#          the finished F5 result so the WITHIN-COMMUNITY (relative) regime bands
-#          read clearly for Adrian / Nari Nari:
-#            (1) relative-band labelling + tercile-break table on the F5 map;
-#            (2) F5b community-facet panels (one self-contained panel per focus
-#                community, its own tercile breaks annotated);
-#            (3) F5c paddock zoom maps (3-4 paddocks chosen by point density x
-#                community/band spread, logged).
+# Purpose: Tier 1 · Tasks C2+C3. Presentation-only F5 figures for Adrian / Nari
+#          Nari, under the standing rule ONE FIGURE = ONE FILE = ONE SLIDE:
+#            F5_fullfarm_map      — the whole-farm surface + band-coloured points (map only);
+#            F5_band_reference    — points-per-community x band matrix + tercile-break table;
+#            F5b_community_facets  — one self-contained panel per focus community;
+#            F5c_paddock_*         — 3-4 paddock zooms (chosen by density x spread, logged),
+#                                    locator inset reserved clear of title/subtitle/caption.
+#          Relative-band labelling throughout (within-community terciles overlap).
 # Workflow stage: 07_figures_dashboards
 # Run mode: lightweight_review (no sampling / no analysis)
 # Heavy processing: no
@@ -19,13 +19,15 @@
 #     management_zones, gayini_hectare_plots}_epsg8058.gpkg
 #   - Output/database/Gayini_Results.sqlite (dim_plot -> plot communities)
 # Key outputs:
-#   - Output/figures/F5_stratified_sampling_map_data.{png,pdf}  (re-rendered w/ relative label + table)
+#   - Output/figures/F5_fullfarm_map_data.{png,pdf}
+#   - Output/figures/F5_band_reference_data.{png,pdf}
 #   - Output/figures/F5b_community_facets_data.{png,pdf}
 #   - Output/figures/F5c_paddock_*_data.{png,pdf}
-#   - Output/diagnostics/f5c_paddock_choice_log.csv
-#   - Output/review_bundles/tier1c2_f5_legibility.zip
+#   - Output/diagnostics/{f5c_paddock_choice_log, f5c_inset_overlap_check}.csv
+#   - Output/review_bundles/tier1c3_f5_figures.zip
 # Notes:
 #   - Presentation only: does NOT re-sample, re-band, or alter the F5 data products.
+#   - One figure = one file = one slide; insets never overlap title/caption.
 #   - Bands are within-community relative BY DESIGN (Q1 to Adrian may switch to
 #     absolute; if so it is a one-line change in F5 and these views inherit it).
 #   - Stops at the acceptance gate; commit is a separate, human-reviewed step.
@@ -34,7 +36,7 @@
 ####################################################################################################
 
 
-## GAYINI REMOTE SENSING PROJECT — Tier 1 Task C2 (F5 legibility views)
+## GAYINI REMOTE SENSING PROJECT — Tier 1 Tasks C2+C3 (F5 presentation figures)
 
 
 ####################################################################################################
@@ -88,10 +90,12 @@ message("Loaded ", nrow(pts), " F5 sample points across ",
         dplyr::n_distinct(pts$community), " communities.")
 
 
-## 3. Re-render the whole-property F5 map WITH relative label + tercile table ----
+## 3. F5 map -> TWO single-slide files (one figure = one file = one slide) ----
 ##
 ## Presentation only — reads the existing points/surface, reconstructs the
-## per-stratum counts for the summary tile (no re-sampling).
+## per-stratum counts for the band-reference matrix (no re-sampling).
+##   F5_fullfarm_map_data  — the whole-farm map only (no tables).
+##   F5_band_reference_data — the points matrix + the tercile-break table.
 
 
 plots_raw <- gayini_read_vector(
@@ -101,7 +105,7 @@ dim_plot  <- gayini_load_dim_plot(file.path(root_dir, "Output", "database", "Gay
 plots <- plots_raw |>
   dplyr::left_join(dim_plot[, c("plot_id", "simplified_vegetation_group")], by = "plot_id")
 
-## Reconstruct the community x band draw counts for the summary tile.
+## Reconstruct the community x band draw counts for the band-reference matrix.
 grid <- expand.grid(community = focus, regime_band = band_levels, stringsAsFactors = FALSE)
 cnt  <- pts |> sf::st_drop_geometry() |>
   dplyr::count(community, regime_band, name = "n_drawn")
@@ -110,15 +114,28 @@ sample_summary$n_drawn[is.na(sample_summary$n_drawn)] <- 0L
 sample_summary$community   <- factor(sample_summary$community, levels = focus)
 sample_summary$regime_band <- factor(sample_summary$regime_band, levels = band_levels)
 
-f5_data <- gayini_build_f5_data(
+## Retire the old composite file (superseded by the two single-slide files).
+for (ext in c("png", "pdf", "svg")) {
+  stale <- file.path(figures_dir, paste0("F5_stratified_sampling_map_data.", ext))
+  if (file.exists(stale)) unlink(stale, force = TRUE)
+}
+
+f5_fullfarm <- gayini_build_f5_fullfarm_map(
   freq_8058         = products$freq,
   sample            = list(points = pts, summary = sample_summary),
   boundary          = products$boundary,
   communities       = products$communities,
   plots             = plots,
   focus_communities = focus,
-  out_dir           = figures_dir,
-  breaks_df         = breaks_df          # <- relative label + tercile-break table
+  out_dir           = figures_dir
+)
+fullfarm_has_tables <- f5_fullfarm$has_tables   # FALSE by construction (map only)
+
+f5_bandref <- gayini_build_f5_band_reference(
+  sample_summary    = sample_summary,
+  breaks_df         = breaks_df,
+  focus_communities = focus,
+  out_dir           = figures_dir
 )
 
 
@@ -141,13 +158,25 @@ gayini_write_csv(choice$ranking, choice_log_path)   # full ranking (chosen flagg
 message("Paddock zooms chosen (score = n_points x n_comm x n_band):")
 print(choice$chosen |> dplyr::select(rank, paddock, n_points, n_comm, n_band, score))
 
-f5c_paths <- gayini_build_f5c_paddock_zooms(products, choice, out_dir = figures_dir)
+f5c <- gayini_build_f5c_paddock_zooms(products, choice, out_dir = figures_dir)
+f5c_paths          <- f5c$paths
+inset_overlap_check <- f5c$overlap_check
+
+message("Inset-overlap check (all must clear title & caption):")
+print(inset_overlap_check |> dplyr::select(paddock, clears_title, clears_caption, clear))
 
 
 ## 6. Register the new figures in the manifest ----
 
 
 pts_input <- "stratified_sample_points.gpkg; background_flood_frequency_8058.tif; regime_band_breaks.csv"
+
+f5_rows <- dplyr::bind_rows(
+  gayini_manifest_row("F5",    "data", f5_fullfarm$png, paste0(pts_input, " [full-farm map]"), "EPSG:8058", root_dir),
+  gayini_manifest_row("F5",    "data", f5_fullfarm$pdf, paste0(pts_input, " [full-farm map]"), "EPSG:8058", root_dir),
+  gayini_manifest_row("F5ref", "data", f5_bandref$png,  paste0(pts_input, " [band reference]"), "n/a", root_dir),
+  gayini_manifest_row("F5ref", "data", f5_bandref$pdf,  paste0(pts_input, " [band reference]"), "n/a", root_dir)
+)
 
 f5b_rows <- dplyr::bind_rows(
   gayini_manifest_row("F5b", "data", f5b$paths$png, pts_input, "EPSG:8058", root_dir),
@@ -164,7 +193,8 @@ f5c_rows <- dplyr::bind_rows(lapply(names(f5c_paths), function(nm) {
   )
 }))
 
-manifest <- gayini_update_figures_manifest(dplyr::bind_rows(f5b_rows, f5c_rows), root = root_dir)
+new_rows <- dplyr::bind_rows(f5_rows, f5b_rows, f5c_rows)
+manifest <- gayini_update_figures_manifest(new_rows, root = root_dir)
 
 
 ## 7. Acceptance gate (must pass before commit) ----
@@ -175,15 +205,24 @@ legend_label <- gayini_regime_band_legend_title()
 stopifnot(
   # relative-band labelling present on band figures
   grepl("within-community|relative", legend_label, ignore.case = TRUE),
+  # the farm map file is map-only (no tables composited in)
+  fullfarm_has_tables == FALSE,
+  # band reference is its own file
+  file.exists(file.path(figures_dir, "F5_band_reference_data.pdf")),
   # community facets: 3 panels, each with its own tercile breaks annotated
   n_facet_panels == 3L,
   # paddock zooms: chosen paddocks logged with rationale
-  nrow(paddock_choice_log) >= 3L
+  nrow(paddock_choice_log) >= 3L,
+  # no inset overlaps title/caption on any inset figure (checked + logged)
+  all(inset_overlap_check$clear == TRUE),
+  # the old composite file was retired (split into two single-slide files)
+  !file.exists(file.path(figures_dir, "F5_stratified_sampling_map_data.pdf"))
 )
 
-## Re-rendered / new band figures exist.
+## The single-slide files all exist.
 stopifnot(
-  file.exists(file.path(figures_dir, "F5_stratified_sampling_map_data.pdf")),
+  file.exists(file.path(figures_dir, "F5_fullfarm_map_data.pdf")),
+  file.exists(file.path(figures_dir, "F5_band_reference_data.pdf")),
   file.exists(file.path(figures_dir, "F5b_community_facets_data.pdf")),
   all(vapply(f5c_paths, function(p) file.exists(p$pdf), logical(1)))
 )
@@ -192,7 +231,7 @@ stopifnot(
 ## 8. Package for review (standing convention) ----
 
 
-bundle_dir      <- file.path(root_dir, "Output", "review_bundles", "tier1c2_f5_legibility")
+bundle_dir      <- file.path(root_dir, "Output", "review_bundles", "tier1c3_f5_figures")
 bundle_fig_dir  <- file.path(bundle_dir, "figures")
 bundle_diag_dir <- file.path(bundle_dir, "diagnostics")
 unlink(bundle_dir, recursive = TRUE, force = TRUE)
@@ -201,21 +240,24 @@ dir.create(bundle_diag_dir, recursive = TRUE, showWarnings = FALSE)
 
 figure_files <- list.files(
   figures_dir,
-  pattern = "^(F5_stratified_sampling_map_data|F5b_community_facets_data|F5c_paddock_.*)\\.(png|pdf)$",
+  pattern = "^(F5_fullfarm_map_data|F5_band_reference_data|F5b_community_facets_data|F5c_paddock_.*)\\.(png|pdf)$",
   full.names = TRUE)
 file.copy(figure_files, bundle_fig_dir, overwrite = TRUE)
 file.copy(file.path(figures_dir, "figures_manifest.csv"), bundle_dir, overwrite = TRUE)
-readr::write_csv(dplyr::bind_rows(f5b_rows, f5c_rows),
-                 file.path(bundle_dir, "manifest_rows_tier1c2.csv"))
+readr::write_csv(new_rows, file.path(bundle_dir, "manifest_rows_tier1c3.csv"))
 
-file.copy(c(choice_log_path,
+## Log the inset-overlap check with the bundle.
+overlap_log_path <- file.path(diagnostics_dir, "f5c_inset_overlap_check.csv")
+gayini_write_csv(inset_overlap_check, overlap_log_path)
+
+file.copy(c(choice_log_path, overlap_log_path,
             file.path(diagnostics_dir, "regime_band_breaks.csv")),
           bundle_diag_dir, overwrite = TRUE)
 
-change_report_path <- file.path(root_dir, "docs", "change_reports", "tier1c2_f5_legibility.md")
+change_report_path <- file.path(root_dir, "docs", "change_reports", "tier1c3_f5_figures.md")
 if (file.exists(change_report_path)) file.copy(change_report_path, bundle_dir, overwrite = TRUE)
 
-bundle_zip <- file.path(root_dir, "Output", "review_bundles", "tier1c2_f5_legibility.zip")
+bundle_zip <- file.path(root_dir, "Output", "review_bundles", "tier1c3_f5_figures.zip")
 if (file.exists(bundle_zip)) unlink(bundle_zip, force = TRUE)
 zip::zip(
   zipfile = bundle_zip,
@@ -231,14 +273,17 @@ stopifnot(file.exists(bundle_zip))
 
 
 message("\n==================== ACCEPTANCE GATE PASSED ====================")
-message("Relative-band legend: ", gsub("\n", " ", legend_label))
-message("F5 map re-rendered (relative label + tercile table): ", f5_data$png)
-message("F5b community facets (", n_facet_panels, " panels): ", f5b$paths$png)
-message("F5c paddock zooms (", length(f5c_paths), "): ",
+message("One figure = one file = one slide:")
+message("  F5 full-farm map (map only):   ", f5_fullfarm$png)
+message("  F5 band reference (matrix+table): ", f5_bandref$png)
+message("  F5b community facets (", n_facet_panels, " panels): ", f5b$paths$png)
+message("  F5c paddock zooms (", length(f5c_paths), "): ",
         paste(names(f5c_paths), collapse = ", "))
-message("Paddock choice log: ", choice_log_path)
+message("Old composite retired: F5_stratified_sampling_map_data.* removed")
+message("Inset-overlap check: ", sum(inset_overlap_check$clear), "/",
+        nrow(inset_overlap_check), " paddock insets clear of title & caption")
 message("Review bundle: ", bundle_zip)
-message("\nSTOP: review Output/review_bundles/tier1c2_f5_legibility.zip before committing.")
+message("\nSTOP: review Output/review_bundles/tier1c3_f5_figures.zip before committing.")
 
 
 ####################################################################################################

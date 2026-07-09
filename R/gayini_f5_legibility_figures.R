@@ -212,7 +212,20 @@ gayini_build_f5c_paddock_zooms <- function(products, choice, out_dir, pad_buffer
 
   slugify <- function(s) gsub("[^A-Za-z0-9]+", "_", trimws(s))
 
-  paths <- list()
+  ## Layout (one figure = one file = one slide): a reserved title band on top and
+  ## caption band below, the map in between. The locator inset is drawn INSIDE the
+  ## map band only, so it can never overlap the title / subtitle / caption.
+  rh_title <- 0.14; rh_map <- 1.0; rh_cap <- 0.05
+  tot      <- rh_title + rh_map + rh_cap
+  cap_band_hi   <- rh_cap / tot                       # caption band = [0, cap_band_hi]
+  map_band_lo   <- rh_cap / tot
+  map_band_hi   <- (rh_cap + rh_map) / tot
+  title_band_lo <- (rh_cap + rh_map) / tot            # title band = [title_band_lo, 1]
+  ins_local_y0 <- 0.64; ins_local_h <- 0.30           # inset within the map band (local coords)
+  ins_local_x0 <- 0.02; ins_local_w <- 0.28
+
+  paths        <- list()
+  overlap_rows <- list()
   for (i in seq_len(nrow(chosen))) {
 
     zr      <- chosen$zone_row[i]
@@ -234,7 +247,9 @@ gayini_build_f5c_paddock_zooms <- function(products, choice, out_dir, pad_buffer
     n_comm <- dplyr::n_distinct(as.character(pad_pts$community))
     n_band <- dplyr::n_distinct(as.character(pad_pts$regime_band))
 
-    main <- ggplot2::ggplot() +
+    ## Map core only — title/subtitle/caption are reserved as separate bands so
+    ## the inset can never collide with them.
+    map_core <- ggplot2::ggplot() +
       ggplot2::geom_raster(data = df, ggplot2::aes(x = x, y = y, fill = freq)) +
       ggplot2::scale_fill_gradientn(colours = freq_ramp, limits = c(0, 100),
                                     name = "Background\nflood freq. (%)") +
@@ -246,18 +261,10 @@ gayini_build_f5c_paddock_zooms <- function(products, choice, out_dir, pad_buffer
                                    guide = ggplot2::guide_legend(override.aes = list(size = 2.5))) +
       ggplot2::coord_sf(xlim = c(z["xmin"], z["xmax"]), ylim = c(z["ymin"], z["ymax"]),
                         expand = FALSE) +
-      ggplot2::labs(
-        title    = paste0("F5c · Paddock zoom — ", pad_name),
-        subtitle = sprintf("%d sample points · %d communit%s · %d regime band%s · bands are within-community (relative)",
-                           nrow(pad_pts), n_comm, ifelse(n_comm == 1, "y", "ies"),
-                           n_band, ifelse(n_band == 1, "", "s")),
-        caption  = "Surface = background flood frequency · paddock outline heavy · neighbouring paddocks light"
-      ) +
       ggplot2::theme_minimal(base_size = 10) +
       ggplot2::theme(
-        plot.title    = ggplot2::element_text(face = "bold", size = 11),
-        plot.subtitle = ggplot2::element_text(size = 8, colour = "grey30"),
-        panel.grid    = ggplot2::element_line(colour = "grey93", linewidth = 0.2),
+        panel.grid = ggplot2::element_line(colour = "grey93", linewidth = 0.2),
+        axis.title = ggplot2::element_blank(),
         legend.position = "right"
       )
 
@@ -271,13 +278,46 @@ gayini_build_f5c_paddock_zooms <- function(products, choice, out_dir, pad_buffer
       ggplot2::theme(panel.background = ggplot2::element_rect(fill = "white", colour = "grey60",
                                                              linewidth = 0.4))
 
-    composed <- cowplot::ggdraw(main) +
-      cowplot::draw_plot(locator, x = 0.03, y = 0.60, width = 0.30, height = 0.34)
+    ## Inset drawn on the map core ONLY (top-left, over the low-information NW
+    ## corner), so it stays inside the map band.
+    map_with_inset <- cowplot::ggdraw(map_core) +
+      cowplot::draw_plot(locator, x = ins_local_x0, y = ins_local_y0,
+                         width = ins_local_w, height = ins_local_h)
+
+    title_strip <- cowplot::ggdraw() +
+      cowplot::draw_label(paste0("F5c · Paddock zoom — ", pad_name),
+                          fontface = "bold", size = 12, x = 0.01, hjust = 0, y = 0.70) +
+      cowplot::draw_label(
+        sprintf("%d sample points · %d communit%s · %d regime band%s · bands are within-community (relative)",
+                nrow(pad_pts), n_comm, ifelse(n_comm == 1, "y", "ies"),
+                n_band, ifelse(n_band == 1, "", "s")),
+        size = 8.5, colour = "grey30", x = 0.01, hjust = 0, y = 0.28)
+    caption_strip <- cowplot::ggdraw() +
+      cowplot::draw_label(
+        "Surface = background flood frequency · paddock outline heavy · neighbouring paddocks light",
+        size = 7.5, colour = "grey40", x = 0.01, hjust = 0)
+
+    composed <- cowplot::plot_grid(title_strip, map_with_inset, caption_strip,
+                                   ncol = 1, rel_heights = c(rh_title, rh_map, rh_cap))
+
+    ## Inset rectangle in composed coordinates -> assert it clears both text bands.
+    ins_ymin <- map_band_lo + ins_local_y0 * (map_band_hi - map_band_lo)
+    ins_ymax <- map_band_lo + (ins_local_y0 + ins_local_h) * (map_band_hi - map_band_lo)
+    overlap_rows[[length(overlap_rows) + 1L]] <- tibble::tibble(
+      paddock          = pad_name,
+      inset_ymin       = round(ins_ymin, 3),
+      inset_ymax       = round(ins_ymax, 3),
+      title_band_lo    = round(title_band_lo, 3),
+      caption_band_hi  = round(cap_band_hi, 3),
+      clears_title     = ins_ymax < title_band_lo,
+      clears_caption   = ins_ymin > cap_band_hi,
+      clear            = (ins_ymax < title_band_lo) && (ins_ymin > cap_band_hi)
+    )
 
     p <- gayini_save_figure(composed, out_dir, paste0("F5c_paddock_", slug, "_data"),
                             kind = "data", width = 9, height = 7)
     paths[[pad_name]] <- p
   }
 
-  paths
+  list(paths = paths, overlap_check = dplyr::bind_rows(overlap_rows))
 }
