@@ -18,6 +18,74 @@
 ####################################################################################################
 
 
+## Relative-band labelling ----
+##
+## Regime bands are WITHIN-COMMUNITY terciles, so "high" is a different absolute
+## flood frequency in each community (they overlap: Aeolian high ~6-76% vs Inland
+## low ~0-19%). Every band figure states this explicitly so the relative choice
+## is never merely implied.
+
+gayini_regime_band_legend_title <- function() "Regime band\n(within-community, relative)"
+
+
+## A compact ggplot "table" of each community's tercile breaks, printed on/beside
+## every band figure. breaks_df = regime_band_breaks.csv (community, freq_min_pct,
+## tercile_1_pct, tercile_2_pct, freq_max_pct).
+
+gayini_tercile_table_plot <- function(breaks_df,
+                                      title = "Within-community tercile breaks — background flood frequency (%)") {
+
+  band_pal <- gayini_regime_band_palette()
+  short    <- gayini_gradient_short_labels()
+
+  bd <- breaks_df
+  bd$short <- ifelse(!is.na(short[bd$community]), short[bd$community], bd$community)
+  n <- nrow(bd)
+
+  ## Explicit x positions so the (long) community names never collide with the
+  ## range columns.
+  x_comm <- 0.4
+  x_band <- c(low = 3.0, mid = 4.0, high = 5.0)
+
+  rng <- function(a, b) sprintf("%.1f–%.1f", a, b)
+  cells_ranges <- do.call(rbind, lapply(seq_len(n), function(i) {
+    r <- bd[i, ]
+    data.frame(
+      x = unname(x_band), row = n - i + 1,
+      label = c(rng(r$freq_min_pct, r$tercile_1_pct),
+                rng(r$tercile_1_pct, r$tercile_2_pct),
+                rng(r$tercile_2_pct, r$freq_max_pct))
+    )
+  }))
+  cells_comm <- data.frame(x = x_comm, row = rev(seq_len(n)), label = bd$short)
+
+  header      <- data.frame(x = unname(x_band), row = n + 1, label = c("low", "mid", "high"))
+  header_fill <- data.frame(x = unname(x_band), row = n + 1,
+                            fill = unname(band_pal[c("low", "mid", "high")]))
+
+  ggplot2::ggplot() +
+    ggplot2::geom_tile(data = header_fill, ggplot2::aes(x = x, y = row),
+                       fill = header_fill$fill, width = 0.9, height = 0.9, alpha = 0.9) +
+    ggplot2::geom_text(data = header, ggplot2::aes(x = x, y = row, label = label),
+                       fontface = "bold", size = 3, colour = c("grey20", "white", "white")) +
+    ggplot2::annotate("text", x = x_comm, y = n + 1, label = "Community", hjust = 0,
+                      fontface = "bold", size = 3, colour = "grey20") +
+    ggplot2::geom_text(data = cells_comm, ggplot2::aes(x = x, y = row, label = label),
+                       hjust = 0, size = 2.9, colour = "grey20") +
+    ggplot2::geom_text(data = cells_ranges, ggplot2::aes(x = x, y = row, label = label),
+                       size = 2.9, colour = "grey20") +
+    ggplot2::scale_x_continuous(limits = c(0.2, 5.6)) +
+    ggplot2::scale_y_continuous(limits = c(0.4, n + 1.7)) +
+    ggplot2::labs(title = title,
+                  subtitle = "Bands are RELATIVE to each community — they OVERLAP across communities") +
+    ggplot2::theme_void(base_size = 10) +
+    ggplot2::theme(
+      plot.title    = ggplot2::element_text(face = "bold", size = 9.5),
+      plot.subtitle = ggplot2::element_text(size = 7.8, colour = "grey35")
+    )
+}
+
+
 ## Raster -> ggplot-ready data frame (aggregated so ggplot stays light) ----
 
 gayini_raster_to_df <- function(r, max_cells = 4e5) {
@@ -176,7 +244,8 @@ gayini_build_f5_data <- function(freq_8058,
                                  communities,
                                  plots,
                                  focus_communities,
-                                 out_dir) {
+                                 out_dir,
+                                 breaks_df = NULL) {  # regime_band_breaks.csv -> tercile table panel
 
   band_pal  <- gayini_regime_band_palette()
   freq_ramp <- gayini_flood_frequency_ramp()
@@ -201,7 +270,7 @@ gayini_build_f5_data <- function(freq_8058,
     ggplot2::geom_sf(data = boundary, fill = NA, colour = "grey10", linewidth = 0.6) +
     ggplot2::geom_sf(data = plots, fill = NA, colour = "grey15", linewidth = 0.25) +
     ggplot2::geom_sf(data = pts, ggplot2::aes(colour = regime_band), size = 0.5, alpha = 0.9) +
-    ggplot2::scale_colour_manual(values = band_pal, name = "Regime band",
+    ggplot2::scale_colour_manual(values = band_pal, name = gayini_regime_band_legend_title(),
                                  guide = ggplot2::guide_legend(override.aes = list(size = 2.5))) +
     gayini_scalebar_layers(bbox) +
     gayini_north_arrow_layers(bbox) +
@@ -270,7 +339,15 @@ gayini_build_f5_data <- function(freq_8058,
       legend.position = "right"
     )
 
-  bottom <- cowplot::plot_grid(inset_row, summary_plot, ncol = 1, rel_heights = c(1, 0.75))
+  ## Summary tile + (optional) the tercile-break table so the relative bands are
+  ## explicit on the whole-property figure too.
+  if (!is.null(breaks_df)) {
+    summary_row <- cowplot::plot_grid(summary_plot, gayini_tercile_table_plot(breaks_df),
+                                      ncol = 2, rel_widths = c(1, 1.15))
+  } else {
+    summary_row <- summary_plot
+  }
+  bottom <- cowplot::plot_grid(inset_row, summary_row, ncol = 1, rel_heights = c(1, 0.85))
   full   <- cowplot::plot_grid(main_map, bottom, ncol = 1, rel_heights = c(1.55, 1.35))
 
   gayini_save_figure(full, out_dir, "F5_stratified_sampling_map_data",
