@@ -165,6 +165,18 @@ METRICS = [
     ("modis_valid_area_ha", "MODIS valid area hectares", "MODIS", "ha", "area", "valid MODIS area", "context unit", "MODIS valid area in hectares.", "Support/confidence metric.", "Coarse-scale approximation."),
     ("biodiversity_habitat_condition_2020", "Habitat condition 2020", "biodiversity", "index", "modelled index", "HCAS/LOOC-B habitat condition", "model domain", "Modelled biodiversity context from companion database.", "Contextual evidence only.", "HCAS uses Landsat-derived variables and is not independent validation."),
     ("biodiversity_threatened_species_2020", "Threatened species 2020", "biodiversity", "index", "modelled index", "HCAS/LOOC-B threatened species", "model domain", "Modelled biodiversity context from companion database.", "Contextual evidence only.", "Sensitive biodiversity outputs default to internal review."),
+    # Pixel-census (Task 1) sampling-audit metrics. The census table + view are a
+    # post-build R mutation (09_build_pixel_census_view.R); these canonical
+    # definitions live here so a rebuild preserves them (the R script also
+    # INSERT-OR-IGNOREs them for pre-rebuild databases).
+    ("census_stratum_pixel_count", "Stratum valid pixel count", "sampling", "count", "count", "valid farm pixels", "stratum", "Count of valid (>= valid-year threshold) farm pixels per vegetation-community x wetness-band stratum.", "Denominator for the stratum sampling fraction.", "Depends on the parameterised valid-year coverage threshold."),
+    ("census_stratum_area_ha", "Stratum area", "sampling", "ha", "area", "valid pixel area", "stratum", "Area of valid farm pixels per stratum (pixel count x pixel area).", "Stratum size for allocation review.", "EPSG:8058 grid; ~0.0624 ha per 25 m pixel."),
+    ("census_stratum_sampling_fraction", "Stratum sampling fraction", "sampling", "fraction", "0-1", "sample points", "valid pixels", "Current stratified sample points divided by valid pixels in the stratum.", "Shows equal-allocation over/under-sampling across strata.", "Tiny by design; compare relative, not absolute."),
+    ("census_stratum_sampling_density_per_1000ha", "Stratum sampling density", "sampling", "points_per_1000ha", "density", "sample points x 1000", "stratum area (ha)", "Stratified sample points per 1000 ha within the stratum.", "Makes small-stratum oversampling visible (the sampling-density slide).", "Equal allocation inflates density in small strata by design."),
+    # Vegetation x wetness checkerboard (Task C1). Per-pixel class raster; the R
+    # script 10_build_veg_regime_checkerboard.R writes veg_regime_class_8058.tif
+    # and INSERT-OR-IGNOREs this row for pre-rebuild databases.
+    ("veg_regime_class", "Vegetation x wetness regime class", "landcover", "class_code", "categorical", "community x wetness tercile", "pixel", "Per-pixel bivariate class: vegetation community x within-community flood-frequency tercile (9 focus classes + treed context + other/minor), at the 25/35 valid-year support threshold with regime_band_breaks.csv terciles.", "Descriptive checkerboard for paddock context; class areas reconcile to v_pixel_census_by_veg_regime.", "Within-community relative bands; woodland/forest is context only; not a trend or probability surface."),
 ]
 
 

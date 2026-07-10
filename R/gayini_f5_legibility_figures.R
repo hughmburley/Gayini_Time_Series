@@ -196,7 +196,8 @@ gayini_choose_paddocks <- function(products, n_choose = 4, zone_field = "Managme
 ##
 ## One zoomed map per chosen paddock: the surface + points by band + paddock
 ## outline (thick), neighbouring paddocks light, with a property-scale locator
-## inset. Reusable seed for the future Nari Nari paddock-review panels.
+## inset. Now a thin wrapper over the reusable gayini_plot_area_map() (the plot
+## code is shared with the C1 checkerboard + the dashboards, not forked).
 
 gayini_build_f5c_paddock_zooms <- function(products, choice, out_dir, pad_buffer = 400) {
 
@@ -212,111 +213,54 @@ gayini_build_f5c_paddock_zooms <- function(products, choice, out_dir, pad_buffer
 
   slugify <- function(s) gsub("[^A-Za-z0-9]+", "_", trimws(s))
 
-  ## Layout (one figure = one file = one slide): a reserved title band on top and
-  ## caption band below, the map in between. The locator inset is drawn INSIDE the
-  ## map band only, so it can never overlap the title / subtitle / caption.
-  rh_title <- 0.14; rh_map <- 1.0; rh_cap <- 0.05
-  tot      <- rh_title + rh_map + rh_cap
-  cap_band_hi   <- rh_cap / tot                       # caption band = [0, cap_band_hi]
-  map_band_lo   <- rh_cap / tot
-  map_band_hi   <- (rh_cap + rh_map) / tot
-  title_band_lo <- (rh_cap + rh_map) / tot            # title band = [title_band_lo, 1]
-  ins_local_y0 <- 0.64; ins_local_h <- 0.30           # inset within the map band (local coords)
-  ins_local_x0 <- 0.02; ins_local_w <- 0.28
-
   paths        <- list()
   overlap_rows <- list()
   for (i in seq_len(nrow(chosen))) {
 
-    zr      <- chosen$zone_row[i]
-    pad     <- management[zr, ]
+    zr       <- chosen$zone_row[i]
+    pad      <- management[zr, ]
     pad_name <- as.character(sf::st_drop_geometry(pad)[[zone_field]])
-    slug    <- slugify(pad_name)
+    slug     <- slugify(pad_name)
 
     pad_pts  <- pts[lengths(sf::st_within(pts, pad)) > 0, ]
 
-    z    <- sf::st_bbox(sf::st_buffer(sf::st_geometry(pad), pad_buffer))
-    clip <- terra::ext(z["xmin"], z["xmax"], z["ymin"], z["ymax"])
-    fr   <- terra::crop(freq, clip)
-    df   <- gayini_raster_to_df(fr, max_cells = 1.5e5)
-
     ## Neighbouring paddocks that fall in view (drawn light for context).
-    nbrs <- suppressWarnings(management[sf::st_intersects(
-      management, sf::st_as_sfc(sf::st_bbox(clip, crs = sf::st_crs(management))), sparse = FALSE)[, 1], ])
+    z        <- sf::st_bbox(sf::st_buffer(sf::st_geometry(pad), pad_buffer))
+    clip_sfc <- sf::st_as_sfc(sf::st_bbox(
+      terra::ext(z["xmin"], z["xmax"], z["ymin"], z["ymax"]), crs = sf::st_crs(management)))
+    nbrs     <- suppressWarnings(management[
+      sf::st_intersects(management, clip_sfc, sparse = FALSE)[, 1], ])
 
     n_comm <- dplyr::n_distinct(as.character(pad_pts$community))
     n_band <- dplyr::n_distinct(as.character(pad_pts$regime_band))
 
-    ## Map core only — title/subtitle/caption are reserved as separate bands so
-    ## the inset can never collide with them.
-    map_core <- ggplot2::ggplot() +
-      ggplot2::geom_raster(data = df, ggplot2::aes(x = x, y = y, fill = freq)) +
-      ggplot2::scale_fill_gradientn(colours = freq_ramp, limits = c(0, 100),
-                                    name = "Background\nflood freq. (%)") +
-      ggplot2::geom_sf(data = nbrs, fill = NA, colour = "grey70", linewidth = 0.2) +
-      ggplot2::geom_sf(data = pad, fill = NA, colour = "grey10", linewidth = 0.9) +
-      ggplot2::geom_sf(data = pad_pts, ggplot2::aes(colour = regime_band), size = 1.8) +
-      ggplot2::scale_colour_manual(values = band_pal,
-                                   name = gayini_regime_band_legend_title(),
-                                   guide = ggplot2::guide_legend(override.aes = list(size = 2.5))) +
-      ggplot2::coord_sf(xlim = c(z["xmin"], z["xmax"]), ylim = c(z["ymin"], z["ymax"]),
-                        expand = FALSE) +
-      ggplot2::theme_minimal(base_size = 10) +
-      ggplot2::theme(
-        panel.grid = ggplot2::element_line(colour = "grey93", linewidth = 0.2),
-        axis.title = ggplot2::element_blank(),
-        legend.position = "right"
-      )
+    res <- gayini_plot_area_map(
+      area        = pad,
+      fill_layer  = freq,
+      fill_spec   = list(kind = "continuous", colours = freq_ramp, limits = c(0, 100),
+                         name = "Background\nflood freq. (%)"),
+      boundary    = boundary,
+      management  = management,
+      points      = pad_pts,
+      points_spec = list(field = "regime_band", palette = band_pal,
+                         name = gayini_regime_band_legend_title(), size = 1.8),
+      neighbours  = nbrs,
+      outline     = pad,
+      pad_buffer  = pad_buffer,
+      title       = paste0("F5c · Paddock zoom — ", pad_name),
+      subtitle    = sprintf(
+        "%d sample points · %d communit%s · %d regime band%s · bands are within-community (relative)",
+        nrow(pad_pts), n_comm, ifelse(n_comm == 1, "y", "ies"),
+        n_band, ifelse(n_band == 1, "", "s")),
+      caption     = "Surface = background flood frequency · paddock outline heavy · neighbouring paddocks light",
+      inset       = TRUE,
+      out_dir     = out_dir,
+      basename    = paste0("F5c_paddock_", slug, "_data"),
+      width = 9, height = 7)
 
-    ## Locator inset: property boundary + all paddocks, this one highlighted.
-    locator <- ggplot2::ggplot() +
-      ggplot2::geom_sf(data = management, fill = NA, colour = "grey80", linewidth = 0.15) +
-      ggplot2::geom_sf(data = boundary, fill = NA, colour = "grey40", linewidth = 0.4) +
-      ggplot2::geom_sf(data = pad, fill = "#D7301F", colour = "#D7301F", alpha = 0.7) +
-      ggplot2::coord_sf(expand = FALSE) +
-      ggplot2::theme_void() +
-      ggplot2::theme(panel.background = ggplot2::element_rect(fill = "white", colour = "grey60",
-                                                             linewidth = 0.4))
-
-    ## Inset drawn on the map core ONLY (top-left, over the low-information NW
-    ## corner), so it stays inside the map band.
-    map_with_inset <- cowplot::ggdraw(map_core) +
-      cowplot::draw_plot(locator, x = ins_local_x0, y = ins_local_y0,
-                         width = ins_local_w, height = ins_local_h)
-
-    title_strip <- cowplot::ggdraw() +
-      cowplot::draw_label(paste0("F5c · Paddock zoom — ", pad_name),
-                          fontface = "bold", size = 12, x = 0.01, hjust = 0, y = 0.70) +
-      cowplot::draw_label(
-        sprintf("%d sample points · %d communit%s · %d regime band%s · bands are within-community (relative)",
-                nrow(pad_pts), n_comm, ifelse(n_comm == 1, "y", "ies"),
-                n_band, ifelse(n_band == 1, "", "s")),
-        size = 8.5, colour = "grey30", x = 0.01, hjust = 0, y = 0.28)
-    caption_strip <- cowplot::ggdraw() +
-      cowplot::draw_label(
-        "Surface = background flood frequency · paddock outline heavy · neighbouring paddocks light",
-        size = 7.5, colour = "grey40", x = 0.01, hjust = 0)
-
-    composed <- cowplot::plot_grid(title_strip, map_with_inset, caption_strip,
-                                   ncol = 1, rel_heights = c(rh_title, rh_map, rh_cap))
-
-    ## Inset rectangle in composed coordinates -> assert it clears both text bands.
-    ins_ymin <- map_band_lo + ins_local_y0 * (map_band_hi - map_band_lo)
-    ins_ymax <- map_band_lo + (ins_local_y0 + ins_local_h) * (map_band_hi - map_band_lo)
-    overlap_rows[[length(overlap_rows) + 1L]] <- tibble::tibble(
-      paddock          = pad_name,
-      inset_ymin       = round(ins_ymin, 3),
-      inset_ymax       = round(ins_ymax, 3),
-      title_band_lo    = round(title_band_lo, 3),
-      caption_band_hi  = round(cap_band_hi, 3),
-      clears_title     = ins_ymax < title_band_lo,
-      clears_caption   = ins_ymin > cap_band_hi,
-      clear            = (ins_ymax < title_band_lo) && (ins_ymin > cap_band_hi)
-    )
-
-    p <- gayini_save_figure(composed, out_dir, paste0("F5c_paddock_", slug, "_data"),
-                            kind = "data", width = 9, height = 7)
-    paths[[pad_name]] <- p
+    overlap_rows[[length(overlap_rows) + 1L]] <- dplyr::mutate(
+      res$overlap, paddock = pad_name, .before = 1)
+    paths[[pad_name]] <- res$paths
   }
 
   list(paths = paths, overlap_check = dplyr::bind_rows(overlap_rows))

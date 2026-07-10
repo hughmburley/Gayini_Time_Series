@@ -62,6 +62,7 @@ source(file.path(root_dir, "R", "gayini_sampling_design_map.R"))
 source(file.path(root_dir, "R", "gayini_descriptive_figures.R"))
 source(file.path(root_dir, "R", "gayini_stratified_sampling_functions.R"))
 source(file.path(root_dir, "R", "gayini_stratified_sampling_figures.R"))
+source(file.path(root_dir, "R", "gayini_area_map.R"))
 source(file.path(root_dir, "R", "gayini_f5_legibility_figures.R"))
 
 suppressPackageStartupMessages({
