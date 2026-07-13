@@ -229,10 +229,24 @@ gayini_draw_stratified_sample <- function(freq_8058,
                                            exclusion_buffer,
                                            n_per_stratum,
                                            min_valid_years,
-                                           seed) {
+                                           seed,
+                                           allocation = NULL,     # NULL -> n_per_stratum for all; else per (community, band) target_n (B1)
+                                           id_prefix  = "SP") {   # point-id prefix; the MC loop passes a per-seed prefix (B2)
 
   set.seed(seed)
   band_levels <- gayini_regime_band_levels()
+
+  ## Per-stratum draw size: allocation lookup (community x band -> target_n) if
+  ## supplied, else the scalar n_per_stratum for every stratum (backward compatible).
+  resolve_n <- function(g, b) {
+    if (is.null(allocation)) return(as.integer(n_per_stratum))
+    v <- allocation$target_n[as.character(allocation$community) == g &
+                             as.character(allocation$regime_band) == b]
+    if (length(v) != 1L) {
+      stop(sprintf("allocation has no single target_n for stratum '%s | %s'.", g, b), call. = FALSE)
+    }
+    as.integer(v)
+  }
 
   ## All-plot exclusion zone: every plot footprint + exclusion buffer. Subtracted
   ## from every community's neighbourhood, so a drawn point is >= exclusion_buffer
@@ -257,12 +271,14 @@ gayini_draw_stratified_sample <- function(freq_8058,
     cand <- gayini_candidate_pixels(freq_8058, valid_8058, nbhd, comm_poly,
                                     min_valid_years, exclusion_zone = excl)
 
-    ## Documented fallback: neighbourhood cannot fill even one stratum.
+    ## Documented fallback: neighbourhood cannot fill even the largest stratum for
+    ## this community (max per-band target under the allocation).
+    comm_target_max <- max(vapply(band_levels, function(b) resolve_n(g, b), integer(1)))
     fallback <- FALSE
-    if (nrow(cand) < n_per_stratum) {
+    if (nrow(cand) < comm_target_max) {
       fallback <- TRUE
       message("  [fallback] ", g, ": plot-neighbourhood too sparse (",
-              nrow(cand), " candidate pixels < N_PER_STRATUM = ", n_per_stratum,
+              nrow(cand), " candidate pixels < largest stratum target = ", comm_target_max,
               ") -> community-wide stratified sampling (footprints still excluded).")
       nbhd_cw <- suppressWarnings(sf::st_difference(comm_poly, excl))
       cand <- gayini_candidate_pixels(freq_8058, valid_8058, nbhd_cw, comm_poly,
@@ -278,11 +294,12 @@ gayini_draw_stratified_sample <- function(freq_8058,
     ## One row per band (all three ALWAYS present because terciles are defined on
     ## the community-wide distribution). Empty strata are logged, not dropped.
     for (b in band_levels) {
+      n_target <- resolve_n(g, b)
       pool  <- if (nrow(cand) > 0) cand[cand$regime_band == b, , drop = FALSE] else cand
       n_cand <- nrow(pool)
 
-      if (n_cand >= n_per_stratum) {
-        idx <- sample.int(n_cand, n_per_stratum)
+      if (n_cand >= n_target) {
+        idx <- sample.int(n_cand, n_target)
       } else {
         idx <- seq_len(n_cand)   # take all available; shortfall logged below
       }
@@ -299,8 +316,8 @@ gayini_draw_stratified_sample <- function(freq_8058,
         band_freq_hi_pct   = round(band_hi, 2),
         n_candidate_pixels = n_cand,
         n_drawn            = n_drawn,
-        target_n           = n_per_stratum,
-        shortfall          = max(n_per_stratum - n_drawn, 0L),
+        target_n           = n_target,
+        shortfall          = max(n_target - n_drawn, 0L),
         empty_stratum      = n_cand == 0L,
         fallback_triggered = fallback
       )
@@ -322,8 +339,9 @@ gayini_draw_stratified_sample <- function(freq_8058,
   pts$community        <- factor(pts$community, levels = focus_communities)
   pts$regime_band      <- factor(pts$regime_band, levels = band_levels)
 
-  ## Stable, self-describing point id + tidy column order.
-  pts$sample_point_id <- sprintf("SP_%04d", seq_len(nrow(pts)))
+  ## Stable, self-describing point id + tidy column order. id_prefix lets the
+  ## Monte-Carlo loop namespace ids per seed (SP_<seed>_0001) so draws never collide.
+  pts$sample_point_id <- sprintf("%s_%04d", id_prefix, seq_len(nrow(pts)))
   pts <- pts[, c("sample_point_id", "community", "regime_band",
                  "background_flood_freq", "valid_years",
                  "nearest_plot_id", "dist_to_plot_m", "geometry")]
