@@ -58,6 +58,7 @@ source(file.path(root_dir, "R", "gayini_spatial_8058_functions.R"))
 source(file.path(root_dir, "R", "gayini_descriptive_figures.R"))
 source(file.path(root_dir, "R", "gayini_stratified_sampling_functions.R"))
 source(file.path(root_dir, "R", "gayini_pixel_census_functions.R"))
+source(file.path(root_dir, "R", "gayini_db_validation.R"))
 
 suppressPackageStartupMessages({
   library(sf)
@@ -123,6 +124,26 @@ breaks <- stats::setNames(lapply(focus_communities, function(g) {
 }), focus_communities)
 
 
+## 4b. Sampling allocation — source of truth for the gate counts (F5) ----
+##
+## The acceptance gate asserts against the ACTUAL per-stratum allocation the current
+## sample targeted (sample_summary.csv `target_n`), NOT hardcoded 360/40/9. So a
+## proportional rebalance (per-stratum N) re-runs F5 -> regenerates sample_summary ->
+## the gate follows automatically, instead of failing on a stale magic number.
+
+N_CONTEXT_STRATA <- 2L   # structural: Floodplain Woodland/Forest (treed) + Other/minor
+
+sample_summary_path <- file.path(diagnostics_dir, "sample_summary.csv")
+gayini_stop_if_missing(sample_summary_path, label = "sample_summary.csv")
+allocation_tbl    <- readr::read_csv(sample_summary_path, show_col_types = FALSE)
+if (!"target_n" %in% names(allocation_tbl)) {
+  stop("sample_summary.csv is missing the `target_n` column (per-stratum allocation).", call. = FALSE)
+}
+allocation_total  <- sum(allocation_tbl$target_n)
+n_focus_expected  <- nrow(allocation_tbl)                       # 9 focus strata (community x band)
+n_strata_expected <- n_focus_expected + N_CONTEXT_STRATA        # + context rows -> 11 today
+
+
 ## 5. Classify every farm pixel + tabulate the census ----
 
 res_census <- gayini_pixel_census(
@@ -166,6 +187,13 @@ metric_rows <- tibble::tribble(
 ## 7. Persist base table + build the view ----
 
 census_view <- gayini_write_pixel_census_view(db_path, census, metric_rows = metric_rows)
+
+## 09 is the LAST post-build mutation: assert the whole chain is intact (B4 guard).
+local({
+  con <- DBI::dbConnect(RSQLite::SQLite(), db_path)
+  on.exit(DBI::dbDisconnect(con))
+  gayini_assert_post_build_objects(con)
+})
 
 census_csv_path <- file.path(diagnostics_dir, "pixel_census.csv")
 gayini_write_csv(census_view, census_csv_path)
@@ -245,6 +273,8 @@ qa <- list(
   ),
   sampling = list(
     total_points_sampled       = as.integer(total_points),
+    allocation_total           = as.integer(allocation_total),
+    n_focus_expected           = as.integer(n_focus_expected),
     points_only_in_focus_strata = as.integer(sum(context_rows$n_points_sampled) == 0),
     pct_of_farm_sums_to_100    = round(pct_sum, 4)
   )
@@ -252,16 +282,16 @@ qa <- list(
 
 ## Pass/fail rollup.
 qa$checks <- list(
-  crs_is_8058            = qa$crs_epsg == 8058L,
-  strata_count_11        = qa$n_strata_rows == 11L,
-  focus_strata_9         = qa$n_focus_strata == 9L,
-  pct_sums_to_100        = abs(pct_sum - 100) < 1e-6,
-  area_reconciles_1pct   = abs(recon_diff_comm_pct) < 1.0,
-  no_null_pixel_counts   = qa$null_checks$n_pixels_any_na == 0L,
-  focus_breaks_present   = qa$null_checks$focus_band_breaks_all_present == 1L,
-  context_breaks_null    = qa$null_checks$context_band_breaks_all_null == 1L,
-  total_points_360       = total_points == 360L,
-  points_focus_only      = qa$sampling$points_only_in_focus_strata == 1L
+  crs_is_8058                = qa$crs_epsg == 8058L,
+  strata_count_matches       = qa$n_strata_rows == n_strata_expected,
+  focus_strata_matches       = qa$n_focus_strata == n_focus_expected,
+  pct_sums_to_100            = abs(pct_sum - 100) < 1e-6,
+  area_reconciles_1pct       = abs(recon_diff_comm_pct) < 1.0,
+  no_null_pixel_counts       = qa$null_checks$n_pixels_any_na == 0L,
+  focus_breaks_present       = qa$null_checks$focus_band_breaks_all_present == 1L,
+  context_breaks_null        = qa$null_checks$context_band_breaks_all_null == 1L,
+  total_points_matches_alloc = total_points == allocation_total,
+  points_focus_only          = qa$sampling$points_only_in_focus_strata == 1L
 )
 qa$all_pass <- all(unlist(qa$checks))
 
@@ -282,14 +312,14 @@ message(sprintf("  classified+masked-union: %+10.1f ha  (%.3f%%)", recon_diff_co
 
 stopifnot(
   qa$checks$crs_is_8058,
-  qa$checks$strata_count_11,
-  qa$checks$focus_strata_9,
+  qa$checks$strata_count_matches,
+  qa$checks$focus_strata_matches,
   qa$checks$pct_sums_to_100,
   qa$checks$area_reconciles_1pct,
   qa$checks$no_null_pixel_counts,
   qa$checks$focus_breaks_present,
   qa$checks$context_breaks_null,
-  qa$checks$total_points_360,
+  qa$checks$total_points_matches_alloc,
   qa$checks$points_focus_only
 )
 

@@ -9,8 +9,8 @@
 #   - Target CRS   : EPSG:28355 (GDA94 / MGA zone 55).
 #   - Reference grid: the 25 m grid of the first source (lo_1988_1989.img).
 #   - Wet rule     : explicit legend (confirmed with Adrian 2026-07-07) applied in
-#                    gayini_make_binary_inundation_layers() (R/inundation_pre_post_
-#                    raster_functions.R): wet = value IN (1,2) (1 = inundation,
+#                    gayini_make_binary_inundation_layers() (R/gayini_inundation_
+#                    wet_rule.R): wet = value IN (1,2) (1 = inundation,
 #                    2 = off-river storage -- both wet); valid = value IN (0,1,2);
 #                    value 3 = cloud shadow is MASKED (neither wet nor valid);
 #                    documented no-data codes / NA masked to not-valid. The 35
@@ -39,7 +39,9 @@ suppressMessages({
   library(RSQLite)
 })
 
-source(file.path(root_dir, "R", "inundation_pre_post_raster_functions.R"))
+# Active stack depends ONLY on the neutral wet-rule file (B6: no longer sources the
+# archivable pre/post file, which it used solely for gayini_make_binary_inundation_layers).
+source(file.path(root_dir, "R", "gayini_inundation_wet_rule.R"))
 source(file.path(root_dir, "R", "raster_catalog_functions.R"))
 source(file.path(root_dir, "R", "gayini_output_paths.R"))
 

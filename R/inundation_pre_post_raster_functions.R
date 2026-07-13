@@ -351,75 +351,12 @@ gayini_align_binary_to_reference <- function(binary_layer,
 
 
 ## Inundation reclassification helpers ----
-
-gayini_make_binary_inundation_layers <- function(raster_layer,
-                                                 product,
-                                                 daily_wet_rule = c("strict_value_1", "include_ors_value_2"),
-                                                 nodata_values = c(255, 65535, 127, -1)) {
-  daily_wet_rule <- match.arg(daily_wet_rule)
-
-  if (terra::nlyr(raster_layer) != 1) {
-    raster_layer <- raster_layer[[1]]
-  }
-
-  if (product == "landsat_inundation") {
-    # Confirmed value legend (NSW SEED metadata + Adrian's ruling, 2026-07-07):
-    #   0 = not inundated     -> dry  (valid observation)
-    #   1 = inundated         -> WET
-    #   2 = off-river storage -> WET  (Adrian: "those pixels were wet just the same")
-    #   3 = cloud shadow      -> MASK (failed observation: neither wet nor valid)
-    # Explicit rule replacing the implicit `x > 0`, which silently counted value 3
-    # (cloud shadow) as wet. wet = value IN (1,2); valid = value IN (0,1,2); value 3
-    # is excluded from both. The vectorised %in% needs no branch on whether value 3
-    # is present in a given raster. For the 35 canonical Landsat sources this is
-    # identical to `x > 0` (they contain values {0,1,2} only), so the value-3 mask is
-    # a no-op here -- but it is active for Sentinel-2 cloud shadow (Tier 3).
-    landsat_valid_values <- c(0L, 1L, 2L)
-    landsat_wet_values   <- c(1L, 2L)
-
-    valid <- terra::app(
-      raster_layer,
-      fun = function(x) {
-        as.integer(!is.na(x) & !(x %in% nodata_values) & x %in% landsat_valid_values)
-      }
-    )
-
-    wet <- terra::app(
-      raster_layer,
-      fun = function(x) {
-        as.integer(!is.na(x) & !(x %in% nodata_values) & x %in% landsat_wet_values)
-      }
-    )
-
-  } else {
-    valid_values <- c(0, 1, 2)
-
-    wet_values <- if (daily_wet_rule == "include_ors_value_2") {
-      c(1, 2)
-    } else {
-      c(1)
-    }
-
-    valid <- terra::app(
-      raster_layer,
-      fun = function(x) {
-        as.integer(!is.na(x) & !(x %in% nodata_values) & x %in% valid_values)
-      }
-    )
-
-    wet <- terra::app(
-      raster_layer,
-      fun = function(x) {
-        as.integer(!is.na(x) & !(x %in% nodata_values) & x %in% wet_values)
-      }
-    )
-  }
-
-  names(valid) <- "valid_observation"
-  names(wet) <- "wet_observation"
-
-  list(wet = wet, valid = valid)
-}
+##
+## gayini_make_binary_inundation_layers() (the confirmed, load-bearing wet/valid
+## rule) has MOVED to R/gayini_inundation_wet_rule.R so the ACTIVE unified annual
+## stack no longer depends on this archivable pre/post file for it. The aggregation
+## helpers below still call it, so any driver that sources THIS file must also
+## source R/gayini_inundation_wet_rule.R (impls 01/02/04 do). Behaviour unchanged.
 
 
 ## Annual / period aggregation helpers ----
