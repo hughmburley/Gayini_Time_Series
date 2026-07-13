@@ -87,6 +87,7 @@ library(ggplot2)
 
 source(file.path(root_dir, "R", "gayini_temp_cleanup_functions.R"))
 source(file.path(root_dir, "R", "inundation_pre_post_raster_functions.R"))
+source(file.path(root_dir, "R", "gayini_inundation_wet_rule.R"))  # wet rule extracted (B6)
 source(file.path(root_dir, "R", "gayini_plotting_helpers.R"))
 
 analysis_base_functions_path <- file.path(root_dir, "R", "gayini_analysis_base_functions.R")

@@ -62,6 +62,7 @@ library(readr)
 library(stringr)
 
 source(file.path(root_dir, "R", "inundation_pre_post_raster_functions.R"))
+source(file.path(root_dir, "R", "gayini_inundation_wet_rule.R"))  # wet rule extracted (B6)
 
 plots_clean_path <- file.path(root_dir, "data_intermediate", "spatial", "plots_clean.gpkg")
 
