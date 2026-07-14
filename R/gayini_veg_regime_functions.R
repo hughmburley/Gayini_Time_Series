@@ -169,3 +169,34 @@ gayini_bivariate_legend <- function(classes = gayini_veg_regime_classes()) {
 
   cowplot::plot_grid(key, ctx_key, ncol = 1, rel_heights = c(1, 0.5))
 }
+
+
+## Compact 3x3 community x wetness key for a dashboard map panel (paddock
+## checkerboard). Three focus communities (rows) x low/mid/high band (cols),
+## grey context noted in the caption. Small footprint so it can sit in a strip
+## under the map or beside it without stealing map width.
+
+gayini_bivariate_legend_mini <- function(classes = gayini_veg_regime_classes()) {
+  focus <- gayini_focus_levels()
+  short <- stats::setNames(c("Aeolian (dry)", "Riverine", "Inland (wet)"), focus)
+
+  g <- classes[classes$band %in% c("low", "mid", "high"), ]
+  g$clab <- factor(short[as.character(g$community)], levels = rev(short[focus]))
+  g$band <- factor(g$band, levels = c("low", "mid", "high"))
+
+  ggplot2::ggplot(g, ggplot2::aes(x = band, y = clab, fill = I(colour))) +
+    ggplot2::geom_tile(colour = "white", linewidth = 0.8) +
+    ggplot2::scale_x_discrete(position = "top") +
+    ggplot2::labs(title = "Community x\nwetness", x = NULL, y = NULL,
+                  caption = "grey = Woodland /\nOther (context)") +
+    ggplot2::coord_equal(clip = "off") +
+    ggplot2::theme_minimal(base_size = 7) +
+    ggplot2::theme(
+      plot.title   = ggplot2::element_text(face = "bold", size = 7.5, hjust = 0),
+      axis.text.x  = ggplot2::element_text(size = 6.5, colour = "grey15"),
+      axis.text.y  = ggplot2::element_text(size = 6.5, colour = "grey15"),
+      panel.grid   = ggplot2::element_blank(),
+      plot.caption = ggplot2::element_text(size = 5.5, colour = "grey40", hjust = 0),
+      plot.margin  = ggplot2::margin(2, 4, 2, 2)
+    )
+}

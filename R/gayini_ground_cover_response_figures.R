@@ -154,25 +154,25 @@ gayini_build_f7_response_by_community <- function(plot_year_masked, community_su
   comm_cols <- stats::setNames(unname(pal[comm_levels]), unname(short[comm_levels]))
 
   p <- ggplot2::ggplot(pym, ggplot2::aes(.data$annual_occurrence_pct, .data$total_veg_pct)) +
-    ## per-plot spaghetti (each plot's own same-year slope)
+    ## per-plot spaghetti (each plot's own same-year slope), kept faint
     ggplot2::geom_line(ggplot2::aes(group = .data$plot_id, colour = .data$comm),
                        stat = "smooth", method = "lm", formula = y ~ x, se = FALSE,
-                       linewidth = 0.35, alpha = 0.35) +
-    ggplot2::geom_point(ggplot2::aes(colour = .data$comm), size = 0.5, alpha = 0.18) +
-    ## community-level fit (heavy)
-    ggplot2::geom_smooth(method = "lm", formula = y ~ x, se = FALSE,
-                         colour = "grey15", linewidth = 1.1) +
+                       linewidth = 0.3, alpha = 0.22) +
+    ggplot2::geom_point(ggplot2::aes(colour = .data$comm), size = 0.5, alpha = 0.10) +
+    ## community-level empirical trend: binned conditional mean (+/-95% CI). On the
+    ## sqrt x this shows total veg rising from ~78% (dry) to ~90% (high wet extent).
+    gayini_veg_response_trend(colour = "grey12") +
     ggplot2::geom_text(data = ann, inherit.aes = FALSE,
-                       ggplot2::aes(x = -Inf, y = Inf, label = .data$label),
-                       hjust = -0.08, vjust = 1.15, size = 3, colour = "grey15",
+                       ggplot2::aes(x = Inf, y = -Inf, label = .data$label),
+                       hjust = 1.06, vjust = -0.5, size = 3, colour = "grey15",
                        fontface = "bold", lineheight = 0.95) +
     ggplot2::facet_wrap(~ .data$comm, nrow = 1) +
     ggplot2::scale_colour_manual(values = comm_cols, guide = "none") +
-    ggplot2::coord_cartesian(ylim = c(0, 100)) +
+    gayini_veg_response_scale(y_lo = 35) +
     ggplot2::labs(
       title    = "F7 response by community — does ground cover track wet-extent intensity? (same-year)",
-      subtitle = "Three non-treed communities, dry->wet. Thin lines = per-plot same-year slopes; heavy line = community fit. Response strengthens along the gradient.",
-      x = "Wet-extent intensity — annual occurrence (%)  [SECONDARY metric, the response axis]",
+      subtitle = "Three non-treed communities, dry->wet. Faint lines = per-plot same-year slopes; heavy = binned mean +/-95% CI. x on a sqrt scale (dry-year cluster spread out); y zoomed to 35-100%.",
+      x = "Wet-extent intensity — annual occurrence (%, sqrt scale)  [SECONDARY metric, the response axis]",
       y = "Total vegetation cover (%)"
     ) +
     ggplot2::theme_minimal(base_size = 11) +
@@ -180,7 +180,9 @@ gayini_build_f7_response_by_community <- function(plot_year_masked, community_su
       plot.title    = ggplot2::element_text(face = "bold"),
       plot.subtitle = ggplot2::element_text(size = 8.6, colour = "grey35"),
       strip.text    = ggplot2::element_text(face = "bold", size = 10),
-      panel.grid.minor = ggplot2::element_blank()
+      panel.grid.minor = ggplot2::element_blank(),
+      ## keep facets apart so the 100 / 0 tick labels don't collide at the seam
+      panel.spacing.x = ggplot2::unit(1.4, "lines")
     )
 
   gayini_save_figure(p, out_dir, "F7_response_by_community_data", kind = "data",

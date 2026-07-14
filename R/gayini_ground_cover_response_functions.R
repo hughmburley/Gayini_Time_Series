@@ -413,3 +413,34 @@ gayini_f7_monthly_lag_profile <- function(gc_timeseries, daily_monthly, dim_plot
   list(lag_pairs = lag_pairs, per_plot_lag = per_plot_lag,
        lag_profile = lag_profile, peak_lag = peak_lag)
 }
+
+
+## Vegetation-response scatter rescale (G2) ----
+##
+## Shared figure primitive so the standalone F7 scatter and the dashboard veg-
+## response panel rescale identically. The x is annual_occurrence_pct (the
+## SECONDARY within-year wet-extent metric): most plot-years cluster near 0
+## (real dry years — kept), so a sqrt x-axis spreads that cluster out and the
+## ~78% -> ~90% total-veg rise becomes visible. y is ZOOMED (coord_cartesian,
+## not clipped) so rare low outliers still plot at the edge rather than vanish.
+
+gayini_veg_response_scale <- function(y_lo = 35) {
+  list(
+    ggplot2::scale_x_sqrt(breaks = c(0, 1, 5, 25, 50, 100),
+                          labels = c("0", "1", "5", "25", "50", "100"),
+                          limits = c(0, 100), expand = ggplot2::expansion(mult = c(0, 0.02))),
+    ggplot2::coord_cartesian(ylim = c(y_lo, 100))
+  )
+}
+
+
+## The binned-mean + ~95% CI trend that reads through the overplotting: the
+## conditional mean of total veg in sqrt-spaced wet-extent bins (mean +/- 1.96 SE).
+## Layered over the faint points so the relationship is legible without a model.
+
+gayini_veg_response_trend <- function(colour = "grey10", bins = 12) {
+  ggplot2::stat_summary_bin(
+    fun.data = ggplot2::mean_se, fun.args = list(mult = 1.96),
+    bins = bins, geom = "pointrange", colour = colour,
+    linewidth = 0.5, size = 0.28, na.rm = TRUE)
+}
