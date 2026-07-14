@@ -261,21 +261,22 @@ gayini_resolve_stratum <- function(community, band, ctx) {
 
 ## 3. Build + compose one dashboard ----
 ##
-## ONE converged layout family (the A/B/C bake-off is resolved): a big map on the
-## LEFT, an aligned time-series column on the RIGHT (shared date axis, G3), a
-## compact horizontal baseline-gauge bar, the "where it sits" boxplot, and the
-## sqrt-x vegetation-response panel (G2). Per unit type:
-##   site    : map (ring + footprint + locator inset) top-left, boxplot under it;
-##             right = gauge-flow -> flooding -> total veg -> response; gauge bar.
-##   paddock : checkerboard map + locator inset + legend strip (left, full height);
-##             right = flooding -> total veg -> response; gauge bar; boxplot.
-##   stratum : whole-farm map, class highlighted, ENLARGED (left, full height);
-##             right = flooding -> total veg (green only) -> response; gauge bar; box.
+## ONE shared skeleton for all three (final geometry). Two columns, left ~46% /
+## right ~54%:
+##   LEFT (identical across all): map -> "where it sits" boxplot -> compact gauge
+##     bar, stacked, heights map:box:gauge = 11:6:3. The map is deliberately
+##     SHORTER so the boxplot gets room; the gauge sits on the LEFT for all three.
+##   RIGHT: the aligned temporal series (shared date axis, G3) with a TALL sqrt-x
+##     vegetation-response scatter (G2) at the bottom.
+##     paddock / stratum: flooding : green-veg : response = 1 : 1 : 3.
+##     site (has_gauge_flow): gauge-flow : flooding : green-veg : response = 1:1:1:3.
+## Total vegetation is GREEN-ONLY everywhere (bare-ground line dropped). Paddock ==
+## stratum geometrically; site is the same skeleton + the gauge-flow row. One
+## layout, one site variant.
 
 gayini_build_dashboard <- function(resolved, ctx, format = "slide", out_dir, basename) {
   fmt <- gayini_dashboard_formats()[[format]]
   bs  <- fmt$base_size
-  typ <- resolved$spec$type
 
   ## Guard: total-veg / gc may be empty for context-only units.
   gc <- resolved$gc
@@ -292,7 +293,7 @@ gayini_build_dashboard <- function(resolved, ctx, format = "slide", out_dir, bas
   date_breaks <- gayini_year_to_date(seq(ceiling(yr0 / 5) * 5, floor(yr1 / 5) * 5, by = 5))
 
   ## ---- Panels ----
-  green_only <- identical(typ, "stratum")   # stratum drops bare ground (G4)
+  ## Total vegetation is green-only on ALL three dashboards now (drop bare ground).
   p_map   <- gayini_panel_map(resolved$spec, ctx, base_size = bs - 1)
   p_flow  <- if (resolved$is_site)
     gayini_panel_gauge_flow(resolved$gaugeflow, ctx$gauge_label, bs,
@@ -301,7 +302,7 @@ gayini_build_dashboard <- function(resolved, ctx, format = "slide", out_dir, bas
                                           date_lim = date_lim, date_breaks = date_breaks)
   p_veg   <- gayini_panel_total_veg(gc, bs, resolved$gc_note,
                                     date_lim = date_lim, date_breaks = date_breaks,
-                                    green_only = green_only)
+                                    green_only = TRUE)
   p_resp  <- gayini_panel_veg_response(resolved$resp, bs)
   p_base  <- gayini_panel_baseline_gauge(resolved$flooding, base_size = bs, compact = TRUE)
   p_box   <- gayini_panel_where_it_sits(ctx$freq_by_plot, resolved$box$value, resolved$box$community, bs)
@@ -314,28 +315,23 @@ gayini_build_dashboard <- function(resolved, ctx, format = "slide", out_dir, bas
   if (!is.null(p_flow)) p_flow <- p_flow + strip_x
   p_flood <- p_flood + strip_x
 
-  ## ---- Aligned series column (patchwork aligns panel widths / left edges) ----
-  series_panels <- c(if (resolved$is_site) list(p_flow) else NULL,
-                     list(p_flood, p_veg, p_resp))
-  series <- patchwork::wrap_plots(series_panels, ncol = 1)
-
   header <- cowplot::ggdraw() +
     cowplot::draw_label(resolved$title, fontface = "bold", size = bs + 5, x = 0.01, hjust = 0, y = 0.68) +
     cowplot::draw_label(resolved$subtitle, size = bs - 1, colour = "grey35", x = 0.01, hjust = 0, y = 0.24)
 
-  ## ---- Converged layout ----
-  if (typ == "site") {
-    ## map top-left, boxplot bottom-left (under map); series + gauge bar on right.
-    left  <- cowplot::plot_grid(p_map, p_box, ncol = 1, rel_heights = c(1, 0.85))
-    right <- cowplot::plot_grid(series, p_base, ncol = 1, rel_heights = c(1, 0.17))
-    body  <- cowplot::plot_grid(left, right, ncol = 2, rel_widths = c(1, 1.05))
+  ## ---- LEFT column (shared): map / boxplot / gauge = 11 : 6 : 3 ----
+  left <- cowplot::plot_grid(p_map, p_box, p_base, ncol = 1, rel_heights = c(11, 6, 3))
+
+  ## ---- RIGHT column: temporal series + TALL response; site adds gauge-flow ----
+  if (resolved$is_site) {
+    right <- patchwork::wrap_plots(list(p_flow, p_flood, p_veg, p_resp),
+                                   ncol = 1, heights = c(1, 1, 1, 3))
   } else {
-    ## paddock / stratum: map fills the left column; right = series, gauge bar, box.
-    map_w <- if (typ == "stratum") 1.25 else 1.05
-    right <- cowplot::plot_grid(series, p_base, p_box, ncol = 1, rel_heights = c(1, 0.16, 0.62))
-    body  <- cowplot::plot_grid(p_map, right, ncol = 2, rel_widths = c(map_w, 1))
+    right <- patchwork::wrap_plots(list(p_flood, p_veg, p_resp),
+                                   ncol = 1, heights = c(1, 1, 3))
   }
 
+  body     <- cowplot::plot_grid(left, right, ncol = 2, rel_widths = c(0.46, 0.54))
   composed <- cowplot::plot_grid(header, body, ncol = 1, rel_heights = c(0.07, 1))
 
   gayini_save_figure(composed, out_dir, basename, kind = "data",

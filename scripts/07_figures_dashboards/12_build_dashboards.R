@@ -1,5 +1,5 @@
 # ------------------------------------------------------------------------------
-# Script: scripts/07_figures_dashboards/12_build_dashboards_trial.R
+# Script: scripts/07_figures_dashboards/12_build_dashboards.R
 # Purpose: Tier 1 · Task G — dashboards refresh. Build the dashboard composer +
 #          modular panels on the trial subset in the ONE converged layout family
 #          (big map left · aligned time-series column right · compact gauge bar ·
@@ -166,7 +166,7 @@ trend_ok <- all(vapply(qa_units, function(u)
 sites <- Filter(function(u) u$type == "site", qa_units)
 
 qa <- list(
-  generated_by  = "scripts/07_figures_dashboards/12_build_dashboards_trial.R",
+  generated_by  = "scripts/07_figures_dashboards/12_build_dashboards.R",
   crs_epsg      = gayini_crs_epsg(ctx$freq_layer),
   radius_m      = RADIUS_M,
   gauge_station = GAUGE_STATION,

@@ -117,17 +117,17 @@ gayini_panel_map <- function(spec, ctx, base_size = 9) {
   core <- core + ggplot2::labs(subtitle = sub)
 
   if (spec$type == "paddock") {
-    ## Paddock: locator inset on the map, and the 3x3 key as a STRIP UNDER the map
-    ## (G4 — off the map's side so it stops stealing raster width).
-    core <- add_locator(core, spec$geom)
-    if (isTRUE(ctx$show_class_legend) && !is.null(ctx$class_legend)) {
-      return(cowplot::plot_grid(core, ctx$class_legend, ncol = 1, rel_heights = c(1, 0.24)))
-    }
-    return(core)
+    ## Paddock: farm-locator inset top-left + the 3x3 community x wetness key as a
+    ## boxed inset in the map's BOTTOM-RIGHT corner (on the raster, not a strip).
+    legend_mini <- gayini_bivariate_legend_mini(ctx$classes, boxed = TRUE)
+    cowplot::ggdraw(core) +
+      cowplot::draw_plot(gayini_locator_inset(spec$geom, ctx$boundary, ctx$management),
+                         x = 0.015, y = 0.66, width = 0.26, height = 0.30) +
+      cowplot::draw_plot(legend_mini, x = 0.70, y = 0.10, width = 0.28, height = 0.40)
+  } else {
+    ## Stratum: whole-farm map with the class highlighted; subtitle names it, no key.
+    core
   }
-
-  ## Stratum: whole-farm map with the class highlighted; subtitle names it, no key.
-  core
 }
 
 

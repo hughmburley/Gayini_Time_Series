@@ -173,10 +173,10 @@ gayini_bivariate_legend <- function(classes = gayini_veg_regime_classes()) {
 
 ## Compact 3x3 community x wetness key for a dashboard map panel (paddock
 ## checkerboard). Three focus communities (rows) x low/mid/high band (cols),
-## grey context noted in the caption. Small footprint so it can sit in a strip
-## under the map or beside it without stealing map width.
+## grey context noted in the caption. Small footprint. `boxed = TRUE` adds a
+## white background + border so it reads as a corner inset ON the raster map.
 
-gayini_bivariate_legend_mini <- function(classes = gayini_veg_regime_classes()) {
+gayini_bivariate_legend_mini <- function(classes = gayini_veg_regime_classes(), boxed = FALSE) {
   focus <- gayini_focus_levels()
   short <- stats::setNames(c("Aeolian (dry)", "Riverine", "Inland (wet)"), focus)
 
@@ -184,7 +184,7 @@ gayini_bivariate_legend_mini <- function(classes = gayini_veg_regime_classes()) 
   g$clab <- factor(short[as.character(g$community)], levels = rev(short[focus]))
   g$band <- factor(g$band, levels = c("low", "mid", "high"))
 
-  ggplot2::ggplot(g, ggplot2::aes(x = band, y = clab, fill = I(colour))) +
+  p <- ggplot2::ggplot(g, ggplot2::aes(x = band, y = clab, fill = I(colour))) +
     ggplot2::geom_tile(colour = "white", linewidth = 0.8) +
     ggplot2::scale_x_discrete(position = "top") +
     ggplot2::labs(title = "Community x\nwetness", x = NULL, y = NULL,
@@ -197,6 +197,10 @@ gayini_bivariate_legend_mini <- function(classes = gayini_veg_regime_classes()) 
       axis.text.y  = ggplot2::element_text(size = 6.5, colour = "grey15"),
       panel.grid   = ggplot2::element_blank(),
       plot.caption = ggplot2::element_text(size = 5.5, colour = "grey40", hjust = 0),
-      plot.margin  = ggplot2::margin(2, 4, 2, 2)
+      plot.margin  = ggplot2::margin(3, 5, 3, 4)
     )
+  if (boxed)
+    p <- p + ggplot2::theme(
+      plot.background = ggplot2::element_rect(fill = "white", colour = "grey55", linewidth = 0.5))
+  p
 }
