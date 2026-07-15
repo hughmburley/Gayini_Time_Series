@@ -53,7 +53,7 @@ A spatially explicit remote-sensing assessment of flooding and vegetation on Gay
 
 - `Gayini_Figure_Driven_Project_Ladder.docx` — **the single source of truth** (conventions, ladder, gate result, Adrian questions). If it and this file disagree, the ladder wins.
 - `docs/Gayini_Results_database_overview.md` — database structure and how to consume it.
-- `docs/Gayini_subsampling_approach.md` — the stratified Monte-Carlo resampling design for the next round.
+- `docs/archive/Gayini_subsampling_approach.md` — **ARCHIVED** stratified Monte-Carlo resampling design; superseded by the all-pixel census (`docs/Gayini_sequential_task_list_20260715.md`). Task F code stays on `main`, uncalled.
 - `docs/Tier1_Task*.md` — the executed/queued task specs (A–E and beyond).
 
 ## Notes for Claude Code

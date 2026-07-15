@@ -183,7 +183,7 @@ gayini_panel_total_veg <- function(gc, base_size = 10, unit_note = NULL,
                                  name = NULL, drop = TRUE) +
     gayini_series_date_scale(date_lim, date_breaks) +
     ggplot2::scale_y_continuous(limits = c(0, 100)) +
-    ggplot2::labs(title = if (green_only) "Total vegetation (green cover)" else "Total vegetation",
+    ggplot2::labs(title = if (green_only) "Total veg (green + dead)" else "Total vegetation",
                   subtitle = paste0("Ground-cover series (remote sensing)",
                                     if (!is.null(unit_note)) paste0(" - ", unit_note) else ""),
                   x = NULL, y = "Cover (%)") +
