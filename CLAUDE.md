@@ -43,6 +43,10 @@ A spatially explicit remote-sensing assessment of flooding and vegetation on Gay
 - **MER** is renamed to "annual maximum observed wet footprint" and kept **supplementary** only.
 - **Archive convention:** archived scripts go to `scripts/archive/` (the smoke test enforces it is absent from the active handoff). Reconcile any `scripts/_deprecated/` into `scripts/archive/`.
 
+## Known tooling conflicts (unresolved — human call with Adrian)
+
+- **Archive convention contradicts the smoke test (B5).** The line above says archived scripts go to `scripts/archive/`, but `run_spine_smoke_test.R:104-112` (`folder_scripts/archive_absent`) **hard-fails if `scripts/archive/` exists**. So `scripts/_deprecated/01_lag_diagnostics_inundation_gc.R` cannot be reconciled into `scripts/archive/` without breaking spine validation. Left untouched pending an Adrian decision; **do not modify the smoke test** to force it. (Deferred as B5 in the Task F spec.)
+
 ## Adrian gate (open decisions — build with documented defaults, flag them)
 
 - **Q1** — comparison design: stratified sample near plots vs community-wide; sets the near-plot neighbourhood radius (caps small-stratum sample sizes).
