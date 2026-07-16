@@ -69,6 +69,26 @@ WY_LAST          <- 2022L
 EXPECTED_N_RETAINED <- 140L  # facts §4: the Track B pool is 140 of 153 — checkable
 EXPECTED_N_WY       <- 35L
 
+## MIN_SEASONS — the support threshold for a pixel's percentile. Signed off 16 Jul 2026.
+##
+## THE JUSTIFICATION, not just the number. This is the THIRD member of the
+## MIN_VALID family (MIN_VALID_YEARS = 25, MIN_VALID_COVERAGE = 40) and the other
+## two were never formally signed off — so the reasoning is recorded here rather
+## than left as a bare default:
+##   - For p05 to be a PERCENTILE rather than simply the minimum, you need n > 20
+##     (at n = 20, the 5th percentile IS the smallest observation).
+##   - For a single bad scene not to set the floor on its own, you need the 5%
+##     tail to contain at least two observations: 0.05 * n >= 2  ->  n >= 40.
+##   - At n = 50, p05 is the 2nd-3rd smallest value, so the floor is a statistic
+##     rather than an artefact of one anomalous season.
+## Cost: drops 111 farm pixels = 0.0116% — near-inert, the same shape as
+## MIN_VALID_YEARS (facts §9). Measured before it was chosen (facts §12), not after.
+MIN_SEASONS <- 50L
+
+## Test-only support for the seasonal-composition test (§7b). Each sub-pool is half
+## the record (70 layers), so the threshold is halved to keep it proportional.
+SUBPOOL_MIN_SEASONS <- 25L
+
 ## 1. Sources ----
 
 root_dir <- normalizePath(Sys.getenv("GAYINI_ROOT", getwd()), winslash = "/", mustWork = TRUE)
@@ -116,8 +136,20 @@ if (length(fc_files) == 0) stop("No fractional-cover composites found in ", fc_d
 
 ym <- regmatches(basename(fc_files), regexpr("\\d{12}", basename(fc_files)))
 start_date <- as.Date(paste0(substr(ym, 1, 4), "-", substr(ym, 5, 6), "-01"))
-end_date   <- as.Date(paste0(substr(ym, 7, 10), "-", substr(ym, 11, 12), "-01"))
-mid_date   <- start_date + floor(as.numeric(end_date - start_date) / 2)
+
+## 🔴 end_date must be the LAST day of the end month, not the 1st.
+## Parsing the end as the 1st gives a 61-day JJA span whose midpoint is EXACTLY
+## 07-01 — the water-year boundary — for all 35 JJA composites. The pool was then
+## right only by luck: JJA is the only season that straddles the boundary, so a
+## `>` instead of `>=` on the boundary test would silently move all 35 JJA
+## composites into the previous water year and the 140 would still "look" plausible.
+## Taking the true month end makes the JJA midpoint 16 Jul — 15 days of margin.
+end_y <- as.integer(substr(ym, 7, 10))
+end_m <- as.integer(substr(ym, 11, 12))
+nxt_y <- end_y + as.integer(end_m == 12L)
+nxt_m <- (end_m %% 12L) + 1L
+end_date <- as.Date(sprintf("%d-%02d-01", nxt_y, nxt_m)) - 1   # last day of the end month
+mid_date <- start_date + floor(as.numeric(end_date - start_date) / 2)
 
 mid_year  <- as.integer(format(mid_date, "%Y"))
 mid_month <- as.integer(format(mid_date, "%m"))
@@ -345,8 +377,16 @@ message("    SCENES, not per-pixel noise: whole scenes drop out, so every pixel 
 message("    same ~20 seasons -> the valid-season distribution is tight, not long-tailed.")
 message("  Seasonal imbalance in the surviving pool (matters more than the count):")
 print(as.data.frame(by_season), row.names = FALSE)
-message("\n  NO minimum-seasons threshold applied or chosen — deferred to Hugh (facts §12).")
-message("  Percentiles below use whatever valid seasons each pixel has.")
+## --- MIN_SEASONS support mask (signed off 16 Jul; see the constant's rationale) ---
+support <- n_valid_seasons >= MIN_SEASONS
+n_dropped_farm <- sum(terra::values(farm_mask)[, 1] < MIN_SEASONS, na.rm = TRUE)
+n_farm_px      <- sum(!is.na(terra::values(farm_mask)[, 1]))
+message(sprintf("\n  MIN_SEASONS = %d applied: drops %d of %s farm pixels (%.4f%%).",
+                MIN_SEASONS, n_dropped_farm, format(n_farm_px, big.mark = ","),
+                100 * n_dropped_farm / n_farm_px))
+message("  Rationale (recorded): p05 needs n > 20 to be a percentile rather than the")
+message("  minimum, and 0.05n >= 2 -> n >= 40 so one bad scene cannot set the floor.")
+message("  At n = 50, p05 is the 2nd-3rd smallest. Third MIN_VALID-family knob.")
 
 
 ## 7. Percentiles at NATIVE 30 m / EPSG:3577 (unresampled source) ----
@@ -363,6 +403,71 @@ if (!file.exists(pct_native_tif)) {
 }
 p_native <- terra::rast(pct_native_tif)
 names(p_native) <- PROB_LABELS
+
+## The cache above is the PRE-support-mask percentile, so MIN_SEASONS can change
+## without paying for the (expensive) quantile again. Apply the mask on load.
+p_native <- terra::mask(p_native, support, maskvalues = 0, updatevalue = NA)
+
+
+## 7b. Seasonal-composition TEST (#2) — measure the bias, do NOT rebalance ----
+##
+## JJA/SON are the Lowbidgee flood season (upstream flows peak late winter/spring),
+## and they are exactly the seasons the pool under-samples — JJA 20.7% / SON 21.3%
+## nodata vs DJF 8.4% / MAM 6.9% — i.e. missing BECAUSE it was wet. The concern is
+## whether that biases the statistic. Losing HIGH values shifts p50 down but should
+## barely move p05, so this is testable rather than fatal.
+##
+## Test: compute p05 and p50 on a DJF+MAM-only pool and on a JJA+SON-only pool and
+## compare, on pixels with adequate support in BOTH (like-for-like, same pixel set).
+## We do NOT rebalance the pool — that would change what the statistic means.
+
+subpool_pct <- function(sel, tag) {
+  f <- file.path(tmp_dir, paste0("total_veg_pct_3577_", tag, ".tif"))
+  if (!file.exists(f)) {
+    message(sprintf("  computing p05/p50 for the %s sub-pool (%d layers) ...", tag, sum(sel)))
+    q <- terra::quantile(tv_stack[[which(sel)]], probs = c(0.05, 0.50), na.rm = TRUE)
+    terra::writeRaster(q, f, overwrite = TRUE, datatype = "FLT4S")
+  }
+  r <- terra::rast(f); names(r) <- c("p05", "p50"); r
+}
+sel_cool <- kept$season %in% c("DJF", "MAM")   # the well-observed half
+sel_warm <- kept$season %in% c("JJA", "SON")   # the flood season, under-observed
+
+message("\n================ H2 · 7b · seasonal-composition test ================")
+p_cool <- subpool_pct(sel_cool, "DJF_MAM")
+p_warm <- subpool_pct(sel_warm, "JJA_SON")
+
+n_cool <- sum(!is.na(tv_stack[[which(sel_cool)]]))
+n_warm <- sum(!is.na(tv_stack[[which(sel_warm)]]))
+both_ok <- (n_cool >= SUBPOOL_MIN_SEASONS) & (n_warm >= SUBPOOL_MIN_SEASONS)
+
+## Restrict to the farm AND to pixels supported in both sub-pools.
+bv <- terra::vect(boundary_3577)
+clip <- function(r) terra::mask(terra::crop(terra::mask(r, both_ok, maskvalues = 0), bv), bv)
+d_p05 <- terra::values(clip(p_warm[["p05"]] - p_cool[["p05"]]))[, 1]
+d_p50 <- terra::values(clip(p_warm[["p50"]] - p_cool[["p50"]]))[, 1]
+d_p05 <- d_p05[!is.na(d_p05)]; d_p50 <- d_p50[!is.na(d_p50)]
+
+qsum <- function(v) c(mean = mean(v), median = stats::median(v), sd = stats::sd(v),
+                      p05 = unname(stats::quantile(v, 0.05)),
+                      p95 = unname(stats::quantile(v, 0.95)))
+seasonal_tbl <- tibble::tibble(
+  statistic = c("p05", "p50"),
+  n_pixels = c(length(d_p05), length(d_p50)),
+  mean_delta = c(qsum(d_p05)[["mean"]],   qsum(d_p50)[["mean"]]),
+  median_delta = c(qsum(d_p05)[["median"]], qsum(d_p50)[["median"]]),
+  sd_delta = c(qsum(d_p05)[["sd"]],     qsum(d_p50)[["sd"]]),
+  q05_delta = c(qsum(d_p05)[["p05"]],    qsum(d_p50)[["p05"]]),
+  q95_delta = c(qsum(d_p05)[["p95"]],    qsum(d_p50)[["p95"]])
+) |> dplyr::mutate(dplyr::across(dplyr::where(is.numeric), ~ round(.x, 3)))
+
+message("  delta = (JJA+SON pool) - (DJF+MAM pool), cover %, farm pixels supported in both:")
+print(as.data.frame(seasonal_tbl), row.names = FALSE)
+gayini_write_csv(seasonal_tbl, file.path(diagnostics_dir, "tier2H_h2_seasonal_bias_test.csv"))
+message(sprintf("  READ: if |p05 delta| is small the FLOOR is robust to seasonal composition;"))
+message(sprintf("  the p50 delta quantifies the median's sensitivity (expected: negative, i.e."))
+message(sprintf("  the well-observed cool pool sits higher because the wet/flood season is the"))
+message(sprintf("  one that goes missing). Pool NOT rebalanced (that would change the meaning)."))
 
 
 ## 8. Reproject ONLY the 5 outputs to the 8058 census grid — BILINEAR (continuous) ----
@@ -424,6 +529,84 @@ for (nm in PROB_LABELS) {
   terra::writeRaster(p_8058[[nm]], pct_paths[[nm]], overwrite = TRUE, datatype = "FLT4S")
   message("  wrote: ", pct_paths[[nm]])
 }
+
+
+## 11b. Raster diagnostics + PNGs — is "mostly empty" a bug or framing? ----
+##
+## Standing ask: never ship a render without the numbers that say whether the blank
+## space is real. The 8058 grid is 100.8 x 60.5 km while the farm is only 56 x 33 km,
+## so a large NA fraction is EXPECTED, not a bug — but that must be demonstrated, and
+## the render must be zoomed to the DATA extent, never the grid extent.
+
+boundary_v <- terra::vect(boundary)                 # farm outline, 8058
+grid_ext   <- terra::ext(class_r)
+
+diag_rows <- lapply(PROB_LABELS, function(nm) {
+  r  <- p_8058[[nm]]
+  v  <- terra::values(r)[, 1]
+  ok <- !is.na(v)
+  de <- terra::ext(terra::trim(r))                  # bbox of non-NA cells
+  tibble::tibble(
+    raster = nm,
+    n_cells = length(v), n_data = sum(ok),
+    na_fraction = round(1 - mean(ok), 4),
+    data_xmin = round(de$xmin, 1), data_xmax = round(de$xmax, 1),
+    data_ymin = round(de$ymin, 1), data_ymax = round(de$ymax, 1),
+    data_w_km = round((de$xmax - de$xmin) / 1000, 2),
+    data_h_km = round((de$ymax - de$ymin) / 1000, 2),
+    grid_w_km = round((grid_ext$xmax - grid_ext$xmin) / 1000, 2),
+    grid_h_km = round((grid_ext$ymax - grid_ext$ymin) / 1000, 2),
+    data_area_pct_of_grid = round(100 * ((de$xmax - de$xmin) * (de$ymax - de$ymin)) /
+                                    ((grid_ext$xmax - grid_ext$xmin) *
+                                       (grid_ext$ymax - grid_ext$ymin)), 2),
+    min = round(min(v[ok]), 3),
+    median = round(stats::median(v[ok]), 3),
+    max = round(max(v[ok]), 3))
+})
+diag_tbl <- dplyr::bind_rows(diag_rows)
+message("\n================ H2 · raster diagnostics (blank == framing, or a bug?) ================")
+print(as.data.frame(diag_tbl[, c("raster", "n_data", "na_fraction", "data_w_km", "data_h_km",
+                                 "grid_w_km", "grid_h_km", "min", "median", "max")]),
+      row.names = FALSE)
+gayini_write_csv(diag_tbl, file.path(diagnostics_dir, "tier2H_h2_raster_diagnostics.csv"))
+
+## Render zoomed to the DATA extent (union across the five), NA explicit in grey,
+## value range in each title, farm boundary overlaid.
+data_ext <- terra::ext(terra::trim(p_8058[[1]]))
+pal <- grDevices::hcl.colors(100, "viridis")
+figures_dir <- file.path(root_dir, "Output", "figures")
+dir.create(figures_dir, recursive = TRUE, showWarnings = FALSE)
+
+render_panel <- function(file, common_range) {
+  grDevices::png(file, width = 2100, height = 1300, res = 140)
+  op <- graphics::par(mfrow = c(2, 3), mar = c(2.2, 2.2, 3.2, 4.5))
+  for (nm in PROB_LABELS) {
+    r   <- p_8058[[nm]]
+    rng <- as.numeric(terra::minmax(r))
+    ttl <- sprintf("total veg %s  [%.1f - %.1f%%]", nm, rng[1], rng[2])
+    if (is.null(common_range)) {
+      terra::plot(r, ext = data_ext, col = pal, colNA = "grey85", main = ttl,
+                  mar = c(2.2, 2.2, 3.2, 4.5))
+    } else {
+      terra::plot(r, ext = data_ext, col = pal, colNA = "grey85", main = ttl,
+                  range = common_range, mar = c(2.2, 2.2, 3.2, 4.5))
+    }
+    terra::plot(boundary_v, add = TRUE, border = "black", lwd = 1.6)
+  }
+  graphics::plot.new()
+  graphics::legend("center", bty = "n", cex = 1.05,
+                   legend = c("grey = NA (no FC data /", "  < MIN_SEASONS support)",
+                              "black = farm boundary", "",
+                              if (is.null(common_range)) "scale: per-raster stretch"
+                              else "scale: common 0-100%",
+                              "zoomed to DATA extent"))
+  graphics::par(op); grDevices::dev.off()
+  message("  wrote: ", file)
+}
+png_common  <- file.path(figures_dir, "H2_veg_percentiles_common_scale_data.png")
+png_stretch <- file.path(figures_dir, "H2_veg_percentiles_stretch_data.png")
+render_panel(png_common,  c(0, 100))
+render_panel(png_stretch, NULL)
 
 
 ## 12. Register in raster_asset — the 5 products + C2 (veg_regime_class_8058) ----
@@ -523,13 +706,39 @@ qa <- list(
                            "pixels lose the same seasons and the valid-season distribution is",
                            "tight. JJA/SON lose ~3x more than DJF/MAM - the surviving pool is",
                            "seasonally imbalanced, which matters more than the count.")),
-  min_seasons_threshold = "NOT APPLIED - deferred to Hugh (gate)",
+  min_seasons = list(
+    value = MIN_SEASONS, signed_off = "2026-07-16",
+    justification = paste("p05 needs n > 20 to be a percentile rather than the minimum;",
+                          "0.05n >= 2 -> n >= 40 so one bad scene cannot set the floor;",
+                          "at n = 50 p05 is the 2nd-3rd smallest. Third member of the",
+                          "MIN_VALID family (MIN_VALID_YEARS=25, MIN_VALID_COVERAGE=40),",
+                          "the other two never formally signed off."),
+    farm_pixels_dropped = n_dropped_farm, farm_pixels_total = n_farm_px,
+    pct_dropped = round(100 * n_dropped_farm / n_farm_px, 4)),
+  seasonal_bias_test = list(
+    design = paste("delta = (JJA+SON pool) - (DJF+MAM pool) for p05 and p50, on farm",
+                   "pixels with >=", SUBPOOL_MIN_SEASONS, "valid seasons in BOTH sub-pools.",
+                   "Pool NOT rebalanced - that would change what the statistic means."),
+    rationale = paste("JJA/SON are the Lowbidgee flood season and are exactly the",
+                      "under-observed seasons (missing because it was wet); losing high",
+                      "values shifts p50 down but should barely move p05."),
+    results = lapply(seq_len(nrow(seasonal_tbl)), function(i) as.list(seasonal_tbl[i, ]))),
+  raster_diagnostics = lapply(seq_len(nrow(diag_tbl)), function(i) as.list(diag_tbl[i, ])),
   alignment = list(compareGeom_vs_veg_regime_class_8058 = geom_ok,
                    resampling = "bilinear (continuous cover %; NOT the binary near rule)"),
   monotonicity = lapply(seq_len(nrow(mono_tbl)), function(i) as.list(mono_tbl[i, ])),
   resolution_caveat = paste("FC natively 30 m; reported on the 24.97 m census grid.",
                             "Do not over-interpret fine spatial detail."),
-  outputs = as.list(gayini_relative_path(root_dir, unname(pct_paths))),
+  ## Keyed by percentile label with RELATIVE-path values. gayini_relative_path()
+  ## uses vapply(), which auto-names its result from the input VALUES (the absolute
+  ## paths), so as.list() silently leaked machine-specific D:/... keys into a shipped
+  ## artefact (same family as C12). unname() before naming. A relpath->relpath map
+  ## would be self-referential, so the label is the key.
+  outputs = stats::setNames(
+    as.list(unname(gayini_relative_path(root_dir, unname(pct_paths)))), PROB_LABELS),
+  figures = stats::setNames(
+    as.list(unname(gayini_relative_path(root_dir, c(png_common, png_stretch)))),
+    c("common_scale", "per_raster_stretch")),
   registered = c(paste0("raster_vegpct_", PROB_LABELS), "raster_veg_regime_class_8058")
 )
 jsonlite::write_json(qa, file.path(diagnostics_dir, "tier2H_h2_qa.json"),
@@ -547,4 +756,7 @@ message(sprintf("source resid. : %d pixel-layers of %s set to NA (raw max %s) - 
                 n_gt_max, format(n_valid_all, big.mark = ","), tv_max))
 message("compareGeom   : TRUE   ·   monotonicity: 0 violations")
 message("Registered    : 5 percentile rasters + veg_regime_class_8058 (C2)")
-message("\nAWAITING: minimum-seasons threshold decision — measured and reported, NOT chosen.")
+message(sprintf("MIN_SEASONS   : %d applied (drops %d farm px = %.4f%%) — justification in the header",
+                MIN_SEASONS, n_dropped_farm, 100 * n_dropped_farm / n_farm_px))
+message("Seasonal test : see tier2H_h2_seasonal_bias_test.csv (pool NOT rebalanced)")
+message("Diagnostics   : tier2H_h2_raster_diagnostics.csv + 2 PNGs zoomed to the data extent")
