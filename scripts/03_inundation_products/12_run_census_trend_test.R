@@ -42,7 +42,28 @@
 
 MIN_VALID_YEARS  <- 25L
 FOCUS_CODES      <- c(11L, 12L, 13L, 21L, 22L, 23L, 31L, 32L, 33L)
-EXPECTED_TALLY   <- c(no_trend = 8L, non_stationary = 1L, directional_trend = 0L)
+
+## RATIFIED census expectation (Hugh, 15 Jul 2026). The F5-SAMPLE gate was
+## 8 no-trend / 1 non-stationary / 0 directional; the census returns 9/0/0 because
+## Riverine low's non-stationary flag was a small-sample artefact, not a signal:
+## 1,000 random 40-point draws from this same census stratum return p < 0.05 in
+## 541 (a 54% false-positive rate against a nominal 5%); median 29/35 zero-years
+## per draw (the F5 sample's 28 is a TYPICAL draw, not an unlucky one); mean tau
+## across draws +0.258 vs census +0.126 -- sparsity biases tau upward. At ~0.04
+## expected wet points/year in the early period, 40 points report zero regardless
+## of the truth.
+##
+## Why a verdict change is legitimate here (the earlier "divergence = bug" stop
+## rule was wrong and is corrected): "a census adds zero temporal power" is true
+## but does NOT imply the verdict cannot change. A trend test operates on the
+## VALUES of the 35 annual observations, and the census removes measurement error
+## WITHIN each year. Where the sample is systematically distorted -- as it is for a
+## sparse, zero-inflated stratum -- the census CORRECTS rather than hardens.
+EXPECTED_TALLY   <- c(no_trend = 9L, non_stationary = 0L, directional_trend = 0L)
+
+## The single ratified verdict change vs the F5-sample gate. Any OTHER stratum
+## moving is still a red flag and stops the run.
+EXPECTED_CHANGED <- "Riverine Chenopod Shrublands | low"
 
 
 ## 1. Sources ----
@@ -193,8 +214,11 @@ tally <- table(factor(as.character(verdict_tbl$verdict),
                       levels = names(EXPECTED_TALLY)))
 message("\nCensus verdict tally:")
 print(tally)
-message(sprintf("Expected (shut gate): no_trend=%d · non_stationary=%d · directional_trend=%d",
+message(sprintf("Expected (RATIFIED census): no_trend=%d · non_stationary=%d · directional_trend=%d",
                 EXPECTED_TALLY["no_trend"], EXPECTED_TALLY["non_stationary"], EXPECTED_TALLY["directional_trend"]))
+message("F5-sample gate was 8/1/0; the one ratified difference is Riverine low ",
+        "(non_stationary -> no_trend), a 40-point sparsity artefact (54% false-positive ",
+        "rate across 1,000 draws). See the header for the full reasoning.")
 
 ## Per-stratum comparison to the F5-sample F6 verdicts (the direct hardening check).
 sample_verdict_path <- file.path(diagnostics_dir, "f6_verdict_summary.csv")
@@ -220,26 +244,35 @@ message(sprintf("\nAeolian low (vacuous check): max annual freq = %.4f%%, mean =
         "its 'no_trend' verdict is trivially true (a flat series cannot trend) -- report as vacuous, not evidence.")
 
 tally_ok <- identical(as.integer(tally[names(EXPECTED_TALLY)]), as.integer(EXPECTED_TALLY))
-changed_any <- !is.null(verdict_delta) && any(verdict_delta$changed, na.rm = TRUE)
+changed_strata <- if (!is.null(verdict_delta))
+  sort(verdict_delta$stratum[which(verdict_delta$changed)]) else character(0)
+## Exactly the one ratified change is allowed; anything else is unexplained.
+changed_ok <- identical(changed_strata, sort(EXPECTED_CHANGED))
 
 
-## 7. H3.2 acceptance gate — 8/1/0 must reproduce, else STOP before H3.3 ----
+## 7. H3.2 acceptance gate — the RATIFIED census result must reproduce ----
+##    (9/0/0, with Riverine low as the single ratified change vs the F5 gate)
 
-if (!tally_ok || changed_any) {
-  message("\n########## H3.2 DIVERGENCE — STOPPING BEFORE H3.3 ##########")
-  message("A census adds ZERO temporal power; the verdict must harden to the SAME 8/1/0, ",
-          "not change. This is a bug to investigate, not a result. See the CSVs above.")
+if (!tally_ok || !changed_ok) {
+  message("\n########## H3.2 UNEXPECTED VERDICT — STOPPING BEFORE H3.3 ##########")
+  message("Census tally must be 9/0/0 with Riverine low as the ONLY change vs the F5 gate. ",
+          "Riverine low's move is ratified (sparsity artefact); any OTHER movement is ",
+          "unexplained and must be investigated, not absorbed.")
+  message("  changed strata observed: ",
+          if (length(changed_strata)) paste(changed_strata, collapse = " ; ") else "(none)")
   ## Persist a minimal QA note before stopping.
-  jsonlite::write_json(list(step = "H3.2", status = "DIVERGENCE",
+  jsonlite::write_json(list(step = "H3.2", status = "UNEXPECTED_VERDICT",
                             tally = as.list(as.integer(tally)),
                             expected = as.list(as.integer(EXPECTED_TALLY)),
-                            changed_strata = if (!is.null(verdict_delta))
-                              verdict_delta$stratum[which(verdict_delta$changed)] else NULL),
+                            changed_strata = changed_strata,
+                            expected_changed = EXPECTED_CHANGED),
                        file.path(diagnostics_dir, "tier2H_trackA_qa.json"),
                        auto_unbox = TRUE, pretty = TRUE)
-  stop("H3.2 census verdict diverged from 8/1/0 — stop and report (do not run H3.3).", call. = FALSE)
+  stop("H3.2 census verdict is not the ratified 9/0/0 — stop and report (do not run H3.3).",
+       call. = FALSE)
 }
-message("\n==> H3.2 PASSED: census verdict reproduces the shut gate 8/1/0, per-stratum unchanged.")
+message("\n==> H3.2 PASSED: census verdict = the ratified 9 no-trend / 0 / 0; Riverine low is ",
+        "the only change vs the F5 gate (ratified sparsity artefact), all eight others unchanged.")
 
 
 ## 8. H3.3 — per-year cut (only reached if 8/1/0 holds) ----
@@ -271,8 +304,16 @@ qa <- list(
   option = "2 (decouple): F5 band edges, NN-stack frequency arithmetic",
   n_years = n_years, min_valid_years = MIN_VALID_YEARS,
   matrix_community = lapply(seq_len(nrow(matrix_community)), function(i) as.list(matrix_community[i, ])),
-  f6 = list(tally = as.list(as.integer(tally)), expected = as.list(as.integer(EXPECTED_TALLY)),
-            tally_ok = tally_ok, per_stratum_unchanged = !changed_any,
+  f6 = list(tally = as.list(as.integer(tally)),
+            expected_census = as.list(as.integer(EXPECTED_TALLY)),
+            f5_sample_gate = list(no_trend = 8L, non_stationary = 1L, directional_trend = 0L),
+            tally_ok = tally_ok, changed_vs_sample = changed_strata,
+            changed_as_ratified = changed_ok,
+            ratified_change_reason = paste(
+              "Riverine low non_stationary -> no_trend: 40-point sparsity artefact.",
+              "1,000 random 40-pt draws from this census stratum give p<0.05 in 541",
+              "(54% false-positive vs nominal 5%); median 29/35 zero-years per draw;",
+              "mean tau across draws +0.258 vs census +0.126."),
             aeolian_low_max_freq_pct = round(ael_low_max, 4),
             aeolian_low_vacuous = ael_low_max < 1),
   outputs = list(
@@ -289,6 +330,8 @@ jsonlite::write_json(qa, file.path(diagnostics_dir, "tier2H_trackA_qa.json"),
 
 message("\n==================== TRACK A COMPLETE ====================")
 message("H3.1 census matrix : Output/diagnostics/tier2H_h31_census_matrix.csv")
-message("H3.2 F6 verdict     : reproduces 8/1/0, per-stratum unchanged (caveat 'thinly sampled' gone)")
+message("H3.2 F6 verdict     : 9 no-trend / 0 non-stationary / 0 directional (ratified). The",
+        " 'thinly sampled / provisional' caveat is gone by construction; Riverine low's",
+        " sample-era non-stationary flag was a 40-point sparsity artefact.")
 message("H3.3 per-year cut   : Output/diagnostics/tier2H_h33_per_year_cut.csv")
 message("Aeolian low         : vacuous no_trend (near-flat-zero series) — report to Adrian, don't count as evidence.")
