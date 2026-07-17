@@ -35,6 +35,12 @@ working/
 /archive/
 _local_archive/
 docs/archive/
+# C9 (Tier2H): un-ignore docs/archive so the superseded Task F design docs are
+# tracked — a gitignored archive is not memory. Keep other archive contents ignored.
+!docs/archive/
+docs/archive/*
+!docs/archive/Tier1_TaskF_spatial_resampling_spec_v2.md
+!docs/archive/Gayini_subsampling_approach.md
 R/obs/
 
 # Script history is now tracked through docs/scripts_manifest.csv

@@ -16,7 +16,10 @@ A spatially explicit remote-sensing assessment of flooding and vegetation on Gay
 ## Standing conventions — do not re-litigate
 
 - **One coordinate system:** everything analytical is **EPSG:8058** (GDA2020 / NSW Lambert). Reproject to new files or on read; never mutate originals.
-- **One headline metric, end to end:** *between-year annual flood frequency* = `100 × wet-valid-years ÷ valid-years`. Community means: Aeolian 9% · Riverine 22% · Inland Floodplain 50% · Woodland/Forest 44% (context, treed, excluded).
+- **One headline metric, end to end:** *between-year annual flood frequency* = `100 × wet-valid-years ÷ valid-years`. **The metric is one; the SUPPORT is two — always state which (C10).**
+  - **Plot support** (~1 ha, **any-pixel rule**: a plot is wet if *any* of its ~16 pixels is wet; 66 plots) — *"how often does a 1-ha site see any water"*: Aeolian **9%** · Riverine **22%** · Inland Floodplain **50%** · Woodland/Forest 44% (context, treed, excluded).
+  - **Pixel support** (24.97 m census pixel; all-pixel census, Tier2H) — *"how often is a 25 m pixel wet"*: Aeolian **6.1%** · Riverine **12.9%** · Inland Floodplain **28.0%**.
+  - Both are correct and both are between-year. The 1.5–1.8× gap is `P(any of ~16 pixels) ≫ P(one pixel)`, **not** a within-year/between-year confusion (the within-year `annual_occurrence_pct` means are 4.0 / 11.6 / 31.2 — a different metric again, see C8). Never compare across supports, and never relabel one as the other.
 - **Figure pair per step:** a concept explainer + the data figure. **One figure = one file = one slide.** Insets/legends never overlap titles/captions.
 - **Review bundle per task:** after the acceptance gate passes, copy deliverables to `Output/review_bundles/tier1{X}_{name}/` and zip.
 - **Workflow:** gated task specs → **branch-and-PR into `main`, human-reviewed before merge**. Stop at the acceptance gate; the review-bundle zip is what gets opened. Do not merge; hand back for the human to merge.
@@ -34,7 +37,7 @@ A spatially explicit remote-sensing assessment of flooding and vegetation on Gay
 `Output/database/Gayini_Results.sqlite` is authoritative (relational); `.gpkg` is the map companion; rasters are external, registered in `raster_asset`.
 
 - **Consume via views, not raw `fact_*` tables.** Start at `v_plot_year_analysis_spine` (the modelling spine) and `v_pixel_census_by_veg_regime` (sampling substrate).
-- **Post-build mutations exist:** the Python builder rebuilds the DB from scratch (unlink + rebuild, no GDAL), so the unified annual stack, raster metadata, and the pixel census are applied *after* the build and **must be re-run in this exact order after any full rebuild: `builder → 05_build_unified_annual_stack → 03_populate_raster_metadata → 09_build_pixel_census_view`** (05 registers the `stack_annual_*` rows whose CRS/legend 03 then completes; 09 reads the annual stack). A DB missing `raster_asset` rows or `v_pixel_census_by_veg_regime` has not had its post-build steps applied.
+- **Post-build mutations exist:** the Python builder rebuilds the DB from scratch (unlink + rebuild, no GDAL), so the unified annual stack, raster metadata, and the pixel census are applied *after* the build and **must be re-run in this exact order after any full rebuild: `builder → 05_build_unified_annual_stack → 03_populate_raster_metadata → 09_build_pixel_census_view → 11_reproject_annual_stack_8058_nn → 01_prepare_inputs/05_populate_metric_support`** (05 registers the `stack_annual_*` rows whose CRS/legend 03 then completes; 09 reads the annual stack; 11 registers the EPSG:8058 NN stack in `raster_asset`; `05_populate_metric_support` re-adds `dim_metric.support`, which the builder's METRICS list does not carry). A DB missing `raster_asset` rows, `v_pixel_census_by_veg_regime`, or `dim_metric.support` has not had its post-build steps applied.
 - Check `v_database_release_checks` and `v_current_qa_issues` before trusting a fresh build.
 
 ## What is retired / archived (do not revive)
@@ -42,6 +45,10 @@ A spatially explicit remote-sensing assessment of flooding and vegetation on Gay
 - **Pre/post framing** (2019/2020 management split) is retired — no pre/post products or figures. Pre/post code is archive-only.
 - **MER** is renamed to "annual maximum observed wet footprint" and kept **supplementary** only.
 - **Archive convention:** archived scripts go to `scripts/archive/` (the smoke test enforces it is absent from the active handoff). Reconcile any `scripts/_deprecated/` into `scripts/archive/`.
+
+## Known tooling conflicts (unresolved — human call with Adrian)
+
+- **Archive convention contradicts the smoke test (B5).** The line above says archived scripts go to `scripts/archive/`, but `run_spine_smoke_test.R:104-112` (`folder_scripts/archive_absent`) **hard-fails if `scripts/archive/` exists**. So `scripts/_deprecated/01_lag_diagnostics_inundation_gc.R` cannot be reconciled into `scripts/archive/` without breaking spine validation. Left untouched pending an Adrian decision; **do not modify the smoke test** to force it. (Deferred as B5 in the Task F spec.)
 
 ## Adrian gate (open decisions — build with documented defaults, flag them)
 
