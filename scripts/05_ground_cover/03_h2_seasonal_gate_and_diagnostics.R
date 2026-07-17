@@ -163,7 +163,12 @@ gayini_write_csv(binned, file.path(diagnostics_dir, "tier2H_h2_gate_mix_vs_flood
 mix_range_over_flood <- max(binned$mean_f_warm) - min(binned$mean_f_warm)
 ## Also as a slope: regress f_warm on flood freq (pp of mix per pp of flood).
 mix_flood_slope <- unname(stats::coef(stats::lm(fw ~ fq))[2])
-message(sprintf("\n  mix change across the flood bins: %.4f (fraction); OLS slope %.2e per %%-flood",
+## The relationship is a STEP, not a gradient: flat (~0.466) up to ~25% flood freq,
+## then a drop to ~0.456 above it (see the binned table). Using the full range as if
+## it were a gradient OVERSTATES the induced bias, so the verdict below is conservative.
+message(sprintf("\n  mix vs flood: a STEP (flat ~%.3f to 25%%, then ~%.3f above); using the range",
+                max(binned$mean_f_warm), min(binned$mean_f_warm)))
+message(sprintf("  %.4f as if a gradient is conservative (overstates bias). OLS slope %.2e per %%-flood.",
                 mix_range_over_flood, mix_flood_slope))
 
 ## Map of the mixture.
@@ -222,7 +227,12 @@ bal_tbl <- tibble::tibble(
 ) |> dplyr::mutate(dplyr::across(dplyr::where(is.numeric), ~ round(.x, 4)))
 message("  bias = (seasonally balanced pool) - (product pool), cover %:")
 print(as.data.frame(bal_tbl), row.names = FALSE)
-message("  (the ~0.4 pp figure was an INFERENCE by both parties; this is the measurement)")
+message(sprintf(paste("\n  ⚠️ LOWER BOUND, not the farm figure: requiring all four seasons keeps only",
+                      "%s of %s drawn (%.1f%%) — the LEAST-cloudy pixels, which are the least",
+                      "imbalanced and therefore the least biased. The farm-wide bias is >= this."),
+                format(nrow(res), big.mark = ","), format(N_SAMPLE, big.mark = ","),
+                100 * nrow(res) / N_SAMPLE))
+message("  (mixture sd = 0.023 caps how far off it can be; the framing, not the number, is the point.)")
 gayini_write_csv(bal_tbl, file.path(diagnostics_dir, "tier2H_h2_balanced_subsample.csv"))
 
 ## The p05 sensitivity to the mix, in pp of p05 per unit of f_warm. The balanced
@@ -258,72 +268,128 @@ fm_tbl <- dplyr::bind_rows(fm_rows)
 print(as.data.frame(fm_tbl), row.names = FALSE)
 
 
-## 3b. p05 of band2 (PV / green) ALONE, farm-masked — is the floor dead litter? ----
+## 3b. Green fraction AT THE FLOOR — PAIRED, not a percentile subtraction ----
+##
+## 🔴 p05(total) and p05(PV) are MARGINAL percentiles on DIFFERENT orderings — the
+## season that sets a pixel's total-veg floor is not necessarily the season that sets
+## its PV floor, and percentiles do NOT subtract (median(PV_p05)/median(total_p05) is
+## meaningless). Measure it PAIRED: for each pixel find the season that sets its
+## total-veg p05, read PV in THAT SAME season, and report the green fraction there.
 
-message("\n================ 3b · p05 of GREEN (PV, band2) alone ================")
-pv_tif <- file.path(rasters_dir, "fc_intermediate", "fc_pv_p05_3577.tif")
-if (!file.exists(pv_tif)) {
-  message("  building the 140-layer PV stack (band2, 255 -> NA) and its p05 ...")
-  pv_stack <- terra::rast(lapply(seq_len(nrow(pool)), function(i) {
-    b2 <- terra::subst(terra::rast(pool$file[i])[[2]], 255L, NA)
-    names(b2) <- paste0(pool$water_year[i], "_", pool$season[i]); b2
-  }))
-  pv_n <- sum(!is.na(pv_stack))
-  pv_p05 <- terra::quantile(pv_stack, probs = 0.05, na.rm = TRUE)
-  pv_p05 <- terra::ifel(pv_n >= MIN_SEASONS, pv_p05, NA)
-  terra::writeRaster(pv_p05, pv_tif, overwrite = TRUE, datatype = "FLT4S")
+message("\n================ 3b · green fraction AT THE FLOOR (paired) ================")
+pv_stack_tif <- file.path(rasters_dir, "fc_intermediate", "fc_pv_3577_wy1988_2023.tif")
+if (!file.exists(pv_stack_tif)) {
+  message("  building + caching the 140-layer PV stack (band2, 255 -> NA) ...")
+  pv_stack <- terra::rast(lapply(seq_len(nrow(pool)), function(i)
+    terra::subst(terra::rast(pool$file[i])[[2]], 255L, NA)))
+  terra::writeRaster(pv_stack, pv_stack_tif, overwrite = TRUE, datatype = "INT2S", NAflag = -9999)
 }
-pv_p05_8058 <- terra::project(terra::rast(pv_tif), class_r, method = "bilinear")
-names(pv_p05_8058) <- "pv_p05"
+tv_stack_full <- tv                                    # total veg, 3577, 140 lyr (from top)
+pv_stack_full <- terra::rast(pv_stack_tif)
+names(pv_stack_full) <- names(tv_stack_full)
 
-tot_p05 <- terra::rast(file.path(rasters_dir, "veg_percentiles_8058", "total_veg_p05_8058.tif"))
-pv_f  <- terra::values(terra::mask(pv_p05_8058, bv8058))[, 1]; pv_f <- pv_f[!is.na(pv_f)]
-tot_f <- terra::values(terra::mask(tot_p05, bv8058))[, 1];     tot_f <- tot_f[!is.na(tot_f)]
-pv_tbl <- tibble::tibble(
-  layer = c("total veg p05 (green + dead)", "green/PV only p05"),
-  n_farm_px = c(length(tot_f), length(pv_f)),
-  min = round(c(min(tot_f), min(pv_f)), 3),
-  median = round(c(stats::median(tot_f), stats::median(pv_f)), 3),
-  mean = round(c(mean(tot_f), mean(pv_f)), 3),
-  max = round(c(max(tot_f), max(pv_f)), 3))
-print(as.data.frame(pv_tbl), row.names = FALSE)
-message(sprintf("\n  READ: at the floor, the median farm pixel holds %.1f%% total veg of which",
-                stats::median(tot_f)))
-message(sprintf("  only ~%.1f%% is GREEN -> ~%.0f%% of the floor is DEAD material (litter/NPV).",
-                stats::median(pv_f), 100 * (1 - stats::median(pv_f) / stats::median(tot_f))))
-message("  'The floor is 58%' and 'the floor is 58% dead material' are different slides.")
-fm_tbl <- dplyr::bind_rows(fm_tbl, tibble::tibble(
-  raster = "pv_p05_green_only", n_data_grid = NA_integer_, median_grid = NA_real_,
-  n_data_farm = length(pv_f), min_farm = round(min(pv_f), 3),
-  median_farm = round(stats::median(pv_f), 3), max_farm = round(max(pv_f), 3),
-  farm_minus_grid_median = NA_real_))
+## Paired per-pixel: green fraction (%) in the season at the total-veg p05 order stat.
+## Returns c(total_at_floor, pv_at_floor, green_frac_pct). Support rule enforced.
+green_at_floor <- function(x) {
+  n   <- length(x) / 2L
+  tot <- x[seq_len(n)]; pv <- x[n + seq_len(n)]
+  ok  <- !is.na(tot) & !is.na(pv)
+  m   <- sum(ok)
+  if (m < 50L) return(c(NA_real_, NA_real_, NA_real_))   # MIN_SEASONS
+  tot <- tot[ok]; pv <- pv[ok]
+  k   <- max(1L, ceiling(0.05 * m))                      # 5th-percentile ORDER statistic
+  idx <- order(tot)[k]
+  tf  <- tot[idx]; pf <- pv[idx]
+  c(tf, pf, if (tf > 0) 100 * pf / tf else NA_real_)
+}
+## Restrict to the farm (native 3577) to keep the per-cell R apply tractable + complete.
+tv_farm3577 <- terra::mask(terra::crop(tv_stack_full, bv3577), bv3577)
+pv_farm3577 <- terra::mask(terra::crop(pv_stack_full, bv3577), bv3577)
+message("  paired per-pixel apply over the farm (3577); this is complete, not sampled ...")
+floor_r <- terra::app(c(tv_farm3577, pv_farm3577), fun = green_at_floor)
+names(floor_r) <- c("total_at_floor", "pv_at_floor", "green_frac_pct")
+
+fv <- terra::values(floor_r)
+keep_f <- !is.na(fv[, "green_frac_pct"])
+tot_at <- fv[keep_f, "total_at_floor"]; pv_at <- fv[keep_f, "pv_at_floor"]
+gf     <- fv[keep_f, "green_frac_pct"]
+floor_tbl <- tibble::tibble(
+  quantity = c("total veg at the floor season (%)", "PV/green at that same season (%)",
+               "green fraction of the floor (%)"),
+  n_farm_px = length(gf),
+  min = round(c(min(tot_at), min(pv_at), min(gf)), 3),
+  median = round(c(stats::median(tot_at), stats::median(pv_at), stats::median(gf)), 3),
+  mean = round(c(mean(tot_at), mean(pv_at), mean(gf)), 3),
+  p95 = round(c(stats::quantile(tot_at, .95, names = FALSE),
+                stats::quantile(pv_at, .95, names = FALSE),
+                stats::quantile(gf, .95, names = FALSE)), 3))
+print(as.data.frame(floor_tbl), row.names = FALSE)
+gf_med <- stats::median(gf)
+message(sprintf("\n  PAIRED READ: at the season that sets each pixel's total-veg floor, the median"))
+message(sprintf("  farm pixel is %.1f%% green -> ~%.0f%% of the floor is DEAD material (NPV/litter).",
+                gf_med, 100 - gf_med))
+message("  (measured paired per pixel, not inferred by subtracting two marginal percentiles.)")
+gayini_write_csv(floor_tbl, file.path(diagnostics_dir, "tier2H_h2_green_fraction_at_floor.csv"))
 gayini_write_csv(fm_tbl, file.path(diagnostics_dir, "tier2H_h2_farm_masked_diagnostics.csv"))
+tot_p05 <- terra::rast(file.path(rasters_dir, "veg_percentiles_8058", "total_veg_p05_8058.tif"))
 
 
-## 3c. The pale blob at ~(9,005,000, 4,350,000) — lake, claypan, or artefact? ----
+## 3c. The pale blob — probe AT THE LAKE CENTROID, not the vegetated rim ----
+##
+## 🔴 The earlier probe at (9,005,000, 4,350,000) hit the VEGETATED RIM (n_NA=0,
+## flood 25.7%, class 23/40) — the wrong feature. The NA blob's centroid is ~5 km
+## west, found by locating the p05-NA hole surrounded by data. Probe THERE, and
+## characterise with the two variables that decide lake-vs-claypan-vs-artefact:
+## FC valid-season count and inundation frequency.
 
-message("\n================ 3c · the pale blob probe ================")
-pt <- terra::vect(cbind(BLOB_XY[1], BLOB_XY[2]), crs = terra::crs(class_r))
-class_num <- class_r; levels(class_num) <- NULL; terra::coltab(class_num) <- NULL  # codes, not factor
-probe_stack <- c(tot_p05, pv_p05_8058, f_warm_8058, freq, class_num)
-names(probe_stack) <- c("total_p05", "pv_p05", "f_warm", "flood_freq_pct", "veg_regime_class")
-## Sample a small neighbourhood so a single-cell oddity is distinguishable from a feature.
-buf <- terra::buffer(pt, 400)
-nb  <- terra::extract(probe_stack, buf, fun = NULL, ID = FALSE)
+message("\n================ 3c · the pale blob — LAKE probe (at the NA centroid) ================")
+## FC valid-season count on the 8058 grid (near-neighbour; a count is categorical-ish).
+nvs <- sum(!is.na(tv)); names(nvs) <- "n_valid_seasons"
+nvs_8058 <- terra::project(nvs, class_r, method = "near")
+class_num <- class_r; levels(class_num) <- NULL; terra::coltab(class_num) <- NULL
+
+## Locate the NA hole: p05 NA cells that sit WITHIN the FC data footprint (a nearby
+## data cell exists), inside a window around the reported centroid.
+win  <- terra::ext(BLOB_XY[1] - 8000, BLOB_XY[1] + 4000, BLOB_XY[2] - 6000, BLOB_XY[2] + 8000)
+p05w <- terra::crop(tot_p05, win)
+vv   <- terra::values(p05w)[, 1]
+xy   <- terra::xyFromCell(p05w, seq_along(vv))
+na_i <- which(is.na(vv)); data_xy <- xy[!is.na(vv), , drop = FALSE]
+nn   <- terra::nearest(terra::vect(xy[na_i, , drop = FALSE], crs = terra::crs(class_r)),
+                       terra::vect(data_xy, crs = terra::crs(class_r)))
+holes <- na_i[terra::values(nn)[, "distance"] < 400]     # NA holes inside the data footprint
+hxy   <- xy[holes, , drop = FALSE]
+centroid <- round(colMeans(hxy))
+hv    <- terra::vect(hxy, crs = terra::crs(class_r))
+
+pr <- data.frame(
+  n_valid_seasons = terra::extract(nvs_8058, hv)[, 2],
+  flood_freq_pct  = terra::extract(freq, hv)[, 2],
+  veg_class       = terra::extract(class_num, hv)[, 2])
 blob_tbl <- tibble::tibble(
-  variable = names(probe_stack),
-  n_cells_in_400m = vapply(nb, function(v) sum(!is.na(v)), integer(1)),
-  n_NA = vapply(nb, function(v) sum(is.na(v)), integer(1)),
-  min = vapply(nb, function(v) suppressWarnings(round(min(v, na.rm = TRUE), 3)), numeric(1)),
-  median = vapply(nb, function(v) suppressWarnings(round(stats::median(v, na.rm = TRUE), 3)), numeric(1)),
-  max = vapply(nb, function(v) suppressWarnings(round(max(v, na.rm = TRUE), 3)), numeric(1)))
-print(as.data.frame(blob_tbl), row.names = FALSE)
-classes <- gayini_veg_regime_classes()
-cc <- stats::median(nb$veg_regime_class, na.rm = TRUE)
-message(sprintf("\n  veg_regime_class at the blob: %s -> %s",
-                cc, if (is.na(cc)) "OUTSIDE the mapped veg map (NA)" else
-                  classes$label[match(round(cc), classes$code)]))
+  feature = "NA blob (p05-NA hole within FC footprint)",
+  n_cells = length(holes), area_ha = round(length(holes) * 0.0623514, 1),
+  centroid_x_8058 = centroid[1], centroid_y_8058 = centroid[2],
+  fc_valid_seasons_median = stats::median(pr$n_valid_seasons, na.rm = TRUE),
+  fc_valid_seasons_min = min(pr$n_valid_seasons, na.rm = TRUE),
+  fc_valid_seasons_max = max(pr$n_valid_seasons, na.rm = TRUE),
+  inundation_freq_median = round(stats::median(pr$flood_freq_pct, na.rm = TRUE), 1),
+  inundation_freq_min = round(min(pr$flood_freq_pct, na.rm = TRUE), 1),
+  veg_class_n_NA = sum(is.na(pr$veg_class)), veg_class_n = length(pr$veg_class),
+  min_seasons_threshold = MIN_SEASONS)
+print(as.data.frame(t(blob_tbl)))
 gayini_write_csv(blob_tbl, file.path(diagnostics_dir, "tier2H_h2_blob_probe.csv"))
+
+is_lake <- blob_tbl$fc_valid_seasons_median < MIN_SEASONS &&
+  blob_tbl$inundation_freq_median > 50 && blob_tbl$veg_class_n_NA == blob_tbl$veg_class_n
+message(sprintf("\n  VERDICT: %s", if (is_lake) sprintf(paste(
+  "LAKE. %.0f ha, %.1f%% inundation frequency (near-permanent water), FC valid seasons",
+  "median %d (< MIN_SEASONS=%d: water is persistent FC nodata), and entirely OUTSIDE the",
+  "veg map. Not a claypan (would be dry) or artefact (coherent %.0f-ha feature). The",
+  "MIN_SEASONS threshold correctly stops the product fabricating a veg floor over open water."),
+  blob_tbl$area_ha, blob_tbl$inundation_freq_median, blob_tbl$fc_valid_seasons_median,
+  MIN_SEASONS, blob_tbl$area_ha)
+  else "NOT a clean lake signature — inspect the probe table."))
 
 
 ## 4. Gate verdict — decided on the INDUCED BIAS, with r reported honestly ----

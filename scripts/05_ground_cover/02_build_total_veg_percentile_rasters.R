@@ -83,6 +83,15 @@ EXPECTED_N_WY       <- 35L
 ##     rather than an artefact of one anomalous season.
 ## Cost: drops 111 farm pixels = 0.0116% — near-inert, the same shape as
 ## MIN_VALID_YEARS (facts §9). Measured before it was chosen (facts §12), not after.
+##
+## The threshold does TWO jobs (both verified 16 Jul):
+##   (i)  STATISTICAL — p05 needs n >= 40 to be a percentile, not the minimum (above).
+##   (ii) MASKING OPEN WATER — persistent water is persistent FC nodata, so a
+##        near-permanent waterbody accumulates too few valid seasons to clear the
+##        threshold and correctly becomes NA rather than getting a fabricated veg
+##        floor. Verified on the ~347 ha lake at (8,999,545, 4,349,484): 91.4%
+##        inundation frequency, FC valid-seasons median 13 (< 50), entirely outside
+##        the veg map. Without the threshold the product would invent cover over water.
 MIN_SEASONS <- 50L
 
 ## Test-only support for the seasonal-composition test (§7b). Each sub-pool is half
