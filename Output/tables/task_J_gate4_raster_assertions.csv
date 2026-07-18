@@ -1,0 +1,37 @@
+check,passed,status,severity,detail,group
+ondisk__diff1994_28355__sentinel_absent_as_value,TRUE,PASS,stop_if_fail,nodata -9999 present as value: FALSE,ondisk
+ondisk__diff1994_28355__na_count_preserved,TRUE,PASS,stop_if_fail,0 == 0,ondisk
+ondisk__diff1994_28355__range_matches_in_memory,TRUE,PASS,stop_if_fail,-100 .. 100,ondisk
+ondisk__diff1999_28355__sentinel_absent_as_value,TRUE,PASS,stop_if_fail,nodata -9999 present as value: FALSE,ondisk
+ondisk__diff1999_28355__na_count_preserved,TRUE,PASS,stop_if_fail,0 == 0,ondisk
+ondisk__diff1999_28355__range_matches_in_memory,TRUE,PASS,stop_if_fail,-100 .. 100,ondisk
+ondisk__diff2004_28355__sentinel_absent_as_value,TRUE,PASS,stop_if_fail,nodata -9999 present as value: FALSE,ondisk
+ondisk__diff2004_28355__na_count_preserved,TRUE,PASS,stop_if_fail,2418 == 2418,ondisk
+ondisk__diff2004_28355__range_matches_in_memory,TRUE,PASS,stop_if_fail,-100 .. 93.333,ondisk
+ondisk__diff2009_28355__sentinel_absent_as_value,TRUE,PASS,stop_if_fail,nodata -9999 present as value: FALSE,ondisk
+ondisk__diff2009_28355__na_count_preserved,TRUE,PASS,stop_if_fail,341397 == 341397,ondisk
+ondisk__diff2009_28355__range_matches_in_memory,TRUE,PASS,stop_if_fail,-90 .. 100,ondisk
+ondisk__diff2014_28355__sentinel_absent_as_value,TRUE,PASS,stop_if_fail,nodata -9999 present as value: FALSE,ondisk
+ondisk__diff2014_28355__na_count_preserved,TRUE,PASS,stop_if_fail,8869 == 8869,ondisk
+ondisk__diff2014_28355__range_matches_in_memory,TRUE,PASS,stop_if_fail,-80 .. 100,ondisk
+ondisk__diff2018_28355__sentinel_absent_as_value,TRUE,PASS,stop_if_fail,nodata -9999 present as value: FALSE,ondisk
+ondisk__diff2018_28355__na_count_preserved,TRUE,PASS,stop_if_fail,4836 == 4836,ondisk
+ondisk__diff2018_28355__range_matches_in_memory,TRUE,PASS,stop_if_fail,-96.552 .. 100,ondisk
+ondisk__diff1994_8058__sentinel_absent_as_value,TRUE,PASS,stop_if_fail,nodata -9999 present as value: FALSE,ondisk
+ondisk__diff1994_8058__na_count_preserved,TRUE,PASS,stop_if_fail,1925390 == 1925390,ondisk
+ondisk__diff1994_8058__range_matches_in_memory,TRUE,PASS,stop_if_fail,-100 .. 80,ondisk
+ondisk__diff1999_8058__sentinel_absent_as_value,TRUE,PASS,stop_if_fail,nodata -9999 present as value: FALSE,ondisk
+ondisk__diff1999_8058__na_count_preserved,TRUE,PASS,stop_if_fail,1925390 == 1925390,ondisk
+ondisk__diff1999_8058__range_matches_in_memory,TRUE,PASS,stop_if_fail,-99.792 .. 90,ondisk
+ondisk__diff2004_8058__sentinel_absent_as_value,TRUE,PASS,stop_if_fail,nodata -9999 present as value: FALSE,ondisk
+ondisk__diff2004_8058__na_count_preserved,TRUE,PASS,stop_if_fail,1925390 == 1925390,ondisk
+ondisk__diff2004_8058__range_matches_in_memory,TRUE,PASS,stop_if_fail,-98.61 .. 55.227,ondisk
+ondisk__diff2009_8058__sentinel_absent_as_value,TRUE,PASS,stop_if_fail,nodata -9999 present as value: FALSE,ondisk
+ondisk__diff2009_8058__na_count_preserved,TRUE,PASS,stop_if_fail,1925390 == 1925390,ondisk
+ondisk__diff2009_8058__range_matches_in_memory,TRUE,PASS,stop_if_fail,-68.47 .. 100,ondisk
+ondisk__diff2014_8058__sentinel_absent_as_value,TRUE,PASS,stop_if_fail,nodata -9999 present as value: FALSE,ondisk
+ondisk__diff2014_8058__na_count_preserved,TRUE,PASS,stop_if_fail,1925390 == 1925390,ondisk
+ondisk__diff2014_8058__range_matches_in_memory,TRUE,PASS,stop_if_fail,-67.932 .. 89.063,ondisk
+ondisk__diff2018_8058__sentinel_absent_as_value,TRUE,PASS,stop_if_fail,nodata -9999 present as value: FALSE,ondisk
+ondisk__diff2018_8058__na_count_preserved,TRUE,PASS,stop_if_fail,1925390 == 1925390,ondisk
+ondisk__diff2018_8058__range_matches_in_memory,TRUE,PASS,stop_if_fail,-64.502 .. 100,ondisk

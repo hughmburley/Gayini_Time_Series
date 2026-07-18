@@ -1,0 +1,21 @@
+check,passed,status,severity,detail,group
+"pre__wet_subset_{0,1}+NA",TRUE,PASS,stop_if_fail,"value set {0,1}",input
+pre__valid_subset_{1}+NA_no_zero,TRUE,PASS,stop_if_fail,"value set {1} (asserted =={1}, not {0,1})",input
+pre__255_absent_from_wet,TRUE,PASS,stop_if_fail,255 present as value: FALSE,input
+pre__255_absent_from_valid,TRUE,PASS,stop_if_fail,255 present as value: FALSE,input
+pre__wet_subset_valid,TRUE,PASS,stop_if_fail,0 pixels wet-but-not-valid across the window layers,input
+"post__wet_subset_{0,1}+NA",TRUE,PASS,stop_if_fail,"value set {0,1}",input
+post__valid_subset_{1}+NA_no_zero,TRUE,PASS,stop_if_fail,"value set {1} (asserted =={1}, not {0,1})",input
+post__255_absent_from_wet,TRUE,PASS,stop_if_fail,255 present as value: FALSE,input
+post__255_absent_from_valid,TRUE,PASS,stop_if_fail,255 present as value: FALSE,input
+post__wet_subset_valid,TRUE,PASS,stop_if_fail,0 pixels wet-but-not-valid across the window layers,input
+pre_frequency_range_0_100,TRUE,PASS,stop_if_fail,range 0 .. 100,product
+post_frequency_range_0_100,TRUE,PASS,stop_if_fail,range 0 .. 100,product
+diff_range_-100_100,TRUE,PASS,stop_if_fail,range -96.552 .. 100,product
+pre_wet_years_not_gt_valid,TRUE,PASS,stop_if_fail,0 pixels wet_count > valid_count,product
+post_wet_years_not_gt_valid,TRUE,PASS,stop_if_fail,0 pixels wet_count > valid_count,product
+pre_frequency_requires_valid,TRUE,PASS,stop_if_fail,0 pixels have freq but no valid pre years,product
+post_frequency_requires_valid,TRUE,PASS,stop_if_fail,0 pixels have freq but no valid post years,product
+ondisk__sentinel_absent_as_value,TRUE,PASS,stop_if_fail,nodata -9999 present as value: FALSE,ondisk
+ondisk__na_count_preserved,TRUE,PASS,stop_if_fail,4836 == 4836,ondisk
+ondisk__range_matches_in_memory,TRUE,PASS,stop_if_fail,-96.552 .. 100,ondisk
