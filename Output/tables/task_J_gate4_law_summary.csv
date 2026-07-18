@@ -1,0 +1,4 @@
+model,intercept,b_logq,b_n_pre_years,r2,resid_sd_ddof1_pp,pred_2018_pp,obs_2018_pp,resid_2018_pp,resid_2018_sd_ddof1,resid_2018_rank_of_25,n_placebo_exceed_2018
+primary_24placebo,-1.4441,19.6177,NA,0.8641,4.1648,1.7813,9.2961,7.5148,1.8043,2,1
+two_var_24placebo,-11.5492,15.627,0.4779,0.9178,3.2385,4.8797,9.2961,4.4164,1.3637,NA,NA
+independent_5,-1.4979,20.3674,NA,0.8331,5.5517,1.8508,9.2961,7.4453,1.3411,NA,NA

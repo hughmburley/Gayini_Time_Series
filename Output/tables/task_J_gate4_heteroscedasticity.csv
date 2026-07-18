@@ -1,0 +1,4 @@
+regime,n_placebos,residual_sd_ddof1,mean_abs_diff_pp,max_residual_pp,max_residual_date,corr_absresid_absdiff,note
+dry_q_lt_0.6,13,5.131,21.823,8.667,2005,0.566,CAVEAT on sd framing only; pooled sd used to rank (pre-registered); NOT re-scaled
+wet_q_ge_0.6,11,2.299,3.776,4.102,2016,0.566,CAVEAT on sd framing only; pooled sd used to rank (pre-registered); NOT re-scaled
+ALL_placebos,24,4.165,13.551,8.667,2005,0.566,CAVEAT on sd framing only; pooled sd used to rank (pre-registered); NOT re-scaled
