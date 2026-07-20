@@ -1,0 +1,26 @@
+community,zone,n,pct,zone_label
+Aeolian Chenopod Shrublands,0,32250,41.589291,never
+Aeolian Chenopod Shrublands,1,28438,36.673373,rarely (<1:10)
+Aeolian Chenopod Shrublands,2,13500,17.409471,occasionally (1:10-1:4)
+Aeolian Chenopod Shrublands,3,2785,3.591509,regularly (1:4-1:2)
+Aeolian Chenopod Shrublands,4,571,0.736356,frequently (>1:2)
+Riverine Chenopod Shrublands,0,27104,13.995807,never
+Riverine Chenopod Shrublands,1,74698,38.572122,rarely (<1:10)
+Riverine Chenopod Shrublands,2,55558,28.688719,occasionally (1:10-1:4)
+Riverine Chenopod Shrublands,3,35032,18.089622,regularly (1:4-1:2)
+Riverine Chenopod Shrublands,4,1266,0.65373,frequently (>1:2)
+Inland Floodplain Shrublands / Swamps,0,19711,2.746684,never
+Inland Floodplain Shrublands / Swamps,1,108828,15.164939,rarely (<1:10)
+Inland Floodplain Shrublands / Swamps,2,182203,25.389582,occasionally (1:10-1:4)
+Inland Floodplain Shrublands / Swamps,3,334480,46.609042,regularly (1:4-1:2)
+Inland Floodplain Shrublands / Swamps,4,72407,10.089754,frequently (>1:2)
+Floodplain Woodland / Forest,0,541,0.626339,never
+Floodplain Woodland / Forest,1,14791,17.124168,rarely (<1:10)
+Floodplain Woodland / Forest,2,14508,16.796527,occasionally (1:10-1:4)
+Floodplain Woodland / Forest,3,38342,44.390159,regularly (1:4-1:2)
+Floodplain Woodland / Forest,4,18193,21.062808,frequently (>1:2)
+Other / minor units,0,43,0.868511,never
+Other / minor units,1,374,7.554029,rarely (<1:10)
+Other / minor units,2,2002,40.436275,occasionally (1:10-1:4)
+Other / minor units,3,2513,50.757423,regularly (1:4-1:2)
+Other / minor units,4,19,0.383761,frequently (>1:2)
