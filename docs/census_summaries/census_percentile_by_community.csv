@@ -1,0 +1,26 @@
+community,percentile,n_pixels,n_nonnull,n_null,mean,median,min,max
+Aeolian Chenopod Shrublands,veg_p05,77544,77544,0,46.046,46.871,1.186,81.114
+Aeolian Chenopod Shrublands,veg_p10,77544,77544,0,52.864,54.922,1.263,82.763
+Aeolian Chenopod Shrublands,veg_p20,77544,77544,0,60.349,62.937,1.841,85.553
+Aeolian Chenopod Shrublands,veg_p30,77544,77544,0,65.238,68.048,1.929,87
+Aeolian Chenopod Shrublands,veg_p50,77544,77544,0,72.754,75.749,3.561,90.299
+Riverine Chenopod Shrublands,veg_p05,193658,193658,0,44.04,43.276,2.981,83.984
+Riverine Chenopod Shrublands,veg_p10,193658,193658,0,51.551,52.225,4.095,85.745
+Riverine Chenopod Shrublands,veg_p20,193658,193658,0,60.285,61.758,5.773,87
+Riverine Chenopod Shrublands,veg_p30,193658,193658,0,65.923,67.557,6.777,88.767
+Riverine Chenopod Shrublands,veg_p50,193658,193658,0,74.385,76.373,8.575,92.015
+Inland Floodplain Shrublands / Swamps,veg_p05,717629,717627,2,61.027,62.777,10.474,88.66
+Inland Floodplain Shrublands / Swamps,veg_p10,717629,717627,2,66.846,68.215,12.519,93.825
+Inland Floodplain Shrublands / Swamps,veg_p20,717629,717627,2,72.862,73.862,14.586,94.936
+Inland Floodplain Shrublands / Swamps,veg_p30,717629,717627,2,76.792,77.753,16.254,95.949
+Inland Floodplain Shrublands / Swamps,veg_p50,717629,717627,2,82.513,83.025,21.398,97
+Floodplain Woodland / Forest,veg_p05,86375,86222,153,71.98,74.247,11.911,91.847
+Floodplain Woodland / Forest,veg_p10,86375,86222,153,75.339,77.33,14.607,93.704
+Floodplain Woodland / Forest,veg_p20,86375,86222,153,79.188,80.833,16.428,95.451
+Floodplain Woodland / Forest,veg_p30,86375,86222,153,81.787,83.122,18.863,96.025
+Floodplain Woodland / Forest,veg_p50,86375,86222,153,85.866,86.93,31.448,97
+Other / minor units,veg_p05,4951,4951,0,69.123,70.812,36.463,82.372
+Other / minor units,veg_p10,4951,4951,0,73.19,74.69,46.682,83.793
+Other / minor units,veg_p20,4951,4951,0,77.804,78.911,57.573,85.829
+Other / minor units,veg_p30,4951,4951,0,80.924,81.993,62.053,87.834
+Other / minor units,veg_p50,4951,4951,0,85.379,86.083,66.27,90.577

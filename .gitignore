@@ -106,3 +106,7 @@ Output/database/*.gpkg
 data_intermediate/
 *.img
 *.tif
+
+# --- Python bytecode ---
+__pycache__/
+*.pyc
