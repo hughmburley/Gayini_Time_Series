@@ -67,7 +67,9 @@ One row per **valid census pixel**. Expected **1,080,157 rows**.
 
 ~16 columns × 1.08M rows → **15–30 MB** as parquet.
 
-**Nullability:** the `veg_p*` columns are NULL where FC has no valid seasons for that pixel. Report the null count per percentile column — do not silently drop those rows, and do not fill them.
+**Nullability:** the `veg_p*` columns are null where FC has no valid seasons for that pixel (155 per column — permanently-wet Woodland context pixels below `MIN_SEASONS`). Report the null count per percentile column — do not silently drop those rows, and do not fill them.
+
+> ⚠️ **D7 — nulls are stored as float `NaN`, not parquet `NULL`.** A consumer testing `WHERE veg_p05 IS NULL` gets **0 rows**; use `isnan()` (DuckDB/SQL) or `is.na()` (R/arrow) instead. Functionally correct — the NaN rows are the below-`MIN_SEASONS` context pixels — but the SQL `IS NULL` idiom silently misses them.
 
 ### Coordinates — store 8058 only
 
