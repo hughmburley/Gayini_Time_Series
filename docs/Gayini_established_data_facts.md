@@ -268,7 +268,9 @@ At the season that sets each pixel's total-veg floor (farm, n = 959,833):
 
 **The median farm pixel's floor is ~97% dead material.** Still the resilience story — litter holds soil and catches seed — but it is **not** "the country stays green".
 
-> **The distribution is heavily skewed, and the tail is the interesting part: ~4,300 ha (≈5% of the farm) has a floor that is MAJORITY GREEN** — land that stays green in its own worst season. That is a **refugia** map, and probably a better one than the median.
+> **The distribution is heavily skewed, and the tail is the interesting part: land that stays MAJORITY GREEN in its own worst season** — a **refugia** map, probably a better one than the median.
+>
+> ⚠️ **State the pixel basis (D8 — grid mismatch).** The paired majority-green count is **71,755 pixels on the native EPSG:3577 30 m grid**; converting it with the **EPSG:8058 24.97 m census pixel** understates true ground area by (24.97/30)² = 0.693 (~31%). Native-grid consistent: **~6,460 ha (≈7.5% of the farm)**. The earlier "**~4,300 ha (≈5%)**" used the mismatched 8058 pixel and is **superseded** — prefer the native-grid figure, or reproject the floor to 8058 before counting, and state the basis on any refugia slide. The refugia *story* is unchanged (thousands of ha, skew-tail); only the headline hectares move.
 
 > ⚠️ **These are PAIRED figures.** An earlier "99% dead" came from subtracting marginal percentiles — **invalid** (§11).
 
