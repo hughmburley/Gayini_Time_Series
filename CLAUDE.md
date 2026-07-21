@@ -28,7 +28,7 @@ strategy is required before any builder re-run.
 - `map_asset_index` has **two independent `rglob` scan sites** — an `_archive/` exclusion needs **both** edited.
 - `MIN_SEASONS = 50` does **two jobs** (makes p05 a true percentile *and* excludes open water) — don't change it without understanding both.
 - **Machine identity** comes from an external signal (hostname, or a genuinely differing path) — never from a path the model assumes is workstation-vs-laptop.
-- `figure_asset` holds a **stale 1-July snapshot** (139 old-generation rows, 0 current-ladder) — verify against disk before trusting it. *(Update or drop this line once the figure registry is rebuilt.)*
+- `figure_asset`: the **11 Gate E figures are registered** (`run_id='gateE_20260721'`, G7) — the current-ladder set (S12/S21/S24/S25/S26, veg-water scatters, percentile fan, Fig A). The **pre-Gate-E rows remain an old-generation snapshot** (verify against disk before trusting them); D4 is partially closed, the older rows still need reconciliation.
 
 ## What this project is
 
