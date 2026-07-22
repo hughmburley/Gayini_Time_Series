@@ -110,3 +110,6 @@ data_intermediate/
 # --- Python bytecode ---
 __pycache__/
 *.pyc
+
+# --- D2 parity render (Gate 0 scratch; kept for inspection, delete after Gate 2) ---
+scratch_parity/

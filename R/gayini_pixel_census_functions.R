@@ -178,7 +178,12 @@ gayini_write_pixel_census_view <- function(db_path, census, metric_rows = NULL) 
   on.exit(DBI::dbDisconnect(con), add = TRUE)
 
   DBI::dbExecute(con, "DROP VIEW IF EXISTS v_pixel_census_by_veg_regime")
-  DBI::dbWriteTable(con, "census_stratum", as.data.frame(census), overwrite = TRUE)
+  ## D2 fix: farm_area_ha is a MISNOMER (holds the MAPPED area, 67,349 ha, not the farm).
+  ## Carry the true farm area (85,910.8 ha) so pct_of_farm can divide by the real denominator,
+  ## and keep pct_of_mapped for the "% of mapped" basis (e.g. the S12 "66.44% of mapped" held trap).
+  census <- as.data.frame(census)
+  if (!"farm_area_total_ha" %in% names(census)) census$farm_area_total_ha <- 85910.8
+  DBI::dbWriteTable(con, "census_stratum", census, overwrite = TRUE)
 
   ## Safety-net metric definitions (canonical copies also live in the Python
   ## builder METRICS list). INSERT OR IGNORE keeps this idempotent + rebuild-safe.
@@ -206,7 +211,8 @@ gayini_write_pixel_census_view <- function(db_path, census, metric_rows = NULL) 
        band_freq_hi_pct,
        n_pixels,
        area_ha,
-       100.0 * area_ha / farm_area_ha                              AS pct_of_farm,
+       100.0 * area_ha / farm_area_total_ha                        AS pct_of_farm,
+       100.0 * area_ha / farm_area_ha                              AS pct_of_mapped,
        n_points_sampled,
        CASE WHEN n_pixels > 0
             THEN CAST(n_points_sampled AS REAL) / n_pixels END     AS sampling_fraction,

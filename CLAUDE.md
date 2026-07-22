@@ -28,7 +28,7 @@ strategy is required before any builder re-run.
 - `map_asset_index` has **two independent `rglob` scan sites** — an `_archive/` exclusion needs **both** edited.
 - `MIN_SEASONS = 50` does **two jobs** (makes p05 a true percentile *and* excludes open water) — don't change it without understanding both.
 - **Machine identity** comes from an external signal (hostname, or a genuinely differing path) — never from a path the model assumes is workstation-vs-laptop.
-- `figure_asset` holds a **stale 1-July snapshot** (139 old-generation rows, 0 current-ladder) — verify against disk before trusting it. *(Update or drop this line once the figure registry is rebuilt.)*
+- `figure_asset`: the **11 Gate E figures are registered** (`run_id='gateE_20260721'`, G7) — the current-ladder set (S12/S21/S24/S25/S26, veg-water scatters, percentile fan, Fig A). The **pre-Gate-E rows remain an old-generation snapshot** (verify against disk before trusting them); D4 is partially closed, the older rows still need reconciliation.
 
 ## What this project is
 
@@ -37,7 +37,7 @@ A spatially explicit remote-sensing assessment of flooding and vegetation on Gay
 ## Current state
 
 - **The project pivoted from sampling to an all-pixel census at the 15 July 2026 Adrian review.** Two Adrian deliverables are in final stages:
-  - **Task H — all-pixel census (1,080,157 pixels, 11 strata): analytically complete and reconciled** (parquet ↔ `census_stratum` at diff = 0). Six paper-trail defects remain (data is sound): **D1** — spec v4 not committed to `main` (confirmed absent on disk); **D2** — the C1 area-basis correction never landed, so `pct_of_farm` reports % of *mapped* area (67,349.332 ha), not true farm (85,910.8 ha), high by ×1.276; D3–D6 lower. None require re-running the census.
+  - **Task H — all-pixel census (1,080,157 pixels, 11 strata): analytically complete and reconciled** (parquet ↔ `census_stratum` at diff = 0). Paper-trail defects (data is sound): **D1 RESOLVED** — spec v4 **is** committed and clean on `main` (review Gate A); **D2 FIXED** (21 Jul) — `pct_of_farm` now divides by the true farm (85,910.8 ha), with an explicit `pct_of_mapped` added (the 67,349.332 ha basis kept for the S12 "66.44% of mapped" trap); **D8 FIXED** — refugia restated on the native 30 m grid (~6,460 ha, not ~4,300); D3–D6 lower. None require re-running the census.
   - **Task J — 2018 bank-cut pre/post: analytically complete**, sole blocker an unsent email to Jana (cut-date provenance L07, bank geometry L10). Suggestive, not causal. See the limitations register.
 - **F1–F7 merged on `main`**, plus the pixel census and the veg × wetness checkerboard. D1/D2/D3 dashboards in trial, held at the gate.
 - **F6 census verdict: 9 no-trend · 0 non-stationary · 0 directional.** Supersedes the provisional plot-support 8/1/0 — the lone non-stationary (Riverine low) was a 40-point sparsity artefact (54.1% false-positive across 1,000 draws). Conclusion unchanged and strengthened: flood-pulse driven, not trending → no probability surface; the static F5 background flood-frequency surface **is** the flood-probability product. *(Deck ratification of 9/0/0 with Adrian is the open I.2 item — confirm status.)*
@@ -107,7 +107,7 @@ A spatially explicit remote-sensing assessment of flooding and vegetation on Gay
 - `Gayini_Figure_Driven_Project_Ladder.docx` — conventions, ladder, gate result. If it and this file disagree, the ladder wins on convention; on current state, this file's "Current state" is newer.
 - `docs/Gayini_project_lineage_and_learnings.md` — **the trap index / cross-session memory.** Read at session start.
 - `docs/Gayini_sequential_task_list_20260715.md` — the post-pivot sequenced plan.
-- `docs/Tier2_TaskH_all_pixel_census_v4.md` — the authoritative census spec *(D1: commit this)*.
+- `docs/Tier2_TaskH_all_pixel_census_v4.md` — the authoritative census spec (committed on `main`; D1 resolved).
 - `docs/Gayini_pixel_census_data_contract.md` — the parquet H4 schema (columns: `flood_freq_pct`, `veg_p05..p50`; **no per-pixel total-veg column**).
 - `docs/Gayini_established_data_facts.md` — settled numbers (community flood-freq means, flood-zone crosstab, refugia).
 - `docs/Gayini_output_structure.md` — output-folder contract and migration plan.
