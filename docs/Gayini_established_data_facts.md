@@ -31,7 +31,7 @@ If a number appears in two places and they disagree, **this doc wins** — then 
 | 2 | **§4 CORRECTED (n=4 artefact).** nodata per scene: median **2.25%**, **mean 14.34%**, max **96.6%**, 22 scenes >30%. Not "0.56–1.08%". |
 | 3 | **§5: §12's last open item CLOSED.** Context strata (Woodland, Other) are **also 35/35**. *Every* census pixel has full support. |
 | 4 | **New §6: the seasonal structure.** JJA/SON is the **winter–spring growing season**, not post-flood green-up. p05 delta **+10.85 pp**, ~2× p50's. |
-| 5 | **New §9: the floor is ~97% dead** — measured **paired**, not by subtracting marginal percentiles. And **~4,300 ha has a majority-green floor.** |
+| 5 | **New §9: the floor is ~97% dead** — measured **paired**, not by subtracting marginal percentiles. And **~6,460 ha has a majority-green floor** (native 30 m grid; supersedes the earlier ~4,300 ha — see §9 D8). |
 | 6 | **New §9: the lake** (346.9 ha, 91.4% inundation) and **`MIN_SEASONS = 50`'s dual job**. |
 | 7 | **New §11 trap: percentiles do not subtract.** |
 | 8 | **§3 CORRECTED:** the irrigation-bank cuts are **EPSG:4326 — the same as gauge_sites**. Still **seven** CRSs, not eight. An earlier claim of "an eighth CRS" was wrong. |
