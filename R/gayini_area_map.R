@@ -140,13 +140,21 @@ gayini_area_map_core <- function(area,
 ## top-left of a big map (site / paddock dashboards). Reused by gayini_plot_area_map
 ## (slide inset) and gayini_panel_map (dashboard inset).
 
-gayini_locator_inset <- function(area, boundary, management = NULL) {
+## `area` : polygon filled red (the highlighted unit — a paddock zone, or NULL to
+##          draw no red fill, e.g. a site that resolves to no management zone).
+## `mark` : optional sf point drawn as a red dot on top (e.g. a site location
+##          inside its highlighted paddock, or a no-zone site's bare location).
+gayini_locator_inset <- function(area, boundary, management = NULL, mark = NULL) {
   g <- ggplot2::ggplot()
   if (!is.null(management))
     g <- g + ggplot2::geom_sf(data = management, fill = NA, colour = "grey80", linewidth = 0.15)
+  g <- g + ggplot2::geom_sf(data = boundary, fill = NA, colour = "grey40", linewidth = 0.4)
+  if (!is.null(area))
+    g <- g + ggplot2::geom_sf(data = area, fill = "#D7301F", colour = "#D7301F", alpha = 0.7)
+  if (!is.null(mark))
+    g <- g + ggplot2::geom_sf(data = mark, colour = "#D7301F", fill = "white",
+                              shape = 21, size = 1.4, stroke = 0.7)
   g +
-    ggplot2::geom_sf(data = boundary, fill = NA, colour = "grey40", linewidth = 0.4) +
-    ggplot2::geom_sf(data = area, fill = "#D7301F", colour = "#D7301F", alpha = 0.7) +
     ggplot2::coord_sf(expand = FALSE) +
     ggplot2::theme_void() +
     ggplot2::theme(panel.background = ggplot2::element_rect(fill = "white", colour = "grey60",

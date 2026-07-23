@@ -276,6 +276,16 @@ At the season that sets each pixel's total-veg floor (farm, n = 959,833):
 
 **p05 varies 40.68 pp across the flood gradient** — flood frequency is a strong predictor of the veg floor.
 
+**Community FLOOR ordering is Inland ≫ {Aeolian ≈ Riverine} — NOT the clean dry<mid<wet you'd expect** *(Task L finding, 2026-07-23; percentile diagnostic on the census clouds).* Mean veg-percentile floor by community:
+
+| | p05 | p10 | p20 |
+|---|---:|---:|---:|
+| Aeolian | **46** | 52.9 | 60.3 |
+| Riverine | **44** | 51.6 | 60.3 |
+| Inland | **61** | 66.8 | 72.9 |
+
+At the floor, **Aeolian and Riverine are indistinguishable** (Aeolian marginally *higher*); only Inland separates, at every percentile. The **dry-vs-mid distinction lives in EXPOSURE, not floor level** — flood frequency orders cleanly (pixel support **6.08 / 12.91 / 27.99**; plot support **9 / 22 / 50**) while the worst-season cover floor does not. Do **not** assert "Aeolian < Riverine" for cover; it is false at the floor. Also: the flood→floor **response compresses toward the median** (Inland dynamic range ~40 pp at p05 → ~27 pp at p20), which is **why p05 is the shipping headline** — it maximises the signal (evidence-based, ratified with the diagnostic; not assumed).
+
 **Seasonal-mixture gate (decides H4): PASS.** Mixture median **0.4571**, sd **0.0231**. Correlated with flooding (**r = −0.213**, ρ = −0.235, r² = 0.045 — wetter pixels attract more winter/spring cloud) but the magnitude is what matters: slope **10.89 pp** per unit f_warm × mixture range **0.0116** = **0.126 pp induced** into a **40.68 pp** signal = **0.31% confound**. The relationship is a **step** (flat to 25%, then a drop), not a gradient — so using the range is conservative.
 
 **The staircase — bands are NOT comparable across communities:**
