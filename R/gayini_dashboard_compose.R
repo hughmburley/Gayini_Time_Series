@@ -171,6 +171,20 @@ gayini_plots_in_paddock <- function(paddock_geom, ctx) {
   as.character(ctx$plots$plot_id[hit])
 }
 
+## Area share of each vegetation community within a paddock polygon, descending.
+## Returns data.frame(community, pct). Used to (i) pick the dominant FOCUS community
+## for the census marker cloud and (ii) print its area share (a paddock can be a
+## minority of its own dominant, so the marker must state "X% of this paddock").
+gayini_paddock_community_shares <- function(paddock_geom, ctx) {
+  inter <- suppressWarnings(sf::st_intersection(ctx$communities, sf::st_geometry(paddock_geom)))
+  if (nrow(inter) == 0) return(data.frame(community = character(0), pct = numeric(0)))
+  inter$a <- as.numeric(sf::st_area(inter))
+  agg <- stats::aggregate(a ~ simplified_vegetation_group, data = sf::st_drop_geometry(inter), FUN = sum)
+  agg <- agg[order(-agg$a), , drop = FALSE]
+  data.frame(community = as.character(agg$simplified_vegetation_group),
+             pct = 100 * agg$a / sum(agg$a), stringsAsFactors = FALSE)
+}
+
 
 ## 2. Unit resolvers ----
 
@@ -182,6 +196,11 @@ gayini_resolve_site <- function(plot_id, ctx) {
   footprint <- ctx$plots[ctx$plots$plot_id == plot_id, ]
   nbrs      <- suppressWarnings(ctx$management[
     sf::st_intersects(ctx$management, ring, sparse = FALSE)[, 1], ])
+  ## Gate 3.1: the site's management zone (centroid-in-zone) — highlighted in the
+  ## inset (a) and used to draw the paddock haze in the veg×water panel (c). NULL
+  ## for the ~18 sites in no zone.
+  hit <- sf::st_intersects(sf::st_geometry(centroid), sf::st_geometry(ctx$management), sparse = FALSE)[1, ]
+  paddock_geom <- if (any(hit)) ctx$management[which(hit)[1], ] else NULL
 
   flooding <- gayini_unit_flood_series(ring, ctx)
   gc       <- gayini_unit_gc_series(plot_id, ctx)
@@ -191,19 +210,39 @@ gayini_resolve_site <- function(plot_id, ctx) {
                           flow_mld = ctx$gauge$flow_mld)
 
   spec <- list(type = "site", ring = ring, footprint = footprint, neighbours = nbrs,
-               radius_label = sprintf("%.1f km", ctx$radius_m / 1000), pad_buffer = 150)
+               radius_label = sprintf("%.1f km", ctx$radius_m / 1000), pad_buffer = 150,
+               paddock_geom = paddock_geom, site_point = centroid)
   list(spec = spec, is_site = TRUE,
        title = sprintf("Site dashboard - %s", plot_id),
        subtitle = sprintf("%s | %s neighbourhood | community: %s",
                           plot_id, spec$radius_label, community),
        flooding = flooding, flood_note = "site neighbourhood", gc = gc, gc_note = "plot",
        resp = resp, box = list(value = box_val, community = community),
-       gaugeflow = gaugeflow)
+       gaugeflow = gaugeflow,
+       ## Census marker panel (Task L): a site is marked on its plot's community;
+       ## the geom is the plot footprint. No dominant-share note (a site is a point).
+       ## Gate 3.1 (c): haze_geom = the site's paddock → nested paddock highlight in
+       ## the community cloud (NULL for no-zone sites → no haze).
+       marker = list(label = plot_id, community = community, geom = footprint,
+                     context_note = NULL, title_flag = NULL, haze_geom = paddock_geom))
 }
 
 gayini_resolve_paddock <- function(pad_name, ctx) {
   geom <- ctx$management[as.character(sf::st_drop_geometry(ctx$management)[[ctx$zone_field]]) == pad_name, ]
-  community <- gayini_dominant_community(geom, ctx)
+  ## Community shares → dominant FOCUS community (for the marker cloud) + its area
+  ## share + whether the paddock is OVERALL majority a non-focus (Woodland) unit.
+  shares      <- gayini_paddock_community_shares(geom, ctx)
+  focus_rows  <- shares[shares$community %in% ctx$focus, , drop = FALSE]
+  community   <- if (nrow(focus_rows)) focus_rows$community[1] else ctx$focus[1]
+  dom_share   <- if (nrow(focus_rows)) focus_rows$pct[1] else NA_real_
+  overall_dom <- if (nrow(shares)) shares$community[1] else community
+  short       <- gayini_gradient_short_labels()
+  short_comm  <- unname(short[community]); if (is.na(short_comm)) short_comm <- community
+  ctx_note    <- if (is.na(dom_share)) NULL
+                 else sprintf("shown on %s — %d%% of this paddock", short_comm, round(dom_share))
+  title_flag  <- if (!(overall_dom %in% ctx$focus))
+                   sprintf("%s — majority Woodland, marked on its %s", pad_name, short_comm)
+                 else NULL
   plot_ids  <- gayini_plots_in_paddock(geom, ctx)
   z    <- sf::st_bbox(sf::st_buffer(sf::st_geometry(geom), 300))
   nbrs <- suppressWarnings(ctx$management[sf::st_intersects(
@@ -222,7 +261,14 @@ gayini_resolve_paddock <- function(pad_name, ctx) {
                           pad_name, length(plot_ids), ifelse(length(plot_ids) == 1, "", "s"), community),
        flooding = flooding, flood_note = "paddock valid pixels",
        gc = gc, gc_note = if (length(plot_ids)) sprintf("mean of %d plot(s)", length(plot_ids)) else "community context (no plots in paddock)",
-       resp = resp, box = list(value = box_val, community = community))
+       resp = resp, box = list(value = box_val, community = community),
+       ## Census marker panel (Task L): paddock marked on its dominant FOCUS
+       ## community; carries the dominant-share note; Woodland-majority paddocks
+       ## (Mara 13) carry a title-level flag.
+       ## Paddock: no haze (the marker IS the paddock; its own-cloud report figure
+       ## shows the full distribution). haze_geom = NULL.
+       marker = list(label = pad_name, community = community, geom = geom,
+                     context_note = ctx_note, title_flag = title_flag, haze_geom = NULL))
 }
 
 gayini_resolve_stratum <- function(community, band, ctx) {
@@ -303,7 +349,18 @@ gayini_build_dashboard <- function(resolved, ctx, format = "slide", out_dir, bas
   p_veg   <- gayini_panel_total_veg(gc, bs, resolved$gc_note,
                                     date_lim = date_lim, date_breaks = date_breaks,
                                     green_only = TRUE)
-  p_resp  <- gayini_panel_veg_response(resolved$resp, bs)
+  ## Task L: sites & paddocks get the all-pixel census marker panel (community
+  ## cloud + unit marker) when a census context is attached; strata (D3) and any
+  ## caller without ctx$census keep the legacy plot-response panel.
+  p_resp  <- if (!is.null(ctx$census) && !is.null(resolved$marker)) {
+    gayini_veg_water_community_marker_panel(
+      resolved$marker$geom, resolved$marker$community, ctx$census,
+      unit_label   = resolved$marker$label, base_size = bs,
+      context_note = resolved$marker$context_note, title_flag = resolved$marker$title_flag,
+      haze_geom    = resolved$marker$haze_geom)
+  } else {
+    gayini_panel_veg_response(resolved$resp, bs)
+  }
   p_base  <- gayini_panel_baseline_gauge(resolved$flooding, base_size = bs, compact = TRUE)
   p_box   <- gayini_panel_where_it_sits(ctx$freq_by_plot, resolved$box$value, resolved$box$community, bs)
 

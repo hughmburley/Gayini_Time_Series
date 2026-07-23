@@ -68,8 +68,8 @@ gayini_panel_map <- function(spec, ctx, base_size = 9) {
   ## Farm-locator inset (top-left) for site + paddock maps (G4). The stratum map
   ## already shows the whole farm with the class highlighted, so it gets none
   ## (flagged open item — default: no stratum inset).
-  add_locator <- function(core_plot, unit_area) {
-    loc <- gayini_locator_inset(unit_area, ctx$boundary, ctx$management)
+  add_locator <- function(core_plot, unit_area, mark = NULL) {
+    loc <- gayini_locator_inset(unit_area, ctx$boundary, ctx$management, mark = mark)
     cowplot::ggdraw(core_plot) +
       cowplot::draw_plot(loc, x = 0.015, y = 0.66, width = 0.26, height = 0.30)
   }
@@ -92,7 +92,9 @@ gayini_panel_map <- function(spec, ctx, base_size = 9) {
     core <- core +
       ggplot2::labs(subtitle = sprintf("Flood frequency; %s neighbourhood ring (dashed), plot footprint",
                                        spec$radius_label))
-    return(add_locator(core, spec$footprint %||% ring))
+    ## (a) Gate 3.1: locator highlights the site's PADDOCK in red (39 resolved sites)
+    ## with a red dot for the site; no-zone sites (18) get the dot only, no red zone.
+    return(add_locator(core, spec$paddock_geom, mark = spec$site_point %||% spec$footprint))
   }
 
   ## paddock / stratum -> discrete checkerboard
@@ -117,13 +119,14 @@ gayini_panel_map <- function(spec, ctx, base_size = 9) {
   core <- core + ggplot2::labs(subtitle = sub)
 
   if (spec$type == "paddock") {
-    ## Paddock: farm-locator inset top-left + the 3x3 community x wetness key as a
-    ## boxed inset in the map's BOTTOM-RIGHT corner (on the raster, not a strip).
-    legend_mini <- gayini_bivariate_legend_mini(ctx$classes, boxed = TRUE)
+    ## Paddock: farm-locator inset top-left only. (b) Gate 3.1: the 3x3
+    ## community x wetness key is REMOVED here (it overlapped the map, e.g. Mara 21);
+    ## the "Where it sits" boxplot carries the community-hue key, and the full 2-D
+    ## community x wetness key now lives on the whole-farm map at the front of the
+    ## main report (its one home — flagged, not this task).
     cowplot::ggdraw(core) +
       cowplot::draw_plot(gayini_locator_inset(spec$geom, ctx$boundary, ctx$management),
-                         x = 0.015, y = 0.66, width = 0.26, height = 0.30) +
-      cowplot::draw_plot(legend_mini, x = 0.70, y = 0.10, width = 0.28, height = 0.40)
+                         x = 0.015, y = 0.66, width = 0.26, height = 0.30)
   } else {
     ## Stratum: whole-farm map with the class highlighted; subtitle names it, no key.
     core

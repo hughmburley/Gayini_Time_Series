@@ -43,7 +43,12 @@
 RADIUS_M      <- 1000L          # site neighbourhood ring (parameterised 500-2000)
 GAUGE_STATION <- "410040"       # Murrumbidgee D/S Maude Weir (local context)
 
-TRIAL_PADDOCKS <- c("Bala 28ca", "Bala 29ca", "Dinan 8", "Dinan 10")
+# Task L: pinned canonical 21 (C1 checkerboard set), NOT the 64-zone layer.
+# Canonical source of this list = gayini_canonical_paddocks() in R/gayini_veg_water_census_panels.R;
+# kept as a literal here because it is referenced before the sources block below.
+TRIAL_PADDOCKS <- c("Bala 6", "Bala 12", "Bala 17", "Bala 19", "Bala 20", "Bala 21", "Bala 23",
+                    "Bala 26ca", "Bala 28ca", "Bala 29ca", "Bala 8/11", "Dinan 1", "Dinan 3",
+                    "Dinan 6", "Dinan 8", "Dinan 10", "Dinan 12", "Mara 7", "Mara 8", "Mara 13", "Mara 21")
 TRIAL_SITES    <- c("GA_001", "GA_003", "GA_019", "GA_052", "GA_032")
 TRIAL_STRATA   <- list(
   c("Aeolian Chenopod Shrublands", "low"),
@@ -67,6 +72,7 @@ source(file.path(root_dir, "R", "gayini_area_map.R"))
 source(file.path(root_dir, "R", "gayini_veg_regime_functions.R"))
 source(file.path(root_dir, "R", "gayini_dashboard_panels.R"))
 source(file.path(root_dir, "R", "gayini_dashboard_compose.R"))
+source(file.path(root_dir, "R", "gayini_veg_water_census_panels.R"))   # Task L marker panels
 
 suppressPackageStartupMessages({
   library(sf); library(terra); library(dplyr); library(ggplot2)
@@ -82,6 +88,7 @@ diagnostics_dir <- file.path(root_dir, "Output", "diagnostics")
 
 message("Loading dashboard context ...")
 ctx <- gayini_dashboard_context(root_dir, station_id = GAUGE_STATION, radius_m = RADIUS_M)
+ctx$census <- gayini_census_context(root_dir)   # Task L: attach the all-pixel census substrate (marker panel)
 
 
 ## 3. Build the trial units x layouts (slide) ----

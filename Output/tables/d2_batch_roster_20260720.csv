@@ -1,0 +1,67 @@
+"plot_id","in_batch","treed_plot_flag","simplified_vegetation_group","community_gradient_rank","flood_freq_plot_support_pct","annual_35yr_mean_pct","spatial_review_flag","access_level","public_release_ok","cultural_sensitivity","ground_cover_exclusion_flag"
+"GA_001",TRUE,0,"Inland Floodplain Shrublands / Swamps",3,91.43,43.64,0,"internal_review",0,"review_required",0
+"GA_002",TRUE,0,"Inland Floodplain Shrublands / Swamps",3,60,48.09,0,"internal_review",0,"review_required",0
+"GA_003",TRUE,0,"Inland Floodplain Shrublands / Swamps",3,91.43,53.2,0,"internal_review",0,"review_required",0
+"GA_004",TRUE,0,"Inland Floodplain Shrublands / Swamps",3,34.29,39.21,0,"internal_review",0,"review_required",0
+"GA_005",TRUE,0,"Inland Floodplain Shrublands / Swamps",3,65.71,51.82,0,"internal_review",0,"review_required",0
+"GA_006",TRUE,0,"Inland Floodplain Shrublands / Swamps",3,100,51.57,1,"internal_review",0,"review_required",0
+"GA_007",TRUE,0,"Inland Floodplain Shrublands / Swamps",3,68.57,39.34,1,"internal_review",0,"review_required",0
+"GA_008",TRUE,0,"Aeolian Chenopod Shrublands",1,2.86,10.53,0,"internal_review",0,"review_required",0
+"GA_009",TRUE,0,"Aeolian Chenopod Shrublands",1,11.43,8.33,0,"internal_review",0,"review_required",0
+"GA_010",TRUE,0,"Aeolian Chenopod Shrublands",1,2.86,12.22,0,"internal_review",0,"review_required",0
+"GA_013",TRUE,0,"Riverine Chenopod Shrublands",2,14.29,10.25,0,"internal_review",0,"review_required",0
+"GA_016",TRUE,0,"Inland Floodplain Shrublands / Swamps",3,17.14,24.89,1,"internal_review",0,"review_required",0
+"GA_017",TRUE,0,"Inland Floodplain Shrublands / Swamps",3,34.29,26.7,0,"internal_review",0,"review_required",0
+"GA_018",TRUE,0,"Inland Floodplain Shrublands / Swamps",3,31.43,29.54,1,"internal_review",0,"review_required",0
+"GA_019",TRUE,0,"Inland Floodplain Shrublands / Swamps",3,48.57,36.74,0,"internal_review",0,"review_required",0
+"GA_020",TRUE,0,"Inland Floodplain Shrublands / Swamps",3,57.14,25.2,0,"internal_review",0,"review_required",0
+"GA_022",TRUE,0,"Inland Floodplain Shrublands / Swamps",3,31.43,21.96,1,"internal_review",0,"review_required",0
+"GA_024",TRUE,0,"Riverine Chenopod Shrublands",2,17.14,6.53,1,"internal_review",0,"review_required",0
+"GA_025",TRUE,0,"Aeolian Chenopod Shrublands",1,0,14.64,0,"internal_review",0,"review_required",0
+"GA_026",TRUE,0,"Aeolian Chenopod Shrublands",1,0,6.73,0,"internal_review",0,"review_required",0
+"GA_027",TRUE,0,"Aeolian Chenopod Shrublands",1,2.86,5.48,0,"internal_review",0,"review_required",0
+"GA_028",TRUE,0,"Riverine Chenopod Shrublands",2,25.71,12.11,0,"internal_review",0,"review_required",0
+"GA_031",TRUE,0,"Aeolian Chenopod Shrublands",1,20,18.11,1,"internal_review",0,"review_required",0
+"GA_032",TRUE,0,"Aeolian Chenopod Shrublands",1,22.86,19.49,1,"internal_review",0,"review_required",0
+"GA_033",TRUE,0,"Aeolian Chenopod Shrublands",1,51.43,38.84,1,"internal_review",0,"review_required",0
+"GA_034",TRUE,0,"Aeolian Chenopod Shrublands",1,8.57,2.1,0,"internal_review",0,"review_required",0
+"GA_035",TRUE,0,"Aeolian Chenopod Shrublands",1,0,2.61,0,"internal_review",0,"review_required",0
+"GA_036",TRUE,0,"Aeolian Chenopod Shrublands",1,14.29,8.2,0,"internal_review",0,"review_required",0
+"GA_037",TRUE,0,"Riverine Chenopod Shrublands",2,5.71,13.81,1,"internal_review",0,"review_required",0
+"GA_038",TRUE,0,"Riverine Chenopod Shrublands",2,2.86,12.41,1,"internal_review",0,"review_required",0
+"GA_039",TRUE,0,"Aeolian Chenopod Shrublands",1,5.71,17.18,0,"internal_review",0,"review_required",0
+"GA_040",TRUE,0,"Aeolian Chenopod Shrublands",1,2.86,17.25,0,"internal_review",0,"review_required",0
+"GA_041",TRUE,0,"Aeolian Chenopod Shrublands",1,0,17.14,0,"internal_review",0,"review_required",0
+"GA_042",TRUE,0,"Aeolian Chenopod Shrublands",1,0,23.7,1,"internal_review",0,"review_required",0
+"GA_043",TRUE,0,"Inland Floodplain Shrublands / Swamps",3,5.71,3.96,0,"internal_review",0,"review_required",0
+"GA_044",TRUE,0,"Inland Floodplain Shrublands / Swamps",3,14.29,29.03,1,"internal_review",0,"review_required",0
+"GA_045",TRUE,0,"Inland Floodplain Shrublands / Swamps",3,60,30.15,1,"internal_review",0,"review_required",0
+"GA_046",TRUE,0,"Inland Floodplain Shrublands / Swamps",3,40,26.09,0,"internal_review",0,"review_required",0
+"GA_047",TRUE,0,"Inland Floodplain Shrublands / Swamps",3,37.14,22.39,1,"internal_review",0,"review_required",0
+"GA_048",TRUE,0,"Inland Floodplain Shrublands / Swamps",3,40,30.8,1,"internal_review",0,"review_required",0
+"GA_049",TRUE,0,"Inland Floodplain Shrublands / Swamps",3,40,27.49,1,"internal_review",0,"review_required",0
+"GA_050",TRUE,0,"Riverine Chenopod Shrublands",2,42.86,18.79,0,"internal_review",0,"review_required",0
+"GA_051",TRUE,0,"Riverine Chenopod Shrublands",2,62.86,22.14,0,"internal_review",0,"review_required",0
+"GA_052",TRUE,0,"Riverine Chenopod Shrublands",2,31.43,31.73,0,"internal_review",0,"review_required",0
+"GA_053",TRUE,0,"Riverine Chenopod Shrublands",2,5.71,39.37,0,"internal_review",0,"review_required",0
+"GA_054",TRUE,0,"Riverine Chenopod Shrublands",2,37.14,26.24,0,"internal_review",0,"review_required",0
+"GA_055",TRUE,0,"Riverine Chenopod Shrublands",2,11.43,7.67,0,"internal_review",0,"review_required",0
+"GA_056",TRUE,0,"Riverine Chenopod Shrublands",2,14.29,6.09,0,"internal_review",0,"review_required",0
+"GA_057",TRUE,0,"Inland Floodplain Shrublands / Swamps",3,34.29,29.93,0,"internal_review",0,"review_required",0
+"GA_058",TRUE,0,"Riverine Chenopod Shrublands",2,5.71,5.9,0,"internal_review",0,"review_required",0
+"GA_059",TRUE,0,"Riverine Chenopod Shrublands",2,60,18.31,1,"internal_review",0,"review_required",0
+"GA_060",TRUE,0,"Riverine Chenopod Shrublands",2,8.57,8.77,1,"internal_review",0,"review_required",0
+"GA_061",TRUE,0,"Riverine Chenopod Shrublands",2,5.71,9.3,1,"internal_review",0,"review_required",0
+"GA_062",TRUE,0,"Riverine Chenopod Shrublands",2,14.29,11.91,1,"internal_review",0,"review_required",0
+"GA_063",TRUE,0,"Riverine Chenopod Shrublands",2,17.14,19.08,0,"internal_review",0,"review_required",0
+"GA_064",TRUE,0,"Riverine Chenopod Shrublands",2,40,21.36,1,"internal_review",0,"review_required",0
+"GA_066",TRUE,0,"Inland Floodplain Shrublands / Swamps",3,88.57,41.91,1,"internal_review",0,"review_required",0
+"GA_011",FALSE,1,"Floodplain Woodland / Forest",4,NA,NA,0,"internal_review",0,"review_required",1
+"GA_012",FALSE,1,"Floodplain Woodland / Forest",4,NA,NA,0,"internal_review",0,"review_required",1
+"GA_014",FALSE,1,"Floodplain Woodland / Forest",4,NA,NA,0,"internal_review",0,"review_required",1
+"GA_015",FALSE,1,"Floodplain Woodland / Forest",4,NA,NA,0,"internal_review",0,"review_required",1
+"GA_021",FALSE,1,"Floodplain Woodland / Forest",4,NA,NA,0,"internal_review",0,"review_required",1
+"GA_023",FALSE,1,"Floodplain Woodland / Forest",4,NA,NA,0,"internal_review",0,"review_required",1
+"GA_029",FALSE,1,"Floodplain Woodland / Forest",4,NA,NA,1,"internal_review",0,"review_required",1
+"GA_030",FALSE,1,"Floodplain Woodland / Forest",4,NA,NA,0,"internal_review",0,"review_required",1
+"GA_065",FALSE,1,"Floodplain Woodland / Forest",4,NA,NA,0,"internal_review",0,"review_required",1
