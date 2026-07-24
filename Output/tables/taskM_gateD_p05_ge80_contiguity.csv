@@ -1,0 +1,41 @@
+grid,threshold,pixel_area_ha,crs_epsg,source_artefact,section,group_key,value,component_pixels,component_area_ha,share_of_total_pct,pixels,area_ha
+census_24_97m,80,0.0623512,8058,Output/rasters/veg_percentiles_8058/total_veg_p05_8058.tif (focus mask: veg_regime_class_8058.tif),summary,n_components,745,NA,NA,NA,NA,NA
+census_24_97m,80,0.0623512,8058,Output/rasters/veg_percentiles_8058/total_veg_p05_8058.tif (focus mask: veg_regime_class_8058.tif),summary,total_pixels,67028,NA,NA,NA,NA,NA
+census_24_97m,80,0.0623512,8058,Output/rasters/veg_percentiles_8058/total_veg_p05_8058.tif (focus mask: veg_regime_class_8058.tif),summary,total_area_ha,4179.28,NA,NA,NA,NA,NA
+census_24_97m,80,0.0623512,8058,Output/rasters/veg_percentiles_8058/total_veg_p05_8058.tif (focus mask: veg_regime_class_8058.tif),size_distribution_px,min,1,NA,NA,NA,NA,NA
+census_24_97m,80,0.0623512,8058,Output/rasters/veg_percentiles_8058/total_veg_p05_8058.tif (focus mask: veg_regime_class_8058.tif),size_distribution_px,median,4,NA,NA,NA,NA,NA
+census_24_97m,80,0.0623512,8058,Output/rasters/veg_percentiles_8058/total_veg_p05_8058.tif (focus mask: veg_regime_class_8058.tif),size_distribution_px,p90,93.60000000000002,NA,NA,NA,NA,NA
+census_24_97m,80,0.0623512,8058,Output/rasters/veg_percentiles_8058/total_veg_p05_8058.tif (focus mask: veg_regime_class_8058.tif),size_distribution_px,max,12630,NA,NA,NA,NA,NA
+census_24_97m,80,0.0623512,8058,Output/rasters/veg_percentiles_8058/total_veg_p05_8058.tif (focus mask: veg_regime_class_8058.tif),size_distribution_ha,min,0.0624,NA,NA,NA,NA,NA
+census_24_97m,80,0.0623512,8058,Output/rasters/veg_percentiles_8058/total_veg_p05_8058.tif (focus mask: veg_regime_class_8058.tif),size_distribution_ha,median,0.2494,NA,NA,NA,NA,NA
+census_24_97m,80,0.0623512,8058,Output/rasters/veg_percentiles_8058/total_veg_p05_8058.tif (focus mask: veg_regime_class_8058.tif),size_distribution_ha,p90,5.8361,NA,NA,NA,NA,NA
+census_24_97m,80,0.0623512,8058,Output/rasters/veg_percentiles_8058/total_veg_p05_8058.tif (focus mask: veg_regime_class_8058.tif),size_distribution_ha,max,787.5,NA,NA,NA,NA,NA
+census_24_97m,80,0.0623512,8058,Output/rasters/veg_percentiles_8058/total_veg_p05_8058.tif (focus mask: veg_regime_class_8058.tif),largest_components,rank_1,NA,12630,787.5,18.843,NA,NA
+census_24_97m,80,0.0623512,8058,Output/rasters/veg_percentiles_8058/total_veg_p05_8058.tif (focus mask: veg_regime_class_8058.tif),largest_components,rank_2,NA,4833,301.34,7.21,NA,NA
+census_24_97m,80,0.0623512,8058,Output/rasters/veg_percentiles_8058/total_veg_p05_8058.tif (focus mask: veg_regime_class_8058.tif),largest_components,rank_3,NA,3982,248.28,5.941,NA,NA
+census_24_97m,80,0.0623512,8058,Output/rasters/veg_percentiles_8058/total_veg_p05_8058.tif (focus mask: veg_regime_class_8058.tif),largest_components,rank_4,NA,3508,218.73,5.234,NA,NA
+census_24_97m,80,0.0623512,8058,Output/rasters/veg_percentiles_8058/total_veg_p05_8058.tif (focus mask: veg_regime_class_8058.tif),largest_components,rank_5,NA,2852,177.83,4.255,NA,NA
+census_24_97m,80,0.0623512,8058,Output/rasters/veg_percentiles_8058/total_veg_p05_8058.tif (focus mask: veg_regime_class_8058.tif),largest_components,rank_6,NA,2722,169.72,4.061,NA,NA
+census_24_97m,80,0.0623512,8058,Output/rasters/veg_percentiles_8058/total_veg_p05_8058.tif (focus mask: veg_regime_class_8058.tif),largest_components,rank_7,NA,2246,140.04,3.351,NA,NA
+census_24_97m,80,0.0623512,8058,Output/rasters/veg_percentiles_8058/total_veg_p05_8058.tif (focus mask: veg_regime_class_8058.tif),largest_components,rank_8,NA,1510,94.15,2.253,NA,NA
+census_24_97m,80,0.0623512,8058,Output/rasters/veg_percentiles_8058/total_veg_p05_8058.tif (focus mask: veg_regime_class_8058.tif),largest_components,rank_9,NA,1323,82.49,1.974,NA,NA
+census_24_97m,80,0.0623512,8058,Output/rasters/veg_percentiles_8058/total_veg_p05_8058.tif (focus mask: veg_regime_class_8058.tif),largest_components,rank_10,NA,1284,80.06,1.916,NA,NA
+census_24_97m,80,0.0623512,8058,Output/rasters/veg_percentiles_8058/total_veg_p05_8058.tif (focus mask: veg_regime_class_8058.tif),largest_components,top10_combined,NA,36890,2300.14,55.037,NA,NA
+census_24_97m,80,0.0623512,8058,Output/rasters/veg_percentiles_8058/total_veg_p05_8058.tif (focus mask: veg_regime_class_8058.tif),crosstab_by_community,Aeolian Chenopod Shrublands,NA,NA,NA,0.007,5,0.31
+census_24_97m,80,0.0623512,8058,Output/rasters/veg_percentiles_8058/total_veg_p05_8058.tif (focus mask: veg_regime_class_8058.tif),crosstab_by_community,Inland Floodplain Shrublands / Swamps,NA,NA,NA,98.783,66212,4128.4
+census_24_97m,80,0.0623512,8058,Output/rasters/veg_percentiles_8058/total_veg_p05_8058.tif (focus mask: veg_regime_class_8058.tif),crosstab_by_community,Riverine Chenopod Shrublands,NA,NA,NA,1.21,811,50.57
+census_24_97m,80,0.0623512,8058,Output/rasters/veg_percentiles_8058/total_veg_p05_8058.tif (focus mask: veg_regime_class_8058.tif),crosstab_by_flood_zone,0,NA,NA,NA,0.001,1,0.06
+census_24_97m,80,0.0623512,8058,Output/rasters/veg_percentiles_8058/total_veg_p05_8058.tif (focus mask: veg_regime_class_8058.tif),crosstab_by_flood_zone,1,NA,NA,NA,0.039,26,1.62
+census_24_97m,80,0.0623512,8058,Output/rasters/veg_percentiles_8058/total_veg_p05_8058.tif (focus mask: veg_regime_class_8058.tif),crosstab_by_flood_zone,2,NA,NA,NA,1.734,1162,72.45
+census_24_97m,80,0.0623512,8058,Output/rasters/veg_percentiles_8058/total_veg_p05_8058.tif (focus mask: veg_regime_class_8058.tif),crosstab_by_flood_zone,3,NA,NA,NA,57.213,38349,2391.11
+census_24_97m,80,0.0623512,8058,Output/rasters/veg_percentiles_8058/total_veg_p05_8058.tif (focus mask: veg_regime_class_8058.tif),crosstab_by_flood_zone,4,NA,NA,NA,41.013,27490,1714.03
+census_24_97m,80,0.0623512,8058,Output/rasters/veg_percentiles_8058/total_veg_p05_8058.tif (focus mask: veg_regime_class_8058.tif),crosstab_community_x_zone,Inland Floodplain Shrublands / Swamps | zone_0,NA,NA,NA,0.001,1,0.06
+census_24_97m,80,0.0623512,8058,Output/rasters/veg_percentiles_8058/total_veg_p05_8058.tif (focus mask: veg_regime_class_8058.tif),crosstab_community_x_zone,Inland Floodplain Shrublands / Swamps | zone_1,NA,NA,NA,0.037,25,1.56
+census_24_97m,80,0.0623512,8058,Output/rasters/veg_percentiles_8058/total_veg_p05_8058.tif (focus mask: veg_regime_class_8058.tif),crosstab_community_x_zone,Riverine Chenopod Shrublands | zone_1,NA,NA,NA,0.001,1,0.06
+census_24_97m,80,0.0623512,8058,Output/rasters/veg_percentiles_8058/total_veg_p05_8058.tif (focus mask: veg_regime_class_8058.tif),crosstab_community_x_zone,Inland Floodplain Shrublands / Swamps | zone_2,NA,NA,NA,1.707,1144,71.33
+census_24_97m,80,0.0623512,8058,Output/rasters/veg_percentiles_8058/total_veg_p05_8058.tif (focus mask: veg_regime_class_8058.tif),crosstab_community_x_zone,Riverine Chenopod Shrublands | zone_2,NA,NA,NA,0.027,18,1.12
+census_24_97m,80,0.0623512,8058,Output/rasters/veg_percentiles_8058/total_veg_p05_8058.tif (focus mask: veg_regime_class_8058.tif),crosstab_community_x_zone,Aeolian Chenopod Shrublands | zone_3,NA,NA,NA,0.007,5,0.31
+census_24_97m,80,0.0623512,8058,Output/rasters/veg_percentiles_8058/total_veg_p05_8058.tif (focus mask: veg_regime_class_8058.tif),crosstab_community_x_zone,Inland Floodplain Shrublands / Swamps | zone_3,NA,NA,NA,56.045,37566,2342.29
+census_24_97m,80,0.0623512,8058,Output/rasters/veg_percentiles_8058/total_veg_p05_8058.tif (focus mask: veg_regime_class_8058.tif),crosstab_community_x_zone,Riverine Chenopod Shrublands | zone_3,NA,NA,NA,1.161,778,48.51
+census_24_97m,80,0.0623512,8058,Output/rasters/veg_percentiles_8058/total_veg_p05_8058.tif (focus mask: veg_regime_class_8058.tif),crosstab_community_x_zone,Inland Floodplain Shrublands / Swamps | zone_4,NA,NA,NA,40.992,27476,1713.16
+census_24_97m,80,0.0623512,8058,Output/rasters/veg_percentiles_8058/total_veg_p05_8058.tif (focus mask: veg_regime_class_8058.tif),crosstab_community_x_zone,Riverine Chenopod Shrublands | zone_4,NA,NA,NA,0.021,14,0.87
