@@ -30,6 +30,17 @@ strategy is required before any builder re-run.
 - **Machine identity** comes from an external signal (hostname, or a genuinely differing path) — never from a path the model assumes is workstation-vs-laptop.
 - `figure_asset`: the **11 Gate E figures are registered** (`run_id='gateE_20260721'`, G7) — the current-ladder set (S12/S21/S24/S25/S26, veg-water scatters, percentile fan, Fig A). The **pre-Gate-E rows remain an old-generation snapshot** (verify against disk before trusting them); D4 is partially closed, the older rows still need reconciliation.
 
+
+**New standing rule — Output/ is the record; docs/ is never a result**
+
+Gate A's inventory shows why: 33 of 43 stale floor-claim sites are in docs/, while the definition-complete statements sit in Output/diagnostics/. The computation wrote an honest record into Output/; docs/ then propagated the number without its definition. CLAUDE.md:44 is the end of that chain.
+
+From now on, in every Task M output:
+
+A number in docs/ must cite the Output/ artefact that produced it — path, and registered asset id where one exists.
+Change reports state findings and where they live. A change report must never be the only home for a value.
+If a number cannot name its Output/ artefact, write the pointer and omit the value.
+
 ## What this project is
 
 A spatially explicit remote-sensing assessment of flooding and vegetation on Gayini (Nimmie-Caira, lower Murrumbidgee), built as a **figure ladder** — simplest first, the probability surface last and gated on evidence. The 1 ha monitoring plots are **anchors, not the analysis unit**; the analysis operates on areas/strata.
