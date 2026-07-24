@@ -31,7 +31,7 @@ If a number appears in two places and they disagree, **this doc wins** — then 
 | 2 | **§4 CORRECTED (n=4 artefact).** nodata per scene: median **2.25%**, **mean 14.34%**, max **96.6%**, 22 scenes >30%. Not "0.56–1.08%". |
 | 3 | **§5: §12's last open item CLOSED.** Context strata (Woodland, Other) are **also 35/35**. *Every* census pixel has full support. |
 | 4 | **New §6: the seasonal structure.** JJA/SON is the **winter–spring growing season**, not post-flood green-up. p05 delta **+10.85 pp**, ~2× p50's. |
-| 5 | **New §9: the floor is ~97% dead** — measured **paired**, not by subtracting marginal percentiles. And **~4,300 ha has a majority-green floor.** |
+| 5 | **New §9: the floor is mostly dead material** — measured **paired**, not by subtracting marginal percentiles. And a majority-green-floor area exists. **Figures and their definition are in §9; they are not restated here, because a changelog row cannot carry the definition they require.** Source: `Output/tables/taskM_green_at_floor_area.csv`. |
 | 6 | **New §9: the lake** (346.9 ha, 91.4% inundation) and **`MIN_SEASONS = 50`'s dual job**. |
 | 7 | **New §11 trap: percentiles do not subtract.** |
 | 8 | **§3 CORRECTED:** the irrigation-bank cuts are **EPSG:4326 — the same as gauge_sites**. Still **seven** CRSs, not eight. An earlier claim of "an eighth CRS" was wrong. |
@@ -51,6 +51,7 @@ If a number appears in two places and they disagree, **this doc wins** — then 
 > ⚠️ **`census_stratum.farm_area_ha` is a MISNOMER** (C1). It holds **67,349.332** — the *mapped* area, not the farm. Anything computing "% of farm" from it understates the denominator by 21.6%.
 
 *Provenance: `gayini_boundary.shp` → EPSG:8058, area sum. Mapped = `SELECT SUM(area_ha) FROM census_stratum`. The 21.61% reconciles with the independently known "~21.6% unmapped".*
+*Output/ artefacts: `Output/database/Gayini_Results.sqlite` (`census_stratum`: `SUM(area_ha)` = mapped, `farm_area_total_ha` = farm) and `Output/spatial_8058/gayini_boundary_epsg8058.gpkg`. Published live via `v_presentation_headlines_live` (`census_mapped_area_ha`, `farm_area_total_ha`), each row citing its artefact and registered asset id.*
 
 ## 2. The canonical grid
 
@@ -250,7 +251,9 @@ annual stack (28355, binary, 25.0 m)
 
 Drops **111 of 959,944** farm FC pixels (0.0116%).
 
-**The lake — definitive.** **346.9 ha (5,564 cells)** at **(8,999,545, 4,349,484)**. **91.4% inundation** (near-permanent water). FC valid seasons **median 13 (range 5–49)** — all below `MIN_SEASONS`. `veg_regime_class` NA in all 5,564 cells. **Correctly NA in the veg products.**
+**The lake — definitive.** **346.9 ha (5,564 cells)** at **(8,999,545, 4,349,484)**. **91.4% inundation** (near-permanent water). FC valid seasons **median 13 (range 5–49)** — all below `MIN_SEASONS`. `veg_regime_class` NA in all 5,564 cells. **Correctly NA in the veg products.** *(Basis: 5,564 cells × 0.0623514 ha, EPSG:8058 census pixel — a different grid and pixel area from the §9 floor figures above; do not convert between them.)*
+
+*Provenance: `Output/diagnostics/tier2H_h2_blob_probe.csv`, emitted by `scripts/05_ground_cover/03_h2_seasonal_gate_and_diagnostics.R`. Not yet registered in `report_asset` — pointer given, no asset id to cite.*
 
 **Aeolian low is 100.0% never-flooded** — max annual freq **0.0000%**. Flat zero series → its F6 "no trend" is **trivially true**. Report as vacuous, not evidence.
 
@@ -266,11 +269,56 @@ At the season that sets each pixel's total-veg floor (farm, n = 959,833):
 | green (PV) | **1.0** | 7.7 | 42.0 |
 | **green fraction** | **3.0%** | 11.8% | **55.6%** |
 
-**The median farm pixel's floor is ~97% dead material.** Still the resilience story — litter holds soil and catches seed — but it is **not** "the country stays green".
+**The median farm pixel's floor is ~97% dead material.** Read this off the **green fraction**
+row above: the median green fraction is **3.03%**, so ~97% of the cover present at the floor
+season is non-green. It is a statement about the **green share of remaining cover**, *not* about
+`veg_p50` and not about how much cover there is. Still the resilience story — litter holds soil and
+catches seed — but it is **not** "the country stays green".
+
+*Provenance: `Output/tables/taskM_green_at_floor_area.csv` (`green_frac_pct_median`), rebuilt by
+`scripts/05_ground_cover/04_taskM_green_at_floor_area.R`; matches the committed substrate
+`Output/diagnostics/tier2H_h2_green_fraction_at_floor.csv`. Registered as
+`report_green_at_floor_area` / `report_green_at_floor_substrate`.*
 
 > **The distribution is heavily skewed, and the tail is the interesting part: land that stays MAJORITY GREEN in its own worst season** — a **refugia** map, probably a better one than the median.
 >
-> ⚠️ **State the pixel basis (D8 — grid mismatch).** The paired majority-green count is **71,755 pixels on the native EPSG:3577 30 m grid**; converting it with the **EPSG:8058 24.97 m census pixel** understates true ground area by (24.97/30)² = 0.693 (~31%). Native-grid consistent: **~6,460 ha (≈7.5% of the farm)**. The earlier "**~4,300 ha (≈5%)**" used the mismatched 8058 pixel and is **superseded** — prefer the native-grid figure, or reproject the floor to 8058 before counting, and state the basis on any refugia slide. The refugia *story* is unchanged (thousands of ha, skew-tail); only the headline hectares move.
+> ⚠️ **D8 — state the variable AND the pixel basis.** *(Corrected 2026-07-24, Task M Gate D.
+> The earlier framing here called D8 a grid mismatch alone. That was the diagnosis before the
+> artefact was traced; it is real but incomplete.)*
+>
+> **1. The variable comes first.** `green_at_floor()` computes **`100 × PV ÷ total_veg > 50`** —
+> the *green share of the cover that remains*, read **paired** in the season that sets each
+> pixel's total-veg 5th percentile. It is **not** `veg_p05 >= 50` (total cover at the floor ≥ 50%).
+> "Majority-green floor" means *most of what is there is green*, not *there is a lot of it*. Any
+> comparison against a `veg_p05`-based hectare figure is comparing two different questions, and no
+> grid argument closes that gap.
+>
+> **2. The grid mismatch is real, and explains one pair of numbers only.** The same **71,755**
+> pixels convert two ways, and the ratio is exactly the pixel-area ratio (1.443 = (30 ÷ 24.970268)²):
+>
+> | Conversion | Area | Status |
+> |---|---:|---|
+> | 71,755 px × **0.09 ha** (native EPSG:3577, 30 m) | **6,457.95 ha** | internally consistent — the count and the grid agree |
+> | 71,755 px × 0.0623512 ha (EPSG:8058 census pixel) | 4,474.03 ha | mismatched conversion: a 30 m count priced at the 24.97 m pixel area |
+>
+> The earlier published "~4,300 ha" is approximately the second row — roughly right, wrong pixel
+> area. It is **superseded by the first row**, not by any `veg_p05` figure.
+>
+> **Definition required with any of these figures** — variable `green_frac_pct = 100 × PV ÷ total_veg`
+> (paired at the total-veg p05 season) · threshold `> 50` · mask farm boundary, crop + mask on the
+> native grid · support `MIN_SEASONS ≥ 50` valid paired seasons · grid **EPSG:3577** · pixel area
+> **0.09 ha** · n valid = **959,833**. Quoting a hectare figure without these is incomplete by
+> construction.
+>
+> *Provenance: `Output/tables/taskM_green_at_floor_area.csv`, which carries every one of those
+> fields as columns on each row. Rebuilt from git by
+> `scripts/05_ground_cover/04_taskM_green_at_floor_area.R`, which reuses `green_at_floor()`
+> verbatim and halts if that definition drifts; reconciles at difference 0 against the traced
+> artefact `Output/diagnostics/ondisk_review_20260720/refugia_area_check.csv`. Registered as
+> `report_green_at_floor_area`.*
+>
+> **Not settled here:** whether this measure belongs on a slide, under what label, or at what
+> threshold. No interpretation offered — human review required (D8, open).
 
 > ⚠️ **These are PAIRED figures.** An earlier "99% dead" came from subtracting marginal percentiles — **invalid** (§11).
 
