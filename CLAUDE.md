@@ -65,7 +65,7 @@ A spatially explicit remote-sensing assessment of flooding and vegetation on Gay
 - **Figure pair per step:** a concept explainer + the data figure. **One figure = one file = one slide.** Insets/legends never overlap titles/captions.
 - **Census display convention (H5):** never plot 1.08 M raw points — use hexbin / 2-D density or a CI band. **Never a naive large-N CI:** 1,080,157 pixels are spatially autocorrelated, not independent observations.
 - **Review bundle per task:** after the acceptance gate passes, copy deliverables to `Output/review_bundles/tier{N}{X}_{name}/` and zip.
-- **Workflow:** gated task specs → **branch-and-PR into `main`, human-reviewed before merge**. Stop at the acceptance gate; the review-bundle zip is what gets opened. Do not merge; hand back for the human to merge. **No AI authorship in commits** (no `Co-Authored-By:` trailers).
+- **Workflow:** gated task specs with STOP points → **CC works on a branch and hands back for review in chat.** Once the human has reviewed the work in chat, CC may commit to `main` (or fast-forward the branch into `main`) directly — a formal GitHub PR is **not** required unless the human asks for one. **The review gate is the in-chat handoff, not the PR.** Still stop at each acceptance gate before proceeding. **No AI authorship in commits** (no `Co-Authored-By:` trailers).
 - **Simplest first; surface gated:** no probability surface unless a trend is real *and* roughly stationary. "No robust trend" is a legitimate, reportable result.
 
 ## Hard rules (verifiable — the acceptance gate should assert these)
