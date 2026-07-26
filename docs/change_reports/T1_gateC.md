@@ -25,7 +25,15 @@ Scripts: `T1_gateC_pre_spatial_checksums.py`, `T1_gateC_assign.R`, `build_T1_gat
 
 - **`Σ zoned + unzoned = 1,080,157`, diff = 0.**
 - **Area per stratum vs `census_stratum`: max diff 0.0005 ha** (< 0.1 ha; pure rounding). View area sums to 67,349.33 ha (the mapped basis).
-- **Unzoned = 194,865 px = 12,150.1 ha** (mine). Priors: 12,179 ha (in-chat) and ~12,001 ha (Gate 0, which assumes zones ⊆ mapped area — untested). Mine sits between them; the differences are immaterial and explained by pixel-area/basis, reported not forced.
+- **Unzoned area — three ways, and "zones ⊆ mapped" is now measured, not assumed:**
+
+  | basis | unzoned area (ha) | what it is |
+  |---|---|---|
+  | (A) pixel count × `PIXEL_AREA_HA` | **12,150.11** | mapped census pixels outside every zone |
+  | (B) mapped − Σ zone geometry (`area_ha_computed`) | **12,138.20** | holds only if zones ⊆ mapped |
+  | (C) 194,865 × 0.0625 | ~~12,179.06~~ | **withdrawn** — the same count with the wrong constant, *not* an independent estimate |
+
+  (A) − (B) = **11.91 ha = 0.0216 % of zone geometry**: zone polygons extend only ~0.02 % beyond the mapped census area. So the "zones are a subset of mapped area" assumption is **measured** (negligibly false), not untested. (C) was never a second opinion — it was the pixel count × the 25 m nominal, exactly the error `gayini_params` now prevents.
 
 ## Figures (via `write_and_register_figure()`, `support_level='pixel'`)
 
@@ -34,7 +42,7 @@ Scripts: `T1_gateC_pre_spatial_checksums.py`, `T1_gateC_assign.R`, `build_T1_gat
 
 ## Notes / small judgment calls
 
-- **View `support_level = 'pixel_within_zone_stratum'`** per spec; the **figures** use `'pixel'` (the closed-ladder term) since `pixel_within_zone_stratum` is not on the ladder. Flagging the two-vocabulary situation (spec-mandated composite on the view; ladder term on figures).
+- **Support term split into two columns** (spec correction, applied to this view now so Gate D inherits it): `support_level = 'pixel'` (closed ladder — what the support *is*, keeps T5 4.4's mixed-support detector enumerable) **and** `aggregation_unit = 'zone_stratum'` (free text — what it is aggregated *to*). The earlier composite `'pixel_within_zone_stratum'` conflated the two and would have forced a hardcoded synonym list. The figures' `'pixel'` was already right.
 - Idempotent: `build` re-run → identical 381 rows, diff = 0. Intermediates in `Output/census/_tmp/` (gitignored).
 - **Snapshot regenerated:** `docs/Gayini_Results_DB_contract_snapshot_20260726.xlsx` (as-of 09:21 UTC) — 93 objects, `census_by_zone_stratum`/`v_census_by_zone_stratum` = 381, `census_asset` = 2, `figure_asset` = 261.
 

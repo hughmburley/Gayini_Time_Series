@@ -97,7 +97,8 @@ SELECT s.zone_fid,
        s.n_pixels, s.area_ha,
        s.flood_freq_mean, s.flood_freq_median, s.flood_freq_p10, s.flood_freq_p90,
        s.veg_p05_mean, s.veg_p05_median, s.veg_p10_mean, s.veg_p50_mean,
-       'pixel_within_zone_stratum' AS support_level
+       'pixel' AS support_level,            -- closed ladder (enumerable, T5 4.4)
+       'zone_stratum' AS aggregation_unit   -- free text: what it is aggregated TO
 FROM census_by_zone_stratum s
 LEFT JOIN dim_management_zone z ON z.zone_fid = s.zone_fid
 """

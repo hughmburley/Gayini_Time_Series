@@ -122,6 +122,13 @@ def main(out_path: str | None) -> None:
             except Exception as e:
                 add_sheet(wb, sheet, ["error"], [[f"{table}: {e}"]])
 
+        # Gate D matched contrast (9 non-treed strata) - a headline deliverable
+        try:
+            header, rows = q(con, "SELECT * FROM v_zone_stratum_treatment_contrast")
+            add_sheet(wb, "14_Zone_stratum_contrast", header, rows)
+        except Exception as e:
+            add_sheet(wb, "14_Zone_stratum_contrast", ["error"], [[str(e)]])
+
         # Raster assets — key columns
         header, rows = q(con,
             "SELECT raster_asset_id, product, crs_epsg, resolution_x, xmin, ymin, xmax, ymax, "
