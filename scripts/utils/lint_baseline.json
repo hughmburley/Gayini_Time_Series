@@ -1,0 +1,20 @@
+{
+  "note": "Pre-T5 guardrail-lint debt. The lint fails on NEW violations only. Pay down when the owning asset is next re-registered.",
+  "keys": [
+    "R/gayini_pixel_census_functions.R::magic_number::if (!\"farm_area_total_ha\" %in% names(census)) census$farm_area_total_ha <- 85910.8",
+    "scripts/03_inundation_products/15_build_pixel_census_parquet.R::magic_number::EXPECTED_ROWS   <- 1080157L",
+    "scripts/03_inundation_products/29_build_s12_stratum_coverage_figure.R::magic_number::stopifnot(round(inland_pct, 2) == 66.44, total_px == 1080157L, inland_px == 717629L)",
+    "scripts/03_inundation_products/30_fix_d2_census_view_farm_basis.R::magic_number::FARM_AREA_TOTAL_HA <- 85910.8   # true farm (gayini_boundary -> 8058 area); facts \u00a71",
+    "scripts/03_inundation_products/31_register_gateE_assets.R::whole_digest::if (requireNamespace(\"digest\", quietly = TRUE)) digest::digest(file = path, algo = \"sha256\") else NA_character_,",
+    "scripts/07_figures_dashboards/taskM_gateD_M2_method.R::magic_number::stopifnot(n_pixels == 1080157L, n_strata == 11L, n_plots == 66L)",
+    "scripts/11_database/01_build_results_database.py::or_ignore::con.executemany(\"INSERT OR IGNORE INTO source_file VALUES (?, ?, ?, ?, ?, ?, ?, ?)\", manifest_rows)",
+    "scripts/11_database/register_d2_site_dashboards.py::or_ignore::and there are no triggers) + belt-and-suspenders INSERT OR IGNORE on the PK.",
+    "scripts/11_database/register_d2_site_dashboards.py::or_ignore::f\"INSERT OR IGNORE INTO figure_asset ({', '.join(COLUMNS)}) VALUES ({placeholders})\",",
+    "scripts/11_database/register_taskM_gateC_assets.py::or_ignore::\"INSERT OR IGNORE INTO workflow_run \"",
+    "scripts/11_database/register_taskM_gateC_assets.py::or_ignore::f\"INSERT OR IGNORE INTO taskM_headline_source ({', '.join(cols)}) VALUES ({ph})\",",
+    "scripts/11_database/register_taskM_gateC_assets.py::or_ignore::f\"INSERT OR IGNORE INTO {table} ({', '.join(cols)}) VALUES ({ph})\",",
+    "scripts/11_database/register_taskM_gateD_assets.py::or_ignore::\"INSERT OR IGNORE INTO workflow_run \"",
+    "scripts/11_database/register_taskM_gateD_assets.py::or_ignore::and idempotent (INSERT OR IGNORE on the primary key). It re-uses the provenance",
+    "scripts/11_database/register_taskM_gateD_assets.py::or_ignore::f\"INSERT OR IGNORE INTO {table} ({', '.join(cols)}) VALUES ({ph})\","
+  ]
+}

@@ -83,15 +83,16 @@ Figures went unregistered at scale because every path wrote in R and registered 
 
 ### Spatial layers: read through the registry
 
-Use `read_registered_layer(layer_name)` — resolves the path from `spatial_layer_asset`, asserts the CRS, and compares the file's actual fields to the registered `field_list`. **Two zone layers exist and they differ:**
+Use `read_registered_layer(layer_name)` — resolves the path from `spatial_layer_asset`, asserts the CRS, and compares the file's actual fields to the registered `field_list`. **Three management-zone objects exist and they differ — do not conflate them:**
 
-| | `management_zones_8058` | `Gayini_Results.gpkg:management_zones` |
-|---|---|---|
-| CRS | EPSG:8058 — **the analysis input** | EPSG:28355 — map companion |
-| Fields | `ManagmentZ, Area_MW, Treatment, Plots` | `management_zone, treatment, plots` |
-| Text | clean | NUL-padded |
+| | `management_zones_8058` (spatial_006) | `management_zones` source shp (spatial_004) | `Gayini_Results.gpkg:management_zones` |
+|---|---|---|---|
+| CRS | EPSG:8058 — **the analysis input** | EPSG:28355 — registered source (`CA0561_ManagementZones.shp` in `shapefiles.zip`) | EPSG:28355 |
+| Fields | `OBJECTID_1,OBJECTID_2,ManagmentZ,Area_MW,Treatment,Plots` (caps) | same caps ESRI names | `source_feature_id,management_zone,treatment,plots` (lowercase) |
+| Text | clean | clean | **NUL-padded** |
+| Status | registered, analysis input | registered import | **build output, unregistered — cross-check only, never an analysis input** |
 
-A spec once declared `Area_MW` non-existent after inspecting the wrong one.
+The lowercase names are the **builder's normalisation on import**; the gpkg companion is a build output, so it is correctly registered *nowhere* (`spatial_layer_asset` is an import registry — `import_status`, `invalid_geometry_count_*`; a build-output row there is a category error). `read_registered_layer()` refusing it is correct. A spec once declared `Area_MW` non-existent after inspecting the lowercase companion instead of the caps input.
 
 ### Every check must be able to fail
 

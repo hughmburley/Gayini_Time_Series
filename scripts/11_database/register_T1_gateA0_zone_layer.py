@@ -156,7 +156,7 @@ def main(mode: str) -> None:
         before = con.execute("SELECT COUNT(*) FROM spatial_layer_asset").fetchone()[0]
         # provenance run row; is_current=0 so the one-current-run release check is untouched
         con.execute(
-            "INSERT OR IGNORE INTO workflow_run "
+            "INSERT OR REPLACE INTO workflow_run "
             "(run_id, run_datetime, script_name, parameters_json, is_current, qa_status) "
             "VALUES (?, ?, ?, ?, 0, 'REVIEW')",
             (RUN_ID, RUN_DATETIME,

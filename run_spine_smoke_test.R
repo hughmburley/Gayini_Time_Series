@@ -159,6 +159,27 @@ for (script_path in active_script_files[grepl("\\.(R|r)$", active_script_files)]
   )
 }
 
+## T5 Gate 1 guardrail lints: magic numbers, INSERT OR IGNORE, whole-file digest.
+## Fails the smoke test on any NEW (non-baselined) violation. Fixture-proven to fire.
+lint_script <- file.path(root_dir, "scripts", "utils", "lint_guardrails.py")
+if (file.exists(lint_script)) {
+  lint_out <- suppressWarnings(system2("python", c(shQuote(lint_script), "check"),
+                                       stdout = TRUE, stderr = TRUE))
+  lint_rc <- attr(lint_out, "status")
+  lint_failed <- !is.null(lint_rc) && lint_rc != 0L
+  add_result(
+    "guardrails", "lint_guardrails_no_new_violations",
+    if (lint_failed) "fail" else "pass", lint_script,
+    if (lint_failed) paste("New guardrail violation(s):",
+                           paste(utils::tail(lint_out, 6), collapse = " | "))
+    else "No new magic-number / OR IGNORE / whole-file-digest violations.",
+    if (lint_failed) "fail" else "info"
+  )
+} else {
+  add_result("guardrails", "lint_guardrails_present", "missing", lint_script,
+             "scripts/utils/lint_guardrails.py not found.", "warning")
+}
+
 run_order_files <- c(
   "docs/run_order/01_full_rebuild_workflow.csv",
   "docs/run_order/02_lightweight_review_refresh.csv",
