@@ -37,6 +37,12 @@ SELF = "scripts/utils/lint_guardrails.py"
 BASELINE_PATH = ROOT / "scripts" / "utils" / "lint_baseline.json"
 CODE_EXTS = {".r", ".py", ".ps1", ".sql"}
 
+# The baseline is legacy debt, not a suppression file. This lock is the ceiling;
+# `check` FAILS if the baseline has grown beyond it. To grow it you must bump this
+# constant in code - a visible, reviewable change - so nobody can silently append
+# a new violation to lint_baseline.json to hide it. Lower it as debt is paid down.
+BASELINE_LOCK = 15
+
 
 def rel(p: Path) -> str:
     return p.relative_to(ROOT).as_posix()
@@ -131,6 +137,15 @@ def main(mode: str) -> int:
     baseline = load_baseline()
     new = [v for v in vs if vkey(v) not in baseline]
 
+    # Fail closed on baseline growth: a baseline that can be appended to silently
+    # becomes a suppression file.
+    grown = len(baseline) > BASELINE_LOCK
+    if mode in ("check", "report"):
+        print(f"[baseline] {len(baseline)} entries (locked at {BASELINE_LOCK})"
+              + ("  << GROWN — bump BASELINE_LOCK deliberately or fix the violation"
+                 if grown else ("  (below lock — lower BASELINE_LOCK as debt is paid)"
+                                if len(baseline) < BASELINE_LOCK else "")))
+
     if mode == "baseline-write":
         BASELINE_PATH.write_text(json.dumps(
             {"note": "Pre-T5 guardrail-lint debt. The lint fails on NEW violations only. "
@@ -144,9 +159,13 @@ def main(mode: str) -> int:
 
     summarise(vs, "all violations")
     summarise(new, "NEW (non-baselined) violations")
-    if mode == "check" and new:
-        print(f"\nFAIL: {len(new)} new guardrail violation(s). Use gayini_params, "
-              "INSERT OR REPLACE, and first-50-MB SHA-256.")
+    if mode == "check" and (new or grown):
+        if new:
+            print(f"\nFAIL: {len(new)} new guardrail violation(s). Use gayini_params, "
+                  "INSERT OR REPLACE, and first-50-MB SHA-256.")
+        if grown:
+            print(f"\nFAIL: baseline grew to {len(baseline)} > lock {BASELINE_LOCK}. "
+                  "Fix the violation instead of baselining it, or bump BASELINE_LOCK on purpose.")
         return 1
     print("\nPASS: no new guardrail violations." if not new else "")
     return 0
