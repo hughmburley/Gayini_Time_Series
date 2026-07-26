@@ -58,3 +58,7 @@ The `tasks` archive also holds the delivery/cleanup history: `codex_context.md`,
 - `Gayini_subsampling_approach.md` — the next round (stratified Monte-Carlo resampling).
 
 Adrian's Q1/Q2/Q3 answers update at the Wednesday sync; fold them into the Tier 1 summary, and note here anything that changes a ruling in §2.
+
+## 9. Method traps (learned, cross-task)
+
+- **A bijection does not resolve mutual twins.** Two elements exchangeable at equal cost give the assignment *degenerate optima*, so a literal "verified iff optimal == identity" rule fails on numerical noise (T1 Gate B: the `{9,21}` management-zone area-twins swap for a −0.000033 pp "gain", which flipped the whole 64-way assignment off identity). **Constrain with provenance, and record per element which line of evidence carries it** (`dim_management_zone.unit_id_verify_method` = `provenance+area` vs `provenance_only`; global gap in `t1_zone_identity_check`). Evidence and reasoning: `docs/change_reports/T1_gateB_dim_management_zone.md`.
