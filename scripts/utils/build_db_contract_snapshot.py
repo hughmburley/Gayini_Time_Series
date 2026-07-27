@@ -129,6 +129,13 @@ def main(out_path: str | None) -> None:
         except Exception as e:
             add_sheet(wb, "14_Zone_stratum_contrast", ["error"], [[str(e)]])
 
+        # Gate D robustness (Bala-only, block-controlled + zone-support)
+        try:
+            header, rows = q(con, "SELECT * FROM v_zone_stratum_contrast_bala_robust")
+            add_sheet(wb, "15_Contrast_robustness", header, rows)
+        except Exception as e:
+            add_sheet(wb, "15_Contrast_robustness", ["error"], [[str(e)]])
+
         # Raster assets — key columns
         header, rows = q(con,
             "SELECT raster_asset_id, product, crs_epsg, resolution_x, xmin, ymin, xmax, ymax, "

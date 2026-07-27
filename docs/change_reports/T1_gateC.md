@@ -19,7 +19,7 @@ Scripts: `T1_gateC_pre_spatial_checksums.py`, `T1_gateC_assign.R`, `build_T1_gat
 ## Products
 
 - **Sidecar parquet** `gayini_pixel_zone_assignment.parquet` (`pixel_id`, `zone_fid` only), registered in `census_asset` (`census_zone_assignment_8058`, `n_rows` 1,080,157, first-50-MB SHA-256). The primary census parquet is **not** widened.
-- **`census_by_zone_stratum`** (new table, 381 rows) + **`v_census_by_zone_stratum`** (view). **Area from `gayini_params.PIXEL_AREA_HA`** (= 0.062351428…), never a literal — the lint caught and I fixed one bare `1080157` that had slipped into a column-label string in my own build script (the lint working as intended). Every view row carries `support_level = 'pixel_within_zone_stratum'`.
+- **`census_by_zone_stratum`** (new table, 381 rows) + **`v_census_by_zone_stratum`** (view). **Area from `gayini_params.PIXEL_AREA_HA`** (= 0.062351428…), never a literal — the lint caught and I fixed one bare `1080157` that had slipped into a column-label string in my own build script (the lint working as intended). Every view row carries `support_level = 'pixel'` and `aggregation_unit = 'zone_stratum'` (the composite term was split — see Notes).
 
 ## Reconciliation — diff = 0
 
