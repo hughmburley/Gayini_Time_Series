@@ -23,6 +23,7 @@ desktop.ini
 # Local agent/cache metadata
 .agents/
 .codex/
+.claude/
 
 # Raw and derived data
 Input/
