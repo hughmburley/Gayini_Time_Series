@@ -132,6 +132,19 @@ so a direct query cannot pick up a sub-support cell. Usable reference paddocks p
 community are now data — `n_ref_paddocks` in the decomposition: Aeolian 1, Riverine 3,
 Inland 4. (Bala 27ca has no Aeolian/Riverine rows.)
 
+## Follow-on — plot→paddock join (`plot_paddock` / `v_plot_paddock`)
+
+Connects the 66 monitoring plots (anchors) to the T1 paddocks by centroid containment
+(dim_plot centroids EPSG:9473 → 8058; same zone layer T1 used), mirroring T1's
+pixel→zone assignment. `scripts/12_zone_stratum/T2_plot_paddock_join.R`.
+
+- **48 of 66 plots fall in a zone; 18 unzoned; 0 treatment mismatches.** Internally
+  validated: `dim_plot` has 24 No-grazing plots, all 24 land in the reference paddocks
+  (Bala 29ca 13, 28ca 8, 26ca 3; 27ca holds none); 24 14-day plots match 14-day zones.
+- **The 18 unzoned = 15 Standard-grazing plots (the 64 zones contain no Standard-grazing
+  paddock) + 3 stray 14-day.** So the zone layer covers only the 14-day and No-grazing
+  treatments — a real coverage gap, recorded as data (`in_zone`, `treatment_match`).
+
 ## Acceptance
 
 All acceptance items met; `lint_guardrails.py` exits 0 (the T2 acceptance signal —
