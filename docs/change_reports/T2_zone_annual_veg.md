@@ -101,6 +101,37 @@ Scripts: `scripts/12_zone_stratum/T2_gateA_figure.R`, `T2_gateB_prep.py`,
   median; the separation **NARROWS** in Aeolian and Riverine and **HOLDS** in Inland.
   (Consistent with I-02: the reference paddocks are not a clean high benchmark.)
 
+## Gate F — the reference-gap finding gets a DB home (post-Gate-E addition)
+
+The Gate E gap finding lived only in `Output/tables/T2_E_gap_report.csv` and a chat
+window — the C-1 condition rebuilt (T4 `claim_register` deferred, I-20). Added:
+
+- **`fact_community_year_flood`** (105 rows) — community×year `flood_frac_pct` + the
+  top-tercile `flood_class` (per-community, R type-7 quantile matching Gate E). The
+  flood classification previously existed only in a CSV.
+- **`fact_reference_gap_decomposition`** + **`v_reference_gap_decomposition`** (27 rows
+  = 3 communities × {early_8897, late_1322, all} × {flood, non_flood, all}). Columns:
+  `ref_p05_mean`, `grazed_p05_median`, `gap_pp`, `ref_change_pp`, `grazed_change_pp`,
+  `gap_change_pp`, `n_ref_paddocks`, `n_grazed_zones`. `gap_change_pp = ref_change_pp −
+  grazed_change_pp` (pp, additive) — a single narrowing number cannot hide which side
+  moved. **Materialised** (SQLite has no MEDIAN; the metric is a two-stage per-year-then-
+  per-window aggregation) and rebuilt deterministically by
+  `scripts/11_database/T2_gateF_gap_decomposition.py` — rerun if the fact table changes.
+- **Independently reproduced** the chat-computed values with **zero disagreement**:
+  Aeolian ref 24.2→39.0 / grazed 60.6→67.0 / gap −36.41→−27.98; Riverine 49.1→53.6 /
+  68.5→59.5 / −19.41→−5.88; Inland 76.1→70.5 / 78.5→73.7 / −2.38→−3.15; flood/non-flood
+  `gap_change_pp` +6.49/+9.72, +14.88/+12.30, −1.91/+0.57.
+- **Mechanism (reported, not interpreted):** Aeolian narrows via the reference side
+  rising (+14.8 pp); Riverine via the grazed side falling (−9.0 pp); Inland holds (both
+  drift down). Narrowing appears in flood and non-flood years alike — not flood-only.
+- Figure **`T2_F_gap_decomposition.png`** (`figure_t2_f_gap_decomposition`, deck-grade).
+
+**Test-1 fixes:** `fact_zone_community_veg_annual` gained `below_min_support` (1 where
+`n_pixels_valid < 30`; 209 rows flagged, incl. Bala 28ca's 10-px/0.62 ha Aeolian slice)
+so a direct query cannot pick up a sub-support cell. Usable reference paddocks per
+community are now data — `n_ref_paddocks` in the decomposition: Aeolian 1, Riverine 3,
+Inland 4. (Bala 27ca has no Aeolian/Riverine rows.)
+
 ## Acceptance
 
 All acceptance items met; `lint_guardrails.py` exits 0 (the T2 acceptance signal —

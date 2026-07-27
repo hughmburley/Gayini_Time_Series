@@ -17,6 +17,8 @@ TBL = ROOT / "Output" / "tables"
 FACT = TBL / "T2_fact_zone_veg_annual.csv"
 FACTC = TBL / "T2_fact_zone_community_veg_annual.csv"
 DEN = TBL / "T2_zone_denominator.csv"   # DB/sidecar-derived, repo-relative (prep step)
+MIN_PX_COMMUNITY = 30   # zone-community-year cells below this are flagged (0.62 ha at
+                        # 24.97 m); a direct query can then exclude the 10-px slices.
 
 
 def read_csv(p):
@@ -74,15 +76,31 @@ def main():
         CREATE TABLE IF NOT EXISTS fact_zone_community_veg_annual (
           zone_fid INTEGER, community TEXT, water_year INTEGER, series_variant TEXT,
           n_pixels_valid INTEGER, veg_mean REAL, veg_p05_spatial REAL,
-          support_level TEXT, aggregation_unit TEXT,
+          below_min_support INTEGER, support_level TEXT, aggregation_unit TEXT,
           PRIMARY KEY (zone_fid, community, water_year, series_variant))""")
+    # migration: add the flag to a table that predates this column (IF NOT EXISTS
+    # above would otherwise silently keep the old schema). Test 1 caught Bala 28ca's
+    # 10-pixel (0.62 ha) Aeolian slice sitting unflagged in this table.
+    have = [c[1] for c in cur.execute(
+        "PRAGMA table_info(fact_zone_community_veg_annual)")]
+    if "below_min_support" not in have:
+        cur.execute("ALTER TABLE fact_zone_community_veg_annual "
+                    "ADD COLUMN below_min_support INTEGER")
     for r in factc:
+        npv = inum(r["n_pixels_valid"])
+        # NAMED columns, not positional: the migration ALTER appends below_min_support
+        # at the end of a pre-existing table, so positional VALUES would shift.
         cur.execute(
-            """INSERT OR REPLACE INTO fact_zone_community_veg_annual VALUES
-               (?,?,?,?,?,?,?,?,?)""",
+            """INSERT OR REPLACE INTO fact_zone_community_veg_annual
+               (zone_fid, community, water_year, series_variant, n_pixels_valid,
+                veg_mean, veg_p05_spatial, below_min_support, support_level,
+                aggregation_unit)
+               VALUES (?,?,?,?,?,?,?,?,?,?)""",
             (int(r["zone_fid"]), r["community"], inum(r["water_year"]),
-             r["series_variant"], inum(r["n_pixels_valid"]), fnum(r["veg_mean"]),
-             fnum(r["veg_p05_spatial"]), "pixel", "zone_community_year"))
+             r["series_variant"], npv, fnum(r["veg_mean"]),
+             fnum(r["veg_p05_spatial"]),
+             1 if (npv is not None and npv < MIN_PX_COMMUNITY) else 0,
+             "pixel", "zone_community_year"))
 
     cur.execute("DROP VIEW IF EXISTS v_zone_veg_annual")
     cur.execute("""
