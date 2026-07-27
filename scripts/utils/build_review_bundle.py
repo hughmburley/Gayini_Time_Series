@@ -16,6 +16,7 @@ MANIFEST.md records, so a reviewer never has to reconstruct state:
 
 Usage:  python scripts/utils/build_review_bundle.py <spec.json>
 """
+import hashlib
 import json
 import os
 import shutil
@@ -27,6 +28,22 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 DB = ROOT / "Output" / "database" / "Gayini_Results.sqlite"
+BIG_BYTES = 10 * 1024 * 1024   # artefacts above this are REFERENCED (path+checksum),
+                               # not copied - a small bundle gets read more than a big one.
+
+
+def sha256_first50(path):
+    """First-50-MB SHA-256 - the project's asset checksum convention."""
+    cap, h = 50 * 1024 * 1024, hashlib.sha256()
+    with open(path, "rb") as f:
+        rem = cap
+        while rem > 0:
+            b = f.read(min(1024 * 1024, rem))
+            if not b:
+                break
+            h.update(b)
+            rem -= len(b)
+    return h.hexdigest()
 
 
 def git(*args):
@@ -123,17 +140,27 @@ def main(spec_path):
             L.append(f"| {tbl} | `{rid}` | (err {e}) | - |")
     L.append("")
 
-    # ---- artefacts ----
-    L += ["## Artefacts", "", "| artefact | size |", "|---|---|"]
+    # ---- artefacts ----  (small = copied; large = referenced by path + checksum)
+    L += ["## Artefacts", "",
+          f"_Files over {BIG_BYTES // (1024*1024)} MB are referenced by path + first-50-MB "
+          "SHA-256, not copied, to keep the bundle small._", "",
+          "| artefact | size | in bundle | checksum (first-50MB sha256) |",
+          "|---|---|---|---|"]
+    seen = set()
     for pat in spec.get("artefacts", []):
         for src in sorted(ROOT.glob(pat)):
-            if not src.is_file():
+            if not src.is_file() or src in seen:
                 continue
+            seen.add(src)
             rel = src.relative_to(ROOT).as_posix()
-            L.append(f"| `{rel}` | {human(src.stat().st_size)} |")
-            sub = "reports" if src.suffix == ".md" else "outputs"
-            dst = bundle / sub / src.name
-            shutil.copy2(src, dst)
+            sz = src.stat().st_size
+            if sz > BIG_BYTES:
+                L.append(f"| `{rel}` | {human(sz)} | referenced (not copied) | "
+                         f"`{sha256_first50(src)[:16]}` |")
+            else:
+                sub = "reports" if src.suffix == ".md" else "outputs"
+                shutil.copy2(src, bundle / sub / src.name)
+                L.append(f"| `{rel}` | {human(sz)} | copied | - |")
     L.append("")
 
     # ---- deletions ----
