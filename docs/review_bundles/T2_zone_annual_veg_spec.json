@@ -1,0 +1,75 @@
+{
+  "task": "T2_zone_annual_veg",
+  "tier": "tier2",
+  "scripts": [
+    "scripts/12_zone_stratum/T2_gateA_figure.R",
+    "scripts/12_zone_stratum/T2_gateB_prep.py",
+    "scripts/12_zone_stratum/T2_gateB_extract.R",
+    "scripts/12_zone_stratum/T2_gateB2_duration.R",
+    "scripts/11_database/T2_gateC_load.py",
+    "scripts/11_database/T2_gateF_gap_decomposition.py",
+    "scripts/12_zone_stratum/T2_gateE_figures.R",
+    "scripts/12_zone_stratum/T2_gateF_figure.R",
+    "scripts/12_zone_stratum/T2_gateG_figure.R",
+    "scripts/12_zone_stratum/T2_plot_paddock_join.R"
+  ],
+  "db_objects": [
+    "fact_zone_veg_annual",
+    "v_zone_veg_annual",
+    "fact_zone_community_veg_annual",
+    "fact_community_year_flood",
+    "fact_reference_gap_decomposition",
+    "v_reference_gap_decomposition",
+    "plot_paddock",
+    "v_plot_paddock"
+  ],
+  "registry": [
+    {"table": "raster_asset", "id": "raster_veg_persistence_duration_8058"},
+    {"table": "figure_asset", "id": "figure_t2_a_stack_alignment"},
+    {"table": "figure_asset", "id": "figure_t2_e_paddock_trajectories"},
+    {"table": "figure_asset", "id": "figure_t2_e_paddock_trajectories_mean"},
+    {"table": "figure_asset", "id": "figure_t2_b2_duration_map"},
+    {"table": "figure_asset", "id": "figure_t2_f_gap_decomposition"},
+    {"table": "figure_asset", "id": "figure_t2_g_plot_paddock_coverage"}
+  ],
+  "artefacts": [
+    "Output/figures/diagnostics/T2_*.png",
+    "Output/tables/T2_*.csv",
+    "Output/rasters/veg_duration_8058/veg_persistence_duration_8058.tif",
+    "docs/change_reports/T2_zone_annual_veg.md"
+  ],
+  "deletions": [
+    "docs/Gayini_Results_DB_contract_snapshot_20260725.xlsx",
+    "docs/Gayini_Results_DB_contract_snapshot_20260726.xlsx"
+  ],
+  "acceptance": [
+    {"criterion": "fact_zone_veg_annual = 64x35x2 minus low-support drops",
+     "query": "SELECT COUNT(*) FROM fact_zone_veg_annual", "note": "rows (4480 - 124 jja_son drops)", "expect": 4356},
+    {"criterion": "Scope is nine-stratum SCOPE_NON_TREED (Other/minor units absent)",
+     "note": "scope chain 1080157 -> 993782 (treed=0 alone) -> 988831 (nine strata) -> 795602 (zoned); see change report"},
+    {"criterion": "veg_p05_spatial named as such; no plain veg_p05 column",
+     "query": "SELECT COUNT(*) FROM pragma_table_info('fact_zone_veg_annual') WHERE name='veg_p05_spatial'", "note": "veg_p05_spatial columns", "expect": 1},
+    {"criterion": "No plain veg_p05 column in the table",
+     "query": "SELECT COUNT(*) FROM pragma_table_info('fact_zone_veg_annual') WHERE name='veg_p05'", "note": "plain veg_p05 columns", "expect": 0},
+    {"criterion": "Both series variants present",
+     "query": "SELECT COUNT(DISTINCT series_variant) FROM fact_zone_veg_annual", "note": "variants", "expect": 2},
+    {"criterion": "support_level='pixel' and aggregation_unit='zone_year' on every row",
+     "query": "SELECT COUNT(*) FROM fact_zone_veg_annual WHERE support_level<>'pixel' OR aggregation_unit<>'zone_year'", "note": "violating rows", "expect": 0},
+    {"criterion": "Gate B2 duration raster registered with valid_years denominator",
+     "query": "SELECT COUNT(*) FROM raster_asset WHERE raster_asset_id='raster_veg_persistence_duration_8058'", "note": "registered", "expect": 1},
+    {"criterion": "Reference set answered from DB (4 No-grazing paddocks)",
+     "query": "SELECT COUNT(*) FROM dim_management_zone WHERE grazing_treatment='No grazing'", "note": "No-grazing zones", "expect": 4},
+    {"criterion": "Flood_frac reconciles with T1 independent derivation (join integrity)",
+     "note": "r=1.0000, |diff|=0.000 pp over 64 zones (exact: valid_years=35 everywhere). See change report Gate D"},
+    {"criterion": "Reference-gap finding has a DB home (was C-1)",
+     "query": "SELECT COUNT(*) FROM v_reference_gap_decomposition", "note": "decomposition rows", "expect": 27},
+    {"criterion": "plot_paddock join built; treatment mismatches are data-flagged",
+     "query": "SELECT SUM(in_zone) FROM plot_paddock", "note": "plots in a zone (of 66)", "expect": 48},
+    {"criterion": "below_min_support flag present on community grain (Test-1 fix)",
+     "query": "SELECT COUNT(*) FROM fact_zone_community_veg_annual WHERE below_min_support=1", "note": "flagged cells"},
+    {"criterion": "No distance-to-reference metric or convergence statistic computed",
+     "note": "out of scope; spine decision (I-02). Only descriptive gap early/late reported"},
+    {"criterion": "Constants from gayini_params; magic-number lint passes",
+     "note": "lint_guardrails.py exits 0; 0 new violations"}
+  ]
+}

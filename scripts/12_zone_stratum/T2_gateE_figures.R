@@ -58,16 +58,17 @@ make_panel <- function(yv, ylab, title, sub) {
     geom_line(data = ref, aes(water_year, .data[[yv]], colour = paddock), linewidth = 0.9) +
     geom_point(data = ref, aes(water_year, .data[[yv]], colour = paddock), size = 0.9) +
     facet_wrap(~comm, nrow = 1) +
-    scale_colour_brewer(palette = "Set1", name = "Reference\n(No grazing)") +
+    scale_colour_brewer(palette = "Set1", name = "Not grazed\n(reference)") +
     labs(title = title, subtitle = sub, x = "water year", y = ylab,
          caption = paste0(
            "Support: pixel (aggregation_unit = zone_community_year, min ", MIN_PX,
-           " px/cell). Reference = ", length(unique(ref$zone_fid)),
-           " No-grazing paddocks (Bala 26-29ca), shown individually; grey = 60 grazed",
-           " zones (IQR band + median). Blue = top-tercile flood years per community.\n",
+           " px/cell). Binary treatment: not grazed = ", length(unique(ref$zone_fid)),
+           " reference paddocks (Bala 26-29ca), shown individually; grey = grazed",
+           " (14-day rotational; IQR band + median). Standard-grazing paddocks are absent",
+           " from the zone layer. Blue = top-tercile flood years per community.\n",
            "veg_p05_spatial is a WITHIN-year SPATIAL percentile, NOT the census temporal",
            " veg_p05. Cropping history unavailable (RESERVED cols NULL) => this is",
-           " conserved-vs-grazed, NOT conserved-vs-formerly-cropped.")) +
+           " not-grazed-vs-grazed, NOT conserved-vs-formerly-cropped.")) +
     theme_minimal(base_size = 11) +
     theme(legend.position = "right", plot.caption = element_text(hjust = 0, size = 8))
 }

@@ -145,6 +145,30 @@ pixel→zone assignment. `scripts/12_zone_stratum/T2_plot_paddock_join.R`.
   paddock) + 3 stray 14-day.** So the zone layer covers only the 14-day and No-grazing
   treatments — a real coverage gap, recorded as data (`in_zone`, `treatment_match`).
 
+## Post-review additions (deck prep)
+
+- **Binary treatment throughout.** All figure labels collapsed to grazed / not-grazed
+  (`grazed` = 14-day rotational; **Standard-grazing paddocks are absent from the zone
+  layer** — caveat carried on every figure). T2_E and T2_F regenerated.
+- **`T2_G_plot_paddock_coverage.png`** (deliverable) — the plot→paddock map *is* the
+  unzoned/Standard-grazing test: 66 plot centroids over the zones with the unzoned area
+  underneath. Makes three findings visible: the 15 Standard-grazing plots sit in the
+  unzoned area (no Standard zone exists); Bala 29ca holds 13 of 24 reference plots; the
+  3 stray 14-day plots (GA_018/024/045) are **near-boundary edge cases — 52/78/57 m from
+  the nearest zone edge**, not unzoned interior.
+- **Review bundle (I-21):** `scripts/utils/build_review_bundle.py` (general, spec-driven)
+  + `docs/review_bundles/T2_zone_annual_veg_spec.json` →
+  `Output/review_bundles/tier2_T2_zone_annual_veg/` + `.zip`, with a MANIFEST listing
+  scripts (git status), DB objects (row counts + CREATE SQL), registry rows (ids +
+  checksums), artefact sizes, deletions, and every acceptance criterion with its number.
+- **Limitations register:** the .xlsx is not in the working tree (gitignored, project
+  knowledge only), so two entries are **staged** in
+  `docs/Gayini_limitations_register_additions_T2.md` for merge: (a) the plot-support
+  reference is 54% one paddock (Bala 29ca, 13/24) — the plot-support analogue of T1's
+  pixel-weighting problem; (b) grazing intensity unknown (rotation interval ≠ stocking
+  rate) — an external data request, and a simpler candidate explanation for the T1 null
+  than paddock identity.
+
 ## Acceptance
 
 All acceptance items met; `lint_guardrails.py` exits 0 (the T2 acceptance signal —

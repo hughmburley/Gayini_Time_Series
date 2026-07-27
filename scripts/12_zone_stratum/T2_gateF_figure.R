@@ -21,9 +21,9 @@ d$comm <- vapply(strsplit(d$community, " "), `[`, character(1), 1)
 
 allc <- d[d$window == "all" & d$flood_class == "all", ]
 dec <- rbind(
-  data.frame(comm = allc$comm, side = "Reference (No grazing)", change = allc$ref_change_pp),
-  data.frame(comm = allc$comm, side = "Grazed (median)",        change = allc$grazed_change_pp))
-dec$side <- factor(dec$side, levels = c("Reference (No grazing)", "Grazed (median)"))
+  data.frame(comm = allc$comm, side = "Not grazed (reference)",   change = allc$ref_change_pp),
+  data.frame(comm = allc$comm, side = "Grazed (14-day median)",   change = allc$grazed_change_pp))
+dec$side <- factor(dec$side, levels = c("Not grazed (reference)", "Grazed (14-day median)"))
 lab <- allc[, c("comm", "gap_change_pp", "n_ref_paddocks", "n_grazed_zones")]
 
 pA <- ggplot(dec, aes(comm, change, fill = side)) +
@@ -56,10 +56,12 @@ p <- pA / pB + plot_layout(heights = c(1.4, 1)) +
     title = "T2 F - Reference-gap decomposition (veg_p05_spatial floor, by community)",
     caption = paste0(
       "Support: pixel (aggregation_unit = community_window; min 30 px/cell). Change = late",
-      " (WY>=2013) minus early (WY<=1997). Reference paddocks sit BELOW grazed in all three",
-      " communities (gap < 0); bars show how each SIDE moved. veg_p05_spatial is a within-",
-      "year spatial percentile, not the census floor. Cropping history unavailable =>",
-      " conserved-vs-grazed, not conserved-vs-formerly-cropped. Source: v_reference_gap_decomposition."),
+      " (WY>=2013) minus early (WY<=1997). Binary treatment: grazed = 14-day rotational;",
+      " Standard-grazing paddocks are absent from the zone layer. Not-grazed (reference)",
+      " paddocks sit BELOW grazed in all three communities (gap < 0); bars show how each",
+      " SIDE moved. veg_p05_spatial is a within-year spatial percentile, not the census",
+      " floor. Cropping history unavailable => not-grazed-vs-grazed, not conserved-vs-",
+      "formerly-cropped. Source: v_reference_gap_decomposition."),
     theme = theme(plot.caption = element_text(hjust = 0, size = 8)))
 
 gayini_write_and_register_figure(
