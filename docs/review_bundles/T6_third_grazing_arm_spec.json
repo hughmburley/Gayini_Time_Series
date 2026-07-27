@@ -1,0 +1,61 @@
+{
+  "task": "T6_third_grazing_arm",
+  "tier": "tier2",
+  "scripts": [
+    "scripts/12_zone_stratum/T6_gateB_prep.py",
+    "scripts/12_zone_stratum/T6_gateB_components.R",
+    "scripts/12_zone_stratum/T6_gateB_extract.R",
+    "scripts/11_database/T6_gateC_load.py",
+    "scripts/11_database/T6_gateD_decomposition.py",
+    "scripts/12_zone_stratum/T6_gateE_figures.R"
+  ],
+  "db_objects": [
+    "fact_three_arm_stratum_veg_annual",
+    "v_three_arm_veg_annual",
+    "fact_unzoned_community_veg_annual",
+    "fact_three_arm_gap_decomposition",
+    "v_three_arm_gap_decomposition"
+  ],
+  "registry": [
+    {"table": "raster_asset", "id": "raster_unzoned_components_8058"},
+    {"table": "figure_asset", "id": "figure_t6_a_three_arm_grid"},
+    {"table": "figure_asset", "id": "figure_t6_a_three_arm_deck"},
+    {"table": "figure_asset", "id": "figure_t6_b_three_arm_mean"}
+  ],
+  "artefacts": [
+    "Output/figures/diagnostics/T6_*.png",
+    "Output/tables/T6_components.csv",
+    "Output/tables/T6_fact_three_arm_stratum.csv",
+    "Output/tables/T6_fact_unzoned_component.csv",
+    "Output/rasters/unzoned_components_8058/unzoned_components_8058.tif",
+    "docs/change_reports/T6_third_grazing_arm.md",
+    "docs/Gayini_limitations_register_additions_T6.md"
+  ],
+  "deletions": [],
+  "acceptance": [
+    {"criterion": "Gate A composition delivered; arm usability decided at STOP",
+     "note": "99.2% vegetation, drier (fixed by stratum extraction), 18 components; approved to proceed"},
+    {"criterion": "Extraction uses SCOPE_NON_TREED + T2 min-support unchanged",
+     "query": "SELECT COUNT(*) FROM fact_three_arm_stratum_veg_annual", "note": "three-arm rows"},
+    {"criterion": "fact_unzoned_community_veg_annual built; fact_zone_community_veg_annual UNMODIFIED",
+     "query": "SELECT COUNT(*) FROM fact_unzoned_community_veg_annual", "note": "unzoned per-component rows"},
+    {"criterion": "v_three_arm_veg_annual unions three arms with common treatment_arm",
+     "query": "SELECT COUNT(DISTINCT treatment_arm) FROM v_three_arm_veg_annual", "note": "distinct arms", "expect": 4},
+    {"criterion": "Per-component series with n components + areas reported",
+     "note": "18 qualifying components, 10890.9 ha; T6_components.csv"},
+    {"criterion": "fact_reference_gap_decomposition extended to three arms + mean-cover columns",
+     "note": "new fact_three_arm_gap_decomposition (144) with floor+mean; T2 table not modified (standing rule > spec 'extend')"},
+    {"criterion": "treatment_arm, support_level, aggregation_unit on every row",
+     "query": "SELECT COUNT(*) FROM fact_three_arm_stratum_veg_annual WHERE support_level<>'pixel'", "note": "violating rows", "expect": 0},
+    {"criterion": "Three figures written and registered",
+     "query": "SELECT COUNT(*) FROM figure_asset WHERE run_id='T6_gateE'", "note": "T6 figures", "expect": 3},
+    {"criterion": "Inference caveat in captions + limitations register",
+     "note": "'unzoned mapped area (8 of 15 standard-grazing plots)'; L-T6-a/b/c staged"},
+    {"criterion": "Convergence proven by re-run; lint exits 0",
+     "note": "drop+rebuild twice -> identical md5; lint_guardrails.py exit 0"},
+    {"criterion": "No existing table or view modified or dropped",
+     "note": "all T6 objects new; T2 tables untouched"},
+    {"criterion": "7 plots + 21.6% outside mapped census confirmed and logged",
+     "note": "L-T6-b; GA_037/038/042/044/047/048/049; 18561.5 ha"}
+  ]
+}
