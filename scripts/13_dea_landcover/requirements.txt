@@ -1,0 +1,19 @@
+# T12 DEA Land Cover Level 3 supply step — pinned environment.
+# Reproduces the 1988-1999 re-pull (scripts/13_dea_landcover/T12_supply_repull_1988_1999.py)
+# by the same odc.stac route as Input/landsat_landcover/gayini_landuse.ipynb.
+# Resolved 28 July 2026 on Python 3.12.10 (Windows). dea_tools is NOT required
+# (the source notebook used it only for plotting). rasterio wheel bundles GDAL 3.12.1.
+#
+# Directly named in the spec:
+pystac-client==0.9.0
+odc-stac==0.5.2
+odc-geo==0.5.3
+rasterio==1.5.0
+xarray==2026.7.0
+#
+# Load-bearing transitive versions (recorded so the pull is reproducible):
+#   odc-loader==0.6.4
+#   pystac==1.15.2
+#   pyproj==3.7.2
+#   GDAL (via rasterio wheel)==3.12.1
+#   numpy>=2.5 (base environment already had 2.5.1)
