@@ -1,3 +1,9 @@
+> **SUPERSEDED FIGURE.** This document quotes ~4,300 ha for the
+> majority-green / refugia area. That figure is withdrawn and is not a
+> current finding. ~6,460 ha is likewise unverified. The canonical
+> value lives in `Output/tables/taskM_green_at_floor_area.csv` and must
+> be quoted from there. See Tier2_TaskM_deck_evidence_audit_v2.
+
 # On-disk audit + census-summary extraction + deck inventory (Task H / I / J)
 
 *Task spec for Claude Code. Design settled in the Claude.ai design seat, 20 Jul 2026, against the live `Gayini_Results.sqlite` (build with Task H rasters registered — newer than the 19 Jul audit snapshot). This is the **disk + parquet** counterpart to the design-seat spine audit, which reconciled the census against the DB but could not touch the large files.*

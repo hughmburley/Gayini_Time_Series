@@ -1,3 +1,9 @@
+> **SUPERSEDED FIGURE.** This document quotes ~4,300 ha for the
+> majority-green / refugia area. That figure is withdrawn and is not a
+> current finding. ~6,460 ha is likewise unverified. The canonical
+> value lives in `Output/tables/taskM_green_at_floor_area.csv` and must
+> be quoted from there. See Tier2_TaskM_deck_evidence_audit_v2.
+
 # Census Audit — chat kickoff
 
 *Paste the section below into a NEW chat. Read the two notes first — they change what you upload and set the guardrails.*

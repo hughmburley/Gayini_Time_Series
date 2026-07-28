@@ -1,3 +1,9 @@
+> **SUPERSEDED FIGURE.** This document quotes ~4,300 ha for the
+> majority-green / refugia area. That figure is withdrawn and is not a
+> current finding. ~6,460 ha is likewise unverified. The canonical
+> value lives in `Output/tables/taskM_green_at_floor_area.csv` and must
+> be quoted from there. See Tier2_TaskM_deck_evidence_audit_v2.
+
 # Tier 2 · Task H — on-disk review: reproduce the census & ground-cover PPT figures
 
 *Task spec for Claude Code, run on the **workstation** (large files local). Design-and-review seat wrote this; CC executes. Recon-first, gated, **report-and-STOP** at each gate. Verify against the data, never against a prose report.*

@@ -1,3 +1,9 @@
+> **SUPERSEDED FIGURE.** This document quotes ~4,300 ha for the
+> majority-green / refugia area. That figure is withdrawn and is not a
+> current finding. ~6,460 ha is likewise unverified. The canonical
+> value lives in `Output/tables/taskM_green_at_floor_area.csv` and must
+> be quoted from there. See Tier2_TaskM_deck_evidence_audit_v2.
+
 # Tier 2 · Task I — deck stocktake & review bundle
 
 *Design-seat spec, 16 July 2026. Follows Task H (Track A + Track B complete). Reference deck: `docs/Gayini_Veg_samples.pptx` (26 slides).*
