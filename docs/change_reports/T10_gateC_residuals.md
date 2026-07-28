@@ -59,6 +59,9 @@ A1 flood-trend predictions, independently recomputed — **all AGREE**: Bala 29c
 
 ### The twins diverge temporally
 
+> **CORRECTION (see `T10_gateD_register.md`):** the paddock-level numbers below (+0.556 vs +0.020) are correct, but the *interpretation* — that this is a clean management-relevant separation — is **withdrawn**. Decomposed by shared community, the two paddocks' Riverine parts behave almost identically (+0.845 vs +0.737) and Dinan 10 leads in Inland; the paddock-level gap is **composition, not behaviour** (L-01). Only Bala 29ca's Aeolian third genuinely differs (+0.339 vs +0.000).
+
+
 | paddock | raw floor trend | water-adj floor trend | rank (adj) |
 |---|---|---|---|
 | Bala 29ca (ungrazed) | +0.682 | **+0.556** | 63/64 |

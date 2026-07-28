@@ -61,5 +61,28 @@ Stays standalone, not wired into the smoke test (I-19 / I-10 / I-11).
 - Additive: 24 new rows via INSERT OR REPLACE; 2 rows re-registered (spread/note only, values unchanged); 3 PIN 3 rows annotated (pinned_value NULL untouched). No builder run, no row deleted, no rename. Idempotent.
 - The producing scripts are tracked — the annual trend (Gate B) and the residual/temporal arms (Gate C) now have scripts, closing the I-29 "no script" defect for everything that supersedes the five-period table.
 
+## Correction (design-seat review, independently verified) — withdrawing the "twin separation" flag
+
+My Gate C/D closing flag — that the temporal arm "cleanly separates the genuinely-recovering ungrazed paddock from its grazed dry twin, the sharpest management-relevant contrast the project has produced" — **is withdrawn.** It does not survive decomposition, and it is exactly the error L-01 warns about (`Gayini_learning_L01_unit_of_analysis.md`): a paddock-grain claim lifted from an average over unlike country.
+
+Decomposed by shared community (trend as deviation from that community's property-median trend; all figures reproduced to the decimal):
+
+| community | Bala 29ca (ungrazed) | Dinan 10 (grazed) |
+|---|---|---|
+| Riverine | +0.845 | **+0.737** |
+| Aeolian | **+0.339** | +0.000 |
+| Inland | −0.005 | **+0.143** |
+| composition (I/R/A) | 34.6 / 33.1 / 32.3 | 27.9 / 7.0 / 65.1 |
+
+Their **Riverine country behaves almost identically** — both recover strongly, one grazed, one not. Across the three shared communities they are near-identical in one, Bala 29ca leads in one, and **Dinan 10 leads in the third.** The paddock-level separation (+0.556 vs +0.020) is **composition, not behaviour**: Bala 29ca is a third Riverine — the community where both paddocks recover strongly — while Dinan 10 is 7% Riverine and 65% Aeolian, where it tracks the community median to three decimals; its whole-paddock average is dominated by country doing exactly what its neighbours do.
+
+**Restated:** *Comparable country in the two paddocks behaves comparably; the paddock-level difference is composition. Bala 29ca's Aeolian third is the one part that differs from its grazed counterpart* (+0.339 vs +0.000) — a genuine like-for-like difference, but one paddock against one paddock in one community, and to be stated that way, not as a management contrast.
+
+The paddock-grain numbers registered above are correct and correctly registered; it is the claim built on top of them that was wrong. This is L-01 recurring on the project's own flagship contrast — and the reason the substrate below now exists.
+
+## Substrate — the full paddock-parts table (report/bundle only, not registered)
+
+`Output/tables/T10_gateC_percommunity.csv` extended from 3 rows to **all 115 paddock-parts** (every paddock × community with ≥25 years and ≥30 px/cell). Per part: level, level vs community median + rank, trend, trend vs community-median trend, treatment, and the paddock's I/R/A composition shares. Community part counts: Aeolian 17, Riverine 37, Inland 61. **Not classified, not thresholded, not registered** — thresholds are pre-registered T13 decisions, not this task's. This is the table the flag-check needed and the substrate T13 will build on.
+
 ## STOP
-Gate D complete. Reported. Waiting for review.
+Gate D complete; the closing flag corrected and the paddock-parts substrate delivered. Waiting for review. **Reference-state stream closes after this until after 10 August** (T7, T11 not started).
