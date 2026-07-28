@@ -1,0 +1,53 @@
+{
+  "task": "T8_headline_number",
+  "tier": "reference_state",
+  "headline": "T8 pins the 18 catalogue headline numbers into dim_headline_number (35 scalar rows). PIN 1 retires the ALL rollup for treatment contrasts; the sixth pin makes #9 area-weighted; PIN 3 blocks the periodised numbers on I-29; PIN 5 splits the missing-area number. Reproduction test guards drift.",
+  "scripts": [
+    "scripts/11_database/build_T8_gateB_dim_headline_number.py",
+    "scripts/11_database/test_T8_headline_reproduction.py"
+  ],
+  "db_objects": [
+    "dim_headline_number",
+    "v_three_arm_gap_decomposition",
+    "plot_management_overlay"
+  ],
+  "db_exports": [
+    {"query": "SELECT * FROM dim_headline_number ORDER BY number_id", "file": "dim_headline_number.csv", "expect": 35},
+    {"query": "SELECT plot_id,zone_fid,zone_name,grazing_treatment,grazing_excluded FROM plot_paddock ORDER BY plot_id", "file": "pin4_plot_paddock.csv", "expect": 66}
+  ],
+  "registry": [],
+  "artefacts": [
+    "docs/change_reports/T8_gateBD_dim_headline_number.md",
+    "docs/change_reports/T8_gateB_prewrite_sixth_pin_STOP.md",
+    "docs/change_reports/T8_gateA_inventory_and_T9_addendum.md",
+    "Output/tables/T8_before_after.csv",
+    "Output/tables/T8_pin4_plot_paddock.csv"
+  ],
+  "deletions": [],
+  "acceptance": [
+    {"criterion": "dim_headline_number populated for all catalogue numbers (18 -> 35 scalar rows)",
+     "query": "SELECT COUNT(*) FROM dim_headline_number", "expect": 35, "note": "rows"},
+    {"criterion": "spread_min/spread_max non-null on every pinned row",
+     "query": "SELECT COUNT(*) FROM dim_headline_number WHERE pinned_value IS NOT NULL AND (spread_min IS NULL OR spread_max IS NULL)", "expect": 0, "note": "violating rows"},
+    {"criterion": "PIN 3 periodised numbers blocked (pinned_value NULL, I-29 note)",
+     "query": "SELECT COUNT(*) FROM dim_headline_number WHERE pinned_value IS NULL", "expect": 3, "note": "blocked rows"},
+    {"criterion": "PIN 1: #6/#7 pinned to band mean, not the ALL rollup",
+     "query": "SELECT ROUND(pinned_value,1) FROM dim_headline_number WHERE number_id='ref_grazed_floor_aeolian'", "expect": "-10.5", "note": "was -19.6 (ALL)"},
+    {"criterion": "Sixth pin: #9 area-weighted",
+     "query": "SELECT ROUND(pinned_value,1) FROM dim_headline_number WHERE number_id='three_arm_floor_deficit_not_grazed'", "expect": "-0.9", "note": "was -4.8 (equal)"},
+    {"criterion": "PIN 5: unzoned-inside area corrected to 12,150 ha (0.062351428, not 0.0625)",
+     "query": "SELECT ROUND(pinned_value,1) FROM dim_headline_number WHERE number_id='unzoned_inside_mapped_ha'", "expect": "12150.1", "note": "T1-spec had 12,179"},
+    {"criterion": "Gate D: is_rollup on the three-arm view; row count unchanged",
+     "query": "SELECT COUNT(*) FROM v_three_arm_gap_decomposition", "expect": 144, "note": "rows"},
+    {"criterion": "is_rollup flags the ALL rows only",
+     "query": "SELECT SUM(is_rollup) FROM v_three_arm_gap_decomposition", "expect": 36, "note": "ALL rows"},
+    {"criterion": "PIN 4: paddock identity added; 13 of 24 reference plots in Bala 29ca",
+     "query": "SELECT COUNT(*) FROM plot_management_overlay WHERE zone_fid=4", "expect": 13, "note": "Bala 29ca plots"},
+    {"criterion": "#17 independently recomputed, not reconciled to the chat figure",
+     "query": "SELECT pinned_value FROM dim_headline_number WHERE number_id='floor_flood_slope_64pdk'", "note": "slope, decided_by CC per decisions 3a"},
+    {"criterion": "Reproduction test passes (32/32) and fires on a broken fixture",
+     "note": "test_T8_headline_reproduction.py -> PASS exit 0; --break -> DRIFT flagged. Not wired into smoke test (I-10/I-11)"},
+    {"criterion": "Additive only: no builder run, no row deleted, no rename",
+     "note": "new table + additive view column + additive overlay columns; INSERT OR REPLACE; idempotent"}
+  ]
+}
