@@ -17,6 +17,7 @@ MANIFEST.md records, so a reviewer never has to reconstruct state:
 Usage:  python scripts/utils/build_review_bundle.py <spec.json>
 """
 import hashlib
+import csv
 import json
 import os
 import shutil
@@ -72,7 +73,7 @@ def human(n):
 
 
 def main(spec_path):
-    spec = json.loads(Path(spec_path).read_text())
+    spec = json.loads(Path(spec_path).read_text(encoding="utf-8"))
     task, tier = spec["task"], spec.get("tier", "tier")
     bundle = ROOT / "Output" / "review_bundles" / f"{tier}_{task}"
     if bundle.exists():
@@ -80,6 +81,7 @@ def main(spec_path):
     (bundle / "code").mkdir(parents=True)
     (bundle / "outputs").mkdir()
     (bundle / "reports").mkdir()
+    (bundle / "tables").mkdir()
 
     con = sqlite3.connect(f"file:{DB.as_posix()}?mode=ro", uri=True)
     L = ["# Review bundle - " + task, "", f"Tier: {tier}  ·  DB: `{DB.relative_to(ROOT)}`",
@@ -123,6 +125,23 @@ def main(spec_path):
         if r and r[0]:
             L.append(r[0].strip() + ";")
     L += ["```", "</details>", ""]
+
+    # ---- DB table exports (CSV from the live DB, so a reviewer needs no SQLite) ----
+    exports = spec.get("db_exports", [])
+    if exports:
+        L += ["## DB table exports (CSV under `tables/`)", "",
+              "_Exported from the live DB at bundle time; a reviewer sees the data without SQLite._",
+              "", "| file | query | rows |", "|---|---|---|"]
+        for ex in exports:
+            q, fn = ex["query"], ex["file"]
+            cur = con.execute(q)
+            cols = [d[0] for d in cur.description]
+            data = cur.fetchall()
+            with open(bundle / "tables" / fn, "w", newline="", encoding="utf-8") as fh:
+                w = csv.writer(fh); w.writerow(cols); w.writerows(data)
+            note = "" if "expect" not in ex or len(data) == ex["expect"] else f" (expected {ex['expect']}!)"
+            L.append(f"| `tables/{fn}` | `{q}` | {len(data)}{note} |")
+        L.append("")
 
     # ---- registry rows ----
     L += ["## Registry rows", "", "| table | id | checksum | path_exists |",

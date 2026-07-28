@@ -37,9 +37,21 @@
     {"table": "figure_asset", "id": "T12_DEA_persistence_map"},
     {"table": "figure_asset", "id": "T12_DEA_class_snapshots"}
   ],
+  "db_exports": [
+    {"file": "fact_dea_landcover_zone_year.csv", "query": "SELECT * FROM fact_dea_landcover_zone_year ORDER BY zone_fid, dea_calendar_year", "expect": 2432},
+    {"file": "fact_dea_landcover_plot_year.csv", "query": "SELECT * FROM fact_dea_landcover_plot_year ORDER BY plot_id, dea_calendar_year", "expect": 2508},
+    {"file": "fact_dea_landcover_community_year.csv", "query": "SELECT * FROM fact_dea_landcover_community_year ORDER BY community, dea_calendar_year", "expect": 190},
+    {"file": "fact_dea_landcover_farm_year.csv", "query": "SELECT * FROM fact_dea_landcover_farm_year ORDER BY dea_calendar_year", "expect": 38},
+    {"file": "fact_dea_cultivation_assessment.csv", "query": "SELECT * FROM fact_dea_cultivation_assessment ORDER BY zone_fid, era_label", "expect": 320},
+    {"file": "dim_dea_landcover_class.csv", "query": "SELECT * FROM dim_dea_landcover_class ORDER BY level3_code", "expect": 7},
+    {"file": "dim_source_product_dea.csv", "query": "SELECT * FROM dim_source_product WHERE product_id='dea_landcover_l3'", "expect": 1},
+    {"file": "raster_asset_dea.csv", "query": "SELECT * FROM raster_asset WHERE product='dea_landcover_l3' ORDER BY raster_asset_id", "expect": 38}
+  ],
   "artefacts": [
     "figures/diagnostics/T12_DEA_*.png",
     "Output/tables/T12_DEA_*.csv",
+    "scripts/13_dea_landcover/requirements.txt",
+    "docs/reference_update/T7_pilot_dea_zone_year_2013_2025.csv",
     "docs/change_reports/T12_gate0_recon.md",
     "docs/change_reports/T12_supply_and_gateA0.md",
     "docs/change_reports/T12_gateA.md",
