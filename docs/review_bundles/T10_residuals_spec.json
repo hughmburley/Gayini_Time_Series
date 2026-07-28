@@ -1,0 +1,55 @@
+{
+  "task": "T10_residuals",
+  "tier": "reference_state",
+  "headline": "T10 v2 + A1: the reference-state result reduces to Bala 29ca; series B is flat (no trajectory without it); its low floor (40% survives dryness) and recovery (82% survives its own water response) are real and located in its dry western thirds. Annual trend replaces the scriptless five-period table (I-29).",
+  "scripts": [
+    "scripts/12_zone_stratum/T10_gateB_annual_gap_series.py",
+    "scripts/12_zone_stratum/T10_gateC_residuals.py",
+    "scripts/11_database/build_T10_gateD_register.py",
+    "scripts/11_database/test_T8_headline_reproduction.py"
+  ],
+  "db_objects": ["dim_headline_number"],
+  "db_exports": [
+    {"query": "SELECT * FROM dim_headline_number WHERE number_id LIKE 't10_%' OR number_id LIKE 'floor_flood_%' ORDER BY number_id", "file": "dim_headline_number_T10.csv", "expect": 26},
+    {"query": "SELECT number_id,decision_note FROM dim_headline_number WHERE pinned_value IS NULL", "file": "pin3_superseded.csv", "expect": 3}
+  ],
+  "registry": [],
+  "artefacts": [
+    "docs/change_reports/T10_gateB_annual_gap_series.md",
+    "docs/change_reports/T10_gateC_residuals.md",
+    "docs/change_reports/T10_gateD_register.md",
+    "Output/tables/T10_annual_gap_series.csv",
+    "Output/tables/T10_annual_gap_series_jja_son.csv",
+    "Output/tables/T10_trend_statistics.csv",
+    "Output/tables/T10_gateC_crosssectional_residuals.csv",
+    "Output/tables/T10_gateC_temporal_table.csv",
+    "Output/tables/T10_gateC_percommunity.csv"
+  ],
+  "deletions": [],
+  "acceptance": [
+    {"criterion": "Three annual trend slopes + r registered (A/B/C)",
+     "query": "SELECT COUNT(*) FROM dim_headline_number WHERE number_id LIKE 't10_gap_annual_%'", "expect": 6, "note": "rows"},
+    {"criterion": "Series B flat - convergence is a single-paddock artefact",
+     "query": "SELECT pinned_value FROM dim_headline_number WHERE number_id='t10_gap_annual_slope_B_excl29ca'", "expect": "0.057", "note": "slope"},
+    {"criterion": "Water-adjusted floor trend registered with current/lagged spread",
+     "query": "SELECT pinned_value FROM dim_headline_number WHERE number_id='t10_bala29ca_water_adjusted_floor_trend'", "expect": "0.556", "note": "82% of raw survives"},
+    {"criterion": "Bala 29ca cross-sectional residual (40% of raw -42.3 survives)",
+     "query": "SELECT pinned_value FROM dim_headline_number WHERE number_id='t10_bala29ca_xsec_residual'", "expect": "-16.8", "note": "rank 2/64"},
+    {"criterion": "Dinan 10 residual - the cross-sectional twin",
+     "query": "SELECT pinned_value FROM dim_headline_number WHERE number_id='t10_dinan10_xsec_residual'", "expect": "-15.1", "note": "grazed; adj trend near zero"},
+    {"criterion": "Per-community decomposition registered (recovery located in dry thirds)",
+     "query": "SELECT COUNT(*) FROM dim_headline_number WHERE number_id LIKE 't10_bala29ca_%' AND (number_id LIKE '%aeolian%' OR number_id LIKE '%riverine%' OR number_id LIKE '%inland%')", "expect": 6, "note": "3 trends + 3 level deficits"},
+    {"criterion": "Reference-set composition shares registered",
+     "query": "SELECT COUNT(*) FROM dim_headline_number WHERE number_id LIKE 't10_refset_inland_share_%'", "expect": 4, "note": "rows"},
+    {"criterion": "Chosen regression re-registered with alt-fit spread; pinned value unchanged",
+     "query": "SELECT spread_min||'..'||spread_max FROM dim_headline_number WHERE number_id='floor_flood_slope_64pdk'", "expect": "0.498..0.548", "note": "value still 0.548"},
+    {"criterion": "PIN 3 rows annotated superseded, pinned_value still NULL",
+     "query": "SELECT COUNT(*) FROM dim_headline_number WHERE pinned_value IS NULL AND decision_note LIKE '%SUPERSEDED%'", "expect": 3, "note": "blocked+annotated"},
+    {"criterion": "Reproduction test extended, passes 56, fires on broken fixture",
+     "note": "test_T8_headline_reproduction.py PASS exit 0; --break flags drift. Standalone (I-19)"},
+    {"criterion": "No pinned value of an existing row changed (no before/after)",
+     "note": "floor_flood values unchanged (0.548/0.710); only spread+note added; T10 rows all new"},
+    {"criterion": "Additive: no builder run, no row deleted, no rename",
+     "note": "24 new + 2 re-registered + 3 annotated; INSERT OR REPLACE; idempotent"}
+  ]
+}

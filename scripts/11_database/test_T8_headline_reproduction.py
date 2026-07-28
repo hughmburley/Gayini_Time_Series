@@ -86,11 +86,74 @@ def recompute(c):
     out["total_no_management_zone_ha"]=round(npx*PX+(FARM-MAPPED),1)
     return out
 
+def _ols(x,y):
+    import numpy as _np, math as _m
+    x=_np.asarray(x,float);y=_np.asarray(y,float);n=len(x)
+    mx=x.mean();my=y.mean();sxx=((x-mx)**2).sum();sxy=((x-mx)*(y-my)).sum();syy=((y-my)**2).sum()
+    slope=sxy/sxx;inter=my-slope*mx;r=sxy/_m.sqrt(sxx*syy) if sxx*syy>0 else float('nan')
+    resid=y-(inter+slope*x)
+    return slope,inter,r,resid
+
+def recompute_t10(c):
+    """Independent re-derivation of the T10 Gate B/C/D rows (drift guard)."""
+    import numpy as np, statistics as st
+    graz={z:g for z,g in c.execute("SELECT zone_fid,grazing_excluded FROM dim_management_zone")}
+    name={z:n for z,n in c.execute("SELECT zone_fid,zone_name FROM dim_management_zone")}
+    grazed=[z for z in graz if not graz[z]]; REF=[1,2,3,4]; YEARS=list(range(1988,2023))
+    P={v:{} for v in ('mean_of_seasons','jja_son')}
+    for zf,wy,p05,ff,var in c.execute("SELECT zone_fid,water_year,veg_p05_spatial,flood_frac_pct,series_variant FROM fact_zone_veg_annual"):
+        P[var][(zf,wy)]=(p05,ff)
+    med=lambda xs: float(np.median(xs))
+    def gaptrend(var,ref):
+        g={}
+        for y in YEARS:
+            rv=[P[var][(f,y)][0] for f in ref if (f,y) in P[var] and P[var][(f,y)][0] is not None]
+            gv=[P[var][(f,y)][0] for f in grazed if (f,y) in P[var] and P[var][(f,y)][0] is not None]
+            if rv and gv: g[y]=sum(rv)/len(rv)-med(gv)
+        xs=sorted(g); s,_,r,_=_ols(xs,[g[x] for x in xs]); return s,r
+    out={}
+    for k,ref in (("A_all4",REF),("B_excl29ca",[1,2,3]),("C_29ca",[4])):
+        s,r=gaptrend('mean_of_seasons',ref)
+        out[f"t10_gap_annual_slope_{k}"]=round(s,3); out[f"t10_gap_annual_r_{k}"]=round(r,3)
+    zfs=sorted({z for (z,_) in P['mean_of_seasons']})
+    mfloor={z:st.mean([P['mean_of_seasons'][(z,y)][0] for y in YEARS if (z,y) in P['mean_of_seasons'] and P['mean_of_seasons'][(z,y)][0] is not None]) for z in zfs}
+    mflood={z:st.mean([P['mean_of_seasons'][(z,y)][1] for y in YEARS if (z,y) in P['mean_of_seasons'] and P['mean_of_seasons'][(z,y)][1] is not None]) for z in zfs}
+    bs,bi,_,_=_ols([mflood[z] for z in zfs],[mfloor[z] for z in zfs])
+    out["t10_bala29ca_xsec_residual"]=round(mfloor[4]-(bi+bs*mflood[4]),1)
+    out["t10_dinan10_xsec_residual"]=round(mfloor[57]-(bi+bs*mflood[57]),1)
+    def sers(z):
+        ys=sorted(y for y in YEARS if (z,y) in P['mean_of_seasons'] and P['mean_of_seasons'][(z,y)][0] is not None and P['mean_of_seasons'][(z,y)][1] is not None)
+        return ys,[P['mean_of_seasons'][(z,y)][0] for y in ys],[P['mean_of_seasons'][(z,y)][1] for y in ys]
+    def adjt(z):
+        ys,veg,fld=sers(z); _,_,_,res=_ols(fld,veg); s,_,_,_=_ols(ys,list(res)); return s
+    ys4,veg4,fld4=sers(4)
+    out["t10_bala29ca_raw_floor_trend"]=round(_ols(ys4,veg4)[0],3)
+    out["t10_bala29ca_within_paddock_water_slope"]=round(_ols(fld4,veg4)[0],3)
+    out["t10_bala29ca_flood_trend"]=round(_ols(ys4,fld4)[0],3)
+    out["t10_bala29ca_water_adjusted_floor_trend"]=round(adjt(4),3)
+    out["t10_ungrazed_median_adj_trend"]=round(med([adjt(z) for z in zfs if graz[z]]),3)
+    out["t10_grazed_median_adj_trend"]=round(med([adjt(z) for z in zfs if not graz[z]]),3)
+    CV={}
+    for zf,cm,wy,p05,npx in c.execute("SELECT zone_fid,community,water_year,veg_p05_spatial,n_pixels_valid FROM fact_zone_community_veg_annual WHERE series_variant='mean_of_seasons' AND n_pixels_valid>=30 AND veg_p05_spatial IS NOT NULL"):
+        CV.setdefault((zf,cm),{})[wy]=p05
+    for cm,short in (('Aeolian Chenopod Shrublands','aeolian'),('Riverine Chenopod Shrublands','riverine'),('Inland Floodplain Shrublands / Swamps','inland')):
+        pad={z for (z,c2) in CV if c2==cm}
+        lvl={z:st.mean(list(CV[(z,cm)].values())) for z in pad}
+        trd={z:_ols(sorted(CV[(z,cm)]),[CV[(z,cm)][y] for y in sorted(CV[(z,cm)])])[0] for z in pad if len(CV[(z,cm)])>=3}
+        out[f"t10_bala29ca_{short}_floor_trend"]=round(trd[4],3)
+        out[f"t10_bala29ca_{short}_level_deficit"]=round(lvl[4]-med(list(lvl.values())),1)
+    pix={}
+    for zf,cm,n in c.execute("SELECT zone_fid,community,sum(n_pixels) FROM census_by_zone_stratum WHERE treed_context_flag=0 AND zone_fid IN (1,2,3,4) GROUP BY zone_fid,community"):
+        pix.setdefault(zf,{})[cm]=n
+    for z in REF:
+        out[f"t10_refset_inland_share_{name[z].lower().replace(' ','')}"]=round(100*pix[z].get('Inland Floodplain Shrublands / Swamps',0)/sum(pix[z].values()),1)
+    return out
+
 def run(db):
     con=sqlite3.connect(f"file:{Path(db).as_posix()}?mode=ro",uri=True); c=con.cursor()
     pinned={nid:(pv,unit_tol(nid)) for nid,pv in c.execute(
         "SELECT number_id,pinned_value FROM dim_headline_number WHERE pinned_value IS NOT NULL")}
-    rc=recompute(c)
+    rc=recompute(c); rc.update(recompute_t10(c))
     fails=[]; checked=0
     for nid,(pv,tol) in pinned.items():
         if nid not in rc:
