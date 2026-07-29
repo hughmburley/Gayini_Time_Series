@@ -44,9 +44,9 @@ SCOPE="series_variant='mean_of_seasons'; all 64 zones"
 rows=[
  ("floor_flood_intercept_64pdk","Expectation-line intercept, paddock floor on mean annual inundation",
   "fact_zone_veg_annual","paddock (64), 35-year means","paddock mean then OLS across paddocks","mean_of_seasons",
-  SCOPE,"1988-2022","64 paddocks",PIXEL_AREA_HA,round(intercept,4),round(min(ints),4),round(max(ints),4),"paddock",
-  f"alt-fit intercepts: bivariate {intercept:.4f}, +community {int_comm:.4f}, within-Inland {int_inl:.4f}.",DEC,
-  "Companion to floor_flood_slope_64pdk. Together they draw the expectation line on paddock report page 4. Predicted floor = intercept + slope * flood_frac_pct."),
+  SCOPE,"1988-2022","64 paddocks",PIXEL_AREA_HA,round(intercept,4),round(min(intercept,int_inl),4),round(max(intercept,int_inl),4),"paddock",
+  f"alt-fit intercepts: bivariate {intercept:.4f}, +community {int_comm:.4f} (excluded from spread), within-Inland {int_inl:.4f}.",DEC,
+  f"Companion to floor_flood_slope_64pdk; together they draw the expectation line on paddock report page 4 (predicted floor = intercept + slope*flood_frac_pct). SPREAD is the bivariate ({intercept:.4f}) and within-Inland ({int_inl:.4f}) intercepts only - both plain bivariate fits (one on a subset), so comparable. The +community model's intercept ({int_comm:.4f}) is EXCLUDED: it is the fitted value for the reference category at flood=0 (category-conditional), not an alternative estimate of the overall intercept, so not a comparable uncertainty bound. Unlike the slope, which IS comparable across the three models."),
  ("floor_flood_residual_sd_64pdk","Descriptive residual SD of the 64-paddock floor~flood fit (population, ddof=0)",
   "fact_zone_veg_annual","paddock (64)","population SD of the 64 residuals","mean_of_seasons",
   SCOPE,"1988-2022","64 paddocks",PIXEL_AREA_HA,round(sd0,4),round(sd0,4),round(sd0,4),"paddock",
