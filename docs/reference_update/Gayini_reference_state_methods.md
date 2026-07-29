@@ -1,6 +1,9 @@
 # Gayini reference-state analysis — methods
 
-**Version:** v1 · 28 July 2026
+**Version:** v2 · 28 July 2026
+**Supersedes:** v1 (same date). Changes: §6 community and three-arm figures re-pinned per
+T8; L-3 closed by measurement; L-4 reframed; three limitations added; 12,179 ha corrected to
+12,150 ha; new §9 on pinned numbers.
 **Scope:** Tasks T1, T2, T6. Covers the data, the metrics, the comparison design, and the
 limits of what the design can support.
 **Authority:** `Gayini_Results.sqlite` is the source of truth. Where this document and the
@@ -37,8 +40,17 @@ management category, not a verified undisturbed state.
 ## 2. Study units and data
 
 **The property.** Gayini (Nimmie-Caira), 85,911 ha on the lower Murrumbidgee. The mapped
-census covers 67,349 ha; 18,562 ha (21.6%) lies outside the mapped extent and appears in no
+census covers 67,349 ha; **18,562 ha (21.6%) lies outside the mapped extent** and appears in no
 analysis in this document.
+
+Separately, **12,150 ha (18.0% of the mapped census) lies inside the census but outside every
+management zone** — 194,865 pixels. These two quantities are disjoint, and both describe
+"missing area", so they are easily confused. Together, **30,712 ha — 35.7% of the property — is
+in no management zone at all.**
+
+The unzoned figure was previously stated as 12,179 ha. That was wrong: it used the nominal
+25 m pixel area (0.0625 ha) rather than the derived constant for the 24.970268 m grid
+(0.062351428 ha, `gayini_params.PIXEL_AREA_HA`). Corrected 28 July.
 
 **Paddocks.** 64 management zones from the GeoPackage `management_zones` layer, joined by
 `fid`. Sixty are `14-day grazing`; four are `No grazing` (Bala 26ca, 27ca, 28ca, 29ca). A
@@ -151,8 +163,8 @@ its closure predate the intervention by three decades.
 
 **Bala 29ca's role in the wider project.** It holds 13 of the 24 reference monitoring plots
 (54%), supplied 93% of the reference pixels behind T1's Riverine-low contrast, and is the
-only reference paddock in Aeolian. Every reference-state number the project has reported
-traces to it.
+only reference paddock containing any Aeolian country — 32.3% of its pixels, against 0.0% for
+each of the other three. Every reference-state number the project has reported traces to it.
 
 **T1's matched contrast collapses the same way.** At all-zone pixel weighting the Riverine
 bands show +7.5 to +8.3 pp; restricted to Bala paddocks at zone support they fall to +3.6,
@@ -165,9 +177,19 @@ bands show +7.5 to +8.3 pp; restricted to Bala paddocks at zone support they fal
 
 ## 6. Result — mean versus floor, and the third arm
 
-**The reference paddocks match on mean cover and not on the floor.** Reference minus grazed,
-by community: mean cover −3.0 (Aeolian), −0.8 (Riverine), +1.8 (Inland); floor −19.6, −11.7,
-+1.1. They are not less vegetated — they carry a longer tail of poorly-covered ground.
+**The reference paddocks match or exceed grazed on mean cover, and sit below on the floor.**
+Reference minus grazed, by community, area-weighted across the three wetness bands within each
+community: mean cover **−2.3** (Aeolian), **+1.4** (Riverine), **+0.5** (Inland); floor
+**−10.5**, **−4.5**, **+1.1**. They are not less vegetated — in two of three communities they
+carry *more* average cover than grazed ground — but they carry a longer tail of poorly-covered
+ground.
+
+These figures supersede an earlier set (mean −3.0 / −0.8 / +1.8; floor −19.6 / −11.7 / +1.1)
+which came from the `regime_band = 'ALL'` rollup row. That row pools across wetness bands,
+which undoes the stratification the design exists to provide, and the reference paddocks sit
+in drier bands than their comparators — so the pooled figures were inflated by the very
+confound the banding removes. The rollup rows are retained in the database and flagged
+`is_rollup = 1`; they are not to be used for treatment contrasts.
 Bala 29ca's median cover is 75.6% against a grazed median of 81.6%, a 6 pp difference, while
 its floor sits 29 pp below. The headline gap is a statement about the worst-covered ~120 ha
 of a 2,421 ha paddock.
@@ -177,10 +199,18 @@ band and every Inland Floodplain band. In Riverine-high the four reference paddo
 to 66.3% floor while the reference-grazed contrast is −2.1 pp. A fixed distance-to-reference
 target is undefined in those strata.
 
-**Grazing intensity does not order the floor.** Averaged over the nine strata: not-grazed
-−4.8 pp against the 14-day comparator, unzoned inferred-standard +4.3, unzoned plot-confirmed
-+5.9. The inferred-standard arm sits at or above 14-day in 6 of 9 strata and the
-plot-confirmed subset in 8 of 9. Two readings are consistent with this and the data cannot
+**Grazing intensity does not order the floor.** Area-weighted across the nine strata:
+not-grazed **−0.9 pp** against the 14-day comparator, unzoned inferred-standard **+1.2**,
+unzoned plot-confirmed **+1.3**. All three arms sit within about two percentage points of each
+other. The inferred-standard arm sits at or above 14-day in 6 of 9 strata and the
+plot-confirmed subset in 8 of 9.
+
+An earlier equal-weighted version gave −4.8 / +4.3 / +5.9. Equal weighting across nine strata
+gives the Aeolian bands a third of the total weight on 7.8% of the area, and Aeolian is the
+stratum where the reference set is a single paddock with the largest deficits — so equal
+weighting handed Bala 29ca roughly a third of a property-level number. The ordering survives
+either weighting; the magnitudes do not. The consistency claim therefore rests on the
+weighting-free counts above, not on the mean. Two readings are consistent with this and the data cannot
 separate them: either grazing intensity does not register in the floor at all, or the unzoned
 land is less grazed rather than more, making the ordering real with the inference inverted.
 Resolving it requires talking to Nari Nari, not further computation.
@@ -202,30 +232,68 @@ irrigated cropping early in the record and re-established chenopod later.
 **Not grazed is not conserved.** Cropping history is unrecorded. This is not the
 conserved-versus-formerly-cropped comparison the design called for.
 
-**Open water is inside the floor metric.** Water reads as low fractional cover and is not
-masked. The wet reference paddocks — Bala 26ca at 45% and 28ca at 43% mean annual inundation —
-carry internal tails of 18–20 pp against a grazed median of 11.6, and some of that may be
-water rather than sparse vegetation. Dawson et al. excluded flooded images for exactly this
-reason.
+**Open water inside the floor metric — TESTED AND CLOSED.** Water is not masked before the
+percentile is taken, and the concern was that it would read as low cover and depress the floor
+in the wetter paddocks. Tested directly on 28 July at the 795,602 in-scope pixels. The premise
+is false in both available forms:
 
-**The paddock-scale comparison is not wetness-controlled.** T6 controls wetness by
-constructing the contrast within stratum. T1 reports flood-frequency deltas alongside
-vegetation deltas so the confound is visible. The §5 period table does neither: it compares
-whole paddocks. Bala 29ca is the fourth-driest paddock on the property at 8.5% mean annual
-inundation against a grazed median of 28.6%, and across all 64 paddocks the floor tracks
-flood frequency at r = 0.71 (slope +0.55 pp per pp). Fitting that relationship, a paddock at
-8.5% would be predicted at ~57% floor against an observed 40.5% — a residual of −17 pp rather
-than the −42 pp headline. **The finding survives but is roughly 40% of its stated size once
-wetness is accounted for.** This is the most consequential open item in the analysis.
+- Across all in-scope pixel-years, wet pixels carry **more** cover than dry at every
+  percentile, and the gap is largest at the floor: mean +10.3 pp, p05 **+24.4 pp**. The pattern
+  holds in all four reference paddocks (p05 +18.8 to +31.3).
+- Of the pixels that actually *set* each paddock-year's floor — the bottom 5% — wet pixels are
+  **under**-represented relative to the paddock's overall wet share: Bala 26ca 14.7% against
+  45.3%, 28ca 8.8 against 43.3, 27ca 16.5 against 29.7, 29ca 2.3 against 7.8.
 
-**Aeolian reference is n = 1.** Bala 29ca is the only reference paddock in Aeolian. No
-community-level claim can rest on it.
+Inundation greens this floodplain rather than reading as bare water; the deep permanent water
+bodies for which the concern is real are largely excluded by the treed and in-scope filters.
+Masking water would remove the highest-cover observations and push the floor **down**. The
+low-cover tail is dry vegetation. Dawson et al. excluded flooded images for a comparable
+concern on a different sensor configuration; it does not apply here.
+
+**The paddock-scale comparison is not wetness-controlled — OPEN, and the wording matters.**
+T6 controls wetness by constructing the contrast within stratum. T1 reports flood-frequency
+deltas alongside vegetation deltas so the relationship is visible. The §5 period table does
+neither: it compares whole paddocks.
+
+Across all 64 paddocks the floor tracks mean annual inundation at r = 0.710, slope +0.548 pp
+per pp of flood frequency (independently computed and registered as
+`floor_flood_slope_64pdk` / `floor_flood_r_64pdk`). Bala 29ca is the fourth-driest paddock on
+the property at 8.5% inundation against a grazed median of 28.6%. Fitting that relationship, a
+paddock as dry as Bala 29ca would be predicted at roughly 57% floor against an observed 40.5%.
+
+**This is not a confound in the usual sense, and calling it one was wrong.** The L-3 result
+above shows water is not a measurement artefact contaminating the floor — water is the
+ecological driver of it. Drier paddocks genuinely carry lower floors because they genuinely
+carry less cover in their worst ground. So the between-paddock relationship is the main effect,
+not noise to be removed, and the management question is what remains after it. Quantifying
+that remainder is Task T10, not started as of this version.
+
+**Aeolian reference is n = 1 — and the grain matters.** At stratum grain Bala 29ca is the only
+reference paddock containing any Aeolian country (32.3% of its non-treed pixels; the other three
+are 0.0%), which is why `n_ref = 1` on every Aeolian figure. At paddock grain it is *not*
+Aeolian-dominant and has no dominant community at all — Inland 34.6%, Riverine 33.1%, Aeolian
+32.3%, the lowest dominance of the 64 paddocks. Both statements are true and describe different
+things; either without its grain is misleading. No community-level Aeolian claim can rest on
+this paddock, and no dominant-community adjustment can be applied to it.
 
 **The third arm is inferred.** "Unzoned mapped area" is inferred to be standard grazing
 because 8 of the 15 standard-grazing plots fall on it. It is not confirmed.
 
-**A fifth of the property is absent.** 18,562 ha (21.6%), including 7 of the 15
-standard-grazing plots.
+**A fifth of the property is absent, and a third is in no paddock.** 18,562 ha (21.6%) lies
+outside the mapped census, including 7 of the 15 standard-grazing plots. A further 12,150 ha
+sits inside the census but outside every management zone. Together 30,712 ha — 35.7% of
+Gayini — is in no management zone.
+
+**Bala 27ca holds no monitoring plots.** The 24 reference plots divide as Bala 29ca 13,
+28ca 8, 26ca 3, **27ca 0**. Bala 27ca is one of the three paddocks carrying the central
+finding that the reference set is indistinguishable from grazed ground, and there is no
+ground observation in it at all. Verified by an independent centroid-in-polygon join,
+EPSG:9473 → 8058, zero mismatches across all 66 plots.
+
+**The floor deficit is confined to a small area within a paddock.** Bala 29ca's median cover
+is 75.6% against a grazed median of 81.6% — a 6 pp difference — while its floor sits 29 pp
+below. Its p25 is only 9 pp below. The headline gap is therefore a statement about roughly the
+worst-covered 120 ha of a 2,421 ha paddock, not about the paddock as a whole.
 
 **The reference paddocks are administratively grouped but spatially dispersed.** All four
 carry the Bala prefix, so any whole-farm contrast is confounded with property block. But
@@ -249,11 +317,59 @@ management history is a question for Nari Nari.
 | Three-arm extraction | `T6_gateB_extract.R`, `T6_gateB_components.R` | `fact_three_arm_stratum_veg_annual` |
 | Three-arm figures | `T6_gateE_figures.R` | `T6_A_*`, `T6_B_*` |
 
-**Gap in the chain:** the five-period split in §5 is not produced by any script listed above.
-`T2_gateE_figures.R` writes a two-window gap report (early ≤1997, late ≥2013) with a ±2 pp
-narrows/widens/holds rule. The five-period derivation needs locating or rebuilding before
-these numbers go into a deliverable.
+**Gap in the chain — confirmed by exhaustive search, logged as I-29 (BLOCK).** The
+five-period split in §5 is produced by no script in the repository. All 429 tracked text files
+were searched for the five boundary years; the only files carrying three or more are Task J
+(2018 bank-cut periods) and T12 (DEA sensor eras), both different splits.
+`T2_gateE_figures.R` writes a two-window report instead (early ≤1997, late ≥2013, ±2 pp
+narrows/widens/holds rule).
+
+The §5 figures therefore have no producing script and must not go into a deliverable in that
+form. The narrowing itself is not in doubt — it is monotonic under equal decades, equal thirds
+and the two-window split as well — so the boundaries were not doing the work. But undocumented,
+unequal boundaries (5, 10, 10, 6 and 4 years) of unknown provenance should be replaced rather
+than reconstructed. T10 Gate B replaces them with an annual gap series and a fitted trend,
+which removes the boundary decision from the analysis. Not started as of this version.
 
 **Standing rules.** Additive writes only; never re-run the builder; resolve paths from the
 database rather than hardcoding; never merge support levels in one figure; every headline
 number carries support level, scope filter, pixel constant, denominator and period label.
+
+---
+
+## 9. Pinned numbers
+
+Every number in this document that reaches a deliverable is registered in
+`dim_headline_number` (35 rows, built 28 July, T8). Each row carries the source object, grain,
+aggregation order, series variant, scope filter, period label, denominator and pixel constant,
+together with the pinned value and the **full spread that value takes under defensible
+alternatives**.
+
+The table exists because the numbers were under-specified rather than wrong. The
+reference-minus-grazed floor gap for 1988–92 takes eight values between −9.1 and −14.8 pp
+depending on grain, aggregation order and seasonal variant; all eight are defensible and all
+eight come from the same database. Six pin decisions were taken to resolve this class:
+
+| pin | decision |
+|---|---|
+| 1 | Community contrasts use the band mean, not the `regime_band = 'ALL'` rollup |
+| 2 | Paddock grain, year-first ordering, `mean_of_seasons`; `jja_son` as a registered sensitivity |
+| 3 | The three periodised numbers stay unpinned (`pinned_value` NULL), blocked on I-29 |
+| 4 | The 13-of-24 plot share is re-derived from `plot_paddock`, not `plot_management_overlay` |
+| 5 | "Missing area" splits into three disjoint numbers |
+| 6 | Multi-stratum means are area-weighted, not equal-weighted |
+
+Pins 1 and 6 together changed ten reported values; the before-and-after table is
+`Output/tables/T8_before_after.csv`. Both moved the results toward more conservative
+conclusions.
+
+A reproduction test (`test_T8_headline_reproduction.py`) re-derives all 32 pinned values from
+their source objects by an independent code path and fails on drift, demonstrated against a
+deliberately corrupted fixture. **It is not wired into the smoke test** — the existing suite
+carries permanently-red checks (I-10, I-11) and hooking in would buy the appearance of
+coverage rather than coverage. It runs standalone and exits non-zero. Wiring is I-19,
+post-deadline.
+
+**Standing rule.** Any number produced in a design-seat session is a prediction to be checked,
+never a target to reconcile to. Where an independently computed value disagrees with a
+design-seat value, the computed value stands and the disagreement is the finding.
