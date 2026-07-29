@@ -165,11 +165,35 @@ def recompute_reg1(c):
             "floor_flood_residual_sd_64pdk":round(resid.std(ddof=0),4),
             "floor_flood_rse_64pdk":round(math.sqrt(sse/(n-2)),4)}
 
+def recompute_reg2(c):
+    """REG-2 dominance counts (denom A) + n_parts_supported distribution, re-derived
+    independently of v_zone_community_composition (from census_by_zone_stratum and
+    fact_zone_community_part_summary)."""
+    from collections import defaultdict
+    pad=defaultdict(dict)
+    for zf,cm,n in c.execute("SELECT zone_fid,community,SUM(n_pixels) FROM census_by_zone_stratum "
+                             "WHERE zone_fid IS NOT NULL AND treed_context_flag=0 AND regime_band<>'context' "
+                             "GROUP BY zone_fid,community"):
+        pad[zf][cm]=n
+    dom={zf:100*max(d.values())/sum(d.values()) for zf,d in pad.items() if sum(d.values())>0}
+    ncomm={zf:sum(1 for v in d.values() if v>0) for zf,d in pad.items()}
+    parts={}
+    for zf,cnt in c.execute("SELECT zone_fid,COUNT(*) FROM fact_zone_community_part_summary GROUP BY zone_fid"):
+        parts[cnt]=parts.get(cnt,0)+1
+    return {
+        "reg2_paddocks_lt75_dominance": float(sum(1 for zf in dom if dom[zf]<75)),
+        "reg2_paddocks_lt60_dominance": float(sum(1 for zf in dom if dom[zf]<60)),
+        "reg2_paddocks_single_community": float(sum(1 for zf in ncomm if ncomm[zf]==1)),
+        "reg2_paddocks_1part_supported": float(parts.get(1,0)),
+        "reg2_paddocks_2part_supported": float(parts.get(2,0)),
+        "reg2_paddocks_3part_supported": float(parts.get(3,0)),
+    }
+
 def run(db):
     con=sqlite3.connect(f"file:{Path(db).as_posix()}?mode=ro",uri=True); c=con.cursor()
     pinned={nid:(pv,unit_tol(nid)) for nid,pv in c.execute(
         "SELECT number_id,pinned_value FROM dim_headline_number WHERE pinned_value IS NOT NULL")}
-    rc=recompute(c); rc.update(recompute_t10(c)); rc.update(recompute_reg1(c))
+    rc=recompute(c); rc.update(recompute_t10(c)); rc.update(recompute_reg1(c)); rc.update(recompute_reg2(c))
     fails=[]; checked=0
     for nid,(pv,tol) in pinned.items():
         if nid not in rc:

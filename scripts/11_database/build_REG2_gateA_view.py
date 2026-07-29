@@ -42,7 +42,8 @@ SELECT d.zone_fid, z.zone_name, d.community,
   ROUND(d.dominance_a,2) AS dominance_a, ROUND(d.dominance_b,2) AS dominance_b, ROUND(d.dominance_c,2) AS dominance_c,
   CASE WHEN d.n_comm_a<=1 THEN 'single' WHEN d.dominance_a>=90 THEN 'high' WHEN d.dominance_a>=75 THEN 'moderate' ELSE 'mixed' END AS dominance_class_a,
   CASE WHEN d.n_comm_b<=1 THEN 'single' WHEN d.dominance_b>=90 THEN 'high' WHEN d.dominance_b>=75 THEN 'moderate' ELSE 'mixed' END AS dominance_class_b,
-  CASE WHEN d.n_comm_c<=1 THEN 'single' WHEN d.dominance_c>=90 THEN 'high' WHEN d.dominance_c>=75 THEN 'moderate' ELSE 'mixed' END AS dominance_class_c
+  CASE WHEN d.n_comm_c<=1 THEN 'single' WHEN d.dominance_c>=90 THEN 'high' WHEN d.dominance_c>=75 THEN 'moderate' ELSE 'mixed' END AS dominance_class_c,
+  (SELECT COUNT(*) FROM fact_zone_community_part_summary p WHERE p.zone_fid=d.zone_fid) AS n_parts_supported
 FROM dom d JOIN dim_management_zone z USING(zone_fid)
 """
 c.execute("DROP VIEW IF EXISTS v_zone_community_composition")

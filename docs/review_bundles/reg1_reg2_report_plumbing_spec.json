@@ -1,0 +1,54 @@
+{
+  "task": "reg1_reg2_report_plumbing",
+  "tier": "reference_state",
+  "headline": "REG-1: expectation-line intercept + descriptive residual SD (ddof=0) + regression RSE (ddof=2) registered; three T10 tables promoted to first-class objects. REG-2: v_zone_community_composition at three denominators with n_parts_supported; dominance registered literally; the report batch branches page 3 on supported parts, not dominance. Blocks pages 3-4 of every paddock report.",
+  "scripts": [
+    "scripts/11_database/build_REG1_gateB_register.py",
+    "scripts/11_database/build_REG1_gateC_promote.py",
+    "scripts/11_database/build_REG2_gateA_view.py",
+    "scripts/11_database/build_REG2_gateC_register.py",
+    "scripts/11_database/test_T8_headline_reproduction.py"
+  ],
+  "db_objects": [
+    "dim_headline_number",
+    "fact_zone_floor_flood_residual", "v_zone_floor_flood_residual",
+    "fact_zone_floor_temporal", "v_zone_floor_temporal",
+    "fact_zone_community_part_summary", "v_zone_community_part_summary",
+    "v_zone_community_composition"
+  ],
+  "db_exports": [
+    {"query": "SELECT * FROM dim_headline_number WHERE number_id IN ('floor_flood_intercept_64pdk','floor_flood_residual_sd_64pdk','floor_flood_rse_64pdk') OR number_id LIKE 'reg2_%' ORDER BY number_id", "file": "dim_headline_number_reg1_reg2.csv", "expect": 9},
+    {"query": "SELECT * FROM fact_zone_floor_flood_residual ORDER BY rank", "file": "fact_zone_floor_flood_residual.csv", "expect": 64},
+    {"query": "SELECT * FROM fact_zone_floor_temporal ORDER BY rank_by_adjusted", "file": "fact_zone_floor_temporal.csv", "expect": 64},
+    {"query": "SELECT * FROM fact_zone_community_part_summary ORDER BY community, level_floor", "file": "fact_zone_community_part_summary.csv", "expect": 115},
+    {"query": "SELECT * FROM v_zone_community_composition ORDER BY zone_fid, community", "file": "v_zone_community_composition.csv", "expect": 156}
+  ],
+  "registry": [],
+  "artefacts": [
+    "docs/change_reports/REG1_gateA_recon.md",
+    "docs/change_reports/REG1_gateBCD_register_promote.md",
+    "docs/change_reports/REG2_gateAB_composition.md",
+    "docs/change_reports/REG2_gateC_register.md"
+  ],
+  "deletions": [],
+  "acceptance": [
+    {"criterion": "Intercept registered (expectation line pairs with slope)",
+     "query": "SELECT pinned_value FROM dim_headline_number WHERE number_id='floor_flood_intercept_64pdk'", "expect": "52.6529", "note": "predicted floor = intercept + slope*flood"},
+    {"criterion": "Descriptive residual SD (ddof=0) registered",
+     "query": "SELECT pinned_value FROM dim_headline_number WHERE number_id='floor_flood_residual_sd_64pdk'", "expect": "6.6208", "note": "census SD"},
+    {"criterion": "Regression RSE (ddof=2) registered separately",
+     "query": "SELECT pinned_value FROM dim_headline_number WHERE number_id='floor_flood_rse_64pdk'", "expect": "6.7268", "note": "pairs with SE(slope)"},
+    {"criterion": "Three tables promoted 64/64/115",
+     "query": "SELECT (SELECT COUNT(*) FROM fact_zone_floor_flood_residual)||'/'||(SELECT COUNT(*) FROM fact_zone_floor_temporal)||'/'||(SELECT COUNT(*) FROM fact_zone_community_part_summary)", "expect": "64/64/115", "note": "rows"},
+    {"criterion": "Composition view, 3 denominators, 64 paddocks, with n_parts_supported",
+     "query": "SELECT COUNT(DISTINCT zone_fid) FROM v_zone_community_composition WHERE n_parts_supported IS NOT NULL", "expect": 64, "note": "paddocks"},
+    {"criterion": "Dominance counts at denom A: <75=14, <60=9, single=25 (literal)",
+     "query": "SELECT pinned_value FROM dim_headline_number WHERE number_id='reg2_paddocks_lt75_dominance'", "expect": "14.0", "note": "B=16, C=22 in spread"},
+    {"criterion": "n_parts_supported distribution 27/23/14 registered",
+     "query": "SELECT (SELECT pinned_value FROM dim_headline_number WHERE number_id='reg2_paddocks_1part_supported')||'/'||(SELECT pinned_value FROM dim_headline_number WHERE number_id='reg2_paddocks_2part_supported')||'/'||(SELECT pinned_value FROM dim_headline_number WHERE number_id='reg2_paddocks_3part_supported')", "expect": "27.0/23.0/14.0", "note": "page-3 branch field"},
+    {"criterion": "Reproduction test at 65 rows (spec said 58; grew via RSE + 6 REG-2)",
+     "note": "test_T8_headline_reproduction.py PASS exit 0 (65); --break flags drift. Standalone (I-19)"},
+    {"criterion": "No pinned value of an existing row changed; additive only",
+     "note": "9 new rows; 3 new tables + views + 1 view column; no builder run, no row deleted, no rename"}
+  ]
+}
