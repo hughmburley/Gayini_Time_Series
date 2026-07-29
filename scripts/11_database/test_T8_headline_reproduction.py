@@ -149,11 +149,27 @@ def recompute_t10(c):
         out[f"t10_refset_inland_share_{name[z].lower().replace(' ','')}"]=round(100*pix[z].get('Inland Floodplain Shrublands / Swamps',0)/sum(pix[z].values()),1)
     return out
 
+def recompute_reg1(c):
+    """REG-1 Gate B rows: expectation-line intercept, descriptive residual SD (ddof=0),
+    regression residual standard error (ddof=2), from the 64-paddock floor~flood fit."""
+    import numpy as np, statistics as st, math
+    P={}
+    for zf,wy,p05,ff in c.execute("SELECT zone_fid,water_year,veg_p05_spatial,flood_frac_pct FROM fact_zone_veg_annual WHERE series_variant='mean_of_seasons'"):
+        P.setdefault(zf,{})[wy]=(p05,ff)
+    zfs=sorted(P)
+    X=np.array([st.mean([P[z][y][1] for y in P[z] if P[z][y][1] is not None]) for z in zfs])
+    Y=np.array([st.mean([P[z][y][0] for y in P[z] if P[z][y][0] is not None]) for z in zfs])
+    n=len(X);mx=X.mean();my=Y.mean();sxx=((X-mx)**2).sum();slope=((X-mx)*(Y-my)).sum()/sxx
+    inter=my-slope*mx;resid=Y-(inter+slope*X);sse=(resid**2).sum()
+    return {"floor_flood_intercept_64pdk":round(inter,4),
+            "floor_flood_residual_sd_64pdk":round(resid.std(ddof=0),4),
+            "floor_flood_rse_64pdk":round(math.sqrt(sse/(n-2)),4)}
+
 def run(db):
     con=sqlite3.connect(f"file:{Path(db).as_posix()}?mode=ro",uri=True); c=con.cursor()
     pinned={nid:(pv,unit_tol(nid)) for nid,pv in c.execute(
         "SELECT number_id,pinned_value FROM dim_headline_number WHERE pinned_value IS NOT NULL")}
-    rc=recompute(c); rc.update(recompute_t10(c))
+    rc=recompute(c); rc.update(recompute_t10(c)); rc.update(recompute_reg1(c))
     fails=[]; checked=0
     for nid,(pv,tol) in pinned.items():
         if nid not in rc:
