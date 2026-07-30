@@ -234,9 +234,12 @@ for k in tgt:
 # ---------------------------------------------------------------- write
 with open(OUT / "T13_gateC_classification.csv", "w", newline="", encoding="utf-8") as f:
     w = csv.writer(f)
+    # NB: the registered state column is named `state_registered`, NOT `state_cut_1.00`.
+    # 1.00 is also in CUTS, so emitting both under the same name produced a DUPLICATE column
+    # header (values identical, but readers silently keep only one). Fixed 30 Jul 2026.
     w.writerow(["zone_fid", "zone_name", "community", "n_years", "level", "level_z",
                 "trend_raw", "water_slope", "trend_adj", "trend_z",
-                f"state_cut_{REGISTERED_CUT:.2f}", "pp_split", "flood_sd"]
+                "state_registered", "pp_split", "flood_sd"]
                + [f"state_cut_{c:.2f}" for c in CUTS] + ["state_drop2wettest"])
     for k in sorted(parts, key=lambda k: (k[1], M[k]["level_z"])):
         r = M[k]

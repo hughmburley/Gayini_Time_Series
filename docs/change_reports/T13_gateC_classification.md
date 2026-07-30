@@ -163,9 +163,21 @@ All 115 parts still meet the ≥25-year support rule on 33 years, so the compari
 | Declining | 16 | 11 |
 | Unremarkable | 77 | 86 |
 
-**12 of 115 parts change state (10%).** Every change is toward *Unremarkable* except one
-(Dinan 7 Aeolian, Unremarkable → Declining). Full list in `Output/tables/T13_gateC_robustness.csv`;
-the four Recovering/Persistently-poor movements:
+**12 of 115 parts change state (10%).** The direction splits three ways — **10 move to
+*Unremarkable*, 1 moves *Unremarkable* → *Declining* (Dinan 7 Aeolian), and 1 moves *Recovering* →
+*Persistently poor* (Dinan 8 Inland)**. Full list in `Output/tables/T13_gateC_robustness.csv`.
+
+> **CORRECTION — 30 July 2026.** An earlier draft of this section stated "every change is toward
+> *Unremarkable* except one", i.e. 11 toward *Unremarkable*. **That was wrong: it is 10.** Dinan 8
+> Inland (*Recovering* → *Persistently poor*) is not a move toward *Unremarkable* and belongs in the
+> lost-recoveries accounting below, not in that count. Recorded rather than silently amended.
+
+**Dinan 7 Aeolian is worth a line of its own: it is the only part that becomes *more* extreme when
+the two biggest floods are dropped** (`trend_z` −0.81 → −1.06, crossing into *Declining*). Every
+other mover softens. It is the opposite of the prevailing pattern, and it means the two wet years
+were *holding up* an otherwise declining trend rather than inflating a flat one.
+
+The four Recovering/Persistently-poor movements:
 
 | part | full | drop 2 | `trend_z` |
 |---|---|---|---|
@@ -175,16 +187,35 @@ the four Recovering/Persistently-poor movements:
 | Dinan 8 · Riverine | Persistently poor | Unremarkable | `level_z` −1.04 → −0.99 |
 
 **Verdict: the classification largely survives, and its core survives completely.** 5 of the 8
-recovering parts remain recovering, and the 3 core parts recovering at every cut are untouched.
-But **the honest reading is that the marginal calls are marginal**: every one of the 12 changes is a
-part sitting within ~0.1 of a threshold, moving a few hundredths and crossing it. The three
-recovering parts that fall away all sat between +1.11 and +1.48; none of the parts well clear of the
-cut moved at all.
+recovering parts remain recovering, and the 3 core parts recovering at every cut are untouched. The
+three recovering parts that fall away all sat between `trend_z` +1.11 and +1.48.
 
-**This is a real constraint on what Gate D may claim** and must be in the caption: a part near a
-boundary is not reliably classified, and the map should not imply that 8 is a firm count. The
-sweep and the robustness run agree on the same thing from two directions — the extremes are solid,
-the margin is soft.
+**But "the movers were all marginal" is not true, and must not be asserted.** Distance from each
+mover's full-record position to the nearest *active* cut:
+
+```
+0.001  0.006  0.008  0.027  0.038  0.040  0.040  0.072  0.111 | 0.188  0.205  0.391
+Dinan8 Dinan9 Mara2  Dnn13  B29ca  Bala12 Bala5  B26ca  Dinan8 | Dinan7 Bala2  Mara18
+ Riv    Riv    Inl    Riv    Inl     Inl    Inl    Riv    Inl  |  Aeo    Inl    Inl
+```
+
+**Nine of twelve sat within ~0.11 of a cut. Three did not** — Dinan 7 (0.188), Bala 2 (0.205) and
+**Mara 18 Inland at 0.391, which flipped from a position well clear of any boundary**. So dropping
+the two wettest years moves some trends *materially*, not merely nudging marginal ones across a line.
+
+> **CORRECTION — 30 July 2026.** An earlier draft asserted "every one of the 12 changes is a part
+> sitting within ~0.1 of a threshold." **That is false** for Dinan 7, Bala 2 and Mara 18, and the
+> distance list above is the record. Retained visibly rather than amended away.
+>
+> Precision note: the ninth value is **0.111**, so "within 0.11" holds only on rounding. Eight are
+> within 0.11 strictly; nine within 0.12.
+
+**Revised verdict — "extremes solid, margin soft" is broadly right but not universal.** The 3-part
+core is untouched and nothing far from a cut on *both* axes moved. But Mara 18 is a
+counter-example to the tidy version of the story, and Dinan 7 moves the wrong way. **This is a real
+constraint on what Gate D may claim:** the map must not imply 8 is a firm count, and hatching cannot
+be justified on nearness-to-a-cut alone — which is why the marginal band is defined as a **union**
+with the robustness movers (§2 of the Gate D report).
 
 ---
 
