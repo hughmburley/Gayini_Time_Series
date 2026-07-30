@@ -39,11 +39,35 @@ For each of the 115 parts (`mean_of_seasons`, ≥25 yr, `n_pixels_valid ≥ 30`)
 
 | part | level_z | trend_z |
 |---|---|---|
-| Bala 29ca · Aeolian | (see CSV) | +1.41 |
-| Bala 29ca · Riverine | (see CSV) | +2.56 |
-| Bala 29ca · Inland | (see CSV) | −0.03 |
+| Bala 29ca · Aeolian | −2.695 | **+1.989** |
+| Bala 29ca · Riverine | −2.293 | **+2.449** |
+| Bala 29ca · Inland | −0.962 | **−1.108** |
 
-These reproduce the T10 finding as continuous measures: the recovery is concentrated in the dry western (Aeolian/Riverine) parts and its Inland part tracks the community. No cut is applied here.
+Source: `Output/tables/T13_gateB_part_measures.csv` (as of 30 July 2026). The recovery is concentrated in the dry western (Aeolian/Riverine) parts. No cut is applied here.
+
+> ### CORRECTION — 30 July 2026 (rendering error in this report; the data was never wrong)
+>
+> **This table previously read `+1.41` / `+2.56` / `−0.03`** for Aeolian / Riverine / Inland, and
+> stated that the Inland part "tracks the community". **Those three values were wrong**, and the
+> wrong Inland value is retained here deliberately rather than deleted, per the standing rule that
+> a correction must stay visible.
+>
+> The correct values are **+1.989 / +2.449 / −1.108**, and they are the ones that reconcile against
+> the community SDs printed in §2 of this same report: 0.4797/0.2412 = 1.989, 0.8090/0.3303 = 2.449,
+> −0.1984/0.1790 = −1.108. The superseded figures reconcile to nothing in the CSV.
+>
+> **Cause: a rendering error in this prose. Not a data error.** `T13_gateB_part_measures.csv` was
+> correct on write and is unchanged; an independent recompute of all 230 z-values from the CSV at
+> Gate C returned **0 mismatches**, and the Gate C script's self-check reproduces every Gate B
+> measure from the database to within CSV rounding. Nothing downstream of the CSV was computed
+> from the wrong values, because no classification existed until Gate C.
+>
+> **Consequence, carried into Gate C.** The superseded `−0.03` implied the Inland part was
+> unremarkable. At the true `−1.108` it crosses the pre-registered `trend_z ≤ −1.0` cut, and with
+> `level_z` = −0.962 it classifies as **Declining** — see `T13_gateC_classification.md` §4, which
+> also shows that the separate raw-scale claim ("tracks the property median exactly", raw deviation
+> −0.005) is *itself correct* and simply measures a different thing. This is `Output/` outranking
+> `docs/`, working as designed.
 
 ## 4. Water specification — current vs lagged
 
