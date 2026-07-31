@@ -5,7 +5,7 @@
 **Scope:** build the paddock-part polygons; draw the state map, the `level_z`×`trend_z` scatter companion, and the 0.75/1.25 small multiples.
 **Producers:** `scripts/12_zone_stratum/build_T13_gateD_part_polygons.R` · `build_T13_gateD_figures.R` (both tracked).
 **Artefacts — these are the record, this report is a rendering:**
-`Output/spatial_8058/T13_part_polygons_epsg8058.gpkg` · `figures/T13/T13_D1_part_state_map_and_scatter.png` · `figures/T13/T13_D2_part_state_map_sensitivity.png`
+`Output/spatial_8058/T13_part_polygons_epsg8058.gpkg` · `Output/figures/T13_D1_part_state_map_and_scatter.png` · `Output/figures/T13_D2_part_state_map_sensitivity.png`
 
 Session start: on `main`, up to date with `origin/main`, `main` has not moved.
 

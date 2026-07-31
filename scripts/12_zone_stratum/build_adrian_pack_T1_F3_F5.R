@@ -12,6 +12,7 @@ suppressPackageStartupMessages({library(ggplot2); library(dplyr); library(DBI); 
                                 library(patchwork)})
 source("R/gayini_params.R")
 source("R/gayini_figure_register.R")
+source("R/gayini_assert_rendered.R")
 
 RUN  <- "adrian_pack_20260731"
 FIGD <- "Output/figures"; TABD <- "Output/tables"
@@ -108,8 +109,15 @@ fmt <- function(x, d = 1, sign = FALSE)
   if (sign) sprintf(paste0("%+.", d, "f"), x) else sprintf(paste0("%.", d, "f"), x)
 cellcol <- function(state) unname(PAL_STATE[sub(" .*", "", state)])
 
-FIELDS <- c("Community composition", "Mean annual flood %", "Cover floor veg_p05",
-            "Residual vs expectation", "Water-adjusted trend", "Part states", "Reportable sites")
+# Rank direction lives in the ROW LABEL, on the figure, beside the numbers it governs - two
+# rank conventions in one table is a real misread risk, and a single note at the foot of a
+# caption does not reach a reader scanning the columns.
+FIELDS <- c("Community composition",
+            "Mean annual flood %\n(rank 1 = wettest)",
+            "Cover floor veg_p05\n(rank 1 = highest cover)",
+            "Residual vs expectation\n(rank 1 = largest shortfall)",
+            "Water-adjusted trend\n(rank 1 = steepest decline)",
+            "Part states", "Reportable sites")
 val <- list(
   T1$composition,
   sprintf("%s   (rank %d of 64)", fmt(T1$mean_flood_pct), T1$flood_rank_of_64),
@@ -119,15 +127,24 @@ val <- list(
   gsub(" · ", "\n", T1$part_states),
   as.character(T1$reportable_sites))
 
-# GUARD on the rendered strings, not the data frame. Every row of this table has four distinct
-# underlying values, so four identical cells means a recycling bug upstream of the ink - which is
-# exactly what happened once and what the value-level checks above cannot detect.
-for (i in seq_along(FIELDS)) {
-  stopifnot(length(val[[i]]) == 4)
-  if (length(unique(val[[i]])) == 1)
-    stop(sprintf("rendered row '%s' is identical across all four paddocks - recycling bug", FIELDS[i]))
+# POST-RENDER ASSERTIONS (I-32) on the strings actually drawn, not on T1. The value checks above
+# passed while the figure rendered "45.3" in all four columns; only a check on the ink sees that.
+names(val) <- FIELDS
+gayini_assert_rendered_table(val, "T1 table")
+gayini_assert_rendered_values(val[[2]], T1$mean_flood_pct, 1, FALSE, "T1 flood %")
+gayini_assert_rendered_values(val[[3]], T1$veg_p05_spatial, 1, FALSE, "T1 cover floor")
+gayini_assert_rendered_values(val[[4]], T1$cross_sectional_residual_pp, 2, TRUE, "T1 residual")
+gayini_assert_rendered_values(val[[5]], T1$water_adjusted_floor_trend_pp_yr, 3, TRUE, "T1 adj trend")
+gayini_assert_rendered_values(val[[7]], T1$reportable_sites, 0, FALSE, "T1 sites")
+# the ranks are drawn too, and are just as recyclable
+for (j in seq_len(4)) {
+  rk <- c(T1$flood_rank_of_64[j], T1$floor_rank_of_64[j],
+          T1$residual_rank_of_64[j], T1$adj_trend_rank_of_64[j])
+  for (k in seq_len(4))
+    if (!grepl(sprintf("rank %d of 64", rk[k]), val[[k + 1]][j], fixed = TRUE))
+      stop(sprintf("T1 rank not rendered for %s (row %d)", T1$paddock[j], k + 1))
 }
-cat("  rendered-cell guard: all 7 rows vary across the four paddocks  OK\n")
+cat("  post-render assertions: 7 rows vary; values and ranks match the source  OK\n")
 
 grid <- do.call(rbind, lapply(seq_along(FIELDS), function(i)
   data.frame(row = i, col = seq_len(4), field = FIELDS[i], txt = val[[i]], stringsAsFactors = FALSE)))
@@ -258,7 +275,17 @@ stopifnot(res$resid_rank[res$zone_name == "Bala 29ca"] == 2,
 # labels collided in the first draft. Explicit per-point offsets, one up-right and one down-right.
 lab <- res %>% filter(zone_name %in% c("Bala 29ca", "Dinan 10")) %>%
   mutate(lx = c(16, 16)[match(zone_name, c("Bala 29ca", "Dinan 10"))],
-         ly = c(47.5, 32.5)[match(zone_name, c("Bala 29ca", "Dinan 10"))])
+         ly = c(47.5, 32.5)[match(zone_name, c("Bala 29ca", "Dinan 10"))],
+         calltxt = sprintf("%s - %.1f pp below expectation (rank %d of 64)",
+                           zone_name, abs(residual), resid_rank))
+# POST-RENDER assertion on the callouts actually drawn (I-32)
+gayini_assert_rendered_varies(lab$calltxt, "F5 callouts")
+gayini_assert_rendered_values(lab$calltxt, abs(lab$residual), 1, FALSE, "F5 callout residual")
+for (i in seq_len(nrow(lab)))
+  if (!grepl(sprintf("rank %d of 64", lab$resid_rank[i]), lab$calltxt[i], fixed = TRUE))
+    stop("F5 callout rank not rendered for ", lab$zone_name[i])
+cat("F5 post-render assertions: callouts carry their residual and rank  OK
+")
 xr  <- range(res$mean_flood); band <- data.frame(x = seq(xr[1], xr[2], length.out = 100))
 band$y <- INT + SLP * band$x; band$lo <- band$y - SD; band$hi <- band$y + SD
 
@@ -272,9 +299,7 @@ f5 <- ggplot(res, aes(mean_flood, mean_floor)) +
   scale_size_manual(values = c(`FALSE` = 2.3, `TRUE` = 3.6), guide = "none") +
   geom_segment(data = lab, aes(x = mean_flood, xend = lx - 0.6, y = mean_floor, yend = ly),
                colour = "grey45", linewidth = 0.3) +
-  geom_text(data = lab, aes(x = lx, y = ly,
-                            label = sprintf("%s — %.1f pp below expectation (rank %d of 64)",
-                                            zone_name, abs(residual), resid_rank)),
+  geom_text(data = lab, aes(x = lx, y = ly, label = calltxt),
             hjust = 0, size = 3.0, colour = "grey15") +
   labs(title = "Cover follows water, and the exceptions are the story",
        subtitle = sprintf("One point per paddock. Line = the registered expectation (%.1f + %.3f x flood %%). Shaded band = plus or minus one typical miss (%.1f pp).",

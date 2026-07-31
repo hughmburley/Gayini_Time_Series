@@ -15,11 +15,12 @@
 suppressPackageStartupMessages({library(sf); library(ggplot2); library(dplyr); library(patchwork); library(DBI); library(RSQLite)})
 source("R/gayini_params.R")
 source("R/gayini_figure_register.R")
+source("R/gayini_assert_rendered.R")
 
 RUN   <- "T13_gateD_20260730"
 BAND  <- 0.15                      # ruling: band width fixed at 0.15
 CUT   <- 1.00
-FIGD  <- file.path("figures", "T13")
+FIGD  <- "Output/figures"   # one canonical location for client-deliverable items
 PARTS <- "Output/spatial_8058/T13_part_polygons_render_only_epsg8058.gpkg"
 NOT_ASSERTED <- list(zone = "Bala 29ca", comm_prefix = "Inland")
 
@@ -222,6 +223,19 @@ cap1 <- paste0(
   "in the Bala group), while both recovering and persistently-poor parts are south-western and the ",
   "centre is almost entirely unremarkable; why is not known and nothing here attributes a cause. ",
   "Cover is how much and how green, not a condition score.")
+
+# POST-RENDER assertion (I-32) on the community-SD numbers QUOTED IN THE CAPTION. The caption
+# tells the reader a z of -1.0 is "about 12 pp" in Aeolian/Riverine and "about 6 pp" in Inland;
+# those are roundings of live SDs and must be checked against them, not trusted as prose.
+gb <- read.csv("Output/tables/T13_gateB_part_measures.csv", stringsAsFactors = FALSE)
+sd_by <- sapply(split(gb$level_dev, gb$community), sd)
+sd_hi <- max(sd_by[grep("^(Aeolian|Riverine)", names(sd_by))])
+sd_lo <- sd_by[grep("^Inland", names(sd_by))]
+cat(sprintf("caption-number check: SD(level_dev) high %.2f -> '%d pp', Inland %.2f -> '%d pp'
+",
+            sd_hi, round(sd_hi), sd_lo, round(sd_lo)))
+gayini_assert_caption_number(cap1, round(sd_hi), 0, "T13 D1 caption: Aeolian/Riverine pp")
+gayini_assert_caption_number(cap1, round(sd_lo), 0, "T13 D1 caption: Inland pp")
 
 fig1 <- m1 + s1 + patchwork::plot_layout(widths = c(1.7, 1))
 gayini_write_and_register_figure(
