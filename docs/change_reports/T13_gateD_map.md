@@ -15,19 +15,18 @@ unregistered. No builder run, no existing object modified, no p-values.
 
 ---
 
-## 0. Two rulings were never stated in this session — flagging the gap
+## 0. Rulings 5 and 6 — RESOLVED
 
-Your message directs "GATE D PROCEEDS with rulings 5 and 6" and states the substance of **Ruling 6**
-(the marginal band, hatched, calibrated to 0.15). **Rulings 5 and 6 were never given in full text in
-this chat** — I have their substance only from the enumerated Gate D requirements in the same
-message. I have built to that enumerated list:
+Gate D was built before Rulings 5 and 6 had been stated in full text, from the enumerated
+requirements only. **Both have since been given and nothing was missed.**
 
-1. five fill classes · 2. hatching for the marginal set · 3. heavier outline on the 3-part core ·
-4. no state asserted for Bala 29ca Inland · 5. threshold lines and shaded marginal band on the
-scatter panel · 6. the OLS identity in the methods section · 7. the registered client sentence ·
-8. the community-SD scale line on the map, not only in methods.
+**Ruling 5** — *the sweep nesting is the headline rather than the count*: strictly nested, 15 at some
+cut, 3 at every cut, "the cut controls how many, not which", and the registered client sentence
+always carries the range. Built as §2 of the Gate C report and §5 below, and **rendered rather than
+asserted** in the sensitivity figure, where the recovering set shrinks 10 → 8 → 4 *in place*.
 
-If Ruling 5 contained anything beyond that list, it is not in this build. Please confirm.
+**Ruling 6** — the marginal band, hatched, at 0.15. Built; see §2 for the boundary-set correction,
+now ruled on.
 
 ---
 
@@ -123,8 +122,11 @@ own stated criterion, since 23 hatched reads more cleanly than 30. **Mara 18 is 
 the band, exactly as you predicted** — and it is not alone: Dinan 7 (0.188) and Bala 2 (0.205) are
 also union-only, the same three parts that Correction 2 identified as the non-marginal movers.
 
-**Say the word and I will switch to definition B.** I have not, because hatching a part that cannot
-change state is a claim the data does not support.
+**RULED, 31 July 2026: definition A stands.** `level_z = +1.0` is not a cut, the calibrated
+28 / 30 / 40 came from a phantom boundary, and 22 / 23 / 31 are correct. Band stays 0.15, boundary
+set = the three real cuts, **23 hatched**. Definition B is not to be used: seven *Unremarkable*
+parts hatched by a boundary that cannot change their state would have been **a false claim of
+uncertainty**, which is worse than the legibility gain.
 
 **Union definition as built and as stated in the caption:** a part is hatched if it is **within 0.15
 of an active cut OR changes state under the drop-two-wettest robustness run**. The caption says this
@@ -172,22 +174,103 @@ grid with the marginal polygons, and the north arrow and scale bar are drawn as 
 projected metres. Both are exact rather than approximate, and neither adds a dependency eleven days
 from the deadline. Flagging rather than installing packages on your workstation mid-gate.
 
-### The state palette is not a ratified object
+### White meant two things — fixed
 
-**No committed *state* palette exists.** The audited deck palette
-(`docs/change_reports/tier2H_gateE_palette_audit.md`) is per-**community**, and the states are not
-communities. The five hues are taken from the committed semantic set in
-`R/gayini_dashboard_panels.R` / `gayini_dashboard_figures.R` so the map reads with the rest of the
-deck: **veg-green `#2E7D32`** = recovering, **neutral grey `#9E9E9E`** = unremarkable, the committed
-**"drier" red `#B2182B`** = declining, **bare-brown `#8D6E63`** = low-and-flat. Only
-**low-and-falling `#4A2C22`** is derived (a darker bare-brown) and is the one non-committed hue.
+**The defect.** The legend read white = *State not asserted*, which is one part (Bala 29ca Inland).
+But white also filled **every out-of-scope area** — treed country, the context band, the unzoned
+gaps — which was most of the white on the map. A reader could not tell the single deliberate
+abstention from ninety holes. **One appearance, two meanings: the same class of error as the two
+floors.**
 
-**Deliberately not blue for recovering**, despite blue being the committed "good/wetter" pole in the
-dashboard palette: blue reads as **water** on every other map in this project (`flood = #2171B5`),
-and a blue "recovering" class beside a flood-frequency surface would be actively misleading. Flagged
-for ratification rather than presented as settled.
+**The fix.** Out-of-scope ground now carries its own fill, `#E5E0D6`, distinctly not white, with its
+own legend entry — *"Not assessed (treed / outside census)"* — drawn through `aes()` so it enters
+the manual scale rather than being a silent background. Bala 29ca Inland stays white and keeps its
+entry, and now also carries a grey outline so a white polygon reads as deliberate rather than as a
+gap. **Both captions state that the two are different things.**
+
+### The state palette — RATIFIED, with the reasoning recorded here
+
+**Recorded for the future, per the ruling: no state palette existed in this project before T13.**
+The audited deck palette (`docs/change_reports/tier2H_gateE_palette_audit.md`) is per-**community**,
+and states are not communities — so a set had to be derived. **This set is now the reference for any
+future state map.**
+
+| class | hue | provenance |
+|---|---|---|
+| Recovering | `#2E7D32` | committed `total_veg` green |
+| Unremarkable | `#9E9E9E` | committed neutral grey |
+| Declining | `#B2182B` | committed "drier" red |
+| Persistently poor — flat | `#8D6E63` | committed `bare` brown |
+| Persistently poor — falling | `#4A2C22` | **DERIVED** — darker bare; the only non-committed hue |
+| State not asserted | `#FFFFFF` | deliberate abstention |
+| Not assessed | `#E5E0D6` | out-of-scope ground |
+
+**Blue was refused for *Recovering* on purpose.** Blue is the committed "good / wetter" pole in the
+dashboard palette, but on every other map in this project blue reads as **water** (`flood = #2171B5`),
+and a blue "recovering" class beside a flood-frequency surface would be actively misleading. Not
+viridis (§6).
 
 ---
+
+## 3b. The geography is a finding — stated, never explained
+
+Independently verified from `Output/tables/T13_gateC_classification.csv` (as of 31 July 2026);
+reproduces the design-seat table exactly. Groups are the three paddock families by name, which map
+onto east / centre / south-west; all 115 parts fall in one of the three.
+
+| state | Bala (E) | Mara (C) | Dinan (SW) | total |
+|---|---|---|---|---|
+| Recovering | 3 | **0** | 5 | 8 |
+| Declining | **12** | 3 | 1 | 16 |
+| Persistently poor | 2 | 2 | **10** | 14 |
+| Unremarkable | 25 | **32** | 20 | 77 |
+| **total** | 42 | 37 | 36 | 115 |
+
+**Declining is an eastern phenomenon — 12 of 16 sit in the Bala group.** Recovering *and*
+persistently-poor are both south-western: Dinan holds 5 of 8 recovering and 10 of 14 persistently
+poor. The centre is almost entirely unremarkable — **Mara has no recovering parts at all**, and 32
+of its 37 are unremarkable.
+
+This is legible from the map before a reader reaches the legend, and it is the most client-usable
+statement the task produces. One sentence of it is now in the Figure 1 caption.
+
+**No cause is attributed, on the map or here.** We do not know why the east is declining. The
+south-west pattern in particular sits on top of the Bala 29ca / Dinan cluster that L-01 and T10
+already identified as compositionally unusual, and the eastern group contains the largest paddocks;
+neither observation is an explanation. Nothing in the classification refers to grazing, treatment or
+zones by construction (§8), so this is a spatial pattern in cover and water, and stops there.
+
+## 3c. Three conserved paddocks are in the declining set — not two
+
+| part | `level_z` | `trend_z` | dist to level cut | dist to trend cut | robustness mover? | state on drop-2 |
+|---|---|---|---|---|---|---|
+| Bala 29ca · Inland | −0.962 | −1.108 | **0.038** | 0.108 | **yes** | Unremarkable |
+| Bala 27ca · Inland | −0.842 | −1.038 | 0.158 | **0.038** | **no** | **Declining** |
+| Bala 26ca · Riverine | −0.322 | −1.072 | 0.678 | 0.072 | **yes** | Unremarkable |
+
+**Two corrections to the ruling as written:**
+
+1. **There are three, not two.** **Bala 26ca · Riverine** (`level_z` −0.322, `trend_z` −1.072) also
+   classifies as *Declining*. So **three of the four reference paddocks** carry a declining part —
+   which sharpens rather than softens the standing "conserved is a management category, not a
+   condition state" finding.
+2. **Bala 27ca is *more* marginal on trend than Bala 29ca is, not less.** 27ca sits **0.038** from
+   the `trend_z` cut; 29ca sits **0.108** from it. 29ca's 0.038 is on the **level** axis. So the
+   stated reason for asserting 27ca does not hold as written.
+
+**But the conclusion holds, on stronger ground.** Bala 27ca is **the only one of the three that is
+not a robustness mover** — it stays *Declining* when the two wettest years are dropped, while 29ca
+and 26ca both fall to *Unremarkable*. Surviving the robustness run is a better warrant for asserting
+a state than distance to a cut, so **27ca's state is asserted** and 29ca's is not, exactly as ruled.
+
+**Flagged for your call:** by the same test, **Bala 26ca · Riverine is in 29ca's position, not
+27ca's** — marginal on trend and a robustness mover. It is currently drawn as *Declining* because
+the ruling named only 29ca. It is hatched, so the map does not claim certainty, but the treatment is
+asymmetric. Say if you want it abstained too.
+
+**On Bala 27ca specifically:** this is a third independent route to the same conclusion — no
+monitoring sites, the smallest cross-sectional residual, a negative water-adjusted paddock trend at
+T10, and now a part-grain *Declining* that survives dropping the two biggest floods.
 
 ## 4. Methods — the OLS identity
 

@@ -35,8 +35,12 @@ PAL <- c(
   "Declining"                   = "#B2182B",  # committed "drier" red
   "Persistently poor - flat"    = "#8D6E63",  # committed bare brown
   "Persistently poor - falling" = "#4A2C22",  # DERIVED darker bare - the only non-committed hue
-  "State not asserted"          = "#FFFFFF"
+  "State not asserted"          = "#FFFFFF",
+  # out-of-scope ground: treed country, the context band, unzoned gaps. NOT white - white is
+  # reserved for the single deliberate abstention, and the two must not read as one thing.
+  "Not assessed (treed / outside census)" = "#E5E0D6"
 )
+NOT_ASSESSED <- "Not assessed (treed / outside census)"
 LAB_ORDER <- names(PAL)
 
 # ---- data ------------------------------------------------------------------------------------
@@ -129,14 +133,22 @@ deco <- function(g) {
 }
 
 base_map <- function(dat, fillvar, title, hatch_layer = NULL, show_core = TRUE) {
+  # WHITE MEANT TWO THINGS in the first draft: the single deliberate abstention
+  # (Bala 29ca Inland) and every out-of-scope hole - treed country, the context band, the
+  # unzoned gaps, which are most of the white on the map. One appearance, two meanings; the
+  # same class of error as the two floors. Out-of-scope now carries its own neutral fill and
+  # its own legend entry, and is drawn via aes() so it enters the manual scale.
   g <- ggplot() +
-    geom_sf(data = zones, fill = "grey96", colour = "grey78", linewidth = 0.15) +
+    geom_sf(data = zones, aes(fill = NOT_ASSESSED), colour = "grey72", linewidth = 0.15) +
     geom_sf(data = dat, aes(fill = .data[[fillvar]]), colour = "grey40", linewidth = 0.08)
   if (!is.null(hatch_layer) && length(hatch_layer) > 0)
     g <- g + geom_sf(data = hatch_layer, colour = "grey15", linewidth = 0.16, alpha = 0.9)
   g <- g +
     geom_sf(data = zones[zones$ManagmentZ %in% REF_ZONES, ], fill = NA,
             colour = "#1A1A1A", linewidth = 0.45, linetype = "22")
+  if (any(dat[[fillvar]] == "State not asserted", na.rm = TRUE))
+    g <- g + geom_sf(data = dat[dat[[fillvar]] == "State not asserted", ], fill = NA,
+                     colour = "#6A6A6A", linewidth = 0.45)
   if (show_core && any(dat$core))
     g <- g + geom_sf(data = dat[dat$core, ], fill = NA, colour = "black", linewidth = 0.5)
   g +
@@ -189,7 +201,12 @@ cap1 <- paste0(
   "two wettest years are dropped - not all hatched parts are near a boundary. Heavy outline = ",
   "recovering at every swept cut. Dashed paddock outline = the four reference paddocks. ",
   "Bala 29ca's Inland part is drawn with no state asserted: it is marginal on both axes and ",
-  "changes state under the robustness run. Cover is how much and how green, not a condition score.")
+  "changes state under the robustness run - white there is a deliberate abstention and is NOT the ",
+  "same as the pale out-of-scope fill, which marks treed country and ground outside the mapped ",
+  "census. Geography, stated not explained: declining parts are overwhelmingly eastern (12 of 16 ",
+  "in the Bala group), while both recovering and persistently-poor parts are south-western and the ",
+  "centre is almost entirely unremarkable; why is not known and nothing here attributes a cause. ",
+  "Cover is how much and how green, not a condition score.")
 
 fig1 <- m1 + s1 + patchwork::plot_layout(widths = c(1.7, 1))
 gayini_write_and_register_figure(
@@ -228,7 +245,8 @@ cap2 <- paste0(
   "nested across the full 0.50-1.50 sweep - parts enter and leave as the cut moves but are never ",
   "swapped, so the cut governs how many parts are called recovering, not which. Same palette and ",
   "same five classes as the registered map; core outline and hatching omitted so the cut effect ",
-  "is the only thing varying. Z-scores are community-scaled: a z of -1.0 is about 12 pp of ground ",
+  "is the only thing varying. The pale fill is ground not assessed (treed or outside the mapped ",
+  "census); white is the single deliberate abstention at Bala 29ca Inland. Z-scores are community-scaled: a z of -1.0 is about 12 pp of ground ",
   "in Aeolian or Riverine and about 6 pp in Inland.")
 
 gayini_write_and_register_figure(
