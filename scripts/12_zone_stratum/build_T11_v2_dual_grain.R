@@ -200,17 +200,19 @@ P <- setNames(hn$pinned_value, hn$number_id)
 INT <- P[["floor_flood_intercept_64pdk"]]; SLP <- P[["floor_flood_slope_64pdk"]]
 SD  <- P[["floor_flood_residual_sd_64pdk"]]
 cat(sprintf("Gate B line READ from dim_headline_number: intercept %.4f slope %.3f SD %.4f\n", INT, SLP, SD))
-stopifnot(abs(INT - 52.6529) < 1e-4, abs(SLP - 0.548) < 1e-4, abs(SD - 6.6208) < 1e-4)
+# repinned at 6 dp 2026-07-31 (precision correction; the fitted value did not change).
+# These guards caught this script still expecting the rounded pair - which is what they are for.
+stopifnot(abs(INT - 52.652934) < 1e-6, abs(SLP - 0.547838) < 1e-6, abs(SD - 6.6208) < 1e-4)
 
-# The spec's formula from the PINNED constants and the registered view disagree by up to 0.0135,
-# and neither is wrong. dim_headline_number pins ROUNDED constants (0.548 / 52.6529); the view
-# was built from the fit's full precision (implied 0.547823 / 52.653223, recovered by solving
-# predicted_floor on mean_flood). Recomputing from the pinned constants therefore cannot land on
-# the view exactly. Budget: slope rounding x max flood + intercept rounding + the view's own 2 dp.
+# The pinned constants were REPINNED AT 6 dp on 31 Jul 2026 (precision correction - the value did
+# not change, only its stored precision), because the previously rounded 0.548 / 52.6529 could not
+# reproduce this view: 0.0135 pp against 0.0048 from full precision. The residual budget is now the
+# view's own 2-dp columns plus a 6-dp half-ulp, and the check is kept so the gap cannot silently
+# return if either row is ever re-rounded.
 reg <- DBI::dbGetQuery(con, "SELECT zone_name, residual, rank FROM v_zone_floor_flood_residual")
 foot$resid_pinned <- foot$floor - (INT + SLP * foot$flood)
 chk <- foot %>% sf::st_drop_geometry() %>% left_join(reg, by = "zone_name")
-budget <- 0.000177 * max(foot$flood) + 0.000323 + 0.005
+budget <- 0.005 + 5e-7 * max(foot$flood) + 5e-7
 gap <- max(abs(chk$resid_pinned - chk$residual))
 cat(sprintf("residual from PINNED constants vs registered view: max |diff| %.5f (rounding budget %.5f)\n",
             gap, budget))

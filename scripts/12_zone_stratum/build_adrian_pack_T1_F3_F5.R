@@ -261,7 +261,9 @@ INT <- P[["floor_flood_intercept_64pdk"]]; SLP <- P[["floor_flood_slope_64pdk"]]
 SD  <- P[["floor_flood_residual_sd_64pdk"]]; RR <- P[["floor_flood_r_64pdk"]]
 cat(sprintf("F5 line READ from dim_headline_number: intercept %.4f  slope %.3f  residual SD %.4f  r %.2f\n",
             INT, SLP, SD, RR))
-stopifnot(abs(INT - 52.6529) < 1e-4, abs(SLP - 0.548) < 1e-4, abs(SD - 6.6208) < 1e-4)
+# repinned at 6 dp 2026-07-31 (precision correction; the fitted value did not change).
+# These guards caught this script still expecting the rounded pair - which is what they are for.
+stopifnot(abs(INT - 52.652934) < 1e-6, abs(SLP - 0.547838) < 1e-6, abs(SD - 6.6208) < 1e-4)
 
 res$is_ref <- res$zone_name %in% REF
 for (z in c("Bala 29ca", "Dinan 10")) {

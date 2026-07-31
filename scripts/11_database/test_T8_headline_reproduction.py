@@ -78,7 +78,7 @@ def recompute(c):
         fx=pmean(f,2); fy=pmean(f,0)
         if fx is not None and fy is not None: X.append(fx);Y.append(fy)
     mx=st.mean(X);my=st.mean(Y);sxx=sum((x-mx)**2 for x in X);sxy=sum((x-mx)*(y-my) for x,y in zip(X,Y));syy=sum((y-my)**2 for y in Y)
-    out["floor_flood_slope_64pdk"]=round(sxy/sxx,3)
+    out["floor_flood_slope_64pdk"]=round(sxy/sxx,6)   # repinned at 6 dp 2026-07-31 (precision correction)
     out["floor_flood_r_64pdk"]=round(sxy/(sxx*syy)**0.5,3)
     npx=c.execute("SELECT sum(n_pixels) FROM census_by_zone_stratum WHERE zone_fid IS NULL").fetchone()[0]
     out["unzoned_inside_mapped_ha"]=round(npx*PX,1)
@@ -161,7 +161,7 @@ def recompute_reg1(c):
     Y=np.array([st.mean([P[z][y][0] for y in P[z] if P[z][y][0] is not None]) for z in zfs])
     n=len(X);mx=X.mean();my=Y.mean();sxx=((X-mx)**2).sum();slope=((X-mx)*(Y-my)).sum()/sxx
     inter=my-slope*mx;resid=Y-(inter+slope*X);sse=(resid**2).sum()
-    return {"floor_flood_intercept_64pdk":round(inter,4),
+    return {"floor_flood_intercept_64pdk":round(inter,6),   # repinned at 6 dp 2026-07-31
             "floor_flood_residual_sd_64pdk":round(resid.std(ddof=0),4),
             "floor_flood_rse_64pdk":round(math.sqrt(sse/(n-2)),4)}
 
@@ -232,6 +232,9 @@ def run(db):
 def unit_tol(nid):
     if nid.endswith("_ha"): return 1.0          # area in ha
     if nid.endswith("_count"): return 0.0       # exact
+    # these two are pinned at 6 dp (precision correction 2026-07-31), so the tolerance that was
+    # tuned to the rounded values would no longer test the precision it now stores
+    if nid in ("floor_flood_slope_64pdk","floor_flood_intercept_64pdk"): return 5e-6
     if nid.startswith("floor_flood_"): return 0.005
     return 0.05                                  # pp / percent
 

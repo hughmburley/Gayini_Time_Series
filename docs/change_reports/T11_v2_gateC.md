@@ -111,9 +111,13 @@ the registry by 0.01, and the two values the spec asks to be labelled — **−1
 *are* the registered ones. The pinned-constant computation is retained in the script as a **check**
 against a derived budget, so the discrepancy cannot silently grow.
 
-**Flagged for your call:** if you want the figure to show the pinned-constant arithmetic literally
-instead, it is a one-line change — but the labels would then read −16.81 / −15.07 against a registry
-that says otherwise. Recommend leaving as built.
+**RULED, 31 July 2026 — the figure stays as built, AND the registry was fixed.** Drawing the
+registered residual is correct and unchanged. Separately, both constants have been **re-registered
+at 6 dp** (`0.548 → 0.547838`, `52.6529 → 52.652934`) — a **precision correction, not a value
+change**: both round back exactly, and the display convention stays at 3 significant figures. The
+registry now reproduces `v_zone_floor_flood_residual` to **0.00478**, the view's own 2-dp rounding.
+Full account, including the reproduction-test change and the two consumer guards that fired:
+`docs/change_reports/floor_flood_precision_correction.md`.
 
 ## 5. The support rule is stated on the figure, not in this report
 
