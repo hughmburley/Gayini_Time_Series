@@ -189,11 +189,36 @@ def recompute_reg2(c):
         "reg2_paddocks_3part_supported": float(parts.get(3,0)),
     }
 
+def recompute_t13(c):
+    """T13 state counts, re-derived by APPLYING THE RULE to the stored continuous measures
+    rather than counting the stored state column. Counting state_registered would only prove
+    the table agrees with itself; this re-runs spec v1 section 5 over level_z/trend_z, so it
+    catches a mislabelled state as well as a drifted count."""
+    CUT=1.0
+    def classify(lz,tz,cut):
+        if lz<=-cut: return "Recovering" if tz>=cut else "Persistently poor"
+        return "Declining" if tz<=-cut else "Unremarkable"
+    rows=list(c.execute("SELECT level_z,trend_z FROM fact_zone_community_part_classification"))
+    if not rows: return {}
+    n={s:0 for s in ("Recovering","Persistently poor","Declining","Unremarkable")}
+    flat=fall=0
+    for lz,tz in rows:
+        s=classify(lz,tz,CUT); n[s]+=1
+        if s=="Persistently poor":
+            if tz<=-CUT: fall+=1
+            else: flat+=1
+    return {"t13_parts_recovering_count":float(n["Recovering"]),
+            "t13_parts_persistently_poor_count":float(n["Persistently poor"]),
+            "t13_parts_declining_count":float(n["Declining"]),
+            "t13_parts_unremarkable_count":float(n["Unremarkable"]),
+            "t13_parts_low_and_flat_count":float(flat),
+            "t13_parts_low_and_falling_count":float(fall)}
+
 def run(db):
     con=sqlite3.connect(f"file:{Path(db).as_posix()}?mode=ro",uri=True); c=con.cursor()
     pinned={nid:(pv,unit_tol(nid)) for nid,pv in c.execute(
         "SELECT number_id,pinned_value FROM dim_headline_number WHERE pinned_value IS NOT NULL")}
-    rc=recompute(c); rc.update(recompute_t10(c)); rc.update(recompute_reg1(c)); rc.update(recompute_reg2(c))
+    rc=recompute(c); rc.update(recompute_t10(c)); rc.update(recompute_reg1(c)); rc.update(recompute_reg2(c)); rc.update(recompute_t13(c))
     fails=[]; checked=0
     for nid,(pv,tol) in pinned.items():
         if nid not in rc:
