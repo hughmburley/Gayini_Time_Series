@@ -84,9 +84,23 @@ The spec says compute `residual = floor − (intercept + slope × flood)` with b
 | computed rounding budget | 0.01575 |
 
 **Cause, diagnosed rather than absorbed.** `dim_headline_number` pins **rounded** constants
-(`0.548`, `52.6529`). The view was built from the fit's full precision — recovered by solving
-`predicted_floor` on `mean_flood`, which is exactly linear: **slope 0.547823, intercept 52.653223**.
-Recomputing with *those* reproduces the view to 0.00504, i.e. the view's own 2-dp column rounding.
+(`0.548`, `52.6529`). The view was built from the fit's full precision:
+
+| route | slope | intercept | reproduces the view to |
+|---|---|---|---|
+| **direct OLS on the 64 paddock means** | **0.547837594** | **52.652933834** | **0.00477** |
+| design-seat direct fit (31 Jul) | 0.547837594 | 52.652933834 | 0.00477 |
+| solve-back from `predicted_floor` | 0.547823 | 52.653223 | 0.00504 |
+| **pinned in `dim_headline_number`** | 0.548 | 52.6529 | **0.01348** |
+
+> **CORRECTION — 31 July 2026.** An earlier draft of this section gave the recovered constants as
+> **0.547823 / 52.653223** and called them "the fit's full precision". **They are not.** That was a
+> *solve-back* from the view's 2-dp `predicted_floor` column, so it inherited that rounding. A
+> direct OLS on the 64 paddock means gives **0.547837594 / 52.652933834**, matching the design-seat
+> fit to 5e-10 — those are the true constants. The superseded pair is retained here rather than
+> deleted. The conclusion is unchanged and in fact sharpened: the direct fit reproduces the view to
+> **0.00477**, which is exactly the view's own 2-dp column rounding and nothing else.
+
 So the gap is entirely **the rounding of the pinned constants**, not a disagreement about the data.
 (Checked and excluded: the view's inputs *are* my full-precision means rounded to 2 dp — 0 of 64
 mismatch.)
