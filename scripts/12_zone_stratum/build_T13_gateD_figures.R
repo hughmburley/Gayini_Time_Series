@@ -12,7 +12,7 @@
 #
 # ggpattern and ggspatial are not installed; hatching, north arrow and scale bar are drawn
 # from geometry rather than adding a dependency 11 days from the deadline.
-suppressPackageStartupMessages({library(sf); library(ggplot2); library(dplyr); library(patchwork)})
+suppressPackageStartupMessages({library(sf); library(ggplot2); library(dplyr); library(patchwork); library(DBI); library(RSQLite)})
 source("R/gayini_params.R")
 source("R/gayini_figure_register.R")
 
@@ -72,9 +72,20 @@ cls$fill_class <- dplyr::case_when(
   cls$state_registered == "Persistently poor"                                    ~ "Persistently poor - flat",
   TRUE                                                                           ~ cls$state_registered)
 
-# no state asserted for Bala 29ca Inland (marginal on BOTH axes and flips under robustness)
-na_idx <- cls$zone_name == NOT_ASSERTED$zone & startsWith(cls$community, NOT_ASSERTED$comm_prefix)
-stopifnot(sum(na_idx) == 1)
+# State is not asserted where a part is BOTH inside the marginal band AND changes state under
+# the robustness run. A CRITERION read from the DB (assert_state), not a named part - naming one
+# part was the ad-hoc-threshold problem this task exists to avoid, appearing in a ruling rather
+# than in a cut. Nothing is reclassified: state_registered and the registered counts are
+# untouched; this governs only what the MAP asserts.
+asrt <- DBI::dbGetQuery(DBI::dbConnect(RSQLite::SQLite(),
+          "Output/database/Gayini_Results.sqlite"),
+          "SELECT zone_fid, community, assert_state FROM fact_zone_community_part_classification")
+cls <- cls %>% left_join(asrt, by = c("zone_fid", "community"))
+stopifnot(!any(is.na(cls$assert_state)))
+na_idx <- cls$assert_state == 0
+cat(sprintf("state NOT asserted (in band AND a robustness mover): %d of %d\n",
+            sum(na_idx), nrow(cls)))
+stopifnot(sum(na_idx) == 9)
 cls$fill_class[na_idx] <- "State not asserted"
 
 # the 3-part core: recovering at EVERY swept cut
@@ -163,7 +174,7 @@ lab_z <- zones %>% mutate(ctr = sf::st_centroid(sf::st_geometry(.)))
 lab_xy <- sf::st_coordinates(lab_z$ctr)
 lab_df <- data.frame(x = lab_xy[,1], y = lab_xy[,2], nm = zones$ManagmentZ)
 
-m1 <- deco(base_map(pg, "fill_class", "Paddock parts by state, pre-registered cut ±1.0", hatch)) +
+m1 <- deco(base_map(pg, "fill_class", "Paddock parts by state, pre-registered cut ±1.0  -  8 parts meet the recovering criterion, 5 asserted", hatch)) +
   geom_text(data = lab_df, aes(x, y, label = nm), size = 1.45, colour = "grey20")
 
 marg_rect <- function() {
@@ -200,10 +211,14 @@ cap1 <- paste0(
   "Inland. Hatching marks a part that is EITHER within 0.15 of a cut OR changes state when the ",
   "two wettest years are dropped - not all hatched parts are near a boundary. Heavy outline = ",
   "recovering at every swept cut. Dashed paddock outline = the four reference paddocks. ",
-  "Bala 29ca's Inland part is drawn with no state asserted: it is marginal on both axes and ",
-  "changes state under the robustness run - white there is a deliberate abstention and is NOT the ",
-  "same as the pale out-of-scope fill, which marks treed country and ground outside the mapped ",
-  "census. Geography, stated not explained: declining parts are overwhelmingly eastern (12 of 16 ",
+  "State is not asserted for the 9 parts that are BOTH within 0.15 of a cut AND change state ",
+  "under the robustness run - a criterion, not a chosen part; nothing is reclassified and the ",
+  "registered counts are unchanged. Those parts are drawn white. ",
+  "changes state under the robustness run. Eight parts meet the recovering criterion. Five of ",
+  "those survive dropping the two wettest years; three do not and are shown as unclassified. The ",
+  "three that recover at every swept cut are among the five. White is a deliberate abstention and ",
+  "is NOT the same as the pale out-of-scope fill, which marks treed country and ground outside ",
+  "the mapped census. Geography, stated not explained: declining parts are overwhelmingly eastern (12 of 16 ",
   "in the Bala group), while both recovering and persistently-poor parts are south-western and the ",
   "centre is almost entirely unremarkable; why is not known and nothing here attributes a cause. ",
   "Cover is how much and how green, not a condition score.")
@@ -218,7 +233,7 @@ gayini_write_and_register_figure(
   width = 17, height = 8.5, dpi = 200)
 
 # ---------------------------------------------------------------- FIGURE 2: sensitivity small multiples
-na_idx_pg <- pg$zone_name == NOT_ASSERTED$zone & startsWith(pg$community, NOT_ASSERTED$comm_prefix)
+na_idx_pg <- pg$assert_state == 0
 # All three panels the SAME SIZE and in one row - an unequal grid makes the eye read the
 # largest panel as the important one, which defeats a sensitivity comparison.
 panel <- function(cc) {
@@ -228,11 +243,11 @@ panel <- function(cc) {
     d[[col]] == "Persistently poor" & d$trend_z <= -cc ~ "Persistently poor - falling",
     d[[col]] == "Persistently poor"                    ~ "Persistently poor - flat",
     TRUE                                               ~ d[[col]])
-  d$fc[na_idx_pg] <- "State not asserted"
+  d$fc[na_idx_pg] <- "State not asserted"   # same assert_state criterion, from the DB
   d$fc <- factor(d$fc, levels = LAB_ORDER)
-  ttl <- sprintf("Cut ±%.2f  -  %d recovering", cc, sum(d[[col]] == "Recovering"))
-  if (abs(cc - CUT) < 1e-9) ttl <- sprintf("REGISTERED cut ±%.2f  -  %d recovering",
-                                           cc, sum(d[[col]] == "Recovering"))
+  nrec <- sum(d[[col]] == "Recovering"); nass <- sum(d[[col]] == "Recovering" & d$assert_state == 1)
+  ttl <- sprintf("Cut ±%.2f  -  %d meet criterion, %d asserted", cc, nrec, nass)
+  if (abs(cc - CUT) < 1e-9) ttl <- sprintf("REGISTERED cut ±%.2f  -  %d meet criterion, %d asserted", cc, nrec, nass)
   base_map(d, "fc", ttl, NULL, show_core = FALSE)
 }
 fig2 <- (panel(0.75) | panel(CUT) | panel(1.25)) +

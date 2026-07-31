@@ -51,6 +51,7 @@ c.execute("""CREATE TABLE IF NOT EXISTS fact_zone_community_part_classification(
   state_cut_050 TEXT, state_cut_075 TEXT, state_cut_100 TEXT, state_cut_125 TEXT, state_cut_150 TEXT,
   state_drop2wettest TEXT, robustness_changed INTEGER,
   dist_to_nearest_cut REAL, marginal_flag INTEGER,
+  assert_state INTEGER,
   cut_registered REAL, marginal_band REAL,
   support_level TEXT, aggregation_unit TEXT, run_id TEXT,
   PRIMARY KEY (zone_fid, community))""")
@@ -69,9 +70,16 @@ for r in cls:
                  r["state_cut_1.25"], r["state_cut_1.50"],
                  r["state_drop2wettest"], changed,
                  round(d, 4), int(d <= BAND or changed == 1),
+                 # assert_state (ruled 31 Jul): the map does not assert a state where a part is
+                 # BOTH inside the marginal band AND changes state under the robustness run.
+                 # A CRITERION, not a named part - naming one part was the ad-hoc-threshold
+                 # problem this task exists to avoid, appearing in a ruling instead of a cut.
+                 # This governs what the MAP asserts, NOT what the data says: nothing is
+                 # reclassified, state_registered is untouched, the registered counts stand.
+                 int(not (d <= BAND and changed == 1)),
                  CUT, BAND, "pixel", "zone_community", RUN))
 c.executemany("INSERT OR REPLACE INTO fact_zone_community_part_classification VALUES ("
-              + ",".join("?" * 27) + ")", rows)
+              + ",".join("?" * 28) + ")", rows)
 print(f"fact_zone_community_part_classification: {len(rows)} rows")
 
 # ---------------------------------------------------------------- 2. dim_headline_number
@@ -145,6 +153,21 @@ mg = c.execute("SELECT COUNT(*) FROM fact_zone_community_part_classification "
                "WHERE marginal_flag=1").fetchone()[0]
 print(f"verify: marginal (band {BAND} on the three real cuts, union movers): {mg}")
 assert mg == 23, mg
+na = c.execute("SELECT COUNT(*) FROM fact_zone_community_part_classification "
+               "WHERE assert_state=0").fetchone()[0]
+print(f"verify: state NOT asserted (in band AND a mover): {na}")
+assert na == 9, na
+ra = dict(c.execute("SELECT assert_state,COUNT(*) FROM fact_zone_community_part_classification "
+                    "WHERE state_registered='Recovering' GROUP BY 1"))
+print(f"verify: Recovering 8 meet the criterion; asserted {ra.get(1,0)}, not asserted {ra.get(0,0)}")
+assert ra == {1: 5, 0: 3}, ra
+# the 3 parts recovering at EVERY swept cut must all survive the assertion rule
+core_na = c.execute(
+    "SELECT COUNT(*) FROM fact_zone_community_part_classification WHERE assert_state=0 AND "
+    "state_cut_050='Recovering' AND state_cut_075='Recovering' AND state_cut_100='Recovering' "
+    "AND state_cut_125='Recovering' AND state_cut_150='Recovering'").fetchone()[0]
+print(f"verify: core parts (recovering at every cut) that are NOT asserted: {core_na} (expect 0)")
+assert core_na == 0, core_na
 print("verify: dim_headline_number T13 rows:",
       c.execute("SELECT COUNT(*) FROM dim_headline_number WHERE number_id LIKE 't13_%'").fetchone()[0])
 print("verify: dim_headline_number total:",

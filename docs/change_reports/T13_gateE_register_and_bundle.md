@@ -39,6 +39,47 @@ Verified by independent re-read after commit:
 `marginal_band` value are stored so the definition travels with the data rather than living in
 prose.
 
+### `assert_state` — the map's reticence is a data property, not a drawing decision
+
+**The no-assert rule is a CRITERION, not a named part.** The earlier version named Bala 29ca Inland,
+which was the ad-hoc-threshold problem this whole task exists to avoid, appearing in a ruling
+instead of in a cut. The criterion:
+
+> **State is not asserted where a part is BOTH inside the 0.15 marginal band AND changes state under
+> the robustness run.**
+
+**Nine of 115 qualify** — the 12 robustness movers less the 3 that sit outside the band (Dinan 7
+0.188, Bala 2 0.205, Mara 18 0.391, whose states *are* asserted):
+
+| part | state at the registered cut | dist to cut | state on drop-2 |
+|---|---|---|---|
+| Dinan 8 · Inland | Recovering | 0.111 | Persistently poor |
+| Dinan 9 · Riverine | Recovering | 0.006 | Unremarkable |
+| Dinan 13 · Riverine | Recovering | 0.027 | Unremarkable |
+| Dinan 8 · Riverine | Persistently poor | 0.001 | Unremarkable |
+| Mara 2 · Inland | Persistently poor | 0.008 | Unremarkable |
+| Bala 5 · Inland | Declining | 0.040 | Unremarkable |
+| Bala 12 · Inland | Declining | 0.040 | Unremarkable |
+| Bala 26ca · Riverine | Declining | 0.072 | Unremarkable |
+| Bala 29ca · Inland | Declining | 0.038 | Unremarkable |
+
+Stored as `assert_state` (boolean) beside `marginal_band`, so what the map is willing to claim is a
+**property of the data**, reproducible from the table, rather than a decision taken at drawing time.
+
+**This is not cosmetic.** Three of the nine are *Recovering*, so the map's headline changes:
+
+> **Eight parts meet the recovering criterion. Five of those survive dropping the two wettest
+> years; three do not and are shown as unclassified. The three that recover at every swept cut are
+> among the five.**
+
+That sentence is now the Figure 1 title and caption, and it is the form the finding travels in.
+
+**Nothing is reclassified.** `state_registered` is untouched, the rule is untouched, and **the
+registered counts stand at 8 / 14 / 16 / 77**. `assert_state` governs what the *map asserts*, not
+what the data says — the distinction is recorded in the column comment and asserted in the script
+(`assert_state = 0` count must be 9; *Recovering* must split 5 asserted / 3 not; and **no part that
+recovers at every swept cut may be unasserted** — verified 0).
+
 ## 2. `dim_headline_number` — six rows, sweep range as spread
 
 Registry now **74 rows** (68 before). All six carry the full five qualifiers as columns.
@@ -102,6 +143,19 @@ fixtures on throwaway copies; the real DB untouched:
 Fixture 2 is the one that matters: moving a single part's `trend_z` below the cut is caught in
 **three** places at once, and a test that merely counted the stored state column would have passed.
 
+> ### Precedent — do NOT "simplify" this test by counting the state column
+>
+> The obvious-looking simplification is
+> `SELECT state_registered, COUNT(*) ... GROUP BY 1`. **Do not make it.** That would only prove the
+> table agrees with itself — a tautology, not a test. It cannot detect a mislabelled state, a
+> misapplied cut, or a rule that drifted from the spec, because it never evaluates the rule.
+>
+> Re-deriving from the stored `level_z` / `trend_z` by **applying §5** is what makes it a test.
+> Fixture 2 is the proof: corrupting one part's measure trips three registry rows, and the
+> count-the-column version passes it silently. The same principle sank an earlier check in this
+> project — the 1 July QA row that returns PASS from a stored snapshot rather than from the data,
+> and so cannot notice being wrong. **Verdicts that are derivable must be computed, not stored.**
+
 The pre-existing `--break` fixture still fires (`ref_grazed_floor_gap_4pdk_1988_92`, exit 0 = the
 check fired as expected).
 
@@ -118,7 +172,10 @@ registered classification, and there is currently **no registry for a derived ve
 (`raster_asset` is rasters, `census_asset` is the parquet, `spatial_layer_asset` is imports). Both
 gpkgs are in the exit bundle and both producing scripts are tracked, so the provenance chain is
 complete — but it is complete *outside* the DB. A `vector_output_asset` registry would close it.
-Post-deadline; recorded in the issues log rather than improvised here.
+
+**Logged as `I-31`** in `docs/Gayini_issues_log.md` (IMPROVE, post-deadline), with the explicit
+instruction not to improvise a home for it: putting build outputs in `spatial_layer_asset` would
+corrupt an import registry and break `read_registered_layer()`'s contract.
 
 `fact_zone_community_flood_annual` was created and reconciled at Gate A (4,130 rows, verified again
 here) and needs no further registration — there is no table-of-tables registry.

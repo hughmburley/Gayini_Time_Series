@@ -145,9 +145,12 @@ so the classification and the measures under it sit side by side (§6).
   membership or threshold changed.
 - **Hatching** on the 23 marginal parts (§2).
 - **Heavier black outline** on the **3-part core** — recovering at every swept cut.
-- **Bala 29ca · Inland is drawn with no state asserted** (white, its own legend entry). It is
-  marginal on both axes (`level_z` −0.962, 0.038 from the cut; `trend_z` −1.108) and changes state
-  under robustness. Asserting *Declining* on a map would overstate what the data supports.
+- **Nine parts are drawn with no state asserted** (white, own legend entry) — **superseding the
+  earlier single named part.** The rule is a criterion, not a chosen part: *both* inside the 0.15
+  marginal band *and* a robustness mover. Read from `assert_state` in the DB, so the map's reticence
+  is a data property. Three of the nine are *Recovering*, so **the map's headline is 8 meeting the
+  criterion and 5 asserted** — stated in the title, not buried. Full list and rationale in the Gate E
+  report §1.
 - **Four reference paddocks** distinguished by a dashed heavy outline; paddock boundaries drawn and
   labelled; **north arrow and scale bar** drawn from geometry; **deck palette, not viridis**.
 - **Scatter**: threshold lines at `level_z` −1.0 and `trend_z` ±1.0, with the ±0.15 marginal band
@@ -263,10 +266,11 @@ not a robustness mover** — it stays *Declining* when the two wettest years are
 and 26ca both fall to *Unremarkable*. Surviving the robustness run is a better warrant for asserting
 a state than distance to a cut, so **27ca's state is asserted** and 29ca's is not, exactly as ruled.
 
-**Flagged for your call:** by the same test, **Bala 26ca · Riverine is in 29ca's position, not
-27ca's** — marginal on trend and a robustness mover. It is currently drawn as *Declining* because
-the ruling named only 29ca. It is hatched, so the map does not claim certainty, but the treatment is
-asymmetric. Say if you want it abstained too.
+**RESOLVED, 31 July 2026.** The asymmetry flagged here — that **Bala 26ca · Riverine** is in 29ca's
+position rather than 27ca's — was fixed by **replacing the named part with a criterion**: state is
+not asserted where a part is both inside the marginal band and a robustness mover. Bala 26ca
+Riverine and Bala 29ca Inland are both unasserted under it; **Bala 27ca Inland is asserted**,
+because it is not a mover. Nine parts qualify in total. See Gate E report §1.
 
 **On Bala 27ca specifically:** this is a third independent route to the same conclusion — no
 monitoring sites, the smallest cross-sectional residual, a negative water-adjusted paddock trend at
