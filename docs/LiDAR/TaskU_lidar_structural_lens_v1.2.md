@@ -18,6 +18,9 @@
 | 1 Aug 2026 | **Gate U3 item 6 (U3.6)** added — density-scaling test, from the 1.0622 → 1.4855 `bb5` step | Design-seat Gate U1 STOP, C2 |
 | 1 Aug 2026 | Gate U1 recorded **cleared end to end**; the R2 3× STOP condition cleared as a division-by-zero artefact (30 m sweep gives 1.38×). R2 itself unchanged | Design-seat Gate U1 STOP, D1 |
 | 1 Aug 2026 | Header instruction "delete v1 and v1.1" **withdrawn** — it contradicted this spec's own additive-only standing rule. Both are archived under `docs/archive/LiDAR/` | Design-seat Gate U1 STOP, D4 |
+| 1 Aug 2026 | **R6** added — floor-versus-flood placement of the four Bala paddocks on the census curve, within community, pixel support, run **before** U‑Q4a. Carries the reference-set pre-registration hazard | Design-seat Gate U2 response, §1a / §2 |
+| 1 Aug 2026 | **U‑Q4a reframed** — the question is "is 29ca's hydrological isolation natural or engineered?", not "structural or hydrological". Aim the structure test at the R6 residual | Design-seat Gate U2 response, §1b |
+| 1 Aug 2026 | **§1c DEM visual** added to Gate U3 as a timeboxed, prose-only inspection — no metric, no derived surface, nothing registered | Design-seat Gate U2 response, §1c |
 
 ---
 
@@ -226,6 +229,40 @@ area-weighted floats is brittle and buys only 299 further pixels.
 **The registered denominator stays threshold-free.** R5 governs *table membership*, not
 the denominator. Report both; never quote one as the other.
 
+### R6 · Floor-versus-flood placement of the Bala paddocks — *added by amendment, 1 August 2026 (design seat, Gate U2 response §1a)*
+
+> Fit the floor-versus-flood-frequency relationship on the all-pixel census at **pixel
+> support**, **within community**, using the **census long-run flood frequency** — not
+> annual wet fraction. Place all four Bala reference paddocks on that fit and report
+> **each paddock's residual**, signed, with its community and n.
+>
+> Reported whatever the sign. The fit is **not re-specified after seeing the residuals**,
+> and no paddock is excluded from the fit on the basis of its residual. Report the fit's
+> own scatter so a residual can be read against it.
+
+**Run R6 before U‑Q4a. It is a database query and needs no LiDAR.**
+
+The point: the spine already says flood frequency sets the drought floor, and that p05
+rises ~2.2× faster than p50 across the gradient. Bala 29ca floods at roughly one fifth its
+neighbours' rate. **A low floor there is what the spine predicts** — so the reference-state
+anomaly may be an ordinary instance of the project's own published result rather than a
+rival hypothesis to clearing. If 29ca sits **on** the curve, dryness accounts for the
+deficit and there is no anomaly left to explain. If it sits **below**, *the residual* — not
+the raw 42 pp gap — is what the LiDAR structure test should be aimed at.
+
+**Variable trap.** The Gate U2 Bala table is **annual wet fraction in a single water year**.
+The census gradient is **long-run flood frequency over 35 years**. Different variables, different
+scales; they must never be substituted for one another. Any statement placing 29ca on the
+census curve uses the census variable.
+
+**Pre-registration hazard, on the record before the numbers exist.** Dropping 29ca from the
+reference set would raise the reference floor and narrow the reference-versus-grazed gap — a
+convergence-favourable move made after seeing the data, on a project that pre-registered
+specifically to guard against that pressure. **No change to the reference set is made inside
+Task U.** If R6's residuals suggest one, it returns to the design seat as a decision, must be
+justified on a rule stated independently of its effect on the answer, and **both versions
+reported**.
+
 ### R4 · Defect handling — D‑U2, D‑U3, D‑U4
 
 - **`bb4` class screening is available on the 2021 `d4` footprint only.** 2009 `bb4` is
@@ -359,7 +396,20 @@ Mandatory. No change number may be reported before this passes.
 
 In order. U‑Q4a alone is a sufficient outcome if time runs out.
 
-**U‑Q4a — Bala 29ca.** Zonal statistics for all 64 management zones at both epochs: FPC, height
+**U‑Q4a — Bala 29ca.** *Reframed by amendment, 1 August 2026 (design seat, Gate U2 response
+§1b).* The question is **not** "structural or hydrological" — those are not separable on this
+property. Dryness here can be manufactured: banks and levees built to keep water off cropped
+country is precisely what Task J is about, so if 29ca was cropped, its low inundation may be a
+**consequence** of the management history rather than an alternative to it. A paddock flooding
+at 13.9% in the wettest year in the gauge record while its three neighbours reach 66–81% is
+either topographically high or hydrologically isolated, and those look very different in a DEM.
+The question is:
+
+> **Is Bala 29ca's hydrological isolation natural or engineered?**
+
+Run **R6** first; aim the structure test at the R6 residual, not at the raw 42 pp gap.
+
+Zonal statistics for all 64 management zones at both epochs: FPC, height
 percentiles, difference. **Report zonal medians, and report per-zone LiDAR coverage fraction
 alongside every statistic** — a paddock at 60% coverage is not comparable to one at 100%. Report the
 four reference paddocks explicitly against each other and against the grazed distribution,
