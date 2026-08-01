@@ -180,11 +180,30 @@ is offered, and §7 asks you to clear it.
 | 2021 | — (none excluded) | 1.4855 | 0 / 20,468,719 |
 
 **The excluded pixels sit on *higher* return density than the ground they were taken
-from, not lower.** They are therefore *not* a sparse-return artefact — they are places
-the sensor saw well and something genuinely tall was there. 218 pixels at 5 m is 0.545
-ha, consistent with a handful of built structures (silo, tank stand, comms mast,
-powerline tower). No second filter is applied and none is warranted; R2 stays one
-screen, simply stated.
+from, not lower.** They are therefore **not a sparse-return artefact.**
+
+*Amended 1 August 2026 (design-seat C1).* That is the whole of the finding. **The
+diagnostic rules an explanation out; it does not establish one.** An earlier draft
+of this section read the higher density as evidence that "something genuinely tall was
+there" — that reading is withdrawn. Nothing on Gayini is 318 m; these values remain
+artefacts by definition, a comms mast is 30–50 m, and high return density is also
+where spurious high returns are most likely to arise, so the observation fits noise at
+least as well as it fits structure. **The structural reading must not reach the
+findings note.**
+
+No second filter is applied and none is warranted; R2 stays one screen, simply stated.
+
+### C2 — the number underneath the diagnostic, carried to Gate U3
+
+The same table carries a fact more useful than the diagnostic it sat under:
+
+> **Property-median `bb5` first-return density: 1.0622 at 2009 · 1.4855 at 2021** —
+> roughly **40% more returns per unit area at the second epoch.**
+
+That is the ALS-50 → ALS-80 step-change made quantitative, and it is the **mechanism**
+by which trap T-2 would operate: FPC is derived from return ratios, so more returns per
+pixel changes gap-detection probability. It is carried into Gate U3 as new item **U3.6**
+(spec amendment, 1 August 2026).
 
 ---
 

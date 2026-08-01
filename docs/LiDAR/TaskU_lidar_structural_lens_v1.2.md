@@ -6,9 +6,18 @@
 **Blocks:** nothing — this is corroboration, not critical path
 **Data:** `D:\Github_repos\Gayini\Input\gayini_lidar` — 61 files: **47 GeoTIFFs** + 14 `.aux.xml` sidecars (GDAL PAM, locally generated, not shipped). **178.0 GiB / 191.1 GB decimal.**
 
-> **This is the last spec revision before Gate U1.** Further findings go to the change
-> reports and the issues log, not into new spec versions. The gate structure and the three
-> questions have not changed across any revision and will not.
+> **This is the last spec revision.** Further findings go to the change reports and the
+> issues log, not into new spec versions. The gate structure and the three questions have
+> not changed across any revision and will not.
+
+## Amendment log — v1.2 is not reissued; amendments are made in place and dated
+
+| Date | Amendment | Source |
+|---|---|---|
+| 1 Aug 2026 | **R5** added — U‑Q4b census-pixel inclusion at coverage ≥ 0.99, sensitivity at ≥ 0.5 and = 1.0 | Design-seat Gate U1 STOP, D3 |
+| 1 Aug 2026 | **Gate U3 item 6 (U3.6)** added — density-scaling test, from the 1.0622 → 1.4855 `bb5` step | Design-seat Gate U1 STOP, C2 |
+| 1 Aug 2026 | Gate U1 recorded **cleared end to end**; the R2 3× STOP condition cleared as a division-by-zero artefact (30 m sweep gives 1.38×). R2 itself unchanged | Design-seat Gate U1 STOP, D1 |
+| 1 Aug 2026 | Header instruction "delete v1 and v1.1" **withdrawn** — it contradicted this spec's own additive-only standing rule. Both are archived under `docs/archive/LiDAR/` | Design-seat Gate U1 STOP, D4 |
 
 ---
 
@@ -200,6 +209,23 @@ A noise process affecting 2009 broadly cancels in that contrast. Report zonal **
 > P(refugia | shrub) — never a single agreement percentage. The marginals are skewed enough that one
 > number would mislead.
 
+### R5 · U‑Q4b census-pixel inclusion — *added by amendment, 1 August 2026 (design seat, Gate U1 STOP D3)*
+
+> A census pixel enters the U‑Q4b contingency table if its LiDAR coverage fraction is
+> **≥ 0.99**. Sensitivity reported at **≥ 0.5** and **= 1.0**. **The primary is not
+> swapped for a better-agreeing alternative.**
+
+Pinned before any concordance number existed. Reasoning, on the record as completeness
+rather than tuning: a partially-covered census pixel has its shrub fraction computed on
+the covered part and applied to the whole, and partially-covered pixels sit on the
+property boundary — river frontage, roads, the edge — which is systematically unlike the
+interior. That is a boundary artefact entering a spatial concordance statistic. Cost is
+**4,838 pixels, 0.45% of the census.** Not `= 1.0`, because exact equality on
+area-weighted floats is brittle and buys only 299 further pixels.
+
+**The registered denominator stays threshold-free.** R5 governs *table membership*, not
+the denominator. Report both; never quote one as the other.
+
 ### R4 · Defect handling — D‑U2, D‑U3, D‑U4
 
 - **`bb4` class screening is available on the 2021 `d4` footprint only.** 2009 `bb4` is
@@ -307,6 +333,25 @@ Mandatory. No change number may be reported before this passes.
    discussed.
 5. For `bb0`, report the stable-ground **vertical** offset separately, on common ground. That is the
    difference-DEM calibration and the gate on U‑Q4c.
+
+6. **U3.6 · Density-scaling test.** *Added by amendment, 1 August 2026 (design seat,
+   Gate U1 STOP C2).* Gate U1 measured the property-median `bb5` first-return density at
+   **1.0622 (2009)** against **1.4855 (2021)** — roughly **40% more returns per unit area
+   at the second epoch.** That is the ALS‑50 → ALS‑80 step-change made quantitative, and
+   it is the mechanism by which T‑2 would operate: FPC is derived from return ratios, so
+   more returns per pixel changes gap-detection probability.
+
+   Report the stable-ground FPC offset **alongside** the local `bb5` density difference,
+   and test whether the offset **scales** with the density difference across stable-ground
+   samples. If it does, report the relationship and the residual scatter — that is the
+   sensor effect **identified** rather than merely bounded, and it would let U‑Q4c survive
+   with a *stated correction* instead of dying at the floor. If it does not scale, say so
+   plainly; the Gate U3 floor stands unmodified and U‑Q4c is limited to large, spatially
+   coherent, locally-contrasted change.
+
+   **A correction derived here is never applied silently.** If one is warranted it returns
+   to the design seat as a decision — with the relationship, the residual scatter and the
+   sample — before any corrected number is computed.
 
 **STOP.** This is a science decision, not a build step.
 
