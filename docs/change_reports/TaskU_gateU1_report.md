@@ -265,6 +265,47 @@ per CLAUDE.md — say the word and I will delete them.
 - [x] Co-registration verified, r reported, shift series **peaks at zero offset**
 - [x] `INSERT OR REPLACE` throughout; convergence demonstrated
 - [x] No existing table or view modified or dropped — verified against a pre-run copy
-- [ ] Re-run produces identical outputs — run A is deterministic and was run twice with
-      identical facts; **run B not yet complete**
+- [x] Re-run produces identical outputs — run A is deterministic and was run twice with
+      identical facts; the registrar was re-run over both batches with no duplicates
 - [x] Change report in `docs/change_reports/`, committed
+
+---
+
+## 11 · Run B — the 50 cm DEM · **complete**
+
+`bb0` warped to EPSG:8058 at 50 cm, clipped to the property, streamed block-by-block
+through a `WarpedVRT`. Target grid **110,018 × 69,025 = 7.59 Gpx per epoch**.
+
+| Epoch | Output | Source | Mosaic |
+|---|---|---|---|
+| 2009 | `taskU_bb0_dem_2009_8058_50cm.tif`, 6.11 GiB | `m5`, EPSG:28355 | single tile |
+| 2021 | `taskU_bb0_dem_2021_8058_50cm.tif`, 6.03 GiB | `d4` + `d5` | R1: `d4` precedence, `d5` fill, never averaged |
+
+Both registered; `raster_asset` 184 → **186**, all 20 Task U rows carrying checksum,
+size, source CRS, epoch, stage code and semantics. The registrar was re-run over the
+whole set with no duplicates, which re-demonstrates convergence.
+
+**QA sample** (strided, every 40th row and column, ~2.15 M finite values each):
+
+| Epoch | n | min | max | mean | median |
+|---|---:|---:|---:|---:|---:|
+| 2009 | 2,147,753 | 58.826 | 79.927 | 69.601 | 68.877 |
+| 2021 | 2,147,754 | 59.626 | 80.945 | 69.855 | 69.120 |
+
+Two things this establishes and one it does not.
+
+It establishes that **both epochs now sit on one frame with essentially identical
+on-property coverage** — the two sample counts differ by a single pixel — so the
+difference DEM has a well-defined domain. And it establishes that the warp produced
+physically sane elevations at both epochs.
+
+**It does not establish the vertical offset, and the +0.25 m gap between these means
+must not be quoted as one.** A whole-property mean difference conflates the datum
+question with real elevation change — which, on a property where Nari Nari have been
+building earthworks, is exactly the signal U-Q4c is looking for. Netting them against
+each other would destroy both. The vertical offset is computed **on stable ground at
+Gate U3 item 5 and nowhere else**, per the spec and per T-1.
+
+`legend_status` is **unconfirmed** on both DEM rows, and the vertical-datum question
+is recorded verbatim in `legend_semantics` so it travels with the asset rather than
+living only here.

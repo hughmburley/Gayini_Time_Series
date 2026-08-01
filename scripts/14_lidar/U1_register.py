@@ -110,6 +110,23 @@ def classify(p: Path) -> dict:
                                f"EPSG:8058, bilinear, clipped to gayini_boundary_8058. "
                                f"{FPC_NOT_TOTAL_VEG}"
                                + (f" {R1_NOTE}" if epoch == "2021" else "")))
+    if n.startswith("taskU_bb0_dem_"):
+        epoch = n.split("_")[3]
+        return dict(stage_code="bb0", epoch=epoch, product="taskU_lidar_dem_8058",
+                    legend_status="unconfirmed",
+                    semantics=("JRSRP bb0 - raster DEM, natural-neighbour interpolation of "
+                               f"classified ground points, metres. {SENSOR[epoch]}, discrete "
+                               "return. 50 cm, EPSG:8058, bilinear, clipped to "
+                               "gayini_boundary_8058. VERTICAL DATUM UNRESOLVED - open "
+                               "question to Adrian (ellipsoidal, or AHD via AusGeoid98/09/"
+                               "2020?). The observed range is consistent with orthometric "
+                               "AHD-like heights but that does not settle the model. NEVER "
+                               "interpret an absolute elevation difference; calibrate on "
+                               "stable ground at Gate U3 item 5 and nowhere else. T-1: the "
+                               "GDA94->GDA2020 shift is ~1.8 m = 3.6 of a 50 cm pixel, which "
+                               "is why both epochs are warped into one frame rather than "
+                               "differenced in their delivered frames."
+                               + (f" {R1_NOTE}" if epoch == "2021" else "")))
     if n.startswith("taskU_seam_mask_"):
         return dict(stage_code=None, epoch="2021", product="taskU_lidar_seam_mask",
                     legend_status="confirmed",
