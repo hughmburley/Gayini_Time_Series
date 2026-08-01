@@ -42,6 +42,11 @@ docs/archive/
 docs/archive/*
 !docs/archive/Tier1_TaskF_spatial_resampling_spec_v2.md
 !docs/archive/Gayini_subsampling_approach.md
+# Task U: same C9 reasoning. v1 and v1.1 are the provenance chain for the Gate U0
+# findings that superseded them, and record the withdrawn preview figures where a
+# reader can recognise them rather than re-quote them.
+!docs/archive/LiDAR/
+!docs/archive/LiDAR/*.md
 R/obs/
 
 # Script history is now tracked through docs/scripts_manifest.csv

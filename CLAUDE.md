@@ -186,7 +186,9 @@ The earlier **~4,300 ha is withdrawn**: a mismatched 8058-pixel conversion of th
   - **EPSG:28355** — the native inundation stack (genuinely 25.0 m).
   - **EPSG:3577** — FC source rasters (30 m, before the single reproject to 8058).
   - **EPSG:9473** — `dim_plot` centroid columns (`centroid_x/y`) — *not* 8058; reproject centroids first.
-  - *(EPSG:7854 also appears: the 38 T12 DEA rasters. Not an analysis grid.)*
+  - *(**EPSG:7854** — GDA2020/MGA54. The 38 T12 DEA rasters, **and** the 2021 LiDAR `d4` tile. Not an analysis grid.)*
+  - *(**EPSG:7855** — GDA2020/MGA55. The 2021 LiDAR `d5` tile only. Added Task U Gate U1. Not an analysis grid.)*
+  - **The LiDAR delivery spans three of these** — 28355 (2009 `m5`), 7854 (2021 `d4`), 7855 (2021 `d5`) — and 2021 is **two complementary MGA-zone tiles of one capture**, not one dataset in two projections. Mosaic under Task U's R1 (`d4` precedence, never averaged).
 - **FC band semantics — gate CLOSED on the canonical grid.** All 18 `crs_epsg = 8058` rasters carry `legend_status = 'confirmed'`. The JRSRP percentage-plus-100 offset does **not** apply to them; census `veg_p05` ranges [1.19, 91.85], confirming plain percent. FC band max is 147, not 111. FC arithmetic remains gated for any product **not** on the 8058 grid until its `legend_status` is confirmed.
 - **Grazing is metadata**, not a covariate, in the current analysis.
 

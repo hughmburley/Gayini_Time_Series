@@ -1,3 +1,7 @@
+> **ARCHIVED v1.1 — superseded by `docs/LiDAR/TaskU_lidar_structural_lens_v1.2.md`.**
+> Retained as the provenance chain for the Gate U0 findings that produced the supersession, and because the withdrawn preview figures are recorded here where they can be recognised rather than re-quoted.
+> **Never a source for a number.** v1.2 is the only live version; the gate structure and the three questions are identical across all three.
+
 # Task U — LiDAR as a structural lens on the Landsat results
 
 **Subsidiary to:** `Gayini_science_spine_v1.docx`
