@@ -39,7 +39,9 @@ ar <- DBI::dbGetQuery(con, "SELECT community, regime_band, SUM(area_ha) AS area_
 nun <- DBI::dbGetQuery(con, "SELECT community, treatment_arm, n_units
   FROM fact_three_arm_gap_decomposition WHERE regime_band='ALL' AND window='all'")
 pins <- DBI::dbGetQuery(con, "SELECT number_id, pinned_value FROM dim_headline_number
-  WHERE number_id LIKE 'ref_grazed_floor_%' OR number_id LIKE 'three_arm_floor_deficit_unzoned_%'")
+  WHERE number_id LIKE 'ref_grazed_floor_%' OR number_id LIKE 'ref_grazed_mean_cover_%'
+     OR number_id LIKE 'three_arm_floor_deficit_unzoned_%'
+     OR number_id LIKE 'three_arm_mean_deficit_unzoned_%'")
 DBI::dbDisconnect(con)
 
 bnd <- merge(bnd, ar, by = c("community", "regime_band"))
@@ -56,19 +58,25 @@ dec <- merge(merge(dfl, dmn, by = c("community", "treatment_arm")), nun,
 SHORTC <- c("Aeolian Chenopod Shrublands" = "aeolian",
             "Riverine Chenopod Shrublands" = "riverine",
             "Inland Floodplain Shrublands / Swamps" = "inland")
-ASSERT <- list(not_grazed = "ref_grazed_floor_%s",
-               unzoned_inferred_standard = "three_arm_floor_deficit_unzoned_inferred_%s",
-               unzoned_plot_confirmed = "three_arm_floor_deficit_unzoned_plot_%s")
-for (armk in names(ASSERT)) for (cm in names(SHORTC)) {   # armk, NOT arm - `arm` is the trajectory df
-  nid  <- sprintf(ASSERT[[armk]], SHORTC[[cm]])
-  want <- pins$pinned_value[pins$number_id == nid]
-  got  <- dec$floor_deficit_pp[dec$community == cm & dec$treatment_arm == armk]
-  if (length(want) != 1 || length(got) != 1 || abs(round(got, 2) - want) >= 0.005)
-    stop(sprintf("REM-1 assert FAILED: %s / %s drawn %.4f vs pinned %s (%s)",
-                 armk, cm, if (length(got) == 1) got else NA_real_,
-                 if (length(want) == 1) format(want) else "MISSING", nid))
+ASSERT <- list(
+  floor_deficit_pp = list(not_grazed = "ref_grazed_floor_%s",
+                          unzoned_inferred_standard = "three_arm_floor_deficit_unzoned_inferred_%s",
+                          unzoned_plot_confirmed = "three_arm_floor_deficit_unzoned_plot_%s"),
+  mean_deficit_pp  = list(not_grazed = "ref_grazed_mean_cover_%s",
+                          unzoned_inferred_standard = "three_arm_mean_deficit_unzoned_inferred_%s",
+                          unzoned_plot_confirmed = "three_arm_mean_deficit_unzoned_plot_%s"))
+for (qcol in names(ASSERT)) {
+  for (armk in names(ASSERT[[qcol]])) for (cm in names(SHORTC)) {  # armk NOT arm - `arm` is the traj df
+    nid  <- sprintf(ASSERT[[qcol]][[armk]], SHORTC[[cm]])
+    want <- pins$pinned_value[pins$number_id == nid]
+    got  <- dec[[qcol]][dec$community == cm & dec$treatment_arm == armk]
+    if (length(want) != 1 || length(got) != 1 || abs(round(got, 2) - want) >= 0.005)
+      stop(sprintf("REM-1 assert FAILED: %s / %s / %s drawn %.4f vs pinned %s (%s)",
+                   qcol, armk, cm, if (length(got) == 1) got else NA_real_,
+                   if (length(want) == 1) format(want) else "MISSING", nid))
+  }
+  cat(sprintf("[assert] all 9 %s labels reproduce dim_headline_number pinned values\n", qcol))
 }
-cat("[assert] all 9 floor-deficit labels reproduce dim_headline_number pinned values\n")
 
 short <- function(x) vapply(strsplit(x, " "), `[`, character(1), 1)
 arm$comm <- short(arm$community); grz$comm <- short(grz$community)
@@ -96,30 +104,59 @@ make_grid <- function(yv, defcol, ylab, ttl) {
   gb <- band(grz, yv)
   a <- arm; a$y <- a[[yv]]
   lab <- dec[dec$treatment_arm %in% names(ARMS), ]   # exclude 14-day (the comparator)
-  lab$arm_lab <- factor(ARMS[lab$treatment_arm], levels = ARMS)
   lab$def <- lab[[defcol]]
-  lab$txt <- sprintf("%+.1f pp vs 14-day\nn=%d", lab$def, lab$n_units)
-  # QA-2a: assert the strings ACTUALLY DRAWN carry their source values (catches the ifelse/
+  # ---- REM-1: the panel carries TWO quantities and must say so ON THE FIGURE ----
+  # Pack figures travel WITHOUT their captions - Adrian lifts these into his own slides - so a
+  # contents-document caption cannot carry this. The gap the eye sees between the arm line and the
+  # grey median is the RAW difference; the label's deficit is that gap ADJUSTED for water
+  # (within-stratum, area-weighted band mean, PIN 1). On Aeolian these are -30.9 and -10.5: most
+  # of the visible gap is water, not grazing. raw_gap is the mean per-year vertical distance
+  # between the two drawn lines - i.e. exactly what the reader integrates by eye. It is a
+  # DESCRIPTION of what is already plotted, not a new quantity, so it needs no pin.
+  raw <- do.call(rbind, lapply(split(a, list(a$comm, a$treatment_arm), drop = TRUE), function(g) {
+    m <- merge(g[, c("comm", "water_year", "y")], gb[, c("comm", "water_year", "md")],
+               by = c("comm", "water_year"))
+    data.frame(comm = g$comm[1], treatment_arm = g$treatment_arm[1],
+               raw_gap = mean(m$y - m$md, na.rm = TRUE))
+  }))
+  lab <- merge(lab, raw, by = c("comm", "treatment_arm"))
+  lab$arm_lab <- factor(ARMS[lab$treatment_arm], levels = ARMS)
+  lab$txt <- sprintf("%+.1f pp adj. for water\n(raw gap %+.1f)   n=%d",
+                     lab$def, lab$raw_gap, lab$n_units)
+  # QA-2a: assert the strings ACTUALLY DRAWN carry BOTH source values (catches the ifelse/
   # recycling class of defect that no data-level check can see).
   gayini_assert_rendered_values(lab$txt, lab$def, digits = 1, signed = TRUE,
-                                label = paste("T6 panel labels", defcol))
+                                label = paste("T6 panel labels adj", defcol))
+  gayini_assert_rendered_values(lab$txt, lab$raw_gap, digits = 1, signed = TRUE,
+                                label = paste("T6 panel labels raw", defcol))
   gayini_assert_rendered_varies(lab$txt, paste("T6 panel labels", defcol))
   lab$aeolian_flag <- ifelse(lab$comm == "Aeolian" & lab$treatment_arm == "not_grazed",
                              "\n(n=1: Bala 29ca)", "")
+  # Subtitle numbers are COMPUTED from the same object the labels use - never typed. A hardcoded
+  # subtitle silently disagrees with the panel the moment the aggregation changes.
+  aeo <- lab[lab$comm == "Aeolian" & lab$treatment_arm == "not_grazed", ]
+  sub <- paste0(
+    "Grey = 14-day IQR band + median (fixed comparator). Blue = flood years. Line coloured by arm.\n",
+    "TWO QUANTITIES, and they differ: the gap you SEE between the line and the grey median is the RAW ",
+    "difference. The label is that gap ADJUSTED for water\n(within-stratum, area-weighted over the three ",
+    sprintf("wetness bands). Most of the raw gap is water, not grazing - on Aeolian, raw %+.1f pp becomes %+.1f pp adjusted.",
+            aeo$raw_gap, aeo$def))
+  gayini_assert_caption_number(sub, aeo$raw_gap, 1, paste("T6 subtitle raw gap", defcol))
+  gayini_assert_caption_number(sub, aeo$def, 1, paste("T6 subtitle adjusted", defcol))
   ggplot() +
     geom_rect(data = flood, aes(xmin = water_year - .5, xmax = water_year + .5,
               ymin = -Inf, ymax = Inf), fill = "#c6dbef", alpha = .45) +
     geom_ribbon(data = gb, aes(water_year, ymin = lo, ymax = hi), fill = "grey75", alpha = .55) +
     geom_line(data = gb, aes(water_year, md), colour = "grey35", linewidth = .5) +
     geom_line(data = a, aes(water_year, y, colour = arm_lab), linewidth = .9) +
-    geom_text(data = lab, aes(x = 1988, y = 12, label = paste0(txt, aeolian_flag)),
+    # y = 1 with the axis floored at 0: the label sits in reserved white space BELOW all data
+    # (series minimum is ~15), so it can never overlap a line.
+    geom_text(data = lab, aes(x = 1988, y = 1, label = paste0(txt, aeolian_flag)),
               hjust = 0, vjust = 0, size = 2.5, colour = "grey20") +
     facet_grid(arm_lab ~ comm, switch = "y") +
     scale_colour_manual(values = acols, guide = "none") +
-    coord_cartesian(ylim = c(10, 100)) +
-    labs(title = ttl, x = "water year", y = ylab,
-      subtitle = paste("Grey = 14-day IQR band + median (fixed comparator). Blue = flood years.",
-                       "Line coloured by arm. Deficit is within-stratum (wetness controlled)."),
+    coord_cartesian(ylim = c(0, 100)) +
+    labs(title = ttl, x = "water year", y = ylab, subtitle = sub,
       caption = paste0(
         "Support: pixel (aggregation_unit = arm_community_band_window). The inferred-standard arm sits AT OR ABOVE the 14-day\n",
         "floor within stratum (above in 6 of 9 strata; plot-confirmed above in 8 of 9), inconsistent with heavier grazing degrading\n",
@@ -161,22 +198,44 @@ gbd <- band(grz, "veg_p05_spatial"); gbd <- gbd[gbd$comm %in% c("Aeolian", "Rive
 fld <- flood[flood$comm %in% c("Aeolian", "Riverine"), ]
 ld <- dec[dec$comm %in% c("Aeolian", "Riverine") &
           dec$treatment_arm %in% c("not_grazed", "unzoned_inferred_standard"), ]
-ld$txt <- sprintf("%+.1f pp vs 14-day (n=%d)%s", ld$floor_deficit_pp, ld$n_units,
+# REM-1: deck cut carries the same two quantities as the grid (see make_grid comment).
+ldraw <- do.call(rbind, lapply(split(dk, list(dk$comm, dk$treatment_arm), drop = TRUE), function(g) {
+  m <- merge(g[, c("comm", "water_year", "y")], gbd[, c("comm", "water_year", "md")],
+             by = c("comm", "water_year"))
+  data.frame(comm = g$comm[1], treatment_arm = g$treatment_arm[1],
+             raw_gap = mean(m$y - m$md, na.rm = TRUE))
+}))
+ld <- merge(ld, ldraw, by = c("comm", "treatment_arm"))
+ld$arm_lab <- ARMS[ld$treatment_arm]
+ld$txt <- sprintf("%+.1f pp adj. for water (raw gap %+.1f)  n=%d%s",
+                  ld$floor_deficit_pp, ld$raw_gap, ld$n_units,
                   ifelse(ld$comm == "Aeolian" & ld$treatment_arm == "not_grazed", " [n=1: Bala 29ca]", ""))
 gayini_assert_rendered_values(ld$txt, ld$floor_deficit_pp, digits = 1, signed = TRUE,
-                              label = "T6 deck-cut labels")
+                              label = "T6 deck-cut labels adj")
+gayini_assert_rendered_values(ld$txt, ld$raw_gap, digits = 1, signed = TRUE,
+                              label = "T6 deck-cut labels raw")
 gayini_assert_rendered_varies(ld$txt, "T6 deck-cut labels")
+# Deck subtitle numbers COMPUTED, never typed (same rule as the grid).
+daeo <- ld[ld$comm == "Aeolian" & ld$treatment_arm == "not_grazed", ]
+deck_sub <- paste0(
+  "TWO QUANTITIES, and they differ: the gap you SEE between the line and the grey median is the RAW difference.\n",
+  "The label is that gap ADJUSTED for water (within-stratum, area-weighted over three wetness bands). Most of the\n",
+  sprintf("raw gap is water, not grazing - on Aeolian, raw %+.1f pp becomes %+.1f pp adjusted.",
+          daeo$raw_gap, daeo$floor_deficit_pp))
+gayini_assert_caption_number(deck_sub, daeo$raw_gap, 1, "T6 deck subtitle raw gap")
+gayini_assert_caption_number(deck_sub, daeo$floor_deficit_pp, 1, "T6 deck subtitle adjusted")
 p_deck <- ggplot() +
   geom_rect(data = fld, aes(xmin = water_year - .5, xmax = water_year + .5, ymin = -Inf, ymax = Inf),
             fill = "#c6dbef", alpha = .45) +
   geom_ribbon(data = gbd, aes(water_year, ymin = lo, ymax = hi), fill = "grey75", alpha = .55) +
   geom_line(data = gbd, aes(water_year, md), colour = "grey35", linewidth = .5) +
   geom_line(data = dk, aes(water_year, y, colour = arm_lab), linewidth = 1) +
-  geom_text(data = ld, aes(1988, 14, label = txt), hjust = 0, size = 2.9, colour = "grey20") +
+  geom_text(data = ld, aes(1988, 1, label = txt), hjust = 0, vjust = 0, size = 2.9, colour = "grey20") +
   facet_grid(arm_lab ~ comm) + scale_colour_manual(values = acols, guide = "none") +
-  coord_cartesian(ylim = c(10, 100)) +
+  coord_cartesian(ylim = c(0, 100)) +
   labs(title = "T6 A (deck) - Floor vs the 14-day comparator: reference below, inferred-standard above",
        x = "water year", y = "veg_p05_spatial (%)",
+       subtitle = deck_sub,
        caption = paste("Support: pixel. Grey = 14-day IQR + median; blue = flood years. Inferred-standard arm sits ABOVE 14-day -",
          "inconsistent with heavier grazing; may mean the unzoned land is LESS grazed. Arm inferred (8/15 plots). not_grazed Aeolian n=1.")) +
   theme_minimal(base_size = 11) + theme(plot.caption = element_text(hjust = 0, size = 8))

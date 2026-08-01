@@ -29,8 +29,9 @@ RUN_ID = "rem1_rerender_20260801"
 DEC = ("PIN 1 method (T8 Gate B, build_T8_gateB_dim_headline_number.py) applied to the two unzoned "
        "arms; REM-1 Gate B; CC 2026-08-01")
 NOTE = ("PIN 1: band mean retires the regime_band='ALL' rollup (drier-skew confound). Completes the "
-        "3x3 arm x community grid drawn by T6_A_three_arm_grid (pack item F6); the three not_grazed "
-        "cells were pinned at T8 Gate B and are reproduced EXACTLY by this method (asserted at build).")
+        "3x3 arm x community grids drawn by T6_A_three_arm_grid (pack item F6, floor) and "
+        "T6_B_three_arm_mean (mean cover); the three not_grazed cells of each were pinned at T8 "
+        "Gate B and are reproduced EXACTLY by this method (asserted at build).")
 
 ORD3 = ['Aeolian Chenopod Shrublands', 'Riverine Chenopod Shrublands',
         'Inland Floodplain Shrublands / Swamps']
@@ -47,16 +48,21 @@ AREA = {(cm, b): ha for cm, b, ha in c.execute(
     "WHERE treed_context_flag=0 AND regime_band IN ('low','mid','high') GROUP BY community, regime_band")}
 
 
-def deficits(arm):
+def deficits(arm, col):
     return {(cm, b): v for cm, b, v in c.execute(
-        "SELECT community, regime_band, floor_deficit_pp FROM v_three_arm_gap_decomposition "
+        f"SELECT community, regime_band, {col} FROM v_three_arm_gap_decomposition "
         "WHERE treatment_arm=? AND window='all' AND regime_band IN ('low','mid','high')", (arm,))}
 
 
-def allrow(arm, cm):
-    return c.execute("SELECT floor_deficit_pp FROM v_three_arm_gap_decomposition "
+def allrow(arm, cm, col):
+    return c.execute(f"SELECT {col} FROM v_three_arm_gap_decomposition "
                      "WHERE treatment_arm=? AND window='all' AND regime_band='ALL' AND community=?",
                      (arm, cm)).fetchone()[0]
+
+
+# (label column, new number_id stem, the ALREADY-PINNED not_grazed id stem, wording)
+QUANTS = [("floor_deficit_pp", "three_arm_floor_deficit", "ref_grazed_floor", "floor"),
+          ("mean_deficit_pp",  "three_arm_mean_deficit",  "ref_grazed_mean_cover", "MEAN cover")]
 
 
 def keys(cm):
@@ -71,33 +77,35 @@ def emean(d, ks):   # equal-weighted - the spread endpoint
     return st.mean([d[k] for k in ks])
 
 
-# ---- SELF-CHECK: reproduce the three existing pins by the same method, or abort ----
-d_ng = deficits('not_grazed')
-print("self-check: re-deriving the three ALREADY-PINNED not_grazed cells by this method")
+# ---- SELF-CHECK: reproduce the six existing pins by the same method, or abort ----
+print("self-check: re-deriving the ALREADY-PINNED not_grazed cells by this method")
 bad = []
-for cm in ORD3:
-    got = round(wmean(d_ng, keys(cm)), 2)
-    pinned = c.execute("SELECT pinned_value FROM dim_headline_number WHERE number_id=?",
-                       (f"ref_grazed_floor_{SHORT[cm]}",)).fetchone()[0]
-    ok = abs(got - pinned) < 0.005
-    print(f"   ref_grazed_floor_{SHORT[cm]:<9} method={got:+7.2f}  pinned={pinned:+7.2f}  "
-          f"{'MATCH' if ok else 'MISMATCH'}")
-    if not ok:
-        bad.append(SHORT[cm])
+for col, _stem, pin_stem, word in QUANTS:
+    d_ng = deficits('not_grazed', col)
+    for cm in ORD3:
+        got = round(wmean(d_ng, keys(cm)), 2)
+        pinned = c.execute("SELECT pinned_value FROM dim_headline_number WHERE number_id=?",
+                           (f"{pin_stem}_{SHORT[cm]}",)).fetchone()[0]
+        ok = abs(got - pinned) < 0.005
+        print(f"   {pin_stem}_{SHORT[cm]:<9} method={got:+7.2f}  pinned={pinned:+7.2f}  "
+              f"{'MATCH' if ok else 'MISMATCH'}")
+        if not ok:
+            bad.append(f"{pin_stem}_{SHORT[cm]}")
 if bad:
     con.close()
     raise SystemExit(f"ABORT: method does not reproduce existing pins for {bad}; nothing written.")
 
-# ---- build the six new rows ----
+# ---- build the twelve new rows (6 floor for T6_A/F6, 6 mean for T6_B) ----
 rows = []
-for arm, short in ARMS:
-    d = deficits(arm)
+for col, stem, _pin_stem, word in QUANTS:
+  for arm, short in ARMS:
+    d = deficits(arm, col)
     for cm in ORD3:
         ks = keys(cm)
-        aw, ew, ar = wmean(d, ks), emean(d, ks), allrow(arm, cm)
+        aw, ew, ar = wmean(d, ks), emean(d, ks), allrow(arm, cm, col)
         rows.append((
-            f"three_arm_floor_deficit_{short}_{SHORT[cm]}",
-            f"Three-arm floor deficit vs 14-day, {short}, {SHORT[cm]}",
+            f"{stem}_{short}_{SHORT[cm]}",
+            f"Three-arm {word} deficit vs 14-day, {short}, {SHORT[cm]}",
             "v_three_arm_gap_decomposition",
             "community (area-weighted band mean)",
             "area-weighted mean over 3 wetness bands",
