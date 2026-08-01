@@ -10,6 +10,7 @@
 suppressPackageStartupMessages({library(ggplot2); library(DBI); library(RSQLite)})
 root <- normalizePath(".", winslash = "/")
 source(file.path(root, "R/gayini_figure_register.R"))
+source(file.path(root, "R/gayini_assert_rendered.R"))   # QA-2a guard (I-32)
 fig_dir <- file.path(root, "Output/figures/diagnostics")
 con <- DBI::dbConnect(RSQLite::SQLite(), file.path(root, "Output/database/Gayini_Results.sqlite"))
 
@@ -21,9 +22,53 @@ grz <- DBI::dbGetQuery(con, "SELECT f.community, f.water_year, f.veg_p05_spatial
   FROM fact_zone_community_veg_annual f JOIN dim_management_zone d ON d.zone_fid=f.zone_fid
   WHERE d.grazing_excluded=0 AND f.series_variant='mean_of_seasons' AND f.below_min_support=0")
 flood <- DBI::dbGetQuery(con, "SELECT community, water_year FROM fact_community_year_flood WHERE flood_class='flood'")
-dec <- DBI::dbGetQuery(con, "SELECT community, treatment_arm, floor_deficit_pp, mean_deficit_pp, n_units
+# ---- REM-1: the deficit labels are the PIN 1 aggregation, NOT the retired ALL rollup ----
+# PIN 1 (T8 Gate B) retired regime_band='ALL' for the deficit statistic: pooling the wetness bands
+# reintroduces the drier-skew confound T6 is designed to remove, and roughly DOUBLES the Aeolian and
+# Riverine deficits (Aeolian not_grazed -19.65 under ALL vs -10.46 pinned). The labels are now the
+# AREA-WEIGHTED band mean over low/mid/high, weighted by non-treed stratum area - the same method
+# that produced every pinned value in dim_headline_number. NOTE the equal-weighted band mean is a
+# DIFFERENT number again (-11.17 on Aeolian) and is recorded only as the spread endpoint.
+# n_units is still read from the ALL row: it is a COUNT of units, not a deficit statistic.
+bnd <- DBI::dbGetQuery(con, "SELECT community, treatment_arm, regime_band,
+    floor_deficit_pp, mean_deficit_pp FROM fact_three_arm_gap_decomposition
+  WHERE window='all' AND regime_band IN ('low','mid','high')")
+ar <- DBI::dbGetQuery(con, "SELECT community, regime_band, SUM(area_ha) AS area_ha
+  FROM census_by_zone_stratum WHERE treed_context_flag=0
+    AND regime_band IN ('low','mid','high') GROUP BY community, regime_band")
+nun <- DBI::dbGetQuery(con, "SELECT community, treatment_arm, n_units
   FROM fact_three_arm_gap_decomposition WHERE regime_band='ALL' AND window='all'")
+pins <- DBI::dbGetQuery(con, "SELECT number_id, pinned_value FROM dim_headline_number
+  WHERE number_id LIKE 'ref_grazed_floor_%' OR number_id LIKE 'three_arm_floor_deficit_unzoned_%'")
 DBI::dbDisconnect(con)
+
+bnd <- merge(bnd, ar, by = c("community", "regime_band"))
+wavg <- function(df, col) do.call(rbind, lapply(
+  split(df, list(df$community, df$treatment_arm), drop = TRUE), function(g)
+    data.frame(community = g$community[1], treatment_arm = g$treatment_arm[1],
+               v = sum(g[[col]] * g$area_ha) / sum(g$area_ha))))
+dfl <- wavg(bnd, "floor_deficit_pp"); names(dfl)[3] <- "floor_deficit_pp"
+dmn <- wavg(bnd, "mean_deficit_pp");  names(dmn)[3] <- "mean_deficit_pp"
+dec <- merge(merge(dfl, dmn, by = c("community", "treatment_arm")), nun,
+             by = c("community", "treatment_arm"))
+
+# ---- assert against dim_headline_number: drift FAILS the render, it does not warn ----
+SHORTC <- c("Aeolian Chenopod Shrublands" = "aeolian",
+            "Riverine Chenopod Shrublands" = "riverine",
+            "Inland Floodplain Shrublands / Swamps" = "inland")
+ASSERT <- list(not_grazed = "ref_grazed_floor_%s",
+               unzoned_inferred_standard = "three_arm_floor_deficit_unzoned_inferred_%s",
+               unzoned_plot_confirmed = "three_arm_floor_deficit_unzoned_plot_%s")
+for (armk in names(ASSERT)) for (cm in names(SHORTC)) {   # armk, NOT arm - `arm` is the trajectory df
+  nid  <- sprintf(ASSERT[[armk]], SHORTC[[cm]])
+  want <- pins$pinned_value[pins$number_id == nid]
+  got  <- dec$floor_deficit_pp[dec$community == cm & dec$treatment_arm == armk]
+  if (length(want) != 1 || length(got) != 1 || abs(round(got, 2) - want) >= 0.005)
+    stop(sprintf("REM-1 assert FAILED: %s / %s drawn %.4f vs pinned %s (%s)",
+                 armk, cm, if (length(got) == 1) got else NA_real_,
+                 if (length(want) == 1) format(want) else "MISSING", nid))
+}
+cat("[assert] all 9 floor-deficit labels reproduce dim_headline_number pinned values\n")
 
 short <- function(x) vapply(strsplit(x, " "), `[`, character(1), 1)
 arm$comm <- short(arm$community); grz$comm <- short(grz$community)
@@ -54,6 +99,11 @@ make_grid <- function(yv, defcol, ylab, ttl) {
   lab$arm_lab <- factor(ARMS[lab$treatment_arm], levels = ARMS)
   lab$def <- lab[[defcol]]
   lab$txt <- sprintf("%+.1f pp vs 14-day\nn=%d", lab$def, lab$n_units)
+  # QA-2a: assert the strings ACTUALLY DRAWN carry their source values (catches the ifelse/
+  # recycling class of defect that no data-level check can see).
+  gayini_assert_rendered_values(lab$txt, lab$def, digits = 1, signed = TRUE,
+                                label = paste("T6 panel labels", defcol))
+  gayini_assert_rendered_varies(lab$txt, paste("T6 panel labels", defcol))
   lab$aeolian_flag <- ifelse(lab$comm == "Aeolian" & lab$treatment_arm == "not_grazed",
                              "\n(n=1: Bala 29ca)", "")
   ggplot() +
@@ -89,7 +139,7 @@ gayini_write_and_register_figure(p_grid,
   title = "T6 A three-arm floor grid",
   caption = paste("Support: pixel. Three-arm veg_p05_spatial trajectories vs the 14-day",
     "IQR comparator, faceted arm x community; inferred-standard arm at/above 14-day floor."),
-  support_level = "pixel", figure_level = "deliverable", run_id = "T6_gateE",
+  support_level = "pixel", figure_level = "deliverable", run_id = "rem1_rerender_20260801",
   provenance_note = "Inferred arm; two readings (intensity-noise vs less-grazed) in caption.",
   width = 13, height = 9)
 
@@ -100,7 +150,7 @@ gayini_write_and_register_figure(p_mean,
   title = "T6 B three-arm mean-cover grid",
   caption = paste("Support: pixel. Three-arm veg_mean trajectories vs the 14-day IQR",
     "comparator; the mean-vs-floor contrast (arms match on mean, differ on floor)."),
-  support_level = "pixel", figure_level = "deliverable", run_id = "T6_gateE",
+  support_level = "pixel", figure_level = "deliverable", run_id = "rem1_rerender_20260801",
   provenance_note = "Mean-cover companion to T6_A.", width = 13, height = 9)
 
 # ---- deck cut: 4 panels (not_grazed & unzoned) x (Aeolian & Riverine) ----
@@ -113,6 +163,9 @@ ld <- dec[dec$comm %in% c("Aeolian", "Riverine") &
           dec$treatment_arm %in% c("not_grazed", "unzoned_inferred_standard"), ]
 ld$txt <- sprintf("%+.1f pp vs 14-day (n=%d)%s", ld$floor_deficit_pp, ld$n_units,
                   ifelse(ld$comm == "Aeolian" & ld$treatment_arm == "not_grazed", " [n=1: Bala 29ca]", ""))
+gayini_assert_rendered_values(ld$txt, ld$floor_deficit_pp, digits = 1, signed = TRUE,
+                              label = "T6 deck-cut labels")
+gayini_assert_rendered_varies(ld$txt, "T6 deck-cut labels")
 p_deck <- ggplot() +
   geom_rect(data = fld, aes(xmin = water_year - .5, xmax = water_year + .5, ymin = -Inf, ymax = Inf),
             fill = "#c6dbef", alpha = .45) +
@@ -132,7 +185,7 @@ gayini_write_and_register_figure(p_deck,
   title = "T6 A three-arm deck cut",
   caption = paste("Support: pixel. Four-panel deck cut: not_grazed and unzoned arms x",
     "Aeolian and Riverine; inferred-standard arm above the 14-day floor."),
-  support_level = "pixel", figure_level = "deliverable", run_id = "T6_gateE",
+  support_level = "pixel", figure_level = "deliverable", run_id = "rem1_rerender_20260801",
   provenance_note = "Deck cut of T6_A; two readings in the full figure/change report.",
   width = 11, height = 7)
 cat("[done] T6 Gate E figures\n")
