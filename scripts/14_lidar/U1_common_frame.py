@@ -166,7 +166,27 @@ def warp(path: Path, grid: Grid, method, dtype, dst_nodata):
 
 
 def valid_of(a, nodata):
-    return ~np.isnan(a) if isinstance(nodata, float) and np.isnan(nodata) else a != nodata
+    """Validity mask for either nodata convention.
+
+    BUG FIXED 1 Aug 2026 (U-I11). This previously tested `isinstance(nodata, float)`
+    to decide whether nodata was NaN. `np.float32(np.nan)` is NOT an instance of
+    Python `float` - only `np.float64` is - so the NaN branch never fired for the
+    float32 rasters, the test fell through to `a != nan` which is True EVERYWHERE,
+    and mosaic_r1 therefore treated the d4 tile as valid across the whole grid. The
+    d5 tile contributed nothing to the 5 m height mosaic and the 5 m seam mask came
+    out all-ones. The 10 m FPC path was unaffected (integer nodata 255) and so was
+    the 50 cm DEM path (explicit np.isnan there). Detected because U-Q4a found the
+    2021 height ladder covering 51,167 ha - exactly the d4-only figure - instead of
+    ~85,880 ha.
+    """
+    if nodata is None:
+        return np.ones(a.shape, dtype=bool)
+    try:
+        if np.isnan(nodata):
+            return ~np.isnan(a)
+    except TypeError:
+        pass
+    return a != nodata
 
 
 def mosaic_r1(a4, a5, nodata):

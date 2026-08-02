@@ -57,20 +57,34 @@ the method.
 
 ---
 
-## 3 · `bbh` barely has a signal to test on this property
+## 3 · The 13.33% — a spine finding, not a caveat
 
-> **Only 13.33% of the Task U both-valid area — 11,449 ha of 85,882.6 — reads FPC > 0
-> at either epoch.**
+*Promoted from a limitation to a finding, 1 August 2026 (design-seat C3).*
 
-FPC is a **woody** cover product and Gayini is largely treeless chenopod shrubland. The
-whole-of-property FPC difference statistic is dominated by ground where the instrument
-has no dynamic range at all, which is why the property mean of **+0.257 pp** is diluted
-rather than informative.
+> **Only 13.33% of the Task U both-valid area — 11,449 ha of 85,882.6 ha — reads
+> LiDAR FPC > 0 at either epoch.**
 
-This is worth carrying beyond Gate U3: **`bbh` is the weakest of the LiDAR products
-here**, and U-Q1 and U-Q2 rightly rest on the height ladder (`bbd`), which does have
-range. It also independently justifies T-4 — LiDAR FPC and Landsat `total_veg` are not
-measuring the same country, let alone the same variable.
+The mechanical consequence first: FPC is a **woody** cover product and Gayini is largely
+treeless chenopod shrubland, so the whole-of-property FPC difference is dominated by
+ground where the instrument has no dynamic range, and the property mean of +0.257 pp is
+diluted rather than informative. `bbh` is the weakest LiDAR product here; U-Q1 and U-Q2
+rightly rest on the height ladder.
+
+**The larger consequence is for S6.** The drought floor — the project's headline metric
+— is measured on country that is **87% non-woody by area**. The floor is therefore
+overwhelmingly a **ground-layer** signal, not a canopy one.
+
+That is one of the two outcomes **U-Q2 was built to distinguish**, arriving early and
+from a different product. It **weakens the S6 cover-versus-structure caveat across most
+of the property**, and it bounds U-Q2 before U-Q2 runs: **at most 13.33% of the property
+could have a woody explanation for its floor.**
+
+It does **not** settle U-Q2 — the persistent-floor refugia could concentrate inside that
+13.33%, which is exactly what U-Q2's concordance would test. But it stands as a finding
+in its own right, with its denominator named, **whether or not U-Q2 ever runs.**
+
+It also independently justifies T-4: LiDAR FPC and Landsat `total_veg` are not measuring
+the same country, let alone the same variable.
 
 ---
 
@@ -99,17 +113,22 @@ control gives **9.659 pp**; the observed whole-of-property mean change is **+0.2
 The spec's own criterion fires: *"If that floor exceeds the observed mean change, then
 the whole-of-property FPC change is not interpretable."*
 
-**(b) The observed woody-country change is indistinguishable from the control's.**
+**(b) The observed woody-country change resembles the control's — but the two are not
+independent samples, and the resemblance carries much less than it appears to.**
 
-| | median | mean |
-|---|---:|---:|
-| S2 treed **stable** | +1.000 | +1.889 |
-| OBSERVED, all woody country | +1.000 | +1.927 |
+| | area | median | mean |
+|---|---:|---:|---:|
+| S2 treed **stable** | 4,799 ha | +1.000 | +1.889 |
+| OBSERVED, all woody country | 11,449 ha | +1.000 | +1.927 |
 
-Ground selected to be stable and ground selected for nothing at all moved by the **same
-amount, to three significant figures on the median**. There is no differential woody
-change to detect above the common shift — and the common shift cannot be separated into
-sensor and drought recovery with the controls available.
+*Amended 1 August 2026 (design-seat C2).* **S2 is roughly 42% of the set it is being
+compared against and sits inside it almost by construction.** An earlier draft read this
+as two independent samples moving identically; it is substantially a set agreeing with
+its own largest component. The observation is real, the inference drawn from it was
+stronger than the evidence supports, and it is restated here with the overlap declared.
+
+**The verdict does not rest on (b).** Point (a)'s 38× margin carries it alone. (b) is
+retained only as a consistency note, and does not reach the findings note.
 
 ---
 
@@ -189,10 +208,23 @@ medians"), now with a measured reason.
 | **Difference DEM** | **Interpretable** | Offset +0.303 m, MAD 2.4 cm; earthworks are 12–20 MADs above noise |
 | **U-Q1 / U-Q4a** | **Unaffected** | A within-epoch between-paddock contrast; no change statistic involved |
 
-**Proposed numeric floor, if one is to be pinned:** **9.7 FPC pp at 500 m grain.** No FPC
-change below that may be claimed anywhere in Task U. Given the observed change is
-0.257 pp, this means **no whole-of-property FPC change claim survives** — which is a
-legitimate reportable outcome and was pre-authorised as one.
+**Pinned floor (design-seat D1, 1 August 2026) — and its name is load-bearing:**
+
+> **Change-detection floor on vegetated ground, 500 m grain: 9.7 FPC pp.** Conflates
+> sensor difference with real ecological change. S2-derived. An **upper bound** on the
+> sensor effect, **not an estimate of it.** The sensor effect alone is **unbounded above
+> zero** on vegetated ground with the controls this delivery permits.
+
+**It is not a sensor floor and must never be registered or written as one.** S2 is the
+control this gate has just shown is not stable; it carries twelve years of drought
+recovery. Labelled "sensor floor", a later reader takes it to mean *the ALS-50 → ALS-80
+difference is 9.7 pp*. The data does not say that. The long form above travels into
+`legend_semantics` on every row that cites it.
+
+No FPC change below 9.7 pp at 500 m grain may be claimed anywhere in Task U. Since the
+observed change is 0.257 pp, **no whole-of-property FPC change claim survives** — a
+legitimate reportable outcome, pre-authorised as one, and stated as a finding rather
+than omitted.
 
 **What still works.** U-Q4a is the priority question and is untouched. U-Q4c's
 difference DEM is viable and may be the most valuable single product in the task, since
@@ -220,7 +252,8 @@ depend on this gate.
 |---|---|---|
 | U-I7 | Gate U3 item 1's suggested derivation (persistently-zero FPC in both epochs) is circular for the FPC test. Not used; Landsat-based derivation substituted | Would have changed the verdict from "not interpretable" to a false "no offset". Recorded so it is not reintroduced |
 | U-I8 | No roads / hardstand / infrastructure layer exists in the repo. S1 is a proxy built from Landsat persistence | Limits S1's interpretation; does not change a number |
-| U-I9 | `bbh` has 13.33% dynamic range on-property. Any future task planning to use LiDAR FPC at Gayini should know this before scoping | No — but it should reach the limitations register |
+| U-I9 | `bbh` has 13.33% dynamic range on-property. Any future task planning to use LiDAR FPC at Gayini should know this before scoping | **To the limitations register** (design-seat D4). Also promoted to a finding — see §3 |
+| U-I10 | **There is no stable vegetated ground on Gayini between 2009 and 2021.** S2's failure as a control is a property of the *delivery*, not a method defect, and Gate U2 predicted it | **To the limitations register** as a limitation of the two-epoch LiDAR comparison, not of Gate U3 (design-seat D4) |
 
 ---
 

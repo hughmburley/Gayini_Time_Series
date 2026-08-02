@@ -21,6 +21,10 @@
 | 1 Aug 2026 | **R6** added — floor-versus-flood placement of the four Bala paddocks on the census curve, within community, pixel support, run **before** U‑Q4a. Carries the reference-set pre-registration hazard | Design-seat Gate U2 response, §1a / §2 |
 | 1 Aug 2026 | **U‑Q4a reframed** — the question is "is 29ca's hydrological isolation natural or engineered?", not "structural or hydrological". Aim the structure test at the R6 residual | Design-seat Gate U2 response, §1b |
 | 1 Aug 2026 | **§1c DEM visual** added to Gate U3 as a timeboxed, prose-only inspection — no metric, no derived surface, nothing registered | Design-seat Gate U2 response, §1c |
+| 1 Aug 2026 | **Gate U3 accepted.** Floor pinned at **9.7 FPC pp at 500 m grain** but renamed: it is a **change-detection floor on vegetated ground**, S2-derived, an **upper bound** on the sensor effect and never a "sensor floor". The sensor effect alone is unbounded above zero on vegetated ground | Design-seat Gate U3 STOP, D1 |
+| 1 Aug 2026 | **U3.7** added — spatial-uniformity check on the vertical offset, by block, by `d4`/`d5` tile provenance, and for linear tilt. Must pass before any difference DEM is interpreted | Design-seat Gate U3 STOP, D3 |
+| 1 Aug 2026 | **Scope cut.** U‑Q4b, U‑Q4c and the Task J L10 question are **deferred past 10 August**, one line each in the findings note. Remaining work: U3.7, R6, §1c, U‑Q4a, findings note. **Hard stop end of Monday 3 August.** No new pre-registered rules after this gate — R1–R6 plus U3.6 and U3.7 is the closed set. No new spec versions | Design-seat Gate U3 STOP, §3 |
+| 1 Aug 2026 | Gate U3 report §4(b) softened — S2 is ~42% of the woody set it was compared against, so the two are not independent samples; the verdict rests on §4(a)'s 38× margin alone. §3's 13.33% promoted from caveat to finding | Design-seat Gate U3 STOP, C2 / C3 |
 
 ---
 
