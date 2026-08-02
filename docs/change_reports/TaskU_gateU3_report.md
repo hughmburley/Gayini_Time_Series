@@ -186,12 +186,17 @@ elevation is interpreted anywhere.
 
 ## 7 · Height ladder
 
-`bbd` (95th percentile) offset: **0.000 m** on S1 (no dynamic range — all zeros) and
-**+0.158 m** median / +0.556 m mean on S2 (confounded with growth). All six stages at
-both epochs are in `taskU_gateU3_stable_ground.csv`.
+*Re-run 2 August 2026 after U-I11 — the 5 m height mosaic previously omitted the `d5`
+tile. The FPC and DEM sections above are **byte-identical** before and after the fix,
+which confirms neither depended on it; only these height rows moved.*
 
-One number worth flagging for U-Q4a: on S2, the **difference of medians** is +1.42 m
-(1.658 → 3.082) while the **median of differences** is +0.158 m. That gap is large, and
+`bbd` (95th percentile) offset: **0.000 m** on S1 (no dynamic range — all zeros) and
+**+0.239 m** median / +0.679 m mean on S2, n = **1,904,266** (was 1,678,944 on the
+`d4`-only sample). Still confounded with growth; the conclusion is unchanged. All six
+stages at both epochs are in `taskU_gateU3_stable_ground.csv`.
+
+One number worth flagging for U-Q4a: on S2, the **difference of medians** is +1.55 m
+(1.867 → 3.418) while the **median of differences** is +0.239 m. That gap is large, and
 it means the two epochs are not cleanly comparable pixel-by-pixel in structurally
 complex canopy at 5 m. **U-Q4a should use zonal medians of each epoch separately rather
 than a per-pixel difference** — which is what the spec already requires ("report zonal
