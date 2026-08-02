@@ -31,7 +31,11 @@ data_intermediate/
 data_processed/
 
 # Generated outputs, scratch work, and historical output bundles
-Output/
+Output/*
+# AUD-1 audit outputs: PACK-1 consumes these as its direct input, so they need version
+# history. Git cannot re-include a path inside an excluded DIRECTORY, so the rule above is
+# 'Output/*' (contents) rather than 'Output/' (the directory itself). Nothing else is tracked.
+!Output/audit/
 working/
 /archive/
 _local_archive/
