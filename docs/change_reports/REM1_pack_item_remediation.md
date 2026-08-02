@@ -273,10 +273,30 @@ all three. `figure_asset` 286 → 287 is accounted for entirely by `figure_u3_se
 - **I-34** — `table_asset` is not builder-integrated; joins the post-build manual registration list.
 - **I-35** — `Output/tables/` provenance gap: 91 of 93 unregistered, deliberately not bulk-registered.
 
-Also carried from Gate 0: `test_T8_headline_reproduction.py` reports `2 DRIFTED of 71`, both TaskU
-rows with **no recompute path** — a coverage gap, not value drift. Exit 0; 69 of 71 reproduce.
-Nothing in REM-1's scope depends on them. **A test that silently stops covering new rows will
-eventually pass while missing the thing that matters.**
+### The reproduction test does not cover the twelve new rows — a stated rationale is not met
+
+Registering the unzoned deficits was expected to *"bring them inside `test_T8_headline_reproduction.py`
+rather than leaving six numbers a passing test does not cover."* **It did not.**
+
+Before REM-1 the test reported `2 DRIFTED of 71`. It now reports **`14 DRIFTED of 71`** — the two
+TaskU rows plus **all twelve REM-1 rows**, every one of them `recomputed=NOT RECOMPUTED`. This is a
+missing recompute path, not value drift; the test still exits 0 and the other 57 reproduce. But the
+benefit claimed for registration has not landed, and saying otherwise would be false.
+
+Two things follow, and neither was done here:
+
+1. **The gap is now mostly self-inflicted.** REM-1 added twelve uncovered rows to a registry whose
+   test was already silently failing to grow with it. Registration and test coverage are separate
+   steps and nothing enforces the second.
+2. **Closing it naively would be worse than leaving it open.** CLAUDE.md requires the test to
+   re-derive each pinned value **by an independent code path**. Copying REM-1's area-weighting into
+   the test would be circular — it would pass by construction and prove nothing, which is exactly
+   the shape of defect the reproduction test exists to catch. A genuine second derivation is needed,
+   and that is a small but careful task, not a mid-remediation edit.
+
+Folded into **I-33**'s successor work rather than fixed here. **A test that silently stops covering
+new rows will eventually pass while missing the thing that matters** — and it is now doing so on
+fourteen rows rather than two.
 
 ---
 
