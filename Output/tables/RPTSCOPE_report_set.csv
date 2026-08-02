@@ -1,0 +1,33 @@
+doc_type,paddock,site_id,selection_rule,rule_text,reportable_sites
+paddock,Bala 26ca,,A,"conserved: every No grazing paddock, complete, no selection",3
+paddock,Bala 27ca,,A,"conserved: every No grazing paddock, complete, no selection",0
+paddock,Bala 28ca,,A,"conserved: every No grazing paddock, complete, no selection",8
+paddock,Bala 29ca,,A,"conserved: every No grazing paddock, complete, no selection",10
+paddock,Bala 15,,B1,grazed paddock named in a register-v3 claim or a pack caption,0
+paddock,Dinan 10,,B1,grazed paddock named in a register-v3 claim or a pack caption,0
+paddock,Dinan 8,,B2,grazed paddock carrying the most reportable sites,4
+site,Bala 26ca,GA_001,A,non-treed site inside a selected paddock,
+site,Bala 26ca,GA_002,A,non-treed site inside a selected paddock,
+site,Bala 26ca,GA_057,A,non-treed site inside a selected paddock,
+site,Bala 28ca,GA_003,A,non-treed site inside a selected paddock,
+site,Bala 28ca,GA_004,A,non-treed site inside a selected paddock,
+site,Bala 28ca,GA_005,A,non-treed site inside a selected paddock,
+site,Bala 28ca,GA_006,A,non-treed site inside a selected paddock,
+site,Bala 28ca,GA_007,A,non-treed site inside a selected paddock,
+site,Bala 28ca,GA_053,A,non-treed site inside a selected paddock,
+site,Bala 28ca,GA_054,A,non-treed site inside a selected paddock,
+site,Bala 28ca,GA_066,A,non-treed site inside a selected paddock,
+site,Bala 29ca,GA_008,A,non-treed site inside a selected paddock,
+site,Bala 29ca,GA_009,A,non-treed site inside a selected paddock,
+site,Bala 29ca,GA_010,A,non-treed site inside a selected paddock,
+site,Bala 29ca,GA_034,A,non-treed site inside a selected paddock,
+site,Bala 29ca,GA_035,A,non-treed site inside a selected paddock,
+site,Bala 29ca,GA_036,A,non-treed site inside a selected paddock,
+site,Bala 29ca,GA_043,A,non-treed site inside a selected paddock,
+site,Bala 29ca,GA_055,A,non-treed site inside a selected paddock,
+site,Bala 29ca,GA_056,A,non-treed site inside a selected paddock,
+site,Bala 29ca,GA_058,A,non-treed site inside a selected paddock,
+site,Dinan 8,GA_025,B2,non-treed site inside a selected paddock,
+site,Dinan 8,GA_026,B2,non-treed site inside a selected paddock,
+site,Dinan 8,GA_027,B2,non-treed site inside a selected paddock,
+site,Dinan 8,GA_028,B2,non-treed site inside a selected paddock,
