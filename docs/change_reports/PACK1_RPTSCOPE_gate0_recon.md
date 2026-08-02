@@ -39,10 +39,10 @@ This is the **concurrency probe baseline** for both lanes.
 
 | established | evidence | consequence for this spec |
 |---|---|---|
-| 11 of 13 manifest rows moved to **SHIP** | `Output/audit/AUD1_manifest_delta_REM1.csv` (13 rows) | Gate P1 `ship_flag` is **read from this file**, not re-decided |
+| **9 rows moved to SHIP** (8 HOLD→SHIP + 1 DECIDE→SHIP); 10 rows *are* SHIP after | `Output/audit/AUD1_manifest_delta_REM1.csv` — **13 rows**, sha `a877329a…`, untracked | Gate P1 `ship_flag` is **read from this file**, not re-decided |
 | `table_asset` created and populated | live: 2 rows — `table_t13_gatec_classification` (115), `table_t1_conserved_paddock_comparison` (4) | T1 csv and T2 are **already registered**; P1 must not re-register them |
 | M3 moved DECIDE → SHIP, render CURRENT | delta row `M3` | matches the P2 ruling; no re-render |
-| T1: csv is `HOLD`, png is `SHIP` | delta rows `T1 (source, NOT the pack item)` and `T1` | **⚠ conflicts with the P2 ruling** — see §4.2 |
+| T1: csv `HOLD → HOLD`, png `SHIP → SHIP` | delta rows `T1 (source, NOT the pack item)` and `T1` | see §4.3 — a **later** design-seat ruling, not a REM-1 one |
 | 9 of 10 held figures byte-identical on re-render | AUD-1 Gate A | **no re-render at P3**; open to read, do not rebuild |
 | constants test passed | REM-1 | do not re-run as a "check" |
 
@@ -96,23 +96,29 @@ this STOP.
 copies of one artefact. A later session told to read "the register" can reach the wrong one.
 Recommend archiving it; not touched here.
 
-### 4.2 ⚠ P2's item arithmetic does not reconcile with itself
+### 4.2 RESOLVED — item arithmetic
 
-Spec §3 P1 says **16 items → 14 files**. Spec §3 P2's M4b row then says **"17 items, 15 files"**.
-P4 §4 says copy **15 files**. So the spec's own acceptance criterion at P1 (*"16 rows, 14 distinct
-paths"*) is contradicted by P2 and P4. Reading it as sequential — P1 builds 16/14, P2 adds M4b to
-make 17/15 — is the only consistent reading, but then **P1's stated acceptance can never pass as
-written**. Flagged, not resolved.
+Raised as a self-contradiction (P1 said 16→14, P2 said 17/15, P4 said 15 files). **RULED 3 Aug: a
+spec error, not an ambiguity. M4b is in the item list from the start.** P1 builds **17 items → 15
+distinct files**, and P1's acceptance criterion is now *"17 rows, 15 distinct non-null paths"*.
+P2's M4b row is a confirmation, not an addition; P4's "copy 15 files" was already correct.
 
-### 4.3 ⚠ P2's T1 ruling contradicts the AUD-1 delta
+### 4.3 ⚠ RESTATED — two design-seat rulings on T1, in opposite directions, same day
 
-P2 rules *"the `.csv` is the pack item; the `.png` is its rendering"*. The delta file records the
-opposite: `T1` (the **png**) `ship_flag_after = SHIP`, while `T1 (source, NOT the pack item)` (the
-**csv**) is `HOLD` — and its label explicitly says the csv is *not* the pack item.
+**The original 4.3 said REM-1 ruled against P2. That was wrong and is withdrawn** — REM-1 did
+decline to rule. But the conflict is real and sits elsewhere, so the finding stands restated:
 
-The ruling is a design-seat decision and stands. But it **inverts an already-registered flag**, so
-P1 cannot simply read `ship_flag` from the delta for T1. Naming it here so it is not silently
-reconciled.
+| source | mtime | says |
+|---|---|---|
+| `table_asset.provenance_note` (REM-1) | — | *"WHICH ONE IS THE PACK ITEM IS A DESIGN-SEAT DECISION, **deliberately not made here**"* |
+| spec §3 **P2** | 2 Aug **10:50** | *"the **`.csv`** is the pack item; the `.png` is its rendering"* |
+| `AUD1_manifest_delta_REM1.csv` `reason_detail` | 2 Aug **17:59** | *"HOLD is a RULING, NOT A DEFECT: design seat 2 Aug — **the `.png` is pack item T1**; this `.csv` stays registered as the source but does not go in the pack"* |
+
+REM-1 handed the question up, exactly as stated. **It was then answered twice, seven hours apart,
+in opposite directions** — and the delta's answer is the later one. The spec's P2 and the delta's
+`reason_detail` cannot both govern.
+
+**Not reconciled.** P1 needs one answer. Flagged for the design seat.
 
 ### 4.4 The user named a workbook the spec rules stale
 
@@ -143,10 +149,13 @@ captions for named grazed paddocks; not done at Gate 0.
 
 1. **Lane assignment — RULED: both lanes, sequentially, in this session.** Order follows the
    spec's own constraint (R2 before P4): **R1 → R2 → P1 → P2 → P3 → P4**, then R3, then R4 if time
-   allows. **This retires §1's concurrency machinery**: with a single writer there is no interleaving
-   to guard against, no branch handoff, and the "LANE 1 waits at P4" rule is satisfied by
-   construction. The before/after probes are **kept** — they still catch an external writer, which
-   is what caught TaskU during AUD-1.
+   allows. It satisfies "LANE 1 waits at P4" by construction and needs no branch handoff.
+
+   **AMENDED 3 Aug — the earlier claim that this "retires §1's concurrency machinery" was wrong and
+   is withdrawn. There is a second writer and it is ACTIVE.** TaskU landed Gates U0–U3 in the 13
+   commits since 31 July, including U3 *after* AUD-1's own Gate D re-probe — visible as
+   `figure_asset` 287 here against Gate D's 286. **Probes stay, and any movement at a write gate is
+   a STOP, not a reconcile.** One such event already occurred during this gate: see §4.6.
 2. **Branch policy — RULED: CLAUDE.md governs. Commit straight to `main`**, STOP at each gate, no
    feature branches, no PRs. Spec §7's "branch and PR with human merge" is superseded by the
    standing rule adopted 28 July, under which every task since has run.
@@ -155,6 +164,60 @@ captions for named grazed paddocks; not done at Gate 0.
 writes `Output/pack/` only and LANE 2 `Output/tables/`, `Output/figures/` only — but §2 and §5
 require change reports in `docs/change_reports/`. Read as the table governing **data** writes, with
 change reports always permitted. This report is written on that reading.
+
+### 4.6 Concurrency event during this gate — filesystem only, DB verifiably unmoved
+
+Between the Gate 0 recon and the B2 housekeeping step, `docs/reports/Gayini_deliverables_register.md`
+**moved** to `docs/archive/Gayini_deliverables_register_superseded.md` — same 12,613 bytes, same
+31 Jul mtime. Both paths are untracked, so git records nothing and the move left no trace to find
+later.
+
+**Re-probed immediately.** DB mtime `2026-08-02 12:09:44` — **identical** to the Gate 0 baseline;
+`dim_headline_number` 88, `figure_asset` 287, `raster_asset` 186, `table_asset` 2, `report_asset` 59
+— **all unchanged**. `origin/main...main` 0/0. So the event is filesystem-only and touched no
+registered object.
+
+**Reported, not reconciled silently** — which is the §1 rule and the reason A4 amends the "single
+writer" claim. B2 was completed rather than repeated: the file was already moved, so the missing
+half — the superseded-by header naming v3 and `ecbaa62` — was added to it in place.
+
+*Note: the archived filename carries neither the version nor the date (`..._superseded.md`, not
+`..._v2_20260731_superseded.md`). Left as found rather than moved a second time during an active
+concurrency window. Flagged.*
+
+### 4.7 ⚠ B1 — the reproduction denominator. Both quoted figures are wrong.
+
+**Taken from the test's own exit**, per the ruling — not from v3, not from AUD-1, not from the spec:
+
+```
+T8 reproduction: 14 DRIFTED of 71 checked        (exit 1)
+```
+
+Cross-read against the registry itself:
+
+| quantity | value | object read |
+|---|---|---|
+| `dim_headline_number` rows | **88** | live `COUNT(*)` |
+| rows with `pinned_value NOT NULL` — what the test iterates | **85** | live `COUNT(*)` |
+| deliberately unpinned | 3 | live |
+| pinned rows **with** an independent derivation | **71** | test exit, `checked` |
+| pinned rows **without** one | **14** | test exit, `fails` |
+| of the 71 checked, **real value drifts** | **0** | every one of the 14 reads `NOT RECOMPUTED` |
+
+**The honest sentence is: 71 of 85 pinned numbers re-derive independently, and all 71 that can be
+checked reproduce. 14 pins have no derivation path.**
+
+- **v3's "57 of 71" is wrong on the numerator.** 71 is the count that *reproduces*, not the denominator.
+- **The spec's "88 rows with 57 independently re-derived" is wrong on both**, and its "coverage fell
+  from 96% to 65%" does not follow. Coverage is **71/85 = 84%** of pinned rows, or 71/88 = 81% of the
+  registry. It did not fall — the 71 is unchanged since 31 July; the *denominator* grew as REM-1 and
+  TaskU added pins.
+- **Nothing has drifted.** The failures are missing derivations, not wrong numbers. That distinction
+  is the whole of the difference between "the registry is unreliable" and "the registry is incomplete".
+
+**Consequence for R4, which the spec understates:** there are **14** rows needing derivations, not
+twelve — the twelve `three_arm_*` REM-1 pins **plus two `taskU_denominator_*` pins** registered after
+the spec was written. R4's scope grows by two.
 
 ## 6. Nothing changed
 
