@@ -179,9 +179,12 @@ Zonal p90 of `bbd`, metres, against the grazed distribution in the same communit
 A cleared-and-regrowing paddock should show **suppressed upper percentiles in 2009**
 relative to comparable ground. Bala 29ca shows the opposite or the unremarkable:
 
-- **Riverine — 83rd percentile of the grazed distribution in 2009**, 77th in 2021. More
-  woody structure than three-quarters of the grazed paddocks in the same community, at
-  the epoch where suppression should be clearest.
+- **Riverine — 83rd percentile of the grazed distribution in 2009**, 77th in 2021.
+  *Amended 2 August 2026 (design-seat C4).* The grazed p90 median in Riverine 2009 is
+  **0.00 m**, so "83rd percentile" is a rank in a heavily zero-inflated distribution and
+  would read as 83% up a continuum. The accurate statement is stronger: **29ca is one of
+  the minority of Riverine zones carrying any non-zero p90 structure at all in 2009.**
+  The same caveat applied to Aeolian below applies here.
 - **Inland — 61st percentile in 2009**, 58th in 2021. Middling.
 - **Aeolian — 0th in 2009, 38th in 2021**, but the grazed p90 median is 0.00 in 2009, so
   the 2009 percentile is a tie at zero rather than a deficit.
@@ -215,7 +218,9 @@ say something LiDAR cannot.
 
 | Id | Item | Triage |
 |---|---|---|
-| **U-I11** | `valid_of()` used `isinstance(nodata, float)`, which is False for `np.float32(nan)`. Silently returned "all valid", so `d5` never entered the 5 m mosaic and the 5 m seam mask was all-ones | **Yes — changed numbers.** Fixed, re-run, blast radius established by re-running. The 10 m and 50 cm paths were unaffected and reproduce exactly |
+| **U-I11** | **A validity test that silently returned the permissive answer instead of erroring.** `valid_of()` used `isinstance(nodata, float)`, which is False for `np.float32(nan)`, so the test fell through to `a != nan` — true everywhere — and `d5` never entered the 5 m mosaic. Same class as the stored QA verdict and `INSERT OR IGNORE`: **it looks like it worked.** | **Yes — changed numbers.** Fixed, re-run, blast radius established by re-running. The 10 m and 50 cm paths were unaffected and reproduce exactly |
+| **U-I14** | **Bala 26ca, Riverine — a signal seen twice, independently, and deliberately not chased.** R6 gives a residual of **−17.41 pp** (n = 636); U-Q4a gives it as structurally poorest of the four, p90 = 0.00, 0th percentile, **at both epochs**. Two different products, same paddock, same community, same direction, both on small samples | Open, named observation. **Not investigated before 10 August.** Two independent lines agreeing is worth more than either alone, and this is the kind of thing that gets lost |
+| U-I15 | R2's 2021 exclusion moved 0 → 1 pixel after U-I11, so the 3× STOP condition now fires at ratio **218** rather than ∞. The design-seat clearance stands on the substance — 0.545 ha against 0.003 ha | No. Recorded so the amended number is not mistaken for a reopened decision |
 | U-I12 | `dim_headline_number` grew 76 → 88 between two Task U registrations. Cause identified: `rem1_rerender_20260801` (`register_REM1_three_arm_community_pins.py`) added 12 T6 three-arm rows on 1 Aug from another workstream | No — not Task U, benign, Task U's two rows intact. Recorded so the jump is not re-investigated |
 | U-I13 | No S1 stable-ground pixels fall inside the R1 seam, so the seam's own vertical behaviour is untested by U3.7 | Would matter if a planar de-trend is ever built |
 

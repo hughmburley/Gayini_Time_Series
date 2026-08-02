@@ -164,9 +164,18 @@ written to manage — a silently-applied density correction — does not arise.
 | S1 bare stable | 12,397 | **+0.3032** | +0.3018 | 0.0485 | **0.0243** | +0.2229 | +0.3599 |
 | S2 treed stable | 479,779 | +0.2244 | +0.2336 | 0.0827 | 0.0413 | +0.1294 | +0.3747 |
 
-**S1 is the estimate to use: +0.303 m, MAD 2.4 cm.** Hard bare ground, no canopy, no
-ground-classification ambiguity. S2's +0.224 m sits 8 cm lower, which is what canopy
-effects on ground-point classification would do, and its spread is nearly double.
+> **WITHDRAWN AS A SCALAR CALIBRATION, 2 August 2026 (design-seat C6).** U3.7 tested
+> this offset for spatial uniformity and it **failed on all three tests** — a plane in
+> x and y explains **41%** of its variance, with an implied tilt of **13.5 cm** across
+> the property against a 2.4 cm MAD. **+0.303 m is not a usable scalar correction and
+> no corrected surface exists.** The §6 numbers below stand as measurements; the
+> *interpretation* that follows them in §8 — that the difference DEM is "strongly
+> interpretable" — is superseded by U3.7 and is retained only to show what changed.
+> No planar de-trend is built: that is a new method decision and U-Q4c is deferred.
+
+**S1 is the better-conditioned estimate: +0.303 m, MAD 2.4 cm.** Hard bare ground, no
+canopy, no ground-classification ambiguity. S2's +0.224 m sits 8 cm lower, which is what
+canopy effects on ground-point classification would do, and its spread is nearly double.
 
 This is a genuinely good result and it is the one place Gate U3 clears the way rather
 than closing it down:
