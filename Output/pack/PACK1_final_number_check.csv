@@ -1,39 +1,154 @@
-location,number_as_written,resolves_to,state,agrees
-Start_here claim 1,ref_grazed_gap_annual_ref3_excl29ca_mean,ref_grazed_gap_annual_ref3_excl29ca_mean,PINNED,1
-Start_here claim 2,t10_gap_annual_slope_C_29ca,t10_gap_annual_slope_C_29ca,PINNED,1
-Start_here claim 3,floor_flood_r_64pdk,floor_flood_r_64pdk,PINNED,1
-Start_here claim 4,bala29ca_improvement_surviving_water_pct,bala29ca_improvement_surviving_water_pct,PINNED,1
-Start_here claim 5,ref_paddock_flood_rank_bala26ca,ref_paddock_flood_rank_bala26ca,PINNED,1
-Start_here claim 5,ref_paddock_flood_rank_bala28ca,ref_paddock_flood_rank_bala28ca,PINNED,1
-Start_here claim 5,ref_paddock_flood_rank_bala27ca,ref_paddock_flood_rank_bala27ca,PINNED,1
-Start_here claim 5,ref_paddock_flood_rank_bala29ca,ref_paddock_flood_rank_bala29ca,PINNED,1
-Start_here claim 6,t13_parts_recovering_count,t13_parts_recovering_count,PINNED,1
-Start_here claim 6,t13_recovering_survive_drop2wettest,t13_recovering_survive_drop2wettest,PINNED,1
-Start_here claim 7,t13_parts_declining_count,t13_parts_declining_count,PINNED,1
-By_question Q1,cropping_history_null_count,cropping_history_null_count,PINNED,1
-By_question Q2,ref_grazed_gap_annual_ref3_excl29ca_mean,ref_grazed_gap_annual_ref3_excl29ca_mean,PINNED,1
-By_question Q2,ref_paddock_flood_rank_bala26ca,ref_paddock_flood_rank_bala26ca,PINNED,1
-By_question Q3,bala29ca_improvement_surviving_water_pct,bala29ca_improvement_surviving_water_pct,PINNED,1
-By_question Q4,three_arm_standard_at_or_above_count,three_arm_standard_at_or_above_count,PINNED,1
-By_question Q5,floor_flood_r_64pdk,floor_flood_r_64pdk,PINNED,1
-By_question Q6,t13_parts_recovering_count,t13_parts_recovering_count,PINNED,1
-By_question Q6,t13_parts_declining_count,t13_parts_declining_count,PINNED,1
-By_question Q7,(no number),N/A_by_design,AUDIT_ROW,1
-How_we_know,101,live query: registered,LIVE_QUERY,1
-How_we_know,98,live query: pinned,LIVE_QUERY,1
-How_we_know,81,live query: reproduce,LIVE_QUERY,1
-How_we_know,0,live query: drift,LIVE_QUERY,1
-How_we_know,17,live query: nopath,LIVE_QUERY,1
-How_we_know,297,live query: figures,LIVE_QUERY,1
-How_we_know,5,live query: tables,LIVE_QUERY,1
-Gayini_what_we_dont_know.md,"3rd, 6th, 31st and 61st of 64",ref_paddock_flood_rank_bala26ca (+3 siblings),PINNED,1
-Gayini_what_we_dont_know.md,all 64 paddocks (cropping history),cropping_history_null_count,PINNED,1
-Gayini_what_we_dont_know.md,32 / 25 / 6 pp Bala 29ca community deficits,"t10_bala29ca_aeolian_level_deficit, _riverine_, _inland_",AUDIT_ROW,1
-Gayini_what_we_dont_know.md,15 standard-grazing sites,RPTSCOPE_report_set.csv EXCLUDED rows (R1b),AUDIT_ROW,1
-Gayini_what_we_dont_know.md,twelve of 115 change side; eight to five,"DERIVED — design-seat computation, no committed producer (O4)",DERIVED_DECLARED,1
-Gayini_what_we_dont_know.md,"12,641 / 8,300 / 4,179 ha at 70/75/80",t3_always_green_sweep (R2 Ruling D),AUDIT_ROW,1
-Gayini_what_we_dont_know.md,"988,831 of 1,080,157 px, 91.55% / 8.00% / 0.46%",census_by_zone_stratum (verified S2),AUDIT_ROW,1
-Gayini_what_we_dont_know.md,17 percentage points (two floors),spec §6 / T2_zone_annual_veg_extraction.md §94,AUDIT_ROW,1
-Gayini_what_we_dont_know.md,35 consecutive years,"parameter, not a result",AUDIT_ROW,1
-Gayini_what_we_dont_know.md,floods roughly twice as often (channel),"T3-I5, T3_gateCDE_20260803.md",AUDIT_ROW,1
-Gayini_what_we_dont_know.md,eight instances / six occasions / twice,"issues log I-40, I-37, I-43",AUDIT_ROW,1
+location,number_as_written,resolves_to,state,n_matching_sources,agrees
+Start_here claim 1,35,"parameter - 35 water years, 1988-2022 (record length)",DECLARED,1,1
+Start_here claim 1,2.1,ref_grazed_gap_annual_ref3_excl29ca_mean,PINNED,1,1
+Start_here claim 1,7.0,ref_grazed_gap_annual_ref3_excl29ca_mean,PINNED,1,1
+Start_here claim 1,5.0,ref_grazed_gap_annual_ref3_excl29ca_mean | parameter - dim_management_zone reserves 5 cropping-history columns,PINNED,2,1
+Start_here claim 1,zero,derived and stated - the spread -7.038 to +4.987 brackets zero,DECLARED,1,1
+Start_here claim 1,three,parameter - 3 grazing regimes / 3 non-treed communities,DECLARED,1,1
+Start_here claim 1,Bala 29ca,"identifier, name or date - not a quantity",NAME_NOT_QUANTITY,0,1
+Start_here claim 2,1988,parameter - first water year of the record,DECLARED,1,1
+Start_here claim 2,+0.92,t10_gap_annual_slope_C_29ca,PINNED,1,1
+Start_here claim 2,2019,parameter - conservation management start (dim_management_zone),DECLARED,1,1
+Start_here claim 2,three,parameter - 3 grazing regimes / 3 non-treed communities,DECLARED,1,1
+Start_here claim 2,Bala 29ca,"identifier, name or date - not a quantity",NAME_NOT_QUANTITY,0,1
+Start_here claim 3,0.71,floor_flood_r_64pdk,PINNED,1,1
+Start_here claim 3,64,"parameter - 64 management zones (dim_management_zone, 64 rows)",DECLARED,1,1
+Start_here claim 3,half,"parameter - the T13 sweep cut range 0.50 to 1.50 (T13 spec section 5) | derived and stated - r=0.71 gives r-squared 0.504, 'about half'",DECLARED,2,1
+Start_here claim 4,82%,bala29ca_improvement_surviving_water_pct,PINNED,1,1
+Start_here claim 4,Bala 29ca,"identifier, name or date - not a quantity",NAME_NOT_QUANTITY,0,1
+Start_here claim 5,3rd,ref_paddock_flood_rank_bala26ca | parameter - 3 grazing regimes / 3 non-treed communities,PINNED,2,1
+Start_here claim 5,6th,"ref_paddock_flood_rank_bala28ca | t10_bala29ca_inland_level_deficit | t10_bala29ca_inland_level_deficit (5.8, written to 0 dp)",PINNED,3,1
+Start_here claim 5,31st,"ref_paddock_flood_rank_bala27ca | derived and stated - 2019 minus 1988 is 31 years, 'three decades'",PINNED,2,1
+Start_here claim 5,61st,ref_paddock_flood_rank_bala29ca,PINNED,1,1
+Start_here claim 5,64,"parameter - 64 management zones (dim_management_zone, 64 rows)",DECLARED,1,1
+Start_here claim 5,one,"parameter - 1 pp of threshold, the elasticity numerator (T3 Gate B1)",DECLARED,1,1
+Start_here claim 5,four,parameter - 4 conserved paddocks; also the 4 water years since management changed,DECLARED,1,1
+Start_here claim 6,115,parameter - 115 paddock-parts (fact_zone_community_part_classification),DECLARED,1,1
+Start_here claim 6,0.50,"parameter - the T13 sweep cut range 0.50 to 1.50 (T13 spec section 5) | derived and stated - r=0.71 gives r-squared 0.504, 'about half'",DECLARED,2,1
+Start_here claim 6,1.50,parameter - the T13 sweep cut range 0.50 to 1.50 (T13 spec section 5),DECLARED,1,1
+Start_here claim 6,two,"T13 Gate C - 2 of the 3 all-cut Recovering parts are in Bala 29ca, verified against T13_gateC_classification.csv this session | T13 Gate C - 2 of those 3 in Bala 29ca, verified this session",DECLARED,2,1
+Start_here claim 6,three,"t13_parts_recovering_count | T13 Gate C - 3 parts Recovering at every cut 0.50-1.50, verified this session | parameter - 3 grazing regimes / 3 non-treed communities",PINNED,3,1
+Start_here claim 6,five,t13_recovering_survive_drop2wettest | parameter - dim_management_zone reserves 5 cropping-history columns,PINNED,2,1
+Start_here claim 6,eight,"t13_parts_recovering_count | census_by_zone_stratum - Floodplain Woodland/Forest share %, verified P3 S2",PINNED,2,1
+Start_here claim 6,Bala 29ca,"identifier, name or date - not a quantity",NAME_NOT_QUANTITY,0,1
+Start_here claim 7,twelve,"T13 Gate C - 12 of the 16 Declining parts are in the Bala group, verified this session | T13 Gate C - 12 of the 16 declining parts in the Bala group, verified this session",DECLARED,2,1
+Start_here claim 7,sixteen,t13_parts_declining_count,PINNED,1,1
+By_question Q1,64,"cropping_history_null_count | parameter - 64 management zones (dim_management_zone, 64 rows)",PINNED,2,1
+By_question Q1,five,parameter - dim_management_zone reserves 5 cropping-history columns,DECLARED,1,1
+By_question Q2,35,"parameter - 35 water years, 1988-2022 (record length)",DECLARED,1,1
+By_question Q2,2.1,ref_grazed_gap_annual_ref3_excl29ca_mean,PINNED,1,1
+By_question Q2,7.0,ref_grazed_gap_annual_ref3_excl29ca_mean,PINNED,1,1
+By_question Q2,5.0,ref_grazed_gap_annual_ref3_excl29ca_mean | parameter - dim_management_zone reserves 5 cropping-history columns,PINNED,2,1
+By_question Q2,"3,",ref_paddock_flood_rank_bala26ca | parameter - 3 grazing regimes / 3 non-treed communities,PINNED,2,1
+By_question Q2,"6,","ref_paddock_flood_rank_bala28ca | t10_bala29ca_inland_level_deficit | t10_bala29ca_inland_level_deficit (5.8, written to 0 dp)",PINNED,3,1
+By_question Q2,31,"ref_paddock_flood_rank_bala27ca | derived and stated - 2019 minus 1988 is 31 years, 'three decades'",PINNED,2,1
+By_question Q2,61,ref_paddock_flood_rank_bala29ca,PINNED,1,1
+By_question Q2,"64,","parameter - 64 management zones (dim_management_zone, 64 rows)",DECLARED,1,1
+By_question Q2,zero,derived and stated - the spread -7.038 to +4.987 brackets zero,DECLARED,1,1
+By_question Q2,one,"parameter - 1 pp of threshold, the elasticity numerator (T3 Gate B1)",DECLARED,1,1
+By_question Q2,three,ref_paddock_flood_rank_bala26ca | parameter - 3 grazing regimes / 3 non-treed communities,PINNED,2,1
+By_question Q2,four,parameter - 4 conserved paddocks; also the 4 water years since management changed,DECLARED,1,1
+By_question Q2,Bala 29ca,"identifier, name or date - not a quantity",NAME_NOT_QUANTITY,0,1
+By_question Q3,17,"t10_bala29ca_xsec_residual | two-floor divergence, spec section 6 / T2_zone_annual_veg_extraction.md section 94",PINNED,2,1
+By_question Q3,82%,bala29ca_improvement_surviving_water_pct,PINNED,1,1
+By_question Q3,second,"T10 cross-sectional residuals - Bala 29ca at -16.8 is the second largest shortfall, behind Bala 15 at -17.62 (verified this session) | T13 Gate C - 2 of those 3 in Bala 29ca, verified this session",DECLARED,2,1
+By_question Q4,three,parameter - 3 grazing regimes / 3 non-treed communities,DECLARED,1,1
+By_question Q4,six,"three_arm_standard_at_or_above_count | t10_bala29ca_inland_level_deficit (5.8, written to 0 dp)",PINNED,2,1
+By_question Q4,nine,three_arm_standard_at_or_above_count | parameter - 9 non-treed strata (treed_context_flag=0 AND regime_band<>'context'),PINNED,2,1
+By_question Q5,64,"parameter - 64 management zones (dim_management_zone, 64 rows)",DECLARED,1,1
+By_question Q5,0.71,floor_flood_r_64pdk,PINNED,1,1
+By_question Q5,half,"parameter - the T13 sweep cut range 0.50 to 1.50 (T13 spec section 5) | derived and stated - r=0.71 gives r-squared 0.504, 'about half'",DECLARED,2,1
+By_question Q6,115,parameter - 115 paddock-parts (fact_zone_community_part_classification),DECLARED,1,1
+By_question Q6,two,"T13 Gate C - the two wettest years dropped in the robustness re-run | T13 Gate C - 2 of those 3 in Bala 29ca, verified this session",DECLARED,2,1
+By_question Q6,three,"t13_parts_recovering_count | t13_parts_declining_count | T13 Gate C - 3 parts Recovering at every cut tested, verified this session",PINNED,4,1
+By_question Q6,five,t13_recovering_survive_drop2wettest | parameter - dim_management_zone reserves 5 cropping-history columns,PINNED,2,1
+By_question Q6,eight,"t13_parts_recovering_count | census_by_zone_stratum - Floodplain Woodland/Forest share %, verified P3 S2",PINNED,2,1
+By_question Q6,twelve,"T13 Gate C - 12 of the 16 Declining parts are in the Bala group, verified | T13 Gate C - 12 of the 16 declining parts in the Bala group, verified this session",DECLARED,2,1
+By_question Q6,sixteen,t13_parts_declining_count,PINNED,1,1
+By_question Q7,four,parameter - 4 conserved paddocks; also the 4 water years since management changed,DECLARED,1,1
+Two_cautions,thirty-five,"parameter - 35 water years, 1988-2022 (record length)",DECLARED,1,1
+Two_cautions,two,"T13 Gate C - 2 of those 3 in Bala 29ca, verified this session",DECLARED,1,1
+Two_cautions,veg_p05_spatial,"identifier, name or date - not a quantity",NAME_NOT_QUANTITY,0,1
+How_we_know,98,live query: pinned,DECLARED,1,1
+How_we_know,81,live query: reproduce,DECLARED,1,1
+How_we_know,82.7%,live query: coverage,DECLARED,1,1
+How_we_know,0,"live query: drift | parameter - the T13 sweep cut range 0.50 to 1.50 (T13 spec section 5) | census_by_zone_stratum - Other/minor units share %, verified P3 S2",DECLARED,4,1
+How_we_know,17,"live query: nopath | two-floor divergence, spec section 6 / T2_zone_annual_veg_extraction.md section 94",DECLARED,2,1
+How_we_know,second,"T13 Gate C - 2 of those 3 in Bala 29ca, verified this session",DECLARED,1,1
+How_we_know,101,live query: registered,LIVE_QUERY,1,1
+How_we_know,98,live query: pinned,LIVE_QUERY,1,1
+How_we_know,81,live query: reproduce,LIVE_QUERY,1,1
+How_we_know,0,live query: drift,LIVE_QUERY,1,1
+How_we_know,17,live query: nopath,LIVE_QUERY,1,1
+How_we_know,297,live query: figures,LIVE_QUERY,1,1
+How_we_know,5,live query: tables,LIVE_QUERY,1,1
+How_we_know,60,live query: reports,LIVE_QUERY,1,1
+what_we_dont_know Part 1,1,"floor_flood_r_64pdk | parameter - 1 pp of threshold, the elasticity numerator (T3 Gate B1)",PINNED,2,1
+what_we_dont_know Part 1,3rd,ref_paddock_flood_rank_bala26ca | t13_parts_recovering_count | parameter - 3 grazing regimes / 3 non-treed communities,PINNED,3,1
+what_we_dont_know Part 1,6th,"ref_paddock_flood_rank_bala28ca | t10_bala29ca_inland_level_deficit | t10_bala29ca_inland_level_deficit (5.8, written to 0 dp)",PINNED,3,1
+what_we_dont_know Part 1,31st,"ref_paddock_flood_rank_bala27ca | derived and stated - 2019 minus 1988 is 31 years, 'three decades'",PINNED,2,1
+what_we_dont_know Part 1,61st,ref_paddock_flood_rank_bala29ca,PINNED,1,1
+what_we_dont_know Part 1,64,"cropping_history_null_count | parameter - 64 management zones (dim_management_zone, 64 rows)",PINNED,2,1
+what_we_dont_know Part 1,5%,t13_recovering_survive_drop2wettest | derived and stated - rank 61 of 64 is the driest 5% | parameter - dim_management_zone reserves 5 cropping-history columns,PINNED,3,1
+what_we_dont_know Part 1,64,"cropping_history_null_count | parameter - 64 management zones (dim_management_zone, 64 rows)",PINNED,2,1
+what_we_dont_know Part 1,2013,"illustrative date in a hypothetical, not a measurement",DECLARED,1,1
+what_we_dont_know Part 1,32,"t10_bala29ca_aeolian_level_deficit | t10_bala29ca_aeolian_level_deficit (32.1, written to 0 dp)",PINNED,2,1
+what_we_dont_know Part 1,25,"t10_bala29ca_riverine_level_deficit | t10_bala29ca_riverine_level_deficit (24.9, written to 0 dp)",PINNED,2,1
+what_we_dont_know Part 1,6,"ref_paddock_flood_rank_bala28ca | t10_bala29ca_inland_level_deficit | t10_bala29ca_inland_level_deficit (5.8, written to 0 dp)",PINNED,3,1
+what_we_dont_know Part 1,14,parameter - the 14-day rotational grazing regime (dim_management_zone.treatment),DECLARED,1,1
+what_we_dont_know Part 1,15,"t13_parts_recovering_count | RPTSCOPE_report_set.csv EXCLUDED rows - 15 standard-grazing sites (R1b, independent count)",PINNED,2,1
+what_we_dont_know Part 1,115,parameter - 115 paddock-parts (fact_zone_community_part_classification),DECLARED,1,1
+what_we_dont_know Part 1,40%,T3_gateB1_threshold_sweep.csv - sweep floor,DECLARED,1,1
+what_we_dont_know Part 1,90%,T3_gateB1_threshold_sweep.csv - sweep ceiling,DECLARED,1,1
+what_we_dont_know Part 1,1%,"floor_flood_r_64pdk | parameter - 1 pp of threshold, the elasticity numerator (T3 Gate B1)",PINNED,2,1
+what_we_dont_know Part 1,5%,t13_recovering_survive_drop2wettest | derived and stated - rank 61 of 64 is the driest 5% | parameter - dim_management_zone reserves 5 cropping-history columns,PINNED,3,1
+what_we_dont_know Part 1,70%,T3_gateB1_threshold_sweep.csv - operational cut,DECLARED,1,1
+what_we_dont_know Part 1,"12,641",T3_gateB1_threshold_sweep.csv - persistent area at 70% cut,DECLARED,1,1
+what_we_dont_know Part 1,75%,T3_gateB1_threshold_sweep.csv - cut,DECLARED,1,1
+what_we_dont_know Part 1,"8,300",T3_gateB1_threshold_sweep.csv - persistent area at 75% cut,DECLARED,1,1
+what_we_dont_know Part 1,80%,T3_gateB1_threshold_sweep.csv - cut,DECLARED,1,1
+what_we_dont_know Part 1,"4,179",T3_gateB1_threshold_sweep.csv - persistent area at 80% cut,DECLARED,1,1
+what_we_dont_know Part 1,2,"T3-I5 - persistent ground floods roughly twice as often as the property average | parameter - the T13 sweep cut range 0.50 to 1.50 (T13 spec section 5) | T13 Gate C - 2 of those 3 in Bala 29ca, verified this session",DECLARED,3,1
+what_we_dont_know Part 1,"988,831","census_by_zone_stratum - non-treed scope, verified independently P3 S2",DECLARED,1,1
+what_we_dont_know Part 1,"1,080,157","parameter - census pixel count (census_by_zone_stratum, verified P3 S2)",DECLARED,1,1
+what_we_dont_know Part 1,91.55%,"census_by_zone_stratum - non-treed share, verified independently P3 S2",DECLARED,1,1
+what_we_dont_know Part 1,8.00%,"t13_parts_recovering_count | census_by_zone_stratum - Floodplain Woodland/Forest share 8.00%, verified P3 S2 | census_by_zone_stratum - Floodplain Woodland/Forest share %, verified P3 S2",PINNED,3,1
+what_we_dont_know Part 1,0.46%,"census_by_zone_stratum - Other/minor units share %, verified P3 S2",DECLARED,1,1
+what_we_dont_know Part 1,17,"two-floor divergence, spec section 6 / T2_zone_annual_veg_extraction.md section 94",DECLARED,1,1
+what_we_dont_know Part 1,thirty-five,"parameter - 35 water years, 1988-2022 (record length)",DECLARED,1,1
+what_we_dont_know Part 1,zero,live query: drift - the value-drift count is zero,DECLARED,1,1
+what_we_dont_know Part 1,one,"parameter - 1 pp of threshold, the elasticity numerator (T3 Gate B1)",DECLARED,1,1
+what_we_dont_know Part 1,two,"T3-I5 - persistent ground floods roughly twice as often as the property average | T13 Gate C - 2 of those 3 in Bala 29ca, verified this session",DECLARED,2,1
+what_we_dont_know Part 1,three,ref_paddock_flood_rank_bala26ca | t13_parts_recovering_count | parameter - 3 grazing regimes / 3 non-treed communities,PINNED,3,1
+what_we_dont_know Part 1,four,"parameter - 4 conserved paddocks (dim_management_zone, treatment not grazed) | parameter - 4 conserved paddocks; also the 4 water years since management changed",DECLARED,2,1
+what_we_dont_know Part 1,five,t13_recovering_survive_drop2wettest | derived and stated - rank 61 of 64 is the driest 5% | parameter - dim_management_zone reserves 5 cropping-history columns,PINNED,3,1
+what_we_dont_know Part 1,eight,"t13_parts_recovering_count | census_by_zone_stratum - Floodplain Woodland/Forest share 8.00%, verified P3 S2 | census_by_zone_stratum - Floodplain Woodland/Forest share %, verified P3 S2",PINNED,3,1
+what_we_dont_know Part 1,nine,parameter - 9 non-treed strata (treed_context_flag=0 AND regime_band<>'context'),DECLARED,1,1
+what_we_dont_know Part 1,eleven,parameter - 11 census strata (census_by_zone_stratum),DECLARED,1,1
+what_we_dont_know Part 1,twelve,"T13 Gate C - 12 of the 16 declining parts in the Bala group, verified this session",DECLARED,1,1
+what_we_dont_know Part 1,sixty,derived and stated - 64 zones less the 4 conserved,DECLARED,1,1
+what_we_dont_know Part 1,half,"parameter - the T13 sweep cut range 0.50 to 1.50 (T13 spec section 5) | derived and stated - r=0.71 gives r-squared 0.504, 'about half'",DECLARED,2,1
+what_we_dont_know Part 1,third,L-01 / T13 - Bala 29ca is roughly one third each of three communities,DECLARED,1,1
+what_we_dont_know Part 1,twice,"T3-I5 - persistent ground floods roughly twice as often as the property average | T13 Gate C - 2 of those 3 in Bala 29ca, verified this session",DECLARED,2,1
+what_we_dont_know Part 1,second,"T3-I5 - persistent ground floods roughly twice as often as the property average | T13 Gate C - 2 of those 3 in Bala 29ca, verified this session",DECLARED,2,1
+what_we_dont_know Part 1,first,"parameter - 1 pp of threshold, the elasticity numerator (T3 Gate B1)",DECLARED,1,1
+what_we_dont_know Part 1,T3,"identifier, name or date - not a quantity",NAME_NOT_QUANTITY,0,1
+what_we_dont_know Part 1,Bala 28ca,"identifier, name or date - not a quantity",NAME_NOT_QUANTITY,0,1
+what_we_dont_know Part 1,Bala 29ca,"identifier, name or date - not a quantity",NAME_NOT_QUANTITY,0,1
+what_we_dont_know Part 1,Bala 26ca,"identifier, name or date - not a quantity",NAME_NOT_QUANTITY,0,1
+what_we_dont_know Part 1,10 August 2026,"identifier, name or date - not a quantity",NAME_NOT_QUANTITY,0,1
+what_we_dont_know Part 2,1,"one figure that did not reproduce | parameter - 1 pp of threshold, the elasticity numerator (T3 Gate B1)",DECLARED,2,1
+what_we_dont_know Part 2,thirty-three,Task M Gate A - 33 stale claim sites,DECLARED,1,1
+what_we_dont_know Part 2,one,"one figure that did not reproduce | parameter - 1 pp of threshold, the elasticity numerator (T3 Gate B1)",DECLARED,2,1
+what_we_dont_know Part 2,two,"issues log I-43 / I-42 - twice, and one rebuilt check | T13 Gate C - 2 of those 3 in Bala 29ca, verified this session",DECLARED,2,1
+what_we_dont_know Part 2,three,issues log I-37 - three unrelated eighteens | parameter - 3 grazing regimes / 3 non-treed communities,DECLARED,2,1
+what_we_dont_know Part 2,four,P1 - four paths written from memory | parameter - 4 conserved paddocks; also the 4 water years since management changed,DECLARED,2,1
+what_we_dont_know Part 2,six,"issues log I-37 - six numeral collisions | t10_bala29ca_inland_level_deficit (5.8, written to 0 dp)",DECLARED,2,1
+what_we_dont_know Part 2,seven,issues log I-40 - seven derivations written and not wired,DECLARED,1,1
+what_we_dont_know Part 2,eight,"issues log I-40 - eight instances | census_by_zone_stratum - Floodplain Woodland/Forest share %, verified P3 S2",DECLARED,2,1
+what_we_dont_know Part 2,nine,parameter - 9 non-treed strata (treed_context_flag=0 AND regime_band<>'context'),DECLARED,1,1
+what_we_dont_know Part 2,twice,"issues log I-43 / I-42 - twice, and one rebuilt check | T13 Gate C - 2 of those 3 in Bala 29ca, verified this session",DECLARED,2,1
+what_we_dont_know Part 2,second,"issues log I-43 / I-42 - twice, and one rebuilt check | T13 Gate C - 2 of those 3 in Bala 29ca, verified this session",DECLARED,2,1
+what_we_dont_know Part 2,first,"one figure that did not reproduce | parameter - 1 pp of threshold, the elasticity numerator (T3 Gate B1)",DECLARED,2,1
+what_we_dont_know Part 2,Bala 29ca,"identifier, name or date - not a quantity",NAME_NOT_QUANTITY,0,1
+what_we_dont_know Part 2,T3,"identifier, name or date - not a quantity",NAME_NOT_QUANTITY,0,1

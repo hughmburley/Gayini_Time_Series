@@ -50,6 +50,9 @@ LIVE["nopath"]     = sum(1 for r in st if r["status"]=="NO_DERIVATION_PATH")
 LIVE["coverage"]   = 100*LIVE["reproduce"]/LIVE["pinned"]
 LIVE["figures"]    = c.execute("SELECT COUNT(*) FROM figure_asset").fetchone()[0]
 LIVE["tables"]     = c.execute("SELECT COUNT(*) FROM table_asset").fetchone()[0]
+# RT-2: three registries are written by this build, not two. report_asset moved 59->60 in the SAME
+# transaction that moved table_asset 4->5 (the write I-44 was about) and was silently absent.
+LIVE["reports"]    = c.execute("SELECT COUNT(*) FROM report_asset").fetchone()[0]
 print(f"  LIVE: registered={LIVE['registered']} pinned={LIVE['pinned']} reproduce={LIVE['reproduce']} "
       f"drift={LIVE['drift']} coverage={LIVE['coverage']:.1f}%")
 
@@ -91,12 +94,17 @@ ANSWERS = {
        "NOT ANSWERABLE AS ASKED","Cropping history is not recorded anywhere. Five columns are reserved "
        "for it and are empty for all 64 paddocks, so every contrast in this pack is not-grazed versus "
        "grazed, never conserved versus formerly-cropped.","cropping_history_null_count"),
+ # RT-1: the cell quotes all four ranks and listed one. All four now listed.
  "Q2":("Are the conserved paddocks a usable reference set?","NO — AND THE DESIGN CANNOT SETTLE IT",Q2,
-       "ref_grazed_gap_annual_ref3_excl29ca_mean,ref_paddock_flood_rank_bala26ca"),
+       "ref_grazed_gap_annual_ref3_excl29ca_mean,ref_paddock_flood_rank_bala26ca,"
+       "ref_paddock_flood_rank_bala28ca,ref_paddock_flood_rank_bala27ca,"
+       "ref_paddock_flood_rank_bala29ca"),
  "Q3":("Is Bala 29ca recovering, and is it just getting wetter?","RECOVERING, AND NOT JUST WETTER",
        "Its poorest patches carry about 17 percentage points less cover than its dryness predicts — the "
        "second largest shortfall on the property — and 82% of its improvement survives removing the "
-       "effect of the water it actually received.","bala29ca_improvement_surviving_water_pct"),
+       "effect of the water it actually received.",
+       # RT-1: the "about 17 percentage points" was written but unlisted
+       "bala29ca_improvement_surviving_water_pct,t10_bala29ca_xsec_residual"),
  "Q4":("Does grazing intensity show up in the ground cover?","NO — AND THE ORDERING RUNS THE WRONG WAY",
        "Comparing three management types within similar country, the standard-grazing land sits at or "
        "above the rotationally grazed land in six of nine comparisons. Either intensity does not "
@@ -110,7 +118,9 @@ ANSWERS = {
        "BOTH, AND IT IS GEOGRAPHIC RATHER THAN MANAGERIAL",
        "Eight of 115 parts are improving faster than their water explains; five survive dropping the "
        "two wettest years; three recover at every cut tested. Twelve of the sixteen declining parts "
-       "are in the Bala group.","t13_parts_recovering_count,t13_parts_declining_count"),
+       "are in the Bala group.",
+       # RT-1: "five survive dropping the two wettest years" was written but unlisted
+       "t13_parts_recovering_count,t13_recovering_survive_drop2wettest,t13_parts_declining_count"),
  "Q7":("Did management change the water regime?","UNTESTED, AND PROBABLY UNTESTABLE WITH THIS RECORD",
        "This is the question worth asking and we cannot answer it. There are four water years since "
        "management changed and they are unusually wet. This is an honest non-answer, not a gap in the "
@@ -207,6 +217,8 @@ sheet("How_we_know",
        ["coverage and drift, in one sentence", cov, "generated at build time; never typed, never copied"],
        ["registered figures", LIVE["figures"], "COUNT(*) figure_asset — queried at build time"],
        ["registered tables", LIVE["tables"], "COUNT(*) table_asset — queried at build time"],
+       ["registered reports", LIVE["reports"], "COUNT(*) report_asset — queried at build time. This "
+        "build writes all three registries; reporting two of them left the third silently absent"],
        ["a rule that fired against us", FALSIF, "T3 Gate B1 pre-registration; R2 Ruling D derivation"],
        ["", "", ""],
        ["NOTE", "No number on this sheet is typed.",
@@ -218,39 +230,197 @@ out = PACK/"Gayini_Adrian_pack.xlsx"
 wb.save(out); print(f"  wrote {out.name} (5 sheets)")
 
 # ---------- P4-7: final number check ---------------------------------------------------------
+# RT-1 CHANGES THE RULE. The first version resolved every number_id LISTED IN THE PROVENANCE
+# COLUMN, and passed 38/38 while three cells quoted numbers whose ids were not listed. A check
+# that verifies the citation list rather than the sentence cannot see an uncited number - it is
+# the I-40 shape again (the criterion and the thing checked wrong in the same direction).
+# The rule is now: EXTRACT EVERY NUMBER FROM THE CELL TEXT AS WRITTEN and resolve each one.
 import re
-checks=[]
-def add(loc, num, resolves, state):
-    checks.append(dict(location=loc, number_as_written=num, resolves_to=resolves, state=state,
-                       agrees=1 if state in ("PINNED","LIVE_QUERY","AUDIT_ROW","DERIVED_DECLARED") else 0))
-for n,t,nid in CLAIMS:
-    for one in nid.split(","):
-        add(f"Start_here claim {n}", one, one, "PINNED" if one in PINS else "UNRESOLVED")
-for k,(qq,a,why,nid) in ANSWERS.items():
-    if nid.startswith("(none"): add(f"By_question {k}", "(no number)", "N/A_by_design", "AUDIT_ROW"); continue
-    for one in nid.split(","):
-        add(f"By_question {k}", one, one, "PINNED" if one in PINS else "UNRESOLVED")
-for key in ("registered","pinned","reproduce","drift","nopath","figures","tables"):
-    add("How_we_know", str(LIVE[key]), f"live query: {key}", "LIVE_QUERY")
-T3NUM = {"3rd, 6th, 31st and 61st of 64":"ref_paddock_flood_rank_bala26ca (+3 siblings)",
- "all 64 paddocks (cropping history)":"cropping_history_null_count",
- "32 / 25 / 6 pp Bala 29ca community deficits":"t10_bala29ca_aeolian_level_deficit, _riverine_, _inland_",
- "15 standard-grazing sites":"RPTSCOPE_report_set.csv EXCLUDED rows (R1b)",
- "twelve of 115 change side; eight to five":"DERIVED — design-seat computation, no committed producer (O4)",
- "12,641 / 8,300 / 4,179 ha at 70/75/80":"t3_always_green_sweep (R2 Ruling D)",
- "988,831 of 1,080,157 px, 91.55% / 8.00% / 0.46%":"census_by_zone_stratum (verified S2)",
- "17 percentage points (two floors)":"spec §6 / T2_zone_annual_veg_extraction.md §94",
- "35 consecutive years":"parameter, not a result",
- "floods roughly twice as often (channel)":"T3-I5, T3_gateCDE_20260803.md",
- "eight instances / six occasions / twice":"issues log I-40, I-37, I-43"}
-for k,v in T3NUM.items():
-    add("Gayini_what_we_dont_know.md", k, v,
-        "DERIVED_DECLARED" if v.startswith("DERIVED") else ("PINNED" if v.split()[0] in PINS else "AUDIT_ROW"))
+SPREADS = {r[0]: (r[1], r[2]) for r in
+           con.execute("SELECT number_id, spread_min, spread_max FROM dim_headline_number")}
+
+WORDS = {"zero":0,"one":1,"two":2,"three":3,"four":4,"five":5,"six":6,"seven":7,"eight":8,
+         "nine":9,"ten":10,"eleven":11,"twelve":12,"thirteen":13,"fourteen":14,"fifteen":15,
+         "sixteen":16,"seventeen":17,"eighteen":18,"nineteen":19,"twenty":20,"thirty":30,
+         "sixty":60,"hundred":100,"thirty-five":35,"thirty-three":33,"sixty-four":64,"half":0.5,"third":1/3,
+         "twice":2,"second":2,"first":1}
+# Numbers that are NAMES, not quantities. Listed and reported, never silently dropped.
+NAMES = re.compile(r"Bala\s+\d+[a-z]*(?:/\d+)?|Dinan\s+\d+|veg_p05_spatial|veg_p05_mean|"
+                   r"\bp05\b|I-\d+|T3-I\d+|\bT\d+\b|\bM\d+b?\b|\bF\d+\b|\bQ\d\b|EPSG:\d+|"
+                   r"L-\d+|\bR\d+\b|_bala\d+ca|\b25[- ]met(?:re|er)\b|\b25 m\b")
+DATES = re.compile(r"\b\d{1,2} (?:January|February|March|April|May|June|July|August|September|"
+                   r"October|November|December) \d{4}\b")
+TOKEN = re.compile(r"[-+]?\d[\d,]*(?:\.\d+)?%?(?:st|nd|rd|th)?")
+COMPOUND = ["thirty-five", "thirty-three", "sixty-four"]
+
+def numbers_in(text):
+    """Every quantity written in the text. Names and dates are removed and reported separately,
+    never silently dropped - a number that vanishes from the scan is exactly what RT-1 caught."""
+    names = NAMES.findall(text) + DATES.findall(text)
+    stripped = DATES.sub(" ", NAMES.sub(" ", text))
+    out = []
+    for m in TOKEN.finditer(stripped):
+        raw = m.group(0)
+        v = float(re.sub(r"[,%]|st$|nd$|rd$|th$", "", raw))
+        dp = len(raw.split(".")[1].rstrip("%stndrdh")) if "." in raw else 0
+        out.append((raw, v, dp, False))
+    for w in COMPOUND:                                  # longest first, then blanked, so
+        if re.search(rf"\b{w}\b", stripped, re.I):      # "Thirty-five" is not also read as "thirty"
+            out.append((w, float(WORDS[w]), 0, True))
+            stripped = re.sub(rf"\b{w}\b", " ", stripped, flags=re.I)
+    for w, v in WORDS.items():
+        if w in COMPOUND: continue
+        if re.search(rf"\b{w}\b", stripped, re.I): out.append((w, float(v), 0, True))
+    return out, names
+
+# Non-registry quantities, split the way CLAUDE.md already splits result numbers. A PARAMETER is
+# the spec and may be written anywhere without citation. A RESULT may not: a cell that carries a
+# provenance COLUMN must cite the results it quotes. That split is what lets the uncited-number
+# test bite instead of drowning in two dozen legitimate parameters.
+PARAMS = {
+ 35.0:"parameter - 35 water years, 1988-2022 (record length)",
+ 1988.0:"parameter - first water year of the record",
+ 2019.0:"parameter - conservation management start (dim_management_zone)",
+ 2013.0:"illustrative date in a hypothetical, not a measurement",
+ 64.0:"parameter - 64 management zones (dim_management_zone, 64 rows)",
+ 115.0:"parameter - 115 paddock-parts (fact_zone_community_part_classification)",
+ 66.0:"parameter - 66 monitoring plots (dim_plot)",
+ 4.0:"parameter - 4 conserved paddocks; also the 4 water years since management changed",
+ 5.0:"parameter - dim_management_zone reserves 5 cropping-history columns",
+ 3.0:"parameter - 3 grazing regimes / 3 non-treed communities",
+ 0.50:"parameter - the T13 sweep cut range 0.50 to 1.50 (T13 spec section 5)",
+ 1.50:"parameter - the T13 sweep cut range 0.50 to 1.50 (T13 spec section 5)",
+ 1.0:"parameter - 1 pp of threshold, the elasticity numerator (T3 Gate B1)",
+ 11.0:"parameter - 11 census strata (census_by_zone_stratum)",
+ 9.0:"parameter - 9 non-treed strata (treed_context_flag=0 AND regime_band<>'context')",
+ 1080157.0:"parameter - census pixel count (census_by_zone_stratum, verified P3 S2)",
+}
+RESULTS = {
+ 988831.0:"census_by_zone_stratum - non-treed scope, verified independently P3 S2",
+ 91.55:"census_by_zone_stratum - non-treed share, verified independently P3 S2",
+ 8.0:"census_by_zone_stratum - Floodplain Woodland/Forest share %, verified P3 S2",
+ 0.46:"census_by_zone_stratum - Other/minor units share %, verified P3 S2",
+ 2.0:"T13 Gate C - 2 of those 3 in Bala 29ca, verified this session",
+ 12.0:"T13 Gate C - 12 of the 16 declining parts in the Bala group, verified this session",
+ 0.5:"derived and stated - r=0.71 gives r-squared 0.504, 'about half'",
+ 32.1:"t10_bala29ca_aeolian_level_deficit", 24.9:"t10_bala29ca_riverine_level_deficit",
+ 5.8:"t10_bala29ca_inland_level_deficit",
+ 32.0:"t10_bala29ca_aeolian_level_deficit (32.1, written to 0 dp)",
+ 25.0:"t10_bala29ca_riverine_level_deficit (24.9, written to 0 dp)",
+ 6.0:"t10_bala29ca_inland_level_deficit (5.8, written to 0 dp)",
+ 15.0:"RPTSCOPE_report_set.csv EXCLUDED rows - 15 standard-grazing sites (R1b, independent count)",
+ 12641.0:"T3_gateB1_threshold_sweep.csv - persistent area at 70% cut",
+ 8300.0:"T3_gateB1_threshold_sweep.csv - persistent area at 75% cut",
+ 4179.0:"T3_gateB1_threshold_sweep.csv - persistent area at 80% cut",
+ 70.0:"T3_gateB1_threshold_sweep.csv - operational cut", 75.0:"T3_gateB1_threshold_sweep.csv - cut",
+ 80.0:"T3_gateB1_threshold_sweep.csv - cut", 40.0:"T3_gateB1_threshold_sweep.csv - sweep floor",
+ 90.0:"T3_gateB1_threshold_sweep.csv - sweep ceiling",
+ 17.0:"two-floor divergence, spec section 6 / T2_zone_annual_veg_extraction.md section 94",
+ 31.0:"derived and stated - 2019 minus 1988 is 31 years, 'three decades'",
+ 86375.0:"census_by_zone_stratum - Floodplain Woodland/Forest pixels, verified P3 S2",
+ 4951.0:"census_by_zone_stratum - Other/minor units pixels, verified P3 S2",
+}
+DECLARED_BY_LOC = {   # location-specific sources, checked BEFORE the global table
+ "what_we_dont_know Part 1": {
+   4.0:"parameter - 4 conserved paddocks (dim_management_zone, treatment not grazed)",
+   60.0:"derived and stated - 64 zones less the 4 conserved",
+   14.0:"parameter - the 14-day rotational grazing regime (dim_management_zone.treatment)",
+   5.0:"derived and stated - rank 61 of 64 is the driest 5%",
+   1/3:"L-01 / T13 - Bala 29ca is roughly one third each of three communities",
+   8.0:"census_by_zone_stratum - Floodplain Woodland/Forest share 8.00%, verified P3 S2",
+   2.0:"T3-I5 - persistent ground floods roughly twice as often as the property average",
+   0.0:"live query: drift - the value-drift count is zero"},
+ "Start_here claim 6": {2.0:"T13 Gate C - 2 of the 3 all-cut Recovering parts are in Bala 29ca, "
+                        "verified against T13_gateC_classification.csv this session",
+                   3.0:"T13 Gate C - 3 parts Recovering at every cut 0.50-1.50, verified this session"},
+ "Start_here claim 7": {12.0:"T13 Gate C - 12 of the 16 Declining parts are in the Bala group, "
+                             "verified this session"},
+ "By_question Q3":    {2.0:"T10 cross-sectional residuals - Bala 29ca at -16.8 is the second largest "
+                           "shortfall, behind Bala 15 at -17.62 (verified this session)"},
+ "By_question Q6":    {2.0:"T13 Gate C - the two wettest years dropped in the robustness re-run",
+                  12.0:"T13 Gate C - 12 of the 16 Declining parts are in the Bala group, verified",
+                  3.0:"T13 Gate C - 3 parts Recovering at every cut tested, verified this session"},
+ "Start_here claim 1": {0.0:"derived and stated - the spread -7.038 to +4.987 brackets zero"},
+ "By_question Q2":    {0.0:"derived and stated - the spread -7.038 to +4.987 brackets zero"},
+ "what_we_dont_know Part 2": {8.0:"issues log I-40 - eight instances",
+   6.0:"issues log I-37 - six numeral collisions", 2.0:"issues log I-43 / I-42 - twice, and one rebuilt check",
+   3.0:"issues log I-37 - three unrelated eighteens", 33.0:"Task M Gate A - 33 stale claim sites",
+   7.0:"issues log I-40 - seven derivations written and not wired", 4.0:"P1 - four paths written from memory",
+   18.0:"issues log I-37 - the three unrelated eighteens", 1.0:"one figure that did not reproduce"},
+ # How_we_know's own sentence embeds the live values; they resolve to the queries that produced them
+ "How_we_know": {float(LIVE["pinned"]):"live query: pinned", float(LIVE["reproduce"]):"live query: reproduce",
+   float(LIVE["drift"]):"live query: drift", float(LIVE["nopath"]):"live query: nopath",
+   round(LIVE["coverage"],1):"live query: coverage", 70.0:"T3 Gate B1 pre-registered threshold"},
+}
+# The T3 page's provenance: the ids the page's Part 1 quotes. Given so a rank resolves to its rank.
+T3_IDS = ["ref_paddock_flood_rank_bala26ca","ref_paddock_flood_rank_bala27ca",
+          "ref_paddock_flood_rank_bala28ca","ref_paddock_flood_rank_bala29ca",
+          "cropping_history_null_count","t10_bala29ca_aeolian_level_deficit",
+          "t10_bala29ca_riverine_level_deficit","t10_bala29ca_inland_level_deficit",
+          "t13_parts_recovering_count","t13_recovering_survive_drop2wettest","floor_flood_r_64pdk"]
+
+def resolve(loc, v, dp, is_word, ids, contract):
+    """Collect EVERY source that could produce this number. One hit is an attribution; more than
+    one is coverage without attribution, and the CSV says so rather than picking the first."""
+    def eq(cd):
+        cd = abs(float(cd))
+        return abs(cd - abs(v)) < 1e-9 if is_word else round(cd, dp) == round(abs(v), dp)
+    hits, from_id, from_loc, from_param = [], False, False, False
+    for nid in ids:
+        for cd in [PINS.get(nid)] + list(SPREADS.get(nid, (None, None))):
+            if cd is not None and eq(cd): hits.append(nid); from_id = True; break
+    for k, src in DECLARED_BY_LOC.get(loc, {}).items():
+        if eq(k): hits.append(src); from_loc = True
+    for k, src in PARAMS.items():
+        if eq(k): hits.append(src); from_param = True
+    for k, src in RESULTS.items():
+        if eq(k): hits.append(src)
+    hits = list(dict.fromkeys(hits))
+    if not hits: return "", "UNRESOLVED", 0
+    # A cell that cites ids, quoting a number that matches NONE of them and is rescued only by the
+    # project-wide table, is RT-1's defect exactly: the number is written but not cited. The global
+    # table must not be allowed to absorb it silently - that is how "17" passed before RT-1.
+    if contract and not from_id and not from_loc and not from_param:
+        return " | ".join(hits[:3]), "DECLARED_UNCITED", len(hits)
+    return " | ".join(hits[:3]), ("PINNED" if hits[0] in PINS else "DECLARED"), len(hits)
+
+checks = []
+def scan(loc, text, ids, contract=True):
+    nums, names = numbers_in(text)
+    for raw, v, dp, is_word in nums:
+        res, state, n = resolve(loc, v, dp, is_word, ids, contract)
+        checks.append(dict(location=loc, number_as_written=raw, resolves_to=res, state=state,
+                           n_matching_sources=n, agrees=int(state != "UNRESOLVED")))
+    for nm in set(names):
+        checks.append(dict(location=loc, number_as_written=nm,
+                           resolves_to="identifier, name or date - not a quantity",
+                           state="NAME_NOT_QUANTITY", n_matching_sources=0, agrees=1))
+
+for n, t, nid in CLAIMS:                     scan(f"Start_here claim {n}", t, nid.split(","))
+for k, (qq, a, why, nid) in ANSWERS.items(): scan(f"By_question {k}", why,
+                                                  [] if nid.startswith("(none") else nid.split(","))
+for a, b in CAUTIONS:                        scan("Two_cautions", b, [], contract=False)
+scan("How_we_know", cov + " " + FALSIF, [], contract=False)
+for key in ("registered","pinned","reproduce","drift","nopath","figures","tables","reports"):
+    checks.append(dict(location="How_we_know", number_as_written=str(LIVE[key]),
+                       resolves_to=f"live query: {key}", state="LIVE_QUERY",
+                       n_matching_sources=1, agrees=1))
+t3 = (PACK/"Gayini_what_we_dont_know.md").read_text(encoding="utf-8")
+part1, part2 = t3.split("## Part 2", 1)
+# the page carries no provenance COLUMN - its sources are inline prose - so T3_IDS are extra
+# candidates, not a contract, and the uncited-result test does not apply to it
+scan("what_we_dont_know Part 1", part1, T3_IDS, contract=False)
+scan("what_we_dont_know Part 2", part2, [], contract=False)
+
 with open(PACK/"PACK1_final_number_check.csv","w",newline="",encoding="utf-8") as f:
     w=csv.DictWriter(f,fieldnames=list(checks[0].keys())); w.writeheader(); w.writerows(checks)
-unres=[x for x in checks if x["state"]=="UNRESOLVED"]
-print(f"  P4-7: {len(checks)} numbers checked, {len(unres)} UNRESOLVED")
-for x in unres: print("     *** ",x)
+unres=[x for x in checks if x["state"] in ("UNRESOLVED","DECLARED_UNCITED")]
+import collections as _co
+print(f"  P4-7 (RT-1 rule - every number AS WRITTEN): {len(checks)} numbers checked, "
+      f"{len(unres)} UNRESOLVED")
+print("     " + " · ".join(f"{k}={v}" for k,v in _co.Counter(x['state'] for x in checks).items()))
+for x in unres: print(f"     *** {x['state']:18s} {x['location']:28s} | "
+                      f"{x['number_as_written']:10s} -> {x['resolves_to'][:60]}")
 con.close()
 
 # ---------- Ruling N: register the workbook ---------------------------------------------------
