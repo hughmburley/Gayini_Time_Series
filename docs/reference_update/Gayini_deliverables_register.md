@@ -64,10 +64,16 @@ written at the level of finish the deliverable needs.
 > measured as a management type.
 
 **M3 · Which country stays green** — `T2_B2_duration_map` · claim 3 · EXISTS
-> For every 25-metre square on the property, the share of observed years in which its ground cover
-> was high. The most persistent country forms broad connected areas rather than following paddock
-> boundaries. Areas with fewer than ten valid years are left blank, and the brightest shading
-> saturates where cover was high in every observed year.
+> For every 25-metre square, the share of observed years in which total vegetation cover exceeded
+> 70%. The most persistent country forms broad connected areas. **The 70% line is a chosen cut, not a
+> natural boundary in the data** — a sweep across plausible thresholds shows a smooth decline with no
+> break, so the area labelled "persistent" moves substantially with the cut. Squares with fewer than
+> ten valid years are left blank, and the brightest shading saturates where cover exceeded the line in
+> every observed year.
+>
+> *(Caption replaced 3 Aug 2026, P3-1/P3-3. The previous wording claimed the
+> pattern forms broad areas "rather than following paddock boundaries" — the figure draws no paddock
+> boundaries, so that comparison could not be seen. The chosen-cut clause is new.)*
 
 **M4 · Country coming back and going backwards** — `T13_D1_part_state_map_and_scatter` · claims 4, 6, 7 · EXISTS
 > Each part of each paddock, compared against similar country elsewhere on Gayini. Solid colour

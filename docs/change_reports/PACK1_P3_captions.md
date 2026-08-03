@@ -56,14 +56,14 @@ without re-opening the image. **P3-4 honoured throughout: files opened to read, 
 | T2 | 115 rows, classification | YES | it is a CSV, read directly |
 | T3 | — | n/a | no file; see P3-9 |
 
-### The one failing clause — REWRITE REPORTED, NOT APPLIED
+### The one failing clause — reported at P3, and APPLIED under Ruling S3
 
 **M3, clause 2.** *"The most persistent country forms broad connected areas rather than following
 paddock boundaries."* The first half is drawn. **The second half is not: the figure contains no
 paddock boundaries**, so the comparison cannot be seen. The claim may well be true — M5 shows
 exactly that at paddock and part grain — but **this figure does not show it.**
 
-**Proposed rewrite, for the design seat to accept or amend:**
+**Rewrite, reported at P3 and ACCEPTED AS DRAFTED at S3. Now applied to register v3 §3, with a visible note recording what the previous wording claimed and why it could not be seen:**
 
 > *For every 25-metre square, the share of observed years in which total vegetation cover exceeded
 > 70%. The most persistent country forms broad connected areas. **The 70% line is a chosen cut, not
@@ -128,9 +128,9 @@ Collected with sources. **No wording drafted.**
 | all four conserved paddocks sit in the Bala block, so **treatment is perfectly confounded with block** | `dim_management_zone.reference_set_caveat` |
 | the standard-grazing arm has **15 sites and no paddock parent** — excluded from the report set by construction | R1b §3; `RPTSCOPE_report_set.csv` EXCLUDED rows |
 | refugia is a **chosen cut on a continuum**, not a discovered class | T3 Gate B1; R2 Ruling D derivation |
-| **13.33% woody cover**, so the floor is a ground-layer signal | *(source not yet located in the repo — flagged)* |
+| **the floor analysis excludes the treed stratum entirely** — nine of eleven strata, **988,831 of 1,080,157 pixels (91.55%)** — so it is a ground-layer measurement and says nothing about tree or shrub structure. Floodplain Woodland / Forest **86,375 px (8.00%)** and Other / minor units **4,951 px (0.46%)** are outside every floor number in this pack | `census_by_zone_stratum`, verified independently 3 Aug — **replaces a withdrawn 13.33% figure, see below** |
 | 35 consecutive years are not independent — **no p-values** on the annual series | spec §6; T10/T13 |
-| the channel-association result is **proxy-based; no channel layer exists** | *(source not yet located in the repo — flagged)* |
+| the channel-association result is **proxy-based; no channel layer exists** | **T3-I5**, `docs/change_reports/T3_gateCDE_20260803.md` — no channel or watercourse layer is registered or present; the only hydrological geometry is Task J irrigation infrastructure, which is not natural channel, so flood frequency is a proxy |
 | reproduction coverage, and the numbers with **no derivation path** | `RPTSCOPE_reproduction_status.csv` — live, never typed |
 | the whole-project rows of the v10 limitations register, **once it lands** | not in the repo (Ruling H) |
 
@@ -145,8 +145,27 @@ Collected with sources. **No wording drafted.**
 | **I-43** a ruling is only a ruling if it can be quoted | issues log |
 | the rewritten **L-T12-b**, paired with T3 Gate B1's rule firing — one pre-registered rule fired and was honoured, another was aimed wrongly and caught nothing | Ruling I |
 
-**Two rows I could not source** — 13.33% woody cover, and the channel-association proxy. Both are in
-your list; neither is in the repo where I can find it. **Flagged rather than asserted.**
+### Both unsourced rows resolved, 3 August
+
+**The channel row is sourced** — T3-I5 in `T3_gateCDE_20260803.md`. Cited on the row.
+
+**The 13.33% woody-cover row is WITHDRAWN. It does not reproduce.** Verified independently against
+`census_by_zone_stratum`, and every figure matches the design seat's:
+
+| | pixels | share | seat |
+|---|---|---|---|
+| Floodplain Woodland / Forest | **86,375** | **8.00%** | 86,375 / 8.0% ✓ |
+| Other / minor units | **4,951** | **0.46%** | 0.5% ✓ |
+| **non-treed analysis scope** | **988,831** | **91.55%** | 988,831 / 91.5% ✓ |
+| sum | **1,080,157** | 100% | reconciles exactly |
+
+**Nothing in the database yields 13.33%.** The 988,831 also matches the standing non-treed scope
+(`treed_context_flag = 0 AND regime_band <> 'context'`) and therefore T3 Gate E's baseline. The
+figure entered via the R6 LiDAR review — a TaskU product at `qa_status = REVIEW`, **unshippable by
+its own registration** — and reached the T3 draft from a review document without a database check.
+
+**Logged as the eighth instance of I-40, source named as the design seat.** Replaced with the
+statement the analysis actually supports, now in Section 1 above.
 
 ## 8. P3-9 — T3's register caption: **REPLACE**
 
