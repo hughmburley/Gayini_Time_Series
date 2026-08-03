@@ -80,12 +80,30 @@ as the act being correct.**
 | acceptance | result |
 |---|---|
 | 17 items | **OK** |
-| 15 distinct non-null paths | **OK** |
+| ~~15~~ **16** distinct non-null paths | **OK — criterion corrected 3 Aug, see below** |
 | every path `exists = 1` on disk | **OK** |
 | every path resolves in the registry | **OK — 0 unregistered** |
 | no path under `docs/` | **OK — 0** |
 | F7 shares M4's file | **OK — confirmed identical** |
 | T3 carries no file | OK — `TEXT_ONLY`, the item is a table rendered in the workbook |
+
+> ### ⚠ CORRECTION 3 August 2026 — the acceptance criterion itself was wrong
+>
+> **This gate recorded "15 distinct non-null paths — OK". The deliverable was always 16.**
+>
+> | | items | files |
+> |---|---|---|
+> | AUD-1 | 16 | 14 |
+> | A3 adds M4b | 17 | 15 |
+> | **P1-4 rules `T1_render` a shipped file** | 17 | **16** — never re-added to the criterion |
+>
+> `T1_render` becomes a sixteenth physical file the moment it ships. **The criterion said 15 and the
+> build reported 15, so the check passed** — the criterion and the count were wrong in the same
+> direction and neither caught the other. The re-assembly under Ruling L produced 16, which is the
+> truth and always was. Item list and assembly manifest now both read **16**, verified.
+>
+> Logged as the **seventh instance of I-40**, in its own shape: *an acceptance criterion that passed
+> because the check and the thing checked were wrong identically.*
 
 **M4b is in the list from the start** (D1/A3), not added at P2. **T1 is the `.csv`**; the `.png` is
 row 18 as `T1_render`, marked *"listed as the rendering, NOT an eighteenth item"*.
