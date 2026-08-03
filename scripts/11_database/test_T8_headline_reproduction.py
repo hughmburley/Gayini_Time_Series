@@ -261,6 +261,9 @@ def recompute_rptscope_r2(c):
     out["rptscope_canary_p1_paddock_floor_bala29ca"]=round(c.execute(
         "SELECT AVG(veg_p05_spatial) FROM fact_zone_veg_annual WHERE zone_fid = 4 "
         "AND series_variant = 'mean_of_seasons' AND water_year BETWEEN 1988 AND 2022").fetchone()[0],2)
+    out["rptscope_canary_p3_composition_share_bala29ca_inland"]=round(c.execute(
+        "SELECT share_a FROM v_zone_community_composition WHERE zone_fid = 4 "
+        "ORDER BY share_a DESC LIMIT 1").fetchone()[0],2)
     out["rptscope_canary_p5_recovering_parts_bala29ca"]=float(c.execute(
         "SELECT COUNT(*) FROM fact_zone_community_part_classification "
         "WHERE zone_fid = 4 AND state_registered = 'Recovering'").fetchone()[0])

@@ -39,6 +39,7 @@ reg2_paddocks_lt60_dominance,Paddocks below 60% single-community dominance,1,1,R
 reg2_paddocks_lt75_dominance,Paddocks below 75% single-community dominance,1,1,REPRODUCES,14.0,14.0,1,0.05
 reg2_paddocks_single_community,Single-community paddocks (literal: exactly one focus-3 community),1,1,REPRODUCES,25.0,25.0,1,0.05
 rptscope_canary_p1_paddock_floor_bala29ca,Bala 29ca mean cover floor - CANARY for report page 1 cover headline,1,1,REPRODUCES,40.52,40.52,1,0.05
+rptscope_canary_p3_composition_share_bala29ca_inland,Bala 29ca largest community share (Inland) - CANARY for report page 3 composition,1,1,REPRODUCES,34.59,34.59,1,0.05
 rptscope_canary_p5_recovering_parts_bala29ca,Bala 29ca parts classified Recovering - CANARY for report page 5 part states,1,1,REPRODUCES,2.0,2.0,1,0.05
 t10_bala29ca_aeolian_floor_trend,Bala 29ca floor trend within aeolian,1,1,REPRODUCES,0.56,0.56,1,0.05
 t10_bala29ca_aeolian_level_deficit,Bala 29ca floor level vs aeolian community median,1,1,REPRODUCES,-32.1,-32.1,1,0.05
