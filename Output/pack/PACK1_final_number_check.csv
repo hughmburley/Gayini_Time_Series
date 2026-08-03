@@ -1,0 +1,39 @@
+location,number_as_written,resolves_to,state,agrees
+Start_here claim 1,ref_grazed_gap_annual_ref3_excl29ca_mean,ref_grazed_gap_annual_ref3_excl29ca_mean,PINNED,1
+Start_here claim 2,t10_gap_annual_slope_C_29ca,t10_gap_annual_slope_C_29ca,PINNED,1
+Start_here claim 3,floor_flood_r_64pdk,floor_flood_r_64pdk,PINNED,1
+Start_here claim 4,bala29ca_improvement_surviving_water_pct,bala29ca_improvement_surviving_water_pct,PINNED,1
+Start_here claim 5,ref_paddock_flood_rank_bala26ca,ref_paddock_flood_rank_bala26ca,PINNED,1
+Start_here claim 5,ref_paddock_flood_rank_bala28ca,ref_paddock_flood_rank_bala28ca,PINNED,1
+Start_here claim 5,ref_paddock_flood_rank_bala27ca,ref_paddock_flood_rank_bala27ca,PINNED,1
+Start_here claim 5,ref_paddock_flood_rank_bala29ca,ref_paddock_flood_rank_bala29ca,PINNED,1
+Start_here claim 6,t13_parts_recovering_count,t13_parts_recovering_count,PINNED,1
+Start_here claim 6,t13_recovering_survive_drop2wettest,t13_recovering_survive_drop2wettest,PINNED,1
+Start_here claim 7,t13_parts_declining_count,t13_parts_declining_count,PINNED,1
+By_question Q1,cropping_history_null_count,cropping_history_null_count,PINNED,1
+By_question Q2,ref_grazed_gap_annual_ref3_excl29ca_mean,ref_grazed_gap_annual_ref3_excl29ca_mean,PINNED,1
+By_question Q2,ref_paddock_flood_rank_bala26ca,ref_paddock_flood_rank_bala26ca,PINNED,1
+By_question Q3,bala29ca_improvement_surviving_water_pct,bala29ca_improvement_surviving_water_pct,PINNED,1
+By_question Q4,three_arm_standard_at_or_above_count,three_arm_standard_at_or_above_count,PINNED,1
+By_question Q5,floor_flood_r_64pdk,floor_flood_r_64pdk,PINNED,1
+By_question Q6,t13_parts_recovering_count,t13_parts_recovering_count,PINNED,1
+By_question Q6,t13_parts_declining_count,t13_parts_declining_count,PINNED,1
+By_question Q7,(no number),N/A_by_design,AUDIT_ROW,1
+How_we_know,101,live query: registered,LIVE_QUERY,1
+How_we_know,98,live query: pinned,LIVE_QUERY,1
+How_we_know,81,live query: reproduce,LIVE_QUERY,1
+How_we_know,0,live query: drift,LIVE_QUERY,1
+How_we_know,17,live query: nopath,LIVE_QUERY,1
+How_we_know,297,live query: figures,LIVE_QUERY,1
+How_we_know,5,live query: tables,LIVE_QUERY,1
+Gayini_what_we_dont_know.md,"3rd, 6th, 31st and 61st of 64",ref_paddock_flood_rank_bala26ca (+3 siblings),PINNED,1
+Gayini_what_we_dont_know.md,all 64 paddocks (cropping history),cropping_history_null_count,PINNED,1
+Gayini_what_we_dont_know.md,32 / 25 / 6 pp Bala 29ca community deficits,"t10_bala29ca_aeolian_level_deficit, _riverine_, _inland_",AUDIT_ROW,1
+Gayini_what_we_dont_know.md,15 standard-grazing sites,RPTSCOPE_report_set.csv EXCLUDED rows (R1b),AUDIT_ROW,1
+Gayini_what_we_dont_know.md,twelve of 115 change side; eight to five,"DERIVED — design-seat computation, no committed producer (O4)",DERIVED_DECLARED,1
+Gayini_what_we_dont_know.md,"12,641 / 8,300 / 4,179 ha at 70/75/80",t3_always_green_sweep (R2 Ruling D),AUDIT_ROW,1
+Gayini_what_we_dont_know.md,"988,831 of 1,080,157 px, 91.55% / 8.00% / 0.46%",census_by_zone_stratum (verified S2),AUDIT_ROW,1
+Gayini_what_we_dont_know.md,17 percentage points (two floors),spec §6 / T2_zone_annual_veg_extraction.md §94,AUDIT_ROW,1
+Gayini_what_we_dont_know.md,35 consecutive years,"parameter, not a result",AUDIT_ROW,1
+Gayini_what_we_dont_know.md,floods roughly twice as often (channel),"T3-I5, T3_gateCDE_20260803.md",AUDIT_ROW,1
+Gayini_what_we_dont_know.md,eight instances / six occasions / twice,"issues log I-40, I-37, I-43",AUDIT_ROW,1

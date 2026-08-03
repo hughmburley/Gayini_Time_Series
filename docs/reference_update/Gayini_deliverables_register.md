@@ -143,9 +143,14 @@ written at the level of finish the deliverable needs.
 > Every part of the property that is unusually low for its kind, unusually improving, or
 > unusually declining — with the paddock it sits in and how it is grazed.
 
-**T3 · What we do not know** · all claims · EXISTS (limitations register)
-> Every limitation, what it means, and whether it can be fixed. Written so a reader can judge
-> for themselves how far to trust each result.
+**T3 · What we do not know** — `Gayini_what_we_dont_know.md` · all claims · EXISTS (written page, pack root)
+> The boundary of what this pack can support: what the analysis cannot tell you, and the record
+> of our own checks failing and being caught.
+>
+> *(Caption and status replaced 3 Aug 2026, P4-2. The previous wording promised "every limitation …
+> and whether it can be fixed", which the page cannot keep, and described T3 as the limitations
+> register. T3 is a written page in the pack root — not the limitations register and not a workbook
+> sheet.)*
 
 ---
 

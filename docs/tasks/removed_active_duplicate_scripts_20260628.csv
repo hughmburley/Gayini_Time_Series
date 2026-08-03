@@ -1,0 +1,2 @@
+old_path,replacement_path,action,content_comparison,reason,safe_to_restore_from_git,notes
+none,none,none,not_applicable,No old duplicate active script names were present in active folders after Stage 4.,not_applicable,Stage 5 audit script enforces this check.

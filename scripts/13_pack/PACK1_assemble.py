@@ -59,7 +59,12 @@ def main(outdir: Path):
     dest_of = {}
     for src, ids in by_src.items():
         first = next(r for r in withfile if r["file_path"] == src)
-        dest_of[src] = f"{outdir.as_posix()}/{FOLDER[first['type']]}/{Path(src).name}"
+        # A source that ALREADY lives in the pack root (T3's written page) stays there and is
+        # not routed into a type folder - it is a page, not a figure or a table file.
+        if src.startswith("Output/pack/"):
+            dest_of[src] = f"{outdir.as_posix()}/{Path(src).name}"
+        else:
+            dest_of[src] = f"{outdir.as_posix()}/{FOLDER[first['type']]}/{Path(src).name}"
 
     rows, copied = [], {}
     for r in withfile:
@@ -70,7 +75,10 @@ def main(outdir: Path):
         s_sha = sha50(src)                                   # BEFORE copy
         if r["file_path"] not in copied:                     # copy ONCE per source file
             dst.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copy2(src, dst)                           # COPY, never move
+            # a root page assembled in place is already at its destination; copying a file onto
+            # itself raises WinError 32 and would in any case be a no-op
+            if src.resolve() != dst.resolve():
+                shutil.copy2(src, dst)                       # COPY, never move
             copied[r["file_path"]] = True
         p_sha = sha50(dst)                                   # AFTER copy
         others = [i for i in by_src[r["file_path"]] if i != r["item_id"]]

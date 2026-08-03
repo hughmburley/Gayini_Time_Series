@@ -15,5 +15,5 @@ F6,figure,Output/figures/diagnostics/T6_A_three_arm_grid.png,e85825780f9a4ffc779
 F7,figure,Output/figures/T13_D1_part_state_map_and_scatter.png,85502c156e81e825b0733db4d98a2f226c2c9498609da5badd30972c2f6472ef,figure_t13_d1_part_state_map_and_scatter,6,SHIP,PENDING_P3
 T1,table,Output/tables/T1_conserved_paddock_comparison.csv,451615d34606208324243f1c94f206d86f0b2188713af497636a704deea82383,table_t1_conserved_paddock_comparison,5,SHIP,PENDING_P3
 T2,table,Output/tables/T13_gateC_classification.csv,08214fc956f40b1c6267f067f92105c202142cc5905cc515351c695c86ae2372,table_t13_gatec_classification,6,SHIP,PENDING_P3
-T3,table,,,,7,SHIP,TEXT_ONLY - no file; the item is a table rendered in the workbook
+T3,table,Output/pack/Gayini_what_we_dont_know.md,bf148e7adaa2efb87928adaa889e2f67eca3b927d52c5dcf19d6eed73953f191,(pack root page - registered with the workbook at P4),7,SHIP,WRITTEN PAGE in the pack root; caption replaced at P4-2
 T1_render,render,Output/figures/T1_conserved_paddock_comparison.png,999e5074a4a6bb9a69aa7fe982552f8f4c67ae88354dd2c1b31ce82ac91b23e3,figure_t1_conserved_paddock_comparison,5,SHIP,"RENDERING OF T1 - listed as the rendering, NOT an eighteenth item"
