@@ -122,6 +122,22 @@ series. Full detail in `docs/change_reports/TaskU_gate*.md`.*
 
 ---
 
+## T3 — persistent vegetation surfaces (3 Aug 2026)
+
+*ID prefix `T3-I` checked against this log before use: no collision with the `I-`/`C-`/`U-I` series. Full detail in `docs/change_reports/T3_gate*.md`.*
+
+| Id | Item | Triage |
+|---|---|---|
+| **T3-I1** | **Reprojecting a thresholded surface is not the same operation as thresholding a reprojected one — log this as a general rule, not a T3 note.** Bilinear-then-threshold and threshold-then-bilinear differ by **16%** on the green-share floor (3,744.20 ha vs the 4,474.03 ha count conversion), and the reprojected figure is **not even stable under scope** (3,363.36 ha over the census footprint). **Any future reprojection of a thresholded surface must declare the order.** The measured area is always the one on the grid where the metric is defined. | **STANDING RULE.** The most reusable thing Gate B2 produced. This is the general form of D8 |
+| **T3-I2** | **`veg_p05 IS NULL` matches 0 of 1,080,157 rows.** The census percentile columns encode missing as **float NaN**, not SQL NULL, so an `IS NULL` filter silently admits all 155 NaN pixels and drags MIN/MAX/AVG to NaN. Correct predicate: `(veg_p05 IS NULL OR isnan(veg_p05))`. **Audited 3 Aug: no contamination.** SQLite cannot store NaN (the Python driver converts it to NULL — verified), so every `IS NULL` on a SQLite REAL column is correct by construction; four live fact tables show 0 non-finite among non-NULL. The only parquet/duckdb site, `taskM_gateD_p05_distribution.py:60,71`, already pairs `IS NOT NULL` with `isfinite()`. | **KNOWN-CLEAN, rule recorded.** The trap is confined to the parquet path. The *next* parquet query is the one at risk |
+| **T3-I3** | **Two registered files over 50 MB carry whole-file SHA-256 against the first-50-MB convention** — `raster_total_veg_annual_mean_8058` (609.2 MB) and `raster_total_veg_annual_jjason_8058` (579.6 MB), both from T2. A canonical verifier will report drift on unchanged files. The other five >50 MB assets (2 FC stacks, 2 Task U DEMs, the gauge sqlite) are correct. Latent source: `02_build_total_veg_percentile_rasters.R:623-626` uses `digest::digest(file=)`. | **KNOWN-DIRTY, 2 rows.** Fix is a two-row UPDATE; **not applied** — rewriting a registered checksum is a provenance act and wants sign-off |
+| T3-I4 | **The GeoPackage silently disagreed with its own raster.** Components are labelled 8-connectivity (queen); polygonising a boolean and casting MULTIPOLYGON→POLYGON splits at every diagonal pinch, i.e. reverts to rook. 40 green-share components became 26 polygons and **219 ha vanished** when sub-parts fell back under the 5 ha filter. Fixed by polygonising a **component-id raster** and dissolving by id; all four layers now reconcile to 0.01 ha. | **CHANGED A NUMBER in a client-facing deliverable.** Adrian overlays the GeoPackage, so this would have been an error he inherited |
+| T3-I5 | **No channel or watercourse layer exists anywhere in the project** — not in `spatial_layer_asset` (9 rows), not under `Input/`. The only hydrological geometry is `irrigation_bank_cuts` (1,158 points), which is Task J **irrigation infrastructure, not natural channel**. Gate E's distance-to-channel is therefore NULL and flood frequency is used as a proxy. | **BLOCKS a real test.** The channel-association result is proxy-based until a channel layer is sourced. Substituting the bank cuts would be a category error |
+| T3-I6 | FC intermediates (`fc_{total_veg,pv}_3577_wy1988_2023.tif`) carry **no EPSG authority tag**: `crs(x, describe=TRUE)$code` = NA (name `GDA94_Australian_Albers`) though `same.crs(x, "EPSG:3577")` = TRUE. A reader testing the code would conclude the CRS is unknown. | Cosmetic. Changes no number |
+| T3-I7 | `taskM_gateD_p05_distribution.py` types `pixel_area_ha=0.0623512`, a 7-sig-fig rounding of `PIXEL_AREA_HA`. Relative error 1.3e-7, immaterial — but it **evades the magic-number lint**, which matches only the exact string `0.062351428`. The lint catches the literal, not the class. | IMPROVE. Suggests the lint should match rounded variants too |
+
+---
+
 ## Notes on discipline
 
 **What I will stop doing** (design seat): raising `IMPROVE` items at STOP points. They arrive looking as urgent as blockers because of where they appear. From here they go straight to this log without interrupting a gate.

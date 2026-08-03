@@ -206,7 +206,9 @@ Adrian's deliverable. Produce, at the selected thresholds:
 
 ## Gate figures — mandatory
 
-A gate does not close until its figure exists **and is registered in `figure_asset` in the same transaction** via `write_and_register_figure()` (R, first-50-MB SHA-256). Output to `figures/diagnostics/` with the `T3_` prefix. **Every caption states the support level and the 30 m native-resolution caveat.**
+A gate does not close until its figure exists **and is registered in `figure_asset` in the same transaction** via `write_and_register_figure()` (R, first-50-MB SHA-256). Output to **`Output/figures/diagnostics/`** with the `T3_` prefix. **Every caption states the support level and the 30 m native-resolution caveat.**
+
+*Amended 3 August 2026 (Gate D decisions, approved). v3 said `figures/diagnostics/`; that directory does not exist. The live convention is `Output/figures/diagnostics/`, which is where all ten T3 gate figures were written.*
 
 | Gate | Figure | What it must show | Passes if |
 |---|---|---|---|
