@@ -256,6 +256,14 @@ def recompute_rptscope_r2(c):
     z15=[k for k,v in nm.items() if v=="Bala 15"][0]
     f15=_st.mean(mf[z15]); v15=_st.mean([S[wy][z15] for wy in S if z15 in S[wy]])
     out["bala15_xsec_residual"]=round(v15-(I+SL*f15),2)
+    # ---- Ruling E canaries. These run the EXACT SQL the contract hands the report builder, so a
+    # drift in the parameterised DEFINITION fails here rather than silently in 32 documents.
+    out["rptscope_canary_p1_paddock_floor_bala29ca"]=round(c.execute(
+        "SELECT AVG(veg_p05_spatial) FROM fact_zone_veg_annual WHERE zone_fid = 4 "
+        "AND series_variant = 'mean_of_seasons' AND water_year BETWEEN 1988 AND 2022").fetchone()[0],2)
+    out["rptscope_canary_p5_recovering_parts_bala29ca"]=float(c.execute(
+        "SELECT COUNT(*) FROM fact_zone_community_part_classification "
+        "WHERE zone_fid = 4 AND state_registered = 'Recovering'").fetchone()[0])
     return out
 
 def run(db):

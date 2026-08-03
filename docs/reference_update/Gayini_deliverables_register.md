@@ -168,8 +168,8 @@ explaining to Adrian, and none of it should appear in a deliverable.**
 
 | internal apparatus | what it is for |
 |---|---|
-| `dim_headline_number`, 88 rows | one pinned definition per headline number, with the range it takes under alternatives |
-| the reproduction test, 57 of 71 numbers independently re-derived | re-derives each covered pinned number by an independent path and fails on drift |
+| `dim_headline_number`, **100 rows** (97 pinned, 3 deliberately unpinned) | one pinned definition per headline number, with the range it takes under alternatives |
+| the reproduction test, **80 of 97 pinned numbers independently re-derived, 0 value drifts** | re-derives each covered pinned number by an independent path and fails on drift |
 | the three denominators and dominance counts | so a composition share can never be quoted without its denominator |
 | ddof conventions on the residual SD | which spread statistic the "is this large" scale uses |
 | `is_rollup`, the intercept spread correction | stopping two incomparable quantities being read as one |
@@ -181,8 +181,15 @@ above needs one, because none of it is a result — it is the machinery that mak
 reproducible. If Adrian asks how we know the numbers are right, the answer is:
 *every headline number is registered with its definition and the reasoning behind it, and a
 separate test re-derives those numbers from source by an independent path and fails if any drifts.
-It currently covers 57 of the 71 numbers in scope; the remainder were registered too recently for an
-independent derivation to have been written, and are tracked as an open item.*
+It currently covers 80 of the 97 pinned numbers, and **not one registered number has drifted** — every
+one of the 17 it does not cover is a number for which an independent derivation has not yet been
+written, not a number that failed. The 17 are tracked as an open item.*
+
+> **Figures corrected 3 August 2026 (RPT-SCOPE P1-1).** This section previously read "88 rows" and
+> "57 of 71 numbers independently re-derived". Both were wrong: **57 appears nowhere in the data**,
+> and 71 is the count that *reproduces*, not the denominator. Live truth, read from
+> `Output/tables/RPTSCOPE_reproduction_status.csv` and not from the test's summary string (I-36):
+> **100 registered · 97 pinned · 80 recomputed and agreeing · 82.5% coverage · 0 value drifts.**
 
 ---
 
