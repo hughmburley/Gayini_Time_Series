@@ -214,11 +214,55 @@ def recompute_t13(c):
             "t13_parts_low_and_flat_count":float(flat),
             "t13_parts_low_and_falling_count":float(fall)}
 
+def recompute_rptscope_r2(c):
+    """RPT-SCOPE R2 pins. Each route is INDEPENDENT of the query that produced the pin -
+    different source object, different aggregation, or a separately-built artefact that could
+    have drifted. The three R2 pins with no independent route are deliberately absent."""
+    import statistics as _st, csv as _csv
+    out={}
+    S={}
+    for zf,wy,p05 in c.execute("SELECT zone_fid,water_year,veg_p05_spatial FROM fact_zone_veg_annual "
+                               "WHERE series_variant='mean_of_seasons' AND veg_p05_spatial IS NOT NULL"):
+        S.setdefault(wy,{})[zf]=p05
+    # (a) via the separately-built T10 series artefact, not the DB
+    g=[float(r["gap_pp"]) for r in _csv.DictReader(
+        open(ROOT/"Output"/"tables"/"T10_annual_gap_series.csv",encoding="utf-8"))
+        if r["series_variant"]=="mean_of_seasons" and r["series"]=="B_excl29ca"]
+    if g: out["ref_grazed_gap_annual_ref3_excl29ca_mean"]=round(_st.mean(g),3)
+    # (e) OLS re-run from fact_zone_veg_annual rather than the T10 temporal table
+    yrs=sorted(wy for wy in S if 4 in S[wy]); veg=[S[wy][4] for wy in yrs]
+    fl=dict(c.execute("SELECT water_year,flood_frac_pct FROM fact_zone_veg_annual "
+                      "WHERE zone_fid=4 AND series_variant='mean_of_seasons'"))
+    def _ols(x,y):
+        mx=_st.mean(x); my=_st.mean(y)
+        sxx=sum((a-mx)**2 for a in x); sxy=sum((a-mx)*(b-my) for a,b in zip(x,y)); sl=sxy/sxx
+        return sl,[b-(my-sl*mx+sl*a) for a,b in zip(x,y)]
+    raw,_=_ols(yrs,veg); _,wres=_ols([fl[w] for w in yrs],veg); adj,_=_ols(yrs,wres)
+    out["bala29ca_improvement_surviving_water_pct"]=round(100*adj/raw,1)
+    # (f) ranks by mean-of-years, not the view's stored mean_flood
+    mf={}
+    for zf,ff in c.execute("SELECT zone_fid,flood_frac_pct FROM fact_zone_veg_annual "
+                           "WHERE series_variant='mean_of_seasons' AND flood_frac_pct IS NOT NULL"):
+        mf.setdefault(zf,[]).append(ff)
+    nm=dict(c.execute("SELECT zone_fid,zone_name FROM dim_management_zone"))
+    order=sorted(((nm[z],_st.mean(v)) for z,v in mf.items()),key=lambda kv:-kv[1])
+    rk={n:i+1 for i,(n,_) in enumerate(order)}
+    for z,k in (("Bala 26ca","bala26ca"),("Bala 27ca","bala27ca"),
+                ("Bala 28ca","bala28ca"),("Bala 29ca","bala29ca")):
+        out[f"ref_paddock_flood_rank_{k}"]=float(rk[z])
+    # (g) residual from the pinned constants and own means, not the view's stored residual
+    I,SL=[c.execute("SELECT pinned_value FROM dim_headline_number WHERE number_id=?",(n,)).fetchone()[0]
+          for n in ("floor_flood_intercept_64pdk","floor_flood_slope_64pdk")]
+    z15=[k for k,v in nm.items() if v=="Bala 15"][0]
+    f15=_st.mean(mf[z15]); v15=_st.mean([S[wy][z15] for wy in S if z15 in S[wy]])
+    out["bala15_xsec_residual"]=round(v15-(I+SL*f15),2)
+    return out
+
 def run(db):
     con=sqlite3.connect(f"file:{Path(db).as_posix()}?mode=ro",uri=True); c=con.cursor()
     pinned={nid:(pv,unit_tol(nid)) for nid,pv in c.execute(
         "SELECT number_id,pinned_value FROM dim_headline_number WHERE pinned_value IS NOT NULL")}
-    rc=recompute(c); rc.update(recompute_t10(c)); rc.update(recompute_reg1(c)); rc.update(recompute_reg2(c)); rc.update(recompute_t13(c))
+    rc=recompute(c); rc.update(recompute_t10(c)); rc.update(recompute_reg1(c)); rc.update(recompute_reg2(c)); rc.update(recompute_t13(c)); rc.update(recompute_rptscope_r2(c))
     fails=[]; checked=0
     for nid,(pv,tol) in pinned.items():
         if nid not in rc:

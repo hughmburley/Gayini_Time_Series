@@ -1,9 +1,12 @@
 number_id,label,iterated_by_test,recompute_path_exists,status,stated_value,recomputed_value,agrees,tolerance
+bala15_xsec_residual,Bala 15 cover-floor residual from the registered flood expectation line - the largest shor,1,1,REPRODUCES,-17.62,-17.62,1,0.05
 bala29ca_floor_gap_periodwise,"Bala 29ca floor gap, by period",0,0,NOT_PINNED_deliberate,,,,
 bala29ca_floor_gap_periodwise_jja_son,"Bala 29ca floor gap, by period, jja_son",0,0,NOT_PINNED_deliberate,,,,
+bala29ca_improvement_surviving_water_pct,share of Bala 29ca's cover-floor improvement that survives removing its own water response,1,1,REPRODUCES,81.6,81.6,1,0.05
 bala29ca_mean_flood_freq,Bala 29ca mean annual flood frequency,1,1,REPRODUCES,8.5,8.5,1,0.05
 bala29ca_median_cover,Bala 29ca median cover vs grazed median,1,1,REPRODUCES,75.6,75.6,1,0.05
 bala29ca_ref_plot_share_pct,Bala 29ca share of reference monitoring plots,1,1,REPRODUCES,54.17,54.17,1,0.05
+cropping_history_null_count,management zones with no recorded cropping history,1,0,NO_DERIVATION_PATH,64.0,,,0.0
 floor_flood_intercept_64pdk,"Expectation-line intercept, paddock floor on mean annual inundation",1,1,REPRODUCES,52.652934,52.652934,1,5e-06
 floor_flood_r_64pdk,"Floor vs flood-freq correlation r, 64 paddocks",1,1,REPRODUCES,0.71,0.71,1,0.005
 floor_flood_residual_sd_64pdk,"Descriptive residual SD of the 64-paddock floor~flood fit (population, ddof=0)",1,1,REPRODUCES,6.6208,6.6208,1,0.005
@@ -21,9 +24,14 @@ ref_grazed_floor_gap_3pdk_periodwise,"Ref-grazed floor gap, 3 paddocks (no 29ca)
 ref_grazed_floor_gap_4pdk_1988_92,"Ref-grazed floor gap, 4 paddocks, 1988-92",1,1,REPRODUCES,-13.07,-13.07,1,0.05
 ref_grazed_floor_inland,"Ref-grazed FLOOR deficit, inland",1,1,REPRODUCES,1.08,1.08,1,0.05
 ref_grazed_floor_riverine,"Ref-grazed FLOOR deficit, riverine",1,1,REPRODUCES,-4.49,-4.49,1,0.05
+ref_grazed_gap_annual_ref3_excl29ca_mean,"annual reference-grazed cover-floor gap, the three conserved paddocks EXCLUDING Bala 29ca,",1,1,REPRODUCES,-2.073,-2.073,1,0.05
 ref_grazed_mean_cover_aeolian,"Ref-grazed MEAN cover deficit, aeolian",1,1,REPRODUCES,-2.32,-2.32,1,0.05
 ref_grazed_mean_cover_inland,"Ref-grazed MEAN cover deficit, inland",1,1,REPRODUCES,0.45,0.45,1,0.05
 ref_grazed_mean_cover_riverine,"Ref-grazed MEAN cover deficit, riverine",1,1,REPRODUCES,1.41,1.41,1,0.05
+ref_paddock_flood_rank_bala26ca,Bala 26ca rank by mean annual flood frequency among 64 paddocks (1 = wettest),1,1,REPRODUCES,3.0,3.0,1,0.05
+ref_paddock_flood_rank_bala27ca,Bala 27ca rank by mean annual flood frequency among 64 paddocks (1 = wettest),1,1,REPRODUCES,31.0,31.0,1,0.05
+ref_paddock_flood_rank_bala28ca,Bala 28ca rank by mean annual flood frequency among 64 paddocks (1 = wettest),1,1,REPRODUCES,6.0,6.0,1,0.05
+ref_paddock_flood_rank_bala29ca,Bala 29ca rank by mean annual flood frequency among 64 paddocks (1 = wettest),1,1,REPRODUCES,61.0,61.0,1,0.05
 reg2_paddocks_1part_supported,Paddocks with 1 supported community part(s),1,1,REPRODUCES,27.0,27.0,1,0.05
 reg2_paddocks_2part_supported,Paddocks with 2 supported community part(s),1,1,REPRODUCES,23.0,23.0,1,0.05
 reg2_paddocks_3part_supported,Paddocks with 3 supported community part(s),1,1,REPRODUCES,14.0,14.0,1,0.05
@@ -60,6 +68,7 @@ t13_parts_low_and_flat_count,Paddock parts low and flat (Persistently poor split
 t13_parts_persistently_poor_count,Paddock parts classified Persistently poor at the pre-registered +/-1.0 cut,1,1,REPRODUCES,14.0,14.0,1,0.0
 t13_parts_recovering_count,Paddock parts classified Recovering at the pre-registered +/-1.0 cut,1,1,REPRODUCES,8.0,8.0,1,0.0
 t13_parts_unremarkable_count,Paddock parts classified Unremarkable at the pre-registered +/-1.0 cut,1,1,REPRODUCES,77.0,77.0,1,0.0
+t13_recovering_survive_drop2wettest,recovering parts that remain Recovering when the two wettest water years are dropped,1,0,NO_DERIVATION_PATH,5.0,,,0.05
 t1_riverine_contrast_bala_high,"T1 contrast at Bala zone support, Riverine high",1,1,REPRODUCES,-2.13,-2.13,1,0.05
 t1_riverine_contrast_bala_low,"T1 contrast at Bala zone support, Riverine low",1,1,REPRODUCES,3.62,3.62,1,0.05
 t1_riverine_contrast_bala_mid,"T1 contrast at Bala zone support, Riverine mid",1,1,REPRODUCES,0.12,0.12,1,0.05
@@ -83,6 +92,7 @@ three_arm_mean_deficit_unzoned_inferred_riverine,"Three-arm MEAN cover deficit v
 three_arm_mean_deficit_unzoned_plot_aeolian,"Three-arm MEAN cover deficit vs 14-day, unzoned_plot, aeolian",1,0,NO_DERIVATION_PATH,-0.28,,,0.05
 three_arm_mean_deficit_unzoned_plot_inland,"Three-arm MEAN cover deficit vs 14-day, unzoned_plot, inland",1,0,NO_DERIVATION_PATH,-2.05,,,0.05
 three_arm_mean_deficit_unzoned_plot_riverine,"Three-arm MEAN cover deficit vs 14-day, unzoned_plot, riverine",1,0,NO_DERIVATION_PATH,2.5,,,0.05
+three_arm_standard_at_or_above_count,strata where the standard-grazing arm sits at or above the 14-day rotational arm on cover ,1,0,NO_DERIVATION_PATH,6.0,,,0.0
 three_arm_unzoned_inferred_above_14day_count,Strata where unzoned_inferred floor >= 14-day,1,1,REPRODUCES,6.0,6.0,1,0.0
 three_arm_unzoned_plot_above_14day_count,Strata where unzoned_plot floor >= 14-day,1,1,REPRODUCES,8.0,8.0,1,0.0
 total_no_management_zone_ha,Total property in no management zone,1,1,REPRODUCES,30711.6,30711.6,1,1.0

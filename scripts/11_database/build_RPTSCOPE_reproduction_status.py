@@ -31,7 +31,7 @@ registered = list(c.execute(
 # exactly what run() builds
 rc = t8.recompute(c)
 rc.update(t8.recompute_t10(c)); rc.update(t8.recompute_reg1(c))
-rc.update(t8.recompute_reg2(c)); rc.update(t8.recompute_t13(c))
+rc.update(t8.recompute_reg2(c)); rc.update(t8.recompute_t13(c)); rc.update(t8.recompute_rptscope_r2(c))
 
 rows = []
 for nid, pv, label in registered:
