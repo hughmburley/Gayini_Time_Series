@@ -119,6 +119,8 @@ The lowercase names are the **builder's normalisation on import**; the gpkg comp
 
 When you add a check, **prove it fires on a deliberately broken fixture and record the failure output in the change report.** A check that has never failed has not been tested; it has only been run.
 
+**A check that ERRORS is not a check that CATCHES (Ruling J, 3 Aug 2026).** A fixture that makes the recompute crash proves only that the code path is reachable. **Drift detection requires a fixture that returns a WRONG VALUE the check must reject.** Worked case: a page-3 canary fixture that renamed a view column made the recompute raise `no such column` — discarded as invalid and replaced with a data-level drift (doubling a paddock's census pixels) that moved the value 34.59 → 51.40 and was correctly rejected. Same family as I-40: the record was there, the act was not.
+
 Two live illustrations: the 1 July QA row returns PASS/FAIL from a stored snapshot rather than from the data, so it cannot notice being wrong — verdicts that are derivable should be **views that compute**, not rows that persist. And `folder_scripts/archive_absent` in the smoke test has **inverted polarity** against the archive convention (see Known tooling conflicts).
 
 ---
