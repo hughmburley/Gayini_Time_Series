@@ -120,7 +120,57 @@ it is a one-line change and the ruling said no NULLs.
 43.6/22.8 versus 46.0/25.2 case as the worked example. Every pin in the list carries the column
 populated.
 
-## 6. Probes
+## 6. AD-1 — live probe, and the T3 schema shift
+
+**Every count in this report's earlier probe table was stale before it was written.** T3 ran to
+Gate E while R2 prep was in progress. Verified live, 3 Aug:
+
+| | Gate 0 | mid-gate | **live now** | stated in AD-1 |
+|---|---|---|---|---|
+| `dim_headline_number` | 88 | 88 | **88** | 88 ✓ |
+| `figure_asset` | 287 | 292 | **297** | 297 ✓ |
+| `raster_asset` | 186 | 186 | **191** | 191 ✓ |
+| `table_asset` | 2 | 2 | **2** | 2 ✓ |
+| `report_asset` | 59 | 59 | **59** | 59 ✓ |
+| tables / views | 92 / 34 | — | **93 / 35** | 93/35 ✓ |
+
+DB mtime `2026-08-03 13:35:58`. **All six AD-1 figures verify against the live DB.**
+
+**The two tables R2 writes are untouched at 88 and 2, so the pin list and the coverage arithmetic
+in §3 stand unchanged.**
+
+### Schema shape has moved — recorded
+
+- new table **`t3_always_green_sweep`**
+- new view **`v_always_green_sweep`**
+- three additive columns on `dim_management_zone`: **`reference_set_member` · `reference_set_rule` · `reference_set_caveat`**
+
+**R1's report-set query re-run against the new schema: unaffected** — 39 reportable zoned plots, the
+same four `grazing_excluded = 1` paddocks, 25 in-set sites. Additive columns, no behaviour change.
+
+## 7. AD-2 — a third "three", and it is now a persisted DB field
+
+`reference_set_member = 1` on **all four** conserved paddocks (the polygon four). The new
+`reference_set_caveat` then describes a **plot-network three** — 26ca, 28ca, **29ca** — excluding
+Bala 27ca because it carries no RAP plots.
+
+**Ours is 26ca, 27ca, 28ca, excluding Bala 29ca as the outlier. The two threes share only 26ca and
+28ca.** And a future reader meets the DB caveat before they meet our register.
+
+**Applied to pin (a), both places it can be seen:**
+
+- `number_id` is now **`ref_grazed_gap_annual_ref3_excl29ca_mean`** — the exclusion is in the id,
+  so the label cannot read "3-paddock" unqualified.
+- `scope_filter` reads: *"reference = Bala 26ca, Bala 27ca, Bala 28ca (Bala 29ca excluded as the
+  outlier); grazed = median of the 60 zones with grazing_excluded = 0; treed_context_flag = 0 AND
+  regime_band <> 'context'. **NOT** the plot-network three of
+  `dim_management_zone.reference_set_caveat`, which excludes Bala 27ca because it carries no RAP
+  plots. Two different threes sharing only 26ca and 28ca."*
+
+**Appended to I-37 as the fourth occurrence**, with the standing rule that *"three paddocks"
+unqualified is now forbidden in this project*.
+
+## 8. Probes
 
 | | `dim_headline_number` | `figure_asset` | `raster_asset` | `table_asset` | `report_asset` |
 |---|---|---|---|---|---|

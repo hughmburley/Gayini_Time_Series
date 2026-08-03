@@ -38,10 +38,14 @@ gap_mean = st.mean(gaps.values())
 t10 = [float(r["gap_pp"]) for r in csv.DictReader(open(TAB / "T10_annual_gap_series.csv", encoding="utf-8"))
        if r["series_variant"] == "mean_of_seasons" and r["series"] == "B_excl29ca"]
 indep_a = abs(st.mean(t10) - gap_mean) < 0.005
-pin("ref_grazed_gap_annual_3pdk_mean", "annual reference-grazed cover-floor gap, 3 conserved "
-    "paddocks excluding Bala 29ca, mean over 35 water years",
+pin("ref_grazed_gap_annual_ref3_excl29ca_mean", "annual reference-grazed cover-floor gap, "
+    "the three conserved paddocks EXCLUDING Bala 29ca, mean over 35 water years",
     round(gap_mean, 3), round(min(gaps.values()), 3), round(max(gaps.values()), 3),
-    "zone", f"3 No-grazing paddocks (fids 1,2,3) vs median of {len(grazed)} 14-day; {NONTREED}",
+    "zone",
+    ("reference = Bala 26ca, Bala 27ca, Bala 28ca (Bala 29ca excluded as the outlier); "
+     f"grazed = median of the {len(grazed)} zones with grazing_excluded = 0; {NONTREED}. "
+     "NOT the plot-network three of dim_management_zone.reference_set_caveat, which excludes "
+     "Bala 27ca because it carries no RAP plots. Two different threes sharing only 26ca and 28ca."),
     "", "35 water years", "1988-2022", "fact_zone_veg_annual.veg_p05_spatial",
     f"INDEPENDENT: mean of the separately-built T10_annual_gap_series.csv B_excl29ca series "
     f"({st.mean(t10):.3f}) vs recomputed from the DB ({gap_mean:.3f}) - different artefact, "
