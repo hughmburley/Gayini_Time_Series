@@ -190,6 +190,8 @@ written, not a number that failed. The 17 are tracked as an open item.*
 > and 71 is the count that *reproduces*, not the denominator. Live truth, read from
 > `Output/tables/RPTSCOPE_reproduction_status.csv` and not from the test's summary string (I-36):
 > **100 registered · 97 pinned · 80 recomputed and agreeing · 82.5% coverage · 0 value drifts.**
+>
+> **These counts are a COPY and will go stale the moment anything registers a row — they moved twice in one session (82.1% → 82.5%). The Adrian pack workbook REGENERATES them live at build time from `dim_headline_number` and `Output/tables/RPTSCOPE_reproduction_status.csv`, and THE WORKBOOK IS AUTHORITATIVE OVER THIS REGISTER.** Quote the workbook, not this line. (REP-PAGE4's lesson a third time: a number in a document is a copy; a number read at render time is a fact.)
 
 ---
 
