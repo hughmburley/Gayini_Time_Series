@@ -36,6 +36,14 @@ Output/*
 # history. Git cannot re-include a path inside an excluded DIRECTORY, so the rule above is
 # 'Output/*' (contents) rather than 'Output/' (the directory itself). Nothing else is tracked.
 !Output/audit/
+# PACK-1: the item list and manifests are the record of what shipped and to which
+# checksum, so they need version history. The copied artefacts under Output/pack/
+# subfolders stay ignored. Four lines, not two: 'Output/*' excludes the pack DIRECTORY,
+# so it must be re-included before anything inside it can be.
+!Output/pack/
+Output/pack/*
+!Output/pack/*.csv
+!Output/pack/*.md
 working/
 /archive/
 _local_archive/
