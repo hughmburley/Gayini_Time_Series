@@ -132,10 +132,10 @@ what_we_dont_know Part 1,third,L-01 / T13 - Bala 29ca is roughly one third each 
 what_we_dont_know Part 1,twice,"T3-I5 - persistent ground floods roughly twice as often as the property average | T13 Gate C - 2 of those 3 in Bala 29ca, verified this session",DECLARED,2,1
 what_we_dont_know Part 1,second,"T3-I5 - persistent ground floods roughly twice as often as the property average | T13 Gate C - 2 of those 3 in Bala 29ca, verified this session",DECLARED,2,1
 what_we_dont_know Part 1,first,"parameter - 1 pp of threshold, the elasticity numerator (T3 Gate B1)",DECLARED,1,1
-what_we_dont_know Part 1,T3,"identifier, name or date - not a quantity",NAME_NOT_QUANTITY,0,1
-what_we_dont_know Part 1,Bala 28ca,"identifier, name or date - not a quantity",NAME_NOT_QUANTITY,0,1
-what_we_dont_know Part 1,Bala 29ca,"identifier, name or date - not a quantity",NAME_NOT_QUANTITY,0,1
 what_we_dont_know Part 1,Bala 26ca,"identifier, name or date - not a quantity",NAME_NOT_QUANTITY,0,1
+what_we_dont_know Part 1,Bala 28ca,"identifier, name or date - not a quantity",NAME_NOT_QUANTITY,0,1
+what_we_dont_know Part 1,T3,"identifier, name or date - not a quantity",NAME_NOT_QUANTITY,0,1
+what_we_dont_know Part 1,Bala 29ca,"identifier, name or date - not a quantity",NAME_NOT_QUANTITY,0,1
 what_we_dont_know Part 1,10 August 2026,"identifier, name or date - not a quantity",NAME_NOT_QUANTITY,0,1
 what_we_dont_know Part 2,1,"one figure that did not reproduce | parameter - 1 pp of threshold, the elasticity numerator (T3 Gate B1)",DECLARED,2,1
 what_we_dont_know Part 2,thirty-three,Task M Gate A - 33 stale claim sites,DECLARED,1,1
@@ -150,5 +150,5 @@ what_we_dont_know Part 2,nine,parameter - 9 non-treed strata (treed_context_flag
 what_we_dont_know Part 2,twice,"issues log I-43 / I-42 - twice, and one rebuilt check | T13 Gate C - 2 of those 3 in Bala 29ca, verified this session",DECLARED,2,1
 what_we_dont_know Part 2,second,"issues log I-43 / I-42 - twice, and one rebuilt check | T13 Gate C - 2 of those 3 in Bala 29ca, verified this session",DECLARED,2,1
 what_we_dont_know Part 2,first,"one figure that did not reproduce | parameter - 1 pp of threshold, the elasticity numerator (T3 Gate B1)",DECLARED,2,1
-what_we_dont_know Part 2,Bala 29ca,"identifier, name or date - not a quantity",NAME_NOT_QUANTITY,0,1
 what_we_dont_know Part 2,T3,"identifier, name or date - not a quantity",NAME_NOT_QUANTITY,0,1
+what_we_dont_know Part 2,Bala 29ca,"identifier, name or date - not a quantity",NAME_NOT_QUANTITY,0,1

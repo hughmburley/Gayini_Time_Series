@@ -128,32 +128,43 @@ behind Bala 15 at **−17.62**. All confirmed.
 A **`registered reports`** row is added, queried live like the others. Sheet and live now agree on
 **297 / 5 / 60**. No database write was required.
 
-## 7 · RT-3 — BLOCKED, and not drafted
+## 7 · RT-3 / Ruling P — blocked, then applied verbatim
 
-**Ruling P's paragraph text is not in the read-through message.** RT-3 says *"Text as sent"*; no text
-was sent. The message runs RT-2 → RT-3 → RT-4 with the paragraph absent, and a search of every
-design-seat message in this session finds no other occurrence of Ruling P.
+**First pass: blocked.** RT-3 directed *"APPLY RULING P … **Text as sent**"* and no text had been
+sent. Ruling P appeared in no design-seat message in the session. Per **I-43** the paragraph was not
+drafted and the page was left unchanged — writing an I-44 paragraph of my own composition into a page
+ruled *otherwise not to be edited*, under a ruling whose text does not exist, is the precise failure
+I-43 was written for, and the artefact it directed an edit to is the page that states the rule.
 
-Per **I-43** — *a ruling is only a ruling if it can be quoted from a design-seat message* — the
-paragraph is **not drafted here**, and `Gayini_what_we_dont_know.md` is unchanged. Writing an I-44
-paragraph of my own composition into a page ruled *otherwise not to be edited*, under the authority
-of a ruling whose text does not exist, is the precise failure I-43 was written for, and it reached a
-client deliverable the last time it happened.
+**Logged as I-43's third occurrence, source named as the design seat** (P1: *"That is I-43 from the
+design seat … You were right to refuse"*). **Two of the three occurrences are now the design seat's**,
+and this is the first time the failure was stopped **before** it reached an artefact rather than
+after.
 
-Everything else about RT-3 is ready: the insertion point after *"A check that errors is not a check
-that catches"* is unambiguous, and the *"eight instances"* count is untouched.
+**Second pass: applied.** The text arrived and is inserted **verbatim** as its own paragraph
+immediately after *"A check that errors is not a check that catches."* — placement and wording
+checked programmatically against the ruling, whitespace-normalised, character for character.
+`VERBATIM: True`. Paragraph order in Part 2 is now: recording-vs-executing → errors-vs-catches →
+**live-query-necessary-not-sufficient** → one-numeral → ruling-must-be-quotable → pre-registration.
+**Nothing else in the page changed, and the "eight instances" count is untouched** (P3).
 
-## 8 · RT-4 — the zip is built and verified; the hash is NOT yet recorded
+## 8 · RT-4 — the zip is built, verified, and recorded
 
 `scripts/13_pack/PACK1_zip.py` writes the zip **outside** `Output/pack/` so it cannot contain
 itself, hashes it first-50-MB, and re-hashes **every member back out of the zip** so that *"it
 zipped"* is not mistaken for *"it is intact"*.
 
+**Re-run after Ruling P**, so the sealed page carries the new paragraph — confirmed by reading
+`Gayini_what_we_dont_know.md` back out of the zip.
+
 ```
 Gayini_Adrian_pack_20260803.zip: 25 files, 4.47 MB
 every member re-hashed OUT of the zip: 25/25 identical
-sha256 (first 50 MB): 0f97694fee3054072daaf29bedec0525eb9a0e363f678ca21f893852fb0fd621
+sha256 (first 50 MB): 090bdf27cb2f049434021774021aebfa8fd7fb24c46d9a6988828b3ba4f92c30
+recorded PACK_ZIP in PACK1_assembly_manifest.csv (19 rows)
 ```
+
+The provisional hash reported before Ruling P (`0f97694f…`) is superseded by the one above.
 
 **Fixture, per Ruling J / I-42** — a member's pre-zip hash falsified, so the check must reject a
 wrong **value**, not merely crash:
@@ -162,13 +173,12 @@ wrong **value**, not merely crash:
 ABORT - 25 in, 25 out, 1 mismatched. Zip DELETED, nothing recorded.
 ```
 
-**The hash is deliberately not written to `PACK1_assembly_manifest.csv`.** Recording it asserts
-*"this is the delivered state"*, and the pack has an outstanding authorised amendment (RT-3). The
-recording step sits behind `--record` and is one command once Ruling P's paragraph lands; the hash
-above will change when it does, and is reported as provisional for that reason.
-
-**Ordering note, stated rather than hidden:** the manifest lives inside the pack, so the copy sealed
-in the zip necessarily predates the row recording that zip's hash. The repo copy is the authority.
+**Verification note, stated rather than hidden.** The manifest lives inside the pack, so the copy
+sealed in the zip has **18 rows** and the repo copy has **19** — the extra row is the one recording
+that zip's own hash, which the zip could not contain. A reader who re-zips the current pack folder
+will therefore **not** reproduce `090bdf27…`; the recorded hash belongs to the archive as sealed, and
+the repo manifest is the authority for the fact of it. The regress is inherent to recording a
+container's hash inside the container, and it is documented rather than engineered around.
 
 ## 9 · Ruling R — spec §6 echoed verbatim
 
@@ -201,9 +211,16 @@ in the zip necessarily predates the row recording that zip's hash. The repo copy
 | RT-1 rule changed to resolve numbers as written | **done — 38 → 153, 0 unresolved** |
 | the new rule proved able to fail | **done** — fixture rejects a wrong value; build stops, workbook not registered |
 | RT-2 third registry on the sheet | **done** — `registered reports` = 60, live |
-| RT-3 Ruling P applied | **BLOCKED — text not sent. Not drafted (I-43)** |
-| RT-4 zip built, verified, hashed | **done** — hash above, **not recorded**, pending RT-3 |
+| RT-3 Ruling P applied | **done — verbatim**, after being correctly refused when unquotable (I-43, 3rd) |
+| P4-7 re-run after the insert | **done — 153 numbers, 0 unresolved** |
+| assemble diff after the insert | **17 byte-identical, 0 differing, 0 new, 0 lost** |
+| RT-4 zip built, verified, hashed, recorded | **done — `090bdf27…`, PACK_ZIP row in the manifest** |
 | probes either side | **unchanged, 101 / 297 / 191 / 5 / 60** |
 
-**STOP.** Two things outstanding, both the design seat's: Ruling P's paragraph, and then
-`PACK1_zip.py --record`.
+**One limit of the number check, stated so it is not over-read.** Word-numbers are recorded once per
+location, not once per occurrence — the resolution attaches to the value, not to the sentence. So
+Ruling P's paragraph was scanned and its numerals resolve, but the total stayed at **153** because
+*"first"* already had a row for Part 2. A **new** value in an inserted paragraph would appear as a new
+row; a repeat of one already present would not.
+
+**The pack is complete.**
