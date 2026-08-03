@@ -31,3 +31,5 @@ site,Dinan 8,GA_025,B2,non-treed site inside a selected paddock,
 site,Dinan 8,GA_026,B2,non-treed site inside a selected paddock,
 site,Dinan 8,GA_027,B2,non-treed site inside a selected paddock,
 site,Dinan 8,GA_028,B2,non-treed site inside a selected paddock,
+exclusion,(none - no management-zone parent),,EXCLUDED,"Standard-grazing sites (15) excluded - no management-zone parent, therefore no paddock report to nest under. All 15 Standard-grazing reportable plots on the property are unzoned; zero are zoned. This is the whole third arm, the one T6 exists to measure. Design seat, 3 Aug 2026.",15
+exclusion,(none - no management-zone parent),,EXCLUDED,"14-day grazing sites without a zone parent (3) excluded - same reason. 18 unzoned reportable plots in total = 31.6% of the 57. Design seat, 3 Aug 2026.",3
