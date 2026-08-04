@@ -134,10 +134,12 @@ retained only as a consistency note, and does not reach the findings note.
 
 ## 5 · U3.6 — the density-scaling test · **no relationship**
 
-The property-median `bb5` first-return density rose from **1.0622 to 1.4855**, ~40% more
+The property-median `bb5` first-return density rose from **1.0622 to 1.4672**, ~40% more
 returns per unit area at the second epoch. That is the ALS-50 → ALS-80 step made
 quantitative, and it is the mechanism by which T-2 would operate. Does the FPC offset
 scale with it?
+
+*(corrected 4 August 2026, LID-1 Y1: was **1.4855**, computed on `d4`-only 2021 data before the U-I11 re-run and never refreshed. The artefact `taskU_gateU1_r2_density_diagnostic.csv` reads 1.4672. The qualitative claim is unchanged — 1.0622 → 1.4672 is +38.1%, still ~40% — and U3.6 regresses on block density differences rather than this median, so no conclusion moves.)*
 
 | Set | n blocks | slope (FPC pp per return m⁻²) | r | R² | residual SD |
 |---|---:|---:|---:|---:|---:|

@@ -15,7 +15,7 @@
 | Date | Amendment | Source |
 |---|---|---|
 | 1 Aug 2026 | **R5** added — U‑Q4b census-pixel inclusion at coverage ≥ 0.99, sensitivity at ≥ 0.5 and = 1.0 | Design-seat Gate U1 STOP, D3 |
-| 1 Aug 2026 | **Gate U3 item 6 (U3.6)** added — density-scaling test, from the 1.0622 → 1.4855 `bb5` step | Design-seat Gate U1 STOP, C2 |
+| 1 Aug 2026 | **Gate U3 item 6 (U3.6)** added — density-scaling test, from the 1.0622 → 1.4672 `bb5` step | Design-seat Gate U1 STOP, C2 |
 | 1 Aug 2026 | Gate U1 recorded **cleared end to end**; the R2 3× STOP condition cleared as a division-by-zero artefact (30 m sweep gives 1.38×). R2 itself unchanged | Design-seat Gate U1 STOP, D1 |
 | 1 Aug 2026 | Header instruction "delete v1 and v1.1" **withdrawn** — it contradicted this spec's own additive-only standing rule. Both are archived under `docs/archive/LiDAR/` | Design-seat Gate U1 STOP, D4 |
 | 1 Aug 2026 | **R6** added — floor-versus-flood placement of the four Bala paddocks on the census curve, within community, pixel support, run **before** U‑Q4a. Carries the reference-set pre-registration hazard | Design-seat Gate U2 response, §1a / §2 |
@@ -25,6 +25,8 @@
 | 1 Aug 2026 | **U3.7** added — spatial-uniformity check on the vertical offset, by block, by `d4`/`d5` tile provenance, and for linear tilt. Must pass before any difference DEM is interpreted | Design-seat Gate U3 STOP, D3 |
 | 1 Aug 2026 | **Scope cut.** U‑Q4b, U‑Q4c and the Task J L10 question are **deferred past 10 August**, one line each in the findings note. Remaining work: U3.7, R6, §1c, U‑Q4a, findings note. **Hard stop end of Monday 3 August.** No new pre-registered rules after this gate — R1–R6 plus U3.6 and U3.7 is the closed set. No new spec versions | Design-seat Gate U3 STOP, §3 |
 | 1 Aug 2026 | Gate U3 report §4(b) softened — S2 is ~42% of the woody set it was compared against, so the two are not independent samples; the verdict rests on §4(a)'s 38× margin alone. §3's 13.33% promoted from caveat to finding | Design-seat Gate U3 STOP, C2 / C3 |
+
+*(corrected 4 August 2026, LID-1 Y1: was **1.4855**, computed on `d4`-only 2021 data before the U-I11 re-run and never refreshed. The artefact `taskU_gateU1_r2_density_diagnostic.csv` reads 1.4672. The qualitative claim is unchanged — 1.0622 → 1.4672 is +38.1%, still ~40% — and U3.6 regresses on block density differences rather than this median, so no conclusion moves.)*
 
 ---
 
@@ -377,7 +379,7 @@ Mandatory. No change number may be reported before this passes.
 
 6. **U3.6 · Density-scaling test.** *Added by amendment, 1 August 2026 (design seat,
    Gate U1 STOP C2).* Gate U1 measured the property-median `bb5` first-return density at
-   **1.0622 (2009)** against **1.4855 (2021)** — roughly **40% more returns per unit area
+   **1.0622 (2009)** against **1.4672 (2021)** — roughly **40% more returns per unit area
    at the second epoch.** That is the ALS‑50 → ALS‑80 step-change made quantitative, and
    it is the mechanism by which T‑2 would operate: FPC is derived from return ratios, so
    more returns per pixel changes gap-detection probability.

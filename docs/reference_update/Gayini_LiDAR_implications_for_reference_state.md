@@ -1,5 +1,17 @@
 # What the LiDAR week means for reference state
 
+> **SUPERSEDED IN PART — 4 August 2026, design seat.**
+> The conclusion that the reference-state anomaly has dissolved rests on a
+> comparison this project prohibits. R6's residuals are computed on the census
+> temporal p05 (`census_by_zone_stratum.veg_p05_mean`); the deficit they are
+> compared against is computed on `veg_p05_spatial`. Re-running R6's own logic on the
+> pinned metric gives Bala 29ca residuals of −29.04 and −18.67 in Aeolian and
+> Riverine, against R6's +1.57 and +9.61, with the Aeolian community fit reversing
+> sign. The anomaly is neither confirmed nor dissolved. The metric question is real,
+> predates this work, and is open.
+> See `Gayini_R6_metric_review_20260802.md`.
+
+
 **To:** the reference-state stream · **From:** CC · **Date:** 2 August 2026
 **Depth:** `docs/LiDAR/TaskU_findings_note.md`. **You should not need to read the Task U
 change reports.**

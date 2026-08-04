@@ -177,7 +177,9 @@ is offered, and §7 asks you to clear it.
 | Epoch | median `bb5` first-return density, excluded | kept | n excluded / kept |
 |---|---:|---:|---|
 | 2009 | **1.4918** | 1.0622 | 218 / 34,353,234 |
-| 2021 | — (none excluded) | 1.4855 | 0 / 20,468,719 |
+| 2021 | **1.3561** | 1.4672 | 1 / 34,343,805 |
+
+*(corrected 4 August 2026, LID-1 Y1: was **1.4855**, computed on `d4`-only 2021 data before the U-I11 re-run and never refreshed. The artefact `taskU_gateU1_r2_density_diagnostic.csv` reads 1.4672. The qualitative claim is unchanged — 1.0622 → 1.4672 is +38.1%, still ~40% — and U3.6 regresses on block density differences rather than this median, so no conclusion moves.)*
 
 **The excluded pixels sit on *higher* return density than the ground they were taken
 from, not lower.** They are therefore **not a sparse-return artefact.**
@@ -197,7 +199,7 @@ No second filter is applied and none is warranted; R2 stays one screen, simply s
 
 The same table carries a fact more useful than the diagnostic it sat under:
 
-> **Property-median `bb5` first-return density: 1.0622 at 2009 · 1.4855 at 2021** —
+> **Property-median `bb5` first-return density: 1.0622 at 2009 · 1.4672 at 2021** —
 > roughly **40% more returns per unit area at the second epoch.**
 
 That is the ALS-50 → ALS-80 step-change made quantitative, and it is the **mechanism**

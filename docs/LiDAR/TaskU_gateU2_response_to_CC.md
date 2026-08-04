@@ -121,8 +121,11 @@ covers all three; send it today rather than next week.
 ## 5 · Sequence from here
 
 1. **Gate U3** — the sensor step-change verdict, including **U3.6**'s density-scaling
-   test on the 1.0622 → 1.4855 `bb5` step. STOP as specified; the verdict is a science
+   test on the 1.0622 → 1.4672 `bb5` step. STOP as specified; the verdict is a science
    decision and a density-derived correction is never applied silently.
 2. **R6** — before U‑Q4a. Database query.
 3. **§1c** — the DEM visual, timeboxed, prose only.
 4. **Gate U4**, U‑Q4a first, reframed per §1b.
+
+
+*(corrected 4 August 2026, LID-1 Y1: was **1.4855**, computed on `d4`-only 2021 data before the U-I11 re-run and never refreshed. The artefact `taskU_gateU1_r2_density_diagnostic.csv` reads 1.4672. The qualitative claim is unchanged — 1.0622 → 1.4672 is +38.1%, still ~40% — and U3.6 regresses on block density differences rather than this median, so no conclusion moves.)*
