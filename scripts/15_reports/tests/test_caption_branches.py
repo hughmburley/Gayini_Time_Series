@@ -15,6 +15,11 @@ Exits non-zero on failure.
 """
 import json, os, re, shutil, subprocess, sys, tempfile, zipfile
 
+if not (shutil.which('node') or shutil.which('node.exe')):
+    sys.exit('STOP: node not on PATH. This test drives the real report_build.js; without '
+             'node it cannot run, and a test that cannot run must not look like one that '
+             'passed. Install Node or add it to PATH.')
+
 HERE = os.path.dirname(os.path.abspath(__file__))
 MOD  = os.path.dirname(HERE)
 sys.path.insert(0, MOD)

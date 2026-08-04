@@ -237,13 +237,13 @@ function paddockDoc(r){
   } else {
     kids.push(table([new TableRow({children:[
       cell([kicker('No monitoring sites fall inside this paddock'),
-        body(`The monitoring network has ${r.network.nontreed} non-treed sites across Gayini — ${r.network.zoned_nontreed} of them inside a mapped paddock — and none sits inside ${r.unit}. Everything in this report therefore comes from the satellite record — the ${Math.round(r.pixel_side_m)}-metre grid covering the whole paddock — and none of it from ground measurement.`,{after:85}),
+        body(`The monitoring network has ${r.network.nontreed} non-treed sites across Gayini — ${r.network.zoned_nontreed} of them inside a mapped paddock — and none sits inside ${r.unit}. Everything in this report therefore comes from the satellite record — the ${r.pixel_side_m.toFixed(2)}-metre grid covering the whole paddock — and none of it from ground measurement.`,{after:85}),
         body('That is a real limit rather than an oversight. Satellite cover can be checked against ground measurement where sites exist; here it cannot. Where this report gives a figure, read it as a measurement of how much cover the satellite sees, unverified on the ground.',{after:85}),
         kicker('What the satellite record still supports'),
-        body(`Three things do not depend on having a site inside the boundary. How often the ground floods is measured across every ${Math.round(r.pixel_side_m)}-metre cell in the paddock. How much cover it carries is measured the same way, on the same grid used everywhere else on the property. And the comparison against other paddocks of the same wetness is made on that grid, so it is like-for-like whether or not a site happens to sit inside the fence.`,{after:85}),
+        body(`Three things do not depend on having a site inside the boundary. How often the ground floods is measured across every ${r.pixel_side_m.toFixed(2)}-metre cell in the paddock. How much cover it carries is measured the same way, on the same grid used everywhere else on the property. And the comparison against other paddocks of the same wetness is made on that grid, so it is like-for-like whether or not a site happens to sit inside the fence.`,{after:85}),
         dt(['What is measured here','How','Checked on the ground'],
-          [['How often it floods',`every ${Math.round(r.pixel_side_m)} m cell, ${r.n_years} years`,'no site inside this paddock'],
-           ['How much cover it carries',`every ${Math.round(r.pixel_side_m)} m cell, ${r.n_years} years`,'no site inside this paddock'],
+          [['How often it floods',`every ${r.pixel_side_m.toFixed(2)} m cell, ${r.n_years} years`,'no site inside this paddock'],
+           ['How much cover it carries',`every ${r.pixel_side_m.toFixed(2)} m cell, ${r.n_years} years`,'no site inside this paddock'],
            ['How it compares with like country','the same grid, all 64 paddocks','not applicable']],
           [3400,3400,3300]),
         gap(95),
@@ -258,7 +258,7 @@ function paddockDoc(r){
     p(t(CANNOT,{size:14,italics:true,color:MUTED}),{after:40}),
     p(t(`Scope. All headline figures use non-treed ground across the whole paddock, full record ${r.year_first}–${r.year_last}. `+
       (r.area_treed_ha>1?`${nf(r.area_treed_ha)} ha of woodland is excluded because tree canopy hides the ground beneath it. `:'')+
-      `Paddock flood frequency is measured across every ${Math.round(r.pixel_side_m)} m cell; the site reports count a year as wet if any part of a site saw water, so the two will not match. `+
+      `Paddock flood frequency is measured across every ${r.pixel_side_m.toFixed(2)} m cell; the site reports count a year as wet if any part of a site saw water, so the two will not match. `+
       `The expectation line and this paddock's difference from it are read from the results registry at render time, not recomputed. Source: Gayini_Results.sqlite.`,
       {size:13,color:FAINT}),{after:0}));
   return {kids,pages:NP};

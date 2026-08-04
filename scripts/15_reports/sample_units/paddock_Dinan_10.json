@@ -268,6 +268,7 @@
    78.059174011791
   ]
  },
+ "gap_slope_registered": null,
  "gap": {
   "year": [
    1988,
@@ -344,7 +345,7 @@
    -17.1589582501159
   ]
  },
- "gap_slope_registered": null,
+ "gap_source": "derived: paddock floor minus grazed baseline, this module",
  "year_first": 1988,
  "year_last": 2022,
  "n_years": 35,

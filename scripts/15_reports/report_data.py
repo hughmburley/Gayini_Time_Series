@@ -9,7 +9,7 @@ Emits one JSON record per unit for the document builder.
 import sqlite3, json, sys, os
 import numpy as np, pandas as pd
 
-from config import DB, ROOT, UNITS_DIR as OUT, require
+from config import DB, ROOT, TABLES, UNITS_DIR as OUT, require
 require(DB, 'Gayini_Results.sqlite')
 
 con = sqlite3.connect(f'file:{DB}?mode=ro', uri=True)
@@ -34,10 +34,15 @@ for k, v in EXPECT.items():
                  'A constant was re-pinned — check the change report before proceeding.')
 print(f'registry OK — {len(REG)} rows; {len(EXPECT)} constants asserted at 1e-4')
 
-# The census cell size is a project constant and has exactly one home. Client prose
-# used to type "25 m"; PIXEL_SIDE_M is 24.970268, and the 25 m nominal is the value
-# CLAUDE.md warns inflates every area by 0.238%. Rounded for the reader, derived in
-# the code, so the two can never drift apart.
+# The census cell size is a project constant and has exactly one home. Client prose used to
+# type "25 m"; PIXEL_SIDE_M is 24.970268.
+#
+# R-6, 4 Aug 2026: the reports render it to TWO decimal places — 24.97 m — not to the nearest
+# metre. Both uses are descriptions, not arithmetic (every area in the batch comes from the
+# census area_ha, which uses the true constant), so nothing computed was ever wrong. But
+# nominalising 24.970268 to 25 is the class CLAUDE.md warns about: it inflates areas by 0.238%,
+# and a rounded grid constant sitting in prose invites reuse in arithmetic the report never
+# performed. 24.97 is a precise number rather than jargon and costs a reader nothing.
 # Resolved MODULE-relative first, then ROOT. gayini_params is source that ships beside this
 # module (scripts/lib next to scripts/15_reports); GAYINI_ROOT locates the DATA — the database,
 # the figure renders, the output tree. Resolving code through the data root couples the two, and
@@ -48,6 +53,29 @@ for _p in (_LIB, os.path.join(ROOT, 'scripts', 'lib')):
     if os.path.isdir(_p) and _p not in sys.path:
         sys.path.insert(0, _p)
 from gayini_params import PIXEL_SIDE_M                                    # noqa: E402
+
+_T10_GAP = os.path.join(TABLES, 'T10_annual_gap_series.csv')
+
+
+def t10_gap_series(series):
+    """The annual gap series the registered t10_gap_annual_slope_* values were fitted to.
+
+    NOT IN THE DATABASE. `Output/tables/T10_annual_gap_series.csv` is its only home and it is
+    registered nowhere — no asset row by any path or id. A client figure now depends on an
+    unregistered file, which is a gate stop for registration (session 1), not for this build:
+    the alternative is to keep drawing a registered slope over points it was not fitted to.
+
+    Returns None if the artefact or the series is absent, so the caller falls back to the
+    derived series and says so, rather than silently drawing nothing.
+    """
+    if not os.path.exists(_T10_GAP):
+        return None
+    t = pd.read_csv(_T10_GAP)
+    g = t[(t.series == series) & (t.series_variant == 'mean_of_seasons')].sort_values('water_year')
+    if not len(g):
+        return None
+    return {'year': [int(y) for y in g.water_year], 'value': [float(v) for v in g.gap_pp]}
+
 
 SLOPE = REG['floor_flood_slope_64pdk']
 INTER = REG['floor_flood_intercept_64pdk']
@@ -195,10 +223,31 @@ def paddock_record(name):
                    'floor': [float(v) for v in me.floor],
                    'ff': [float(v) for v in me.ff],
                    'mean': [float(v) for v in me.veg_mean]}
-    gap = (me.set_index('water_year').floor - GRAZED_YR).dropna()
-    r['gap'] = {'year': [int(y) for y in gap.index], 'value': [float(v) for v in gap.values]}
+    # §8.1 resolved, v1.5. The registered slopes are NOT wrong: all three reproduce from
+    # Output/tables/T10_annual_gap_series.csv to the rounding of their pinned values
+    # (A_all4 0.2727 vs 0.273 · B_excl29ca 0.0571 vs 0.057 · C_29ca 0.9193 vs 0.919).
+    #
+    # The defect was that the figure drew the registered SLOPE over points derived here by a
+    # different construction of the same quantity — a different grazed-baseline aggregation.
+    # The two series differ by a mean of 4.70 pp and up to 8.69 pp, and fig_gap anchors the
+    # line's intercept to the mean of whichever points it is given, so the drawn line was
+    # neither series. Its two annotated endpoints read 41 and 10 points below where the
+    # registered series gives 45 and 14.
+    #
+    # So where a registered slope is asserted, the POINTS come from the artefact that slope
+    # was fitted to. Where none is, the series is derived here and the figure fits its own
+    # line to its own points — internally consistent, and asserting no registered value.
+    T10_SERIES = {'Bala 29ca': 'C_29ca'}          # paddock -> series in the T10 artefact
     key = {'Bala 29ca': 't10_gap_annual_slope_C_29ca'}.get(name)
     r['gap_slope_registered'] = REG.get(key) if key else None
+    reg_series = t10_gap_series(T10_SERIES[name]) if name in T10_SERIES else None
+    if reg_series is not None:
+        r['gap'] = reg_series
+        r['gap_source'] = f'T10_annual_gap_series.csv :: {T10_SERIES[name]}'
+    else:
+        gap = (me.set_index('water_year').floor - GRAZED_YR).dropna()
+        r['gap'] = {'year': [int(y) for y in gap.index], 'value': [float(v) for v in gap.values]}
+        r['gap_source'] = 'derived: paddock floor minus grazed baseline, this module'
     # gap_slope_derived removed v1.3. Nothing read it — not report_figs.py, not
     # report_build.js — and np.polyfit's last-bit ordering made it differ in the 15th
     # significant figure between machines, so it was noise in every unit-record diff.

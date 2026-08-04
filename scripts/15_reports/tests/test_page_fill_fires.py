@@ -10,7 +10,12 @@ Two assertions, because R-1 has two halves:
 
 Run:  python tests/test_page_fill_fires.py     (from scripts/15_reports)
 """
-import glob, os, subprocess, sys, tempfile
+import glob, os, shutil, subprocess, sys, tempfile
+
+if not (shutil.which('node') or shutil.which('node.exe')):
+    sys.exit('STOP: node not on PATH. The over-full fixture is built by the real docx package; '
+             'without node this test cannot run, and a test that cannot run must not look like '
+             'one that passed. Install Node or add it to PATH.')
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 MOD  = os.path.dirname(HERE)
