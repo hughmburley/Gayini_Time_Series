@@ -82,9 +82,11 @@ short <- function(x) vapply(strsplit(x, " "), `[`, character(1), 1)
 arm$comm <- short(arm$community); grz$comm <- short(grz$community)
 flood$comm <- short(flood$community); dec$comm <- short(dec$community)
 
-ARMS <- c(not_grazed = "not grazed (reference)",
-          unzoned_inferred_standard = "unzoned mapped (inferred standard)",
-          unzoned_plot_confirmed = "unzoned, plot-confirmed (8/15)")
+# Ruling Z: lines 85, 99 and 236 change TOGETHER. acols below is keyed on these literals,
+# so editing this vector alone silently drops each arm's colour.
+ARMS <- c(not_grazed = "conserved",
+          unzoned_inferred_standard = "unzoned - standard grazing (inferred)",
+          unzoned_plot_confirmed = "unzoned - plot-confirmed (8 of 15)")
 arm <- arm[arm$treatment_arm %in% names(ARMS), ]
 arm$arm_lab <- factor(ARMS[arm$treatment_arm], levels = ARMS)   # row order: ref, unzoned, pc
 dec$arm_lab <- ARMS[dec$treatment_arm]
@@ -96,9 +98,10 @@ band <- function(df, yv) do.call(rbind, lapply(
     md = stats::median(g[[yv]], na.rm = TRUE),
     hi = stats::quantile(g[[yv]], .75, names = FALSE, na.rm = TRUE))))
 
-acols <- c("not grazed (reference)" = "#238b45",
-           "unzoned mapped (inferred standard)" = "#B2182B",
-           "unzoned, plot-confirmed (8/15)" = "#6a51a3")
+# Ruling Z: keyed on the ARMS literals above - the two must be edited together.
+acols <- c("conserved" = "#0F3947",
+           "unzoned - standard grazing (inferred)" = "#B2182B",
+           "unzoned - plot-confirmed (8 of 15)" = "#6a51a3")
 
 make_grid <- function(yv, defcol, ylab, ttl) {
   gb <- band(grz, yv)
@@ -121,74 +124,73 @@ make_grid <- function(yv, defcol, ylab, ttl) {
   }))
   lab <- merge(lab, raw, by = c("comm", "treatment_arm"))
   lab$arm_lab <- factor(ARMS[lab$treatment_arm], levels = ARMS)
-  lab$txt <- sprintf("%+.1f pp adj. for water\n(raw gap %+.1f)   n=%d",
-                     lab$def, lab$raw_gap, lab$n_units)
+  # Ruling AC 3: the adjusted value IS the result of this figure and must be its most
+  # legible element. Split into two layers - the adjusted value large, the raw gap and n
+  # small - so the result survives reproduction outside the document. Both strings are
+  # asserted separately below, because QA-2a checks the strings ACTUALLY DRAWN.
+  # Rounding: %+.1f formats the COMPUTED double, never a pinned value (V11 4.6(b)).
+  lab$txt     <- sprintf("%+.1f pp adj. for water\n(raw gap %+.1f)   n=%d",
+                         lab$def, lab$raw_gap, lab$n_units)
+  lab$txt_adj <- sprintf("%+.1f pp", lab$def)
+  lab$txt_raw <- sprintf("adjusted for water   ·   raw gap %+.1f   ·   n=%d",
+                         lab$raw_gap, lab$n_units)
   # QA-2a: assert the strings ACTUALLY DRAWN carry BOTH source values (catches the ifelse/
   # recycling class of defect that no data-level check can see).
-  gayini_assert_rendered_values(lab$txt, lab$def, digits = 1, signed = TRUE,
+  gayini_assert_rendered_values(lab$txt_adj, lab$def, digits = 1, signed = TRUE,
                                 label = paste("T6 panel labels adj", defcol))
-  gayini_assert_rendered_values(lab$txt, lab$raw_gap, digits = 1, signed = TRUE,
+  gayini_assert_rendered_values(lab$txt_raw, lab$raw_gap, digits = 1, signed = TRUE,
                                 label = paste("T6 panel labels raw", defcol))
-  gayini_assert_rendered_varies(lab$txt, paste("T6 panel labels", defcol))
+  gayini_assert_rendered_varies(lab$txt_adj, paste("T6 panel labels", defcol))
+  # Ruling AC 1.3: name the sole member of the conserved arm where there is only one.
   lab$aeolian_flag <- ifelse(lab$comm == "Aeolian" & lab$treatment_arm == "not_grazed",
-                             "\n(n=1: Bala 29ca)", "")
-  # Subtitle numbers are COMPUTED from the same object the labels use - never typed. A hardcoded
-  # subtitle silently disagrees with the panel the moment the aggregation changes.
-  aeo <- lab[lab$comm == "Aeolian" & lab$treatment_arm == "not_grazed", ]
-  sub <- paste0(
-    "Grey = 14-day IQR band + median (fixed comparator). Blue = flood years. Line coloured by arm.\n",
-    "TWO QUANTITIES, and they differ: the gap you SEE between the line and the grey median is the RAW ",
-    "difference. The label is that gap ADJUSTED for water\n(within-stratum, area-weighted over the three ",
-    sprintf("wetness bands). Most of the raw gap is water, not grazing - on Aeolian, raw %+.1f pp becomes %+.1f pp adjusted.",
-            aeo$raw_gap, aeo$def))
-  gayini_assert_caption_number(sub, aeo$raw_gap, 1, paste("T6 subtitle raw gap", defcol))
-  gayini_assert_caption_number(sub, aeo$def, 1, paste("T6 subtitle adjusted", defcol))
+                             "conserved arm = Bala 29ca alone", "")
   ggplot() +
     geom_rect(data = flood, aes(xmin = water_year - .5, xmax = water_year + .5,
               ymin = -Inf, ymax = Inf), fill = "#c6dbef", alpha = .45) +
     geom_ribbon(data = gb, aes(water_year, ymin = lo, ymax = hi), fill = "grey75", alpha = .55) +
     geom_line(data = gb, aes(water_year, md), colour = "grey35", linewidth = .5) +
     geom_line(data = a, aes(water_year, y, colour = arm_lab), linewidth = .9) +
-    # y = 1 with the axis floored at 0: the label sits in reserved white space BELOW all data
-    # (series minimum is ~15), so it can never overlap a line.
-    geom_text(data = lab, aes(x = 1988, y = 1, label = paste0(txt, aeolian_flag)),
-              hjust = 0, vjust = 0, size = 2.5, colour = "grey20") +
+    # y = 1 with the axis floored at 0: the labels sit in reserved white space BELOW all
+    # data (series minimum is ~15), so they can never overlap a line.
+    geom_text(data = lab, aes(x = 1988, y = 12, label = txt_adj),
+              hjust = 0, vjust = 0, size = 5.2, fontface = "bold", colour = "grey10") +
+    geom_text(data = lab, aes(x = 1988, y = 6, label = txt_raw),
+              hjust = 0, vjust = 0, size = 2.6, colour = "grey35") +
+    geom_text(data = lab, aes(x = 1988, y = 1, label = aeolian_flag),
+              hjust = 0, vjust = 0, size = 2.6, fontface = "italic", colour = "grey35") +
     facet_grid(arm_lab ~ comm, switch = "y") +
     scale_colour_manual(values = acols, guide = "none") +
     coord_cartesian(ylim = c(0, 100)) +
-    labs(title = ttl, x = "water year", y = ylab, subtitle = sub,
-      caption = paste0(
-        "Support: pixel (aggregation_unit = arm_community_band_window). The inferred-standard arm sits AT OR ABOVE the 14-day\n",
-        "floor within stratum (above in 6 of 9 strata; plot-confirmed above in 8 of 9), inconsistent with heavier grazing degrading\n",
-        "the floor. Two readings: (a) grazing intensity does not register (ordering is noise); (b) the unzoned land is LESS grazed,\n",
-        "not more - 'unzoned' = outside the rotational system (remote/unwatered/unfenced) - making the ordering a real gradient with\n",
-        "the inference inverted. The monotonic ordering and the plot-confirmed subset being highest favour (b). Arm is INFERRED:\n",
-        "'unzoned mapped area (8 of 15 standard-grazing plots)'. not_grazed n=1-4 (Aeolian n=1); unzoned n=3-17 - the better-replicated arm.")) +
+    labs(title = ttl, x = "water year", y = ylab,
+         subtitle = "The visible gap is raw; the labelled value is adjusted for water within wetness bands.") +
     theme_minimal(base_size = 10) +
-    theme(plot.caption = element_text(hjust = 0, size = 7),
+    theme(plot.title = element_text(face = "bold", size = 14),
+          plot.subtitle = element_text(colour = "grey30", size = 10),
+          panel.grid.minor = element_blank(),
           strip.text.y.left = element_text(angle = 0), strip.placement = "outside")
 }
 
-p_grid <- make_grid("veg_p05_spatial", "floor_deficit_pp", "veg_p05_spatial (%)",
-  "T6 A - Three-arm vegetation-FLOOR trajectories vs the 14-day comparator (by community)")
+p_grid <- make_grid("veg_p05_spatial", "floor_deficit_pp", "Cover in the poorest patches (%)",
+  "Does grazing intensity show up in the cover floor?")
 gayini_write_and_register_figure(p_grid,
   file.path(fig_dir, "T6_A_three_arm_grid.png"),
-  title = "T6 A three-arm floor grid",
-  caption = paste("Support: pixel. Three-arm veg_p05_spatial trajectories vs the 14-day",
-    "IQR comparator, faceted arm x community; inferred-standard arm at/above 14-day floor."),
+  title = "Does grazing intensity show up in the cover floor?",
+  caption = paste("Support: pixel. Three management arms against the 14-day rotational",
+    "comparator, faceted arm x community; the adjusted difference is the labelled value."),
   support_level = "pixel", figure_level = "deliverable", run_id = "rem1_rerender_20260801",
-  provenance_note = "Inferred arm; two readings (intensity-noise vs less-grazed) in caption.",
-  width = 13, height = 9)
+  provenance_note = "Inferred arm; two readings (intensity-noise vs less-grazed) in the document caption.",
+  width = 13.5, height = 9, dpi = 150)
 
-p_mean <- make_grid("veg_mean", "mean_deficit_pp", "veg_mean (%)",
-  "T6 B - Three-arm MEAN-cover trajectories vs the 14-day comparator (by community)")
+p_mean <- make_grid("veg_mean", "mean_deficit_pp", "Average cover (%)",
+  "The same three arms, on average cover instead of the poorest patches")
 gayini_write_and_register_figure(p_mean,
   file.path(fig_dir, "T6_B_three_arm_mean.png"),
-  title = "T6 B three-arm mean-cover grid",
-  caption = paste("Support: pixel. Three-arm veg_mean trajectories vs the 14-day IQR",
-    "comparator; the mean-vs-floor contrast (arms match on mean, differ on floor)."),
+  title = "The same three arms, on average cover instead of the poorest patches",
+  caption = paste("Support: pixel. Average-cover companion to the poorest-patches grid;",
+    "the same three arms against the 14-day rotational comparator, faceted arm x community."),
   support_level = "pixel", figure_level = "deliverable", run_id = "rem1_rerender_20260801",
-  provenance_note = "Mean-cover companion to T6_A.", width = 13, height = 9)
+  provenance_note = "Average-cover companion to the poorest-patches three-arm grid.",
+  width = 13.5, height = 9, dpi = 150)
 
 # ---- deck cut: 4 panels (not_grazed & unzoned) x (Aeolian & Riverine) ----
 dk <- arm[arm$comm %in% c("Aeolian", "Riverine") &
@@ -233,7 +235,8 @@ p_deck <- ggplot() +
   geom_text(data = ld, aes(1988, 1, label = txt), hjust = 0, vjust = 0, size = 2.9, colour = "grey20") +
   facet_grid(arm_lab ~ comm) + scale_colour_manual(values = acols, guide = "none") +
   coord_cartesian(ylim = c(0, 100)) +
-  labs(title = "T6 A (deck) - Floor vs the 14-day comparator: reference below, inferred-standard above",
+  # Ruling Z third site: this title changes with ARMS (85) and acols (99).
+  labs(title = "T6 A (deck) - Cover in the poorest patches vs the 14-day comparator: conserved below, inferred-standard above",
        x = "water year", y = "veg_p05_spatial (%)",
        subtitle = deck_sub,
        caption = paste("Support: pixel. Grey = 14-day IQR + median; blue = flood years. Inferred-standard arm sits ABOVE 14-day -",
