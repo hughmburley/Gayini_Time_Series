@@ -79,8 +79,10 @@ make_panel <- function(yv, ylab, title, sub) {
     s <- shr$share_pct[shr$zone_name == g$paddock[1] & shr$comm == g$comm[1]]
     data.frame(comm = g$comm[1], paddock = g$paddock[1], water_year = g$water_year[1],
                y = g[[yv]][1],
+               # AG 2: short form. "of paddock" moves to the subtitle - it roughly
+               # halves label width, which is what reclaims the gutter.
                lab = if (length(s) == 1)
-                       sprintf("%s (%.1f%% of paddock)", g$paddock[1], s)
+                       sprintf("%s · %.1f%%", g$paddock[1], s)
                      else g$paddock[1])
   }))
   # De-collide the direct labels vertically. In Inland all four parts finish within a
@@ -98,7 +100,9 @@ make_panel <- function(yv, ylab, title, sub) {
     data.frame(comm = cm,
                lab = sprintf("n = %d grazed parts",
                              length(unique(grz$zone_fid[grz$comm == cm]))))))
-  ylo <- 0; yhi <- max(c(ref[[yv]], gb$hi), na.rm = TRUE) * 1.06
+  # AG 4: Figures 21 and 22 share ONE vertical scale. The pair exists to show the
+  # separation collapse; comparing it across two different y-ranges defeats that.
+  ylo <- 0; yhi <- 100
   cnm <- data.frame(comm = sort(unique(ref$comm)))
   ggplot() +
     geom_rect(data = fl, aes(xmin = water_year - 0.5, xmax = water_year + 0.5,
@@ -108,10 +112,10 @@ make_panel <- function(yv, ylab, title, sub) {
     geom_line(data = gb, aes(water_year, md), colour = "grey35", linewidth = 0.6) +
     geom_line(data = ref, aes(water_year, .data[[yv]],
                               colour = paddock, linewidth = paddock)) +
-    geom_segment(data = ends, aes(x = water_year, xend = water_year + 0.9,
+    geom_segment(data = ends, aes(x = water_year, xend = 2023.4,
                                   y = y, yend = y_lab, colour = paddock),
                  linewidth = 0.25, alpha = 0.8) +
-    geom_text(data = ends, aes(water_year + 1.2, y_lab, label = lab, colour = paddock),
+    geom_text(data = ends, aes(2023.8, y_lab, label = lab, colour = paddock),
               hjust = 0, vjust = 0.5, size = 2.7) +
     # community name inside the panel, top left; the facet strip is dropped
     geom_text(data = cnm, aes(x = min(ref$water_year), y = yhi, label = comm),
@@ -121,23 +125,31 @@ make_panel <- function(yv, ylab, title, sub) {
     facet_wrap(~comm, ncol = 1) +
     scale_colour_manual(values = PAL, guide = "none") +
     scale_linewidth_manual(values = LWD, guide = "none") +
-    scale_x_continuous(expand = expansion(mult = c(0.02, 0.26)),
-                       breaks = seq(1990, 2020, 10)) +
-    coord_cartesian(ylim = c(ylo, yhi)) +
+    # AG 3: the panel runs 1988-2023 and the label gutter is PLOT MARGIN, not empty
+    # panel. clip = "off" lets the direct labels draw into that margin, so the panels
+    # gain the width the old 26% right expansion was wasting.
+    # NB scale limits would DROP the margin labels (they sit past 2023); coord_cartesian
+    # zooms without discarding data, which is what lets them draw outside the panel.
+    scale_x_continuous(breaks = seq(1990, 2020, 10),
+                       expand = expansion(mult = c(0.02, 0.02))) +
+    coord_cartesian(xlim = c(1988, 2023), ylim = c(ylo, yhi), clip = "off") +
     labs(title = title, subtitle = sub, x = "water year", y = ylab) +
     theme_minimal(base_size = 11) +
     theme(legend.position = "none", strip.text = element_blank(),
           panel.grid.minor = element_blank(),
+          plot.margin = margin(t = 6, r = 92, b = 6, l = 6),
           plot.title = element_text(face = "bold", size = 13),
           plot.subtitle = element_text(colour = "grey30", size = 9.5))
 }
 
 p1 <- make_panel("veg_p05_spatial", "Cover in the poorest patches (%)",
   "Does conserved country hold more cover in its poorest patches than grazed country?",
-  "One community per row, common vertical scale. Grey band = middle half of grazed parts, with the median through it.")
+  "One community per row, common vertical scale 0-100. Grey band = middle half of grazed parts, with the median through it.
+Labels show each line's share of its paddock.")
 p2 <- make_panel("veg_mean", "Average cover (%)",
   "The same comparison, on average cover instead of the poorest patches",
-  "One community per row, common vertical scale. Grey band = middle half of grazed parts, with the median through it.")
+  "One community per row, common vertical scale 0-100. Grey band = middle half of grazed parts, with the median through it.
+Labels show each line's share of its paddock.")
 
 gayini_write_and_register_figure(
   p1, file.path(fig_dir, "T2_E_paddock_trajectories.png"),

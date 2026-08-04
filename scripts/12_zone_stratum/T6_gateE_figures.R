@@ -85,8 +85,8 @@ flood$comm <- short(flood$community); dec$comm <- short(dec$community)
 # Ruling Z: lines 85, 99 and 236 change TOGETHER. acols below is keyed on these literals,
 # so editing this vector alone silently drops each arm's colour.
 ARMS <- c(not_grazed = "conserved",
-          unzoned_inferred_standard = "unzoned - standard grazing (inferred)",
-          unzoned_plot_confirmed = "unzoned - plot-confirmed (8 of 15)")
+          unzoned_inferred_standard = "unzoned - standard grazing",
+          unzoned_plot_confirmed = "unzoned - plot-confirmed")
 arm <- arm[arm$treatment_arm %in% names(ARMS), ]
 arm$arm_lab <- factor(ARMS[arm$treatment_arm], levels = ARMS)   # row order: ref, unzoned, pc
 dec$arm_lab <- ARMS[dec$treatment_arm]
@@ -100,8 +100,8 @@ band <- function(df, yv) do.call(rbind, lapply(
 
 # Ruling Z: keyed on the ARMS literals above - the two must be edited together.
 acols <- c("conserved" = "#0F3947",
-           "unzoned - standard grazing (inferred)" = "#B2182B",
-           "unzoned - plot-confirmed (8 of 15)" = "#6a51a3")
+           "unzoned - standard grazing" = "#B2182B",
+           "unzoned - plot-confirmed" = "#6a51a3")
 
 make_grid <- function(yv, defcol, ylab, ttl) {
   gb <- band(grz, yv)
@@ -162,7 +162,11 @@ make_grid <- function(yv, defcol, ylab, ttl) {
     scale_colour_manual(values = acols, guide = "none") +
     coord_cartesian(ylim = c(0, 100)) +
     labs(title = ttl, x = "water year", y = ylab,
-         subtitle = "The visible gap is raw; the labelled value is adjusted for water within wetness bands.") +
+         subtitle = paste0(
+           "The visible gap is raw; the labelled value is adjusted for water within wetness bands.
+",
+           "The standard-grazing arm is inferred from the absence of a rotational zone; ",
+           "the plot-confirmed subset is 8 of 15 standard-grazing plots.")) +
     theme_minimal(base_size = 10) +
     theme(plot.title = element_text(face = "bold", size = 14),
           plot.subtitle = element_text(colour = "grey30", size = 10),
@@ -220,9 +224,8 @@ gayini_assert_rendered_varies(ld$txt, "T6 deck-cut labels")
 # Deck subtitle numbers COMPUTED, never typed (same rule as the grid).
 daeo <- ld[ld$comm == "Aeolian" & ld$treatment_arm == "not_grazed", ]
 deck_sub <- paste0(
-  "TWO QUANTITIES, and they differ: the gap you SEE between the line and the grey median is the RAW difference.\n",
-  "The label is that gap ADJUSTED for water (within-stratum, area-weighted over three wetness bands). Most of the\n",
-  sprintf("raw gap is water, not grazing - on Aeolian, raw %+.1f pp becomes %+.1f pp adjusted.",
+  "The visible gap is raw; the labelled value is adjusted for water within wetness bands.\n",
+  sprintf("On Aeolian, raw %+.1f pp becomes %+.1f pp adjusted.",
           daeo$raw_gap, daeo$floor_deficit_pp))
 gayini_assert_caption_number(deck_sub, daeo$raw_gap, 1, "T6 deck subtitle raw gap")
 gayini_assert_caption_number(deck_sub, daeo$floor_deficit_pp, 1, "T6 deck subtitle adjusted")
@@ -236,17 +239,18 @@ p_deck <- ggplot() +
   facet_grid(arm_lab ~ comm) + scale_colour_manual(values = acols, guide = "none") +
   coord_cartesian(ylim = c(0, 100)) +
   # Ruling Z third site: this title changes with ARMS (85) and acols (99).
-  labs(title = "T6 A (deck) - Cover in the poorest patches vs the 14-day comparator: conserved below, inferred-standard above",
-       x = "water year", y = "veg_p05_spatial (%)",
-       subtitle = deck_sub,
-       caption = paste("Support: pixel. Grey = 14-day IQR + median; blue = flood years. Inferred-standard arm sits ABOVE 14-day -",
-         "inconsistent with heavier grazing; may mean the unzoned land is LESS grazed. Arm inferred (8/15 plots). not_grazed Aeolian n=1.")) +
-  theme_minimal(base_size = 11) + theme(plot.caption = element_text(hjust = 0, size = 8))
+  labs(title = "Does grazing intensity show up in the cover floor? Conserved and standard-grazing arms, two communities",
+       x = "water year", y = "Cover in the poorest patches (%)",
+       subtitle = deck_sub) +
+  theme_minimal(base_size = 11) +
+  theme(plot.title = element_text(face = "bold", size = 13),
+        plot.subtitle = element_text(colour = "grey30", size = 9.5),
+        panel.grid.minor = element_blank())
 gayini_write_and_register_figure(p_deck,
   file.path(fig_dir, "T6_A_three_arm_deck.png"),
-  title = "T6 A three-arm deck cut",
-  caption = paste("Support: pixel. Four-panel deck cut: not_grazed and unzoned arms x",
-    "Aeolian and Riverine; inferred-standard arm above the 14-day floor."),
+  title = "Does grazing intensity show up in the cover floor? Conserved and standard-grazing arms, two communities",
+  caption = paste("Support: pixel. Four-panel cut of the three-arm grid: conserved and",
+    "standard-grazing arms across Aeolian and Riverine country."),
   support_level = "pixel", figure_level = "deliverable", run_id = "rem1_rerender_20260801",
   provenance_note = "Deck cut of T6_A; two readings in the full figure/change report.",
   width = 11, height = 7)
