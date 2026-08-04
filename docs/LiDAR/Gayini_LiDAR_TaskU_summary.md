@@ -76,6 +76,8 @@ classification, `bb5` first-return density (all 50 cm); `bb8`/`bb9`/`bba`/`bbb`/
 **`bbn` (pit-free CHM) absent** — immaterial, since `bbm` is DEM-subtracted and the
 percentiles give height above ground directly. [CC]
 
+**`bb8` has no `d5` tile**, so a 2021 `bb8` mosaic would be `d4`-only by construction — the U-I11 condition, permanently. **It is excluded from the height ladder, and six height percentiles were usable, not seven.** *(added 4 Aug, LID-1 Ruling AH: correctly recorded at Gate U1 §60 and marked ❌ for `d5` in the spec's product table; this section listed `bb8` among the delivered percentiles and named only `bbn` as absent.)*
+
 **Capture dates: unrecoverable.** No readme, no delivery note, no dated TIFF tags. [CC]
 This is the single largest unresolved limitation — see §7.
 

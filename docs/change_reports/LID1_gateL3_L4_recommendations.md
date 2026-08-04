@@ -1,7 +1,8 @@
 # LID-1 Gates L3 and L4 — recommendations
 
-**Date:** 4 August 2026 · **Report only. Nothing built, nothing written to the database.**
-Probe `101 / 297 / 191 / 5 / 60` unchanged.
+**Date:** 4 August 2026 · **Amended 4 August with Rulings AG–AJ.** L3 and L4 remain recommendations;
+the two findings in §0 are now APPLIED. **The only database write is Ruling AG's 14-row
+`legend_semantics` UPDATE** — `raster_asset` 191 → 191, no other registry touched.
 
 **Ruling AD honoured.** `Output/audit/Gayini_LiDAR_section_handoff_to_methods.md` **has not been
 opened**, and neither has `Output/audit/CC_handover_DOC1_gates_BCDE.md`. Everything below is written
@@ -28,9 +29,16 @@ strings going to Adrian under Ruling AF, and they are the plain-English semantic
 the basis for `DATA_HANDOVER`. **Sending a known-stale string for confirmation converts a stale
 number into a confirmed one.**
 
-**Recommendation: correct the 14 strings before the email, as a `legend_semantics`-only update.**
-That field is metadata *about* the raster, not a pinned value — the amendable class under Ruling F's
-logic. It is a registry write, so it is not mine to make in a read-only gate. **Flagged, not done.**
+**APPLIED under Ruling AG, 4 August.** One transaction, `UPDATE` not `INSERT` so the row count
+cannot move, probes either side (`raster_asset` 191 → 191), the corrected values read from
+`taskU_gateU1_r2_screen.csv` rather than typed, and a visible note on each of the 14 rows naming
+U-I15 as the source of the change. Verified: **0 rows assert the stale count, 14 assert the corrected
+one, 14 carry the note.**
+
+*The first verification of this write was wrong and reported 14 stale rows over correct data* — it
+matched the fragment `0 px in 2021`, which **the correction note itself quotes on purpose**. The note
+is the record; the sentence is the claim. The check now matches the whole sentence and converges on a
+re-run rather than failing.
 
 ### 0.2 · `bb8` is absent from the `d5` tile, and that is why 2021 z55 has 15 files
 
@@ -40,8 +48,8 @@ excluded `bb8` from the height ladder, and the lens spec's product table marks i
 
 **But the summary §2 does not say so.** It lists *"`bb8`/`bb9`/`bba`/…​ height percentiles"* as
 delivered products and names only `bbn` as absent. A reader would conclude seven height percentiles
-were available; six were usable. **Recommendation: one clause in §2** — *`bb8` has no `d5` tile, so a
-2021 `bb8` mosaic would be `d4`-only by construction, and it is excluded from the height ladder.*
+were available; six were usable. **APPLIED under Ruling AH, 4 August**, and recorded in the U-I11 entry as the third instance of one
+shape: **the artefact was right and the prose describing it was not.**
 
 ---
 
@@ -55,7 +63,22 @@ is right.
 
 **Do not write it here.** What follows is what it can support, with sources.
 
-### L3-8 · The two-epoch trap goes first, before the epochs are named
+### L3-0 · What Task U was, and why the section is in the document — **first**
+
+*Verbatim, Ruling AI:*
+
+> Task U used finished JRSRP LiDAR raster products as an interpretive lens on the Landsat results.
+> It was not a LiDAR analysis: it consumed delivered rasters, did not touch point clouds, and
+> generated no LiDAR product of its own. Point-cloud processing, canopy height model generation,
+> biomass and gap-probability modelling were out of scope throughout.
+>
+> Two Landsat products agreeing is circular. A Landsat product and a LiDAR product agreeing is
+> corroboration. That distinction is the entire value of the task.
+
+**My L3 omitted this and it was the omission that mattered** — without it a reader does not know why
+the section is in the document at all.
+
+### L3-8 · The two-epoch trap goes next, before the epochs are named
 
 2009 and 2021 with management changing in 2019 invites a before-and-after reading, and the section
 must refuse it in its opening rather than its caveats:
@@ -226,8 +249,13 @@ should see the DEMs themselves, not a description of them.
 | 10 m | 3 (2 FPC, 1 seam mask) | 2 MiB |
 | **total** | **20** | **12.46 GiB — 7.0% of the source delivery** |
 
-**The two DEMs are 97% of the volume**, and they are also the governance-sensitive layers. If review
-defers them, the remaining 18 files are **330 MiB** and can be sent by ordinary means.
+**The two DEMs are 97% of the volume**, and they are also the governance-sensitive layers.
+
+> **The deferral path, stated explicitly (Ruling AJ).** If the Nari Nari review defers the two 50 cm
+> DEMs, **the remaining 18 files are 330 MiB and proceed by ordinary means. Nothing waits.**
+> The package is designed to be granted in part: **a review that can defer part of a package is
+> easier to grant than one that must approve all of it**, and the 97% figure is what makes the
+> decision tractable rather than blocking.
 
 ### L4-2 · README specification
 
@@ -269,11 +297,14 @@ number the project already knows is wrong.
 Three questions are already embedded in the strings and should be pulled to the top of the message,
 because they are the ones only he can answer:
 
-1. **Vertical datum of each `bb0`** — ellipsoidal, or AHD via AusGeoid98 / 09 / 2020? The semantics
+1. **Flight months for each epoch — ask this first and do not bury it (Ruling AJ). It is the
+   cheapest improvement available to the whole task.** Each epoch has two candidate water years, and
+   which one it falls in changes the context by more than any analysis could recover: the 2009 farm
+   floor is **30.87 or 51.71** (a 20.8 pp spread, percentile 0.0 or 5.9) and the 2021 gauge flow
+   **3,505 or 15,290 ML/day** (a factor of 4.4, percentile 47.1 or **100.0**). **Direction survives;
+   magnitude does not.** One answer removes the spread from every change statement in the task.
+2. **Vertical datum of each `bb0`** — ellipsoidal, or AHD via AusGeoid98 / 09 / 2020? The semantics
    string says *"VERTICAL DATUM UNRESOLVED"*, and every elevation statement depends on it.
-2. **Flight months for each epoch.** Each epoch has two candidate water years; the 2009 farm floor is
-   **30.87 or 51.71** and the 2021 gauge flow **3,505 or 15,290 ML/day**. Direction survives,
-   magnitude does not. **This is the cheapest improvement available to the whole task.**
 3. **What `254` means** in the `d5` `bb3` / `bb4` classification bands.
 
 The confirmation question itself is narrow: *does each string describe the product correctly, and is
@@ -285,9 +316,20 @@ the FPC non-comparability statement right?* — not a review of the analysis.
 
 Both are recommendations. **Nothing was built and nothing entered the database.**
 
+**Applied since first issue:** AG (14 semantics rows corrected) · AH (the `bb8` clause, and the
+U-I11 entry now records three instances of one shape) · AI (L3-0 added first, verbatim) ·
+AJ (the deferral path made explicit, flight months lifted above the datum question).
+
+**Comparison against the design seat's handoff, now on the record.** Reached separately and agreeing:
+placement, the two-epoch trap leading, both woody figures or neither, the crossed 17.00% and 6.27%
+appearing nowhere, the inline denominator, the §12.3 rewording, governance leading L4, and the
+GeoPackage absence as a stated absence. **Three disagreements, two of them the handoff's** — it did
+not quote or name the 9.659 pp floor, and carried no volume figure — **and one mine**, the omission
+of what Task U was and was not, now L3-0.
+
 **Design seat's:**
 
-1. **§0.1** — authorise the 14 `legend_semantics` corrections before the email goes.
-2. **§0.2** — the one-clause `bb8` addition to summary §2.
-3. **L3** — compare this against your own handoff note. Any disagreement is a finding.
-4. **L4-4** — the Nari Nari review is a governance decision and nothing ships before it.
+1. **L4-4** — the Nari Nari review is a governance decision and nothing ships before it. The
+   deferral path is now explicit so the review can be granted in part.
+2. **The email to Adrian**, with flight months first. The 14 strings are correct as of this commit
+   and safe to send.
