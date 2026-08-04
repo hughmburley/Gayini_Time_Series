@@ -145,6 +145,17 @@ series. Full detail in `docs/change_reports/TaskU_gate*.md`.*
 
 ---
 
+## DOC-1 — methods document verification (4 Aug 2026)
+
+*ID prefix `D1-I` checked against this log before use: no collision with the `I-`/`C-`/`U-I`/`T3-I` series. Not to be confused with `DOC1-nnn`, which are claim IDs in `Output/audit/DOC1_claim_check.csv`.*
+
+| Id | Item | Triage |
+|---|---|---|
+| **D1-I1** | **A concurrent session's commit absorbed this session's staged files — the third occurrence, and the first where the record is now wrong rather than merely untidy.** DOC-1 Gate B staged three explicit paths; before the commit ran, the LID-1 session committed and swept all three into **`b5e3b86`**, whose message describes only LID-1 work. **Nothing was lost and every byte is correct**, but `Output/audit/DOC1_claim_check.csv`, `Output/audit/DOC1_gateB_value_claims.md` and `docs/reports/CC_spec_DOC1_document_verification_v2.md` are now findable only under a LID-1 message. The commit is already pushed, so it was **not** rewritten — CLAUDE.md forbids rebasing pushed work. | **PROCESS, not a number.** The 2 Aug rule ("one worktree, one session, when writes are involved") is correct and was **not followed by either session**. Explicit-path staging does not protect against this — the collision is at commit time, not add time. **The enforceable fix is `git worktree add` for the second session**, and it needs to be a precondition of starting concurrent work, not a convention |
+| D1-I2 | **`Output/tables/taskM_green_at_floor_area.csv` is tidy-long and repeats `threshold`/`mask = green_frac_pct > 50` on every row, including `green_frac_pct_median` and `green_frac_pct_mean`.** Those two rows are computed over all 959,833 valid floor pixels, not over the majority-green subset — a median of that subset would exceed 50 by construction. A reader re-deriving 3.03% from the mask stated on its own row will not reproduce it. | **Changes no number; the value is confirmed.** Source-metadata defect. Same family as the stored QA verdict (C-08): the row asserts a scope it does not have. Fix is to blank the threshold/mask columns on distribution rows |
+
+---
+
 ## Notes on discipline
 
 **What I will stop doing** (design seat): raising `IMPROVE` items at STOP points. They arrive looking as urgent as blockers because of where they appear. From here they go straight to this log without interrupting a gate.
