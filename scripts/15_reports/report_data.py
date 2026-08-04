@@ -352,10 +352,23 @@ if __name__ == '__main__':
     import argparse
     ap = argparse.ArgumentParser()
     ap.add_argument('--paddocks', nargs='*', default=[])
+    ap.add_argument('--all-paddocks', action='store_true',
+                    help='every management zone (R-7). Derived from dim_management_zone, '
+                         'not typed — a list of 64 names is a literal standing in for a query.')
     ap.add_argument('--sites', nargs='*', default=[])
     a = ap.parse_args()
     run_canaries()
-    for nm in a.paddocks:
+
+    paddocks = list(a.paddocks)
+    if a.all_paddocks:
+        # R-7, 4 Aug 2026: paddock coverage is EVERY management zone. Expressed as the query
+        # that defines the set, so it cannot drift from dim_management_zone the way a typed
+        # list of 64 names would. R-7 supersedes R-4 on paddocks only; sites stay at 25.
+        paddocks = [z for z in q('select zone_name from dim_management_zone '
+                                 'order by zone_name').zone_name]
+        print(f'  --all-paddocks: {len(paddocks)} zones from dim_management_zone')
+
+    for nm in paddocks:
         rec = paddock_record(nm)
         json.dump(rec, open(f"{OUT}/paddock_{nm.replace(' ', '_').replace('/', '-')}.json", 'w'), indent=1)
         print(f"  paddock {nm:12s} floor {rec['floor']:.2f} ff {rec['ff']:.2f} "

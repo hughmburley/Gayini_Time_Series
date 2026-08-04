@@ -85,12 +85,22 @@ def main():
     with tempfile.TemporaryDirectory() as tmp:
         for d in docs:
             stem = os.path.splitext(os.path.basename(d))[0]
-            r = subprocess.run([soffice, '--headless', '--convert-to', 'pdf',
-                                '--outdir', tmp, d], capture_output=True, text=True)
             pdf = os.path.join(tmp, f'{stem}.pdf')
+            # Retry once. Over an 89-document batch soffice failed on exactly one file
+            # ("Could not find platform independent libraries") and converted it cleanly on
+            # its own — a transient in LibreOffice's startup, not a defect in the document.
+            # Reporting that as an ERROR would fail a build for something no one can fix.
+            # Two attempts, and only then an error, so a genuinely broken document still fails.
+            for attempt in (1, 2):
+                r = subprocess.run([soffice, '--headless', '--convert-to', 'pdf',
+                                    '--outdir', tmp, d], capture_output=True, text=True)
+                if os.path.exists(pdf):
+                    if attempt == 2:
+                        print(f'  {stem}: converted on retry')
+                    break
             if not os.path.exists(pdf):
-                errors.append((stem, '-', 0.0, 'PDF CONVERSION FAILED'))
-                print(f'\n{stem}\n  conversion failed: {r.stderr.strip()[:200]}')
+                errors.append((stem, '-', 0.0, 'PDF CONVERSION FAILED (2 attempts)'))
+                print(f'\n{stem}\n  conversion failed twice: {r.stderr.strip()[:200]}')
                 continue
             subprocess.run([pdftoppm, '-png', '-r', '100', pdf,
                             os.path.join(tmp, stem)], check=True)
