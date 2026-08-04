@@ -96,6 +96,18 @@ Eight of the twelve discrepancies would have been caught on sight. `dim_headline
 
 First-50-MB SHA-256 (`50*1024*1024`, 1 MB chunks), as in `sha256_first50()`. The R registrars' whole-file `digest::digest(algo="sha256")` is a **different** convention and must not be used for asset registration — including inside `write_and_register_figure()`.
 
+### A check must not match the record of a correction
+
+**Match the whole claim, not a substring of it. The note is the record; the sentence is the claim.**
+This project writes corrections **visibly** — superseding headers, `*(corrected …, was X)*` notes,
+retained superseded values — so a fragment match will find the quoted old value **inside the note
+documenting its replacement** and report corrected data as still wrong (I-47, Ruling AK). The
+convention is right and generates this failure mode by construction, which is why the rule sits
+beside it.
+
+**Ruling J's distinction from the other direction:** J says a check that *errors* is not a check that
+*catches*. This says **a check that *fires* is not necessarily a check that *found* something.**
+
 ### Deterministic emission
 
 **Any artefact whose checksum is compared must be emitted in a deterministic order.** Sets, dicts
