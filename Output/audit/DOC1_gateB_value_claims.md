@@ -1,7 +1,14 @@
-# DOC-1 Gate B — value and structural claims (partial)
+# DOC-1 Gate B — value and structural claims
 
 **Read-only.** 4 August 2026 · SQLite `mode=ro`, `PRAGMA query_only=1` · no writes.
-**Status: PARTIAL.** Eight of the ten priority groups are verified below. Two remain — see §Remaining.
+**Status: COMPLETE for the priority list.** §§1–9 were verified in the first pass against the
+pre-correction draft. §§10–11 complete the two items that remained; the third remaining item
+(the three-arm gap pair) is carried to Gate C by the spec and is not guessed at here.
+
+**Audited input** (spec v2 requires this recorded): `docs/reports/Gayini_RS_methods_doc_V6.docx` ·
+9,821,125 bytes · modified 2026-08-04T13:15:07 ·
+SHA-256 `63177e5fc45a9a02072abd654349d8d2eb75d9fb111db2c6260e4751e78e584b`.
+Re-hashed at the end of the gate: unchanged, so nothing below rests on a stale extraction.
 
 Verdicts: **CONFIRMED** = reproduced from a named source object. Values below are the found values.
 
@@ -112,12 +119,124 @@ Also confirmed in passing: T1's *"Bala 29ca floods in 8.5% of years and ranks 61
 
 ---
 
-## Remaining at Gate B
+## 10 · §7.3 response values — the first CONTRADICTED claim
 
-- **§7.3 response values** — r 0.16 to 0.39 and the wet-minus-dry deltas +4.0 to +11.1. Source object identified at Gate A (`Output/diagnostics/tier2H_g1b_census_veg_wet_response_by_stratum.csv`, 9 rows) but not yet read. These are the values you flagged as read off the figure rather than queried, so they are the highest-value remaining item.
-- **The −32.0 / −10.5 pair**, above, together with the area-weighting check — carried to Gate C.
-- **The 3.03% median green share** — the cell count and area are corroborated; the median itself is not yet re-derived.
+Source: `Output/diagnostics/tier2H_g1b_census_veg_wet_response_by_stratum.csv`, 9 stratum rows.
+Rule constants read from the producer, `scripts/03_inundation_products/20_run_census_veg_wet_response.R`
+— `R_RESPOND = 0.20` (54), `SIGN_FRAC = 0.70` (55), `MIN_RESP_COVERAGE = 0.50` (56), verdict at 218.
 
-## Counts so far
+| stratum | median_r | sign_frac_pos | cov % | census verdict | wet−dry pts | plot verdict |
+|---|---|---|---|---|---|---|
+| Aeolian low | NA | NA | 0.00 | undetermined | — | weak_or_none |
+| Aeolian mid | 0.1641 | 0.912 | 77.09 | weak_or_none | 10.129 | weak_or_none |
+| Aeolian high | 0.1754 | 0.861 | 99.32 | weak_or_none | 5.336 | **responds** |
+| Riverine low | 0.1484 | 0.901 | 58.76 | weak_or_none | **11.096** | weak_or_none |
+| Riverine mid | 0.2244 | 0.943 | 99.99 | responds | 9.159 | responds |
+| Riverine high | 0.3211 | 0.970 | 100.00 | responds | 7.245 | responds |
+| Inland low | 0.2562 | 0.973 | 91.73 | responds | 9.246 | responds |
+| Inland mid | 0.3860 | 0.996 | 100.00 | responds | 6.756 | responds |
+| Inland high | 0.3891 | 0.989 | 100.00 | responds | **4.008** | responds |
 
-**41 priority values checked · 40 CONFIRMED · 0 CONTRADICTED · 1 unresolved.** No stated value has yet been found wrong. Three notes have been raised that are not errors but unstated conventions or mismatched denominators: the ddof split between §6.4 and §6.1, the unstated pixel-weighting behind 51.1, and §M4's "of 118" against counts summing to 115.
+**Three of the four §7.3 claims are CONFIRMED, and they are exact.**
+
+- *"from r = 0.16 in Aeolian mid country to r = 0.39 in Inland Floodplain mid and high bands"* —
+  0.1641 → 0.16; 0.3860 and 0.3891 → 0.39. The document names the strata rather than asserting a
+  range over all of them, so the true minimum (Riverine low, 0.1484) is not miscounted as the floor.
+  *"Response strengthens toward the wet end of each community"* holds monotonically in all three.
+  **CONFIRMED.**
+- *"Riverine low … largest per-flood cover gain at +11.1 percentage points but a correlation of only
+  0.15; Inland Floodplain high … smallest gain at +4.0 with a correlation of 0.39"* — 11.096 and
+  4.008 are the true maximum and minimum; 0.1484 → 0.15 and 0.3891 → 0.39. All four values match,
+  and the document states 0.15 for Riverine low where §7.3's opening sentence quotes 0.16 for a
+  different stratum, so the two sentences are consistent rather than in conflict. **CONFIRMED.**
+- *"Aeolian low country does not flood at all across the 35-year record"* — `n_never_flood` = 26,786
+  = `n_pixels_focus`, response pixels 0. Undefined by construction, not thinned by data loss.
+  **CONFIRMED.**
+
+### **CONTRADICTED — §7.3: "Six of the eight measurable strata meet the 0.20 reporting threshold"**
+
+**Found: five of eight.** Eight strata have a defined `median_r`; five reach 0.20 — Riverine mid and
+high, Inland low, mid and high. The census `verdict` column reads `responds` for exactly those five.
+
+**The 6 is the plot-support count.** `plot_verdict = 'responds'` holds for **six of nine** strata,
+adding Aeolian high, whose plot-support `plot_median_r_veg` is 0.2644 against a census `median_r` of
+0.1754. So the sentence pairs a **plot-support numerator with a census-support denominator**. The
+source CSV's own header warns that the `plot_*` columns are a *"PLOT-support benchmark (reference,
+not a target)"*, and CLAUDE.md's C10 rule forbids merging the two supports in one statement.
+
+Correct at census support: **five of the eight measurable strata**, or **five of nine** if the
+never-flooding Aeolian low band is counted in the base.
+
+### **CONTRADICTED — §6.5: "Applying the 0.20 cut without the sign-consistency condition would classify some strata differently"**
+
+**Found: no stratum is classified differently.** `SIGN_FRAC = 0.70`, and the minimum `sign_frac_pos`
+across the eight measurable strata is **0.861** (Aeolian high). The sign condition therefore never
+binds on this data: the 0.20 cut alone and the full two-part rule both return the same five strata.
+
+This is not the same defect as the §6.5 rule description, which v6 states correctly as a two-part
+rule — Gate C confirms that text. It is a claim about the rule's *consequence*, and the consequence
+does not occur. The two-part rule is real and should be described; what cannot be said is that it
+changes any answer here.
+
+## 11 · The 3.03% median green share — CONFIRMED, on a scope the document does not state
+
+**CONFIRMED from two independent artefacts.** `Output/tables/taskM_green_at_floor_area.csv` gives
+`green_frac_pct_median` = **3.03** (mean 11.773), and
+`Output/diagnostics/tier2H_h2_green_fraction_at_floor.csv` row *"green fraction of the floor (%)"*
+gives median **3.03**, mean 11.773, p95 55.556 over `n_farm_px` = 959,833. The two agree to every
+stated digit.
+
+**Unstated convention — the scope is the farm boundary, not the census extent.** The median is taken
+over the 959,833 valid floor pixels inside the **Gayini farm boundary at native 30 m EPSG:3577**, an
+implied **86,384.97 ha**. That footprint includes treed Floodplain Woodland. The persistence areas
+quoted in the same passage — 12,641 / 8,300 / 4,179 ha — are **non-treed** scope, nine strata. So one
+paragraph carries two different denominators:
+
+| | pixels | ha | treed included |
+|---|---|---|---|
+| green share at the floor (3.03%; 71,755 px, 6,458 ha) | 959,833 @ 30 m EPSG:3577 | 86,384.97 | **yes** |
+| census mapped extent | 1,080,157 @ 24.97 m EPSG:8058 | 67,349.33 | yes, as context |
+| non-treed persistence sweep | 988,829 @ 24.97 m EPSG:8058 | 61,655.3 | no |
+
+Calling 3.03% *"the property median"* is not wrong, but "the property" here is a footprint about 28%
+larger than the census extent and 40% larger than the non-treed scope that every adjacent area figure
+uses. One clause, in the pattern of the three conventions already raised.
+
+**A trap in the source artefact, not in the document.** `taskM_green_at_floor_area.csv` is tidy-long
+and repeats `threshold` / `mask = green_frac_pct > 50` on **every** row, including the
+`green_frac_pct_median` row. The median is over all 959,833 valid floor pixels, not over the
+majority-green subset — a median of that subset would exceed 50 by construction. Anyone re-deriving
+3.03 from that row's stated mask will not reproduce it. It is a source-metadata defect, changes no
+number, and belongs in the issues log.
+
+The cell count and area (71,755 px, 6,457.95 ha, native 30 m) are re-confirmed against the same table,
+with the persistence README's standing warning that the 8058 reprojected area (3,744.20 ha) and the
+older 4,474.03 ha count-conversion are **not** the measured area. The document quotes the native-grid
+figure, which is the correct one.
+
+---
+
+## Carried to Gate C
+
+**The three-arm raw and adjusted gap pair** (−32.0 becoming −10.5). Unchanged from the first pass:
+no pin exists under that description; the nearest registered values are the Bala 29ca T10 quantity
+(−32.1) and the positive `three_arm_floor_deficit_*` entries. Settled at Gate C check C3 together
+with the area-weighting check. Not guessed at.
+
+## Counts
+
+**48 priority values and structural claims checked · 46 CONFIRMED · 2 CONTRADICTED · 1 carried to Gate C.**
+
+Both contradictions are in the same family, and both were found by querying a source that had
+previously been read off a rendered figure. Neither is a transcription slip: one merges two support
+levels in a single ratio, the other asserts a consequence of a rule that the data does not produce.
+
+**Coverage, stated plainly for Gate E.** The v6 extraction holds **224 claims**, of which **96 are
+`value` and 79 are `structural`** — 175 in Gate B's nominal scope. The priority list covers 48 of
+them. The remaining 127 are **unchecked, not confirmed**, and the Gate E report must say so rather
+than present 46 CONFIRMED as the coverage figure.
+
+**Five unstated conventions now recorded** (spec v2 requires these even where the number is right):
+the ddof split between §6.4 and §6.1; the pixel-weighting behind 51.1, since stated in v6's §4.4;
+§M4's "of 118" against counts summing to 115; the farm-boundary scope behind 3.03%; and the
+plot-versus-census support split exposed by the §7.3 contradiction.
