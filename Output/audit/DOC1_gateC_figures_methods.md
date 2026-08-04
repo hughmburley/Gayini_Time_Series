@@ -267,6 +267,45 @@ which 25 of them are these without the mapping.
 
 ---
 
+### C2 completion — the manifest arrived, and the mapping is exact
+
+`docs/reports/DOC1_figure_manifest_v6.csv` (25 rows) closes the blocker. **Verified independently rather
+than accepted:** all 25 `sha256_embedded` values are present among the 25 `word/media/` entries of the v6
+package, no media file is unclaimed, the correspondence is one-to-one, and figure numbers 1–25 each occur
+once. The mapping is therefore exact.
+
+**Reconciliation against `figure_asset` — the split is not the one predicted, and the difference is the finding:**
+
+| resolves by | count | detail |
+|---|---|---|
+| **hash** (unmodified, byte-identical to a registered asset) | **15** | all 12 `Output/pack/` figures, plus Figures 6 and 7 (supplied unmodified) and **Figure 1** |
+| **filename only** (registered, but resampled for embedding) | 6 | Figures 4, 9, 10 and the three dashboard renders 11–13 |
+| **neither** | **4** | **Figures 2, 3, 5, 8** |
+
+Expected was 12 clean hash matches and 13 by filename. Found **15 and 6, with 4 resolving by neither**.
+
+**F-3 · Four figures in a client-facing document have no registry row.** Figures **2**
+(`C1_checkerboard_farm.png`, §3.1 stratification), **3** (`S_annual_wet_extent_flow.png`, §7.1), **5**
+(`H6_absolute_flood_zones.png`, §7.1) and **8** (`S_floor_and_typical_mapped.png`, §7.4) match no
+`figure_asset` row by checksum **or** by filename. All four were extracted from
+`Gayini_Veg_samples_ALLPIXEL_v6_20260724.pptx`. Figure 5 is the absolute-zones figure §3.1 and §7.1 both
+cite as the comparable alternative to the terciles, so it is load-bearing. These are unregistered artefacts
+reaching a deliverable.
+
+**Minor · Figure 1's embedding note and its hash disagree.** The manifest records *"resampled to 2000 px long
+edge"*, yet its embedded bytes hash-match the registered `Output/figures/M2_all_pixel_method.png` exactly.
+Either the resample was a no-op or the note is inherited from its provenance group. Changes nothing;
+worth one correction in the manifest so the note is not trusted later.
+
+**Registry movement.** `figure_asset` now holds **297 rows** against the **278** recorded in CLAUDE.md.
+Movement is expected between tasks; flagged here so Gate E's re-probe has a starting figure and an
+attributable delta rather than a surprise.
+
+**Caption-versus-code for the remaining 21 figures is now unblocked but not done.** Four were verified at
+this gate (6, 9, 10, 24). With the manifest in place the remaining 21 are tractable — each caption can be
+read against its named source file's producing script. Scoping that is a design-seat call given the
+deadline; it is a bounded piece of work, not an open-ended one, and it is the last incomplete part of C2.
+
 ## Carried forward
 
 - **Regression diagnostics** (§6.1) and **six citations** — open, as established at Gate A. Neither closes here.
