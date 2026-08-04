@@ -1,6 +1,9 @@
 """Render the report .docx files and report how far content reaches down each page.
 
-Targets: 82-90% is right. >92% will probably spill in Word. <80% is dead space.
+Above 92% is an ERROR and fails the build — Word spills content to a phantom page.
+Below 70% is a WARN and never fails the build — dead space is a design observation,
+not a defect. Between the two, nothing is reported.
+
 Measures NON-WHITE (the figure canvas is warm cream and a dark-ink threshold
 reads it as an empty page).
 
@@ -24,11 +27,19 @@ import numpy as np
 from PIL import Image
 from config import DOCS_DIR
 
-DEAD, SPILL = .80, .92          # unchanged from the delivered thresholds
-
-# NOTE for the design seat: the handoff §7 states the band as "70-90%, above ~93% Word
-# spills". This script has always used 80/92. The two do not agree. Preserved as-is
-# rather than silently retuned — the band is a QA judgement, not a build decision.
+# --- R-1, 4 August 2026: the band conflated a functional failure with an aesthetic one ---
+# It was stated three ways — 70-90 in the handoff and template spec, 80-92 here, and 68-93 in
+# the design seat's in-session QA, which is what produced "0 of 32 outside tolerance". One
+# instrument measured, another was documented, a third asserted the pass; the claim that all
+# 32 documents sat inside the band was not true under any of them.
+#
+# Only the upper bound has a failure mode behind it: above SPILL, Word pushes content to a
+# phantom page. Below DEAD is dead space — a design observation, not a defect. Failing a build
+# on 42 of 83 pages for whitespace produces a permanently-red check, and I-11 applies to
+# permanently-red exactly as it does to permanently-green.
+SPILL = .92     # ERROR — real failure mode, fails the build
+DEAD  = .70     # WARN  — reported, never fails the build
+# Nothing between DEAD and SPILL is reported at all.
 
 
 def find_soffice():
@@ -70,7 +81,7 @@ def main():
                  f'must not report success.')
 
     n_pages = 0
-    bad = []
+    errors, warns = [], []
     with tempfile.TemporaryDirectory() as tmp:
         for d in docs:
             stem = os.path.splitext(os.path.basename(d))[0]
@@ -78,31 +89,37 @@ def main():
                                 '--outdir', tmp, d], capture_output=True, text=True)
             pdf = os.path.join(tmp, f'{stem}.pdf')
             if not os.path.exists(pdf):
-                bad.append((stem, '-', 0.0, 'PDF CONVERSION FAILED'))
+                errors.append((stem, '-', 0.0, 'PDF CONVERSION FAILED'))
                 print(f'\n{stem}\n  conversion failed: {r.stderr.strip()[:200]}')
                 continue
             subprocess.run([pdftoppm, '-png', '-r', '100', pdf,
                             os.path.join(tmp, stem)], check=True)
-            print(f'\n{stem}')
             for f in sorted(glob.glob(os.path.join(tmp, f'{stem}-*.png'))):
                 im = np.array(Image.open(f).convert('RGB')).astype(int)
                 nonwhite = im.sum(axis=2) < 750
                 rows = np.where(nonwhite.sum(axis=1) > 10)[0]
                 frac = rows.max() / im.shape[0] if len(rows) else 0
-                verdict = ('dead space' if frac < DEAD else
-                           'may spill in Word' if frac > SPILL else 'ok')
                 n_pages += 1
-                if verdict != 'ok':
-                    bad.append((stem, os.path.basename(f), frac, verdict))
-                print(f'  {os.path.basename(f):40s} {frac*100:5.0f}%   {verdict}')
+                page = os.path.basename(f)
+                if frac > SPILL:
+                    errors.append((stem, page, frac, 'may spill in Word'))
+                elif frac < DEAD:
+                    warns.append((stem, page, frac, 'dead space'))
 
-    print(f'\n{n_pages} pages across {len(docs)} documents · '
-          f'{len(bad)} outside the {DEAD*100:.0f}-{SPILL*100:.0f}% band')
-    if bad:
-        print('\noutside the band:')
-        for stem, page, frac, verdict in bad:
+    print(f'{n_pages} pages across {len(docs)} documents')
+    print(f'  {len(errors)} above {SPILL*100:.0f}% (ERROR — Word spills to a phantom page)')
+    print(f'  {len(warns)} below {DEAD*100:.0f}% (warn — dead space, not a defect)')
+    if warns:
+        print('\ndead space (advisory):')
+        for stem, page, frac, _ in warns:
+            print(f'   {stem:44s} {page:24s} {frac*100:5.0f}%')
+    if errors:
+        print('\nFAIL — these pages will spill in Word:')
+        for stem, page, frac, verdict in errors:
             print(f'   {stem:44s} {page:24s} {frac*100:5.0f}%  {verdict}')
-    sys.exit(1 if bad else 0)
+    else:
+        print('\nno page at spill risk')
+    sys.exit(1 if errors else 0)
 
 
 if __name__ == '__main__':

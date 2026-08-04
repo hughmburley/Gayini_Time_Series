@@ -30,16 +30,19 @@
  "bands": [
   {
    "band": "Wetter ground",
+   "regime_band": "high",
    "ha": 197.34227,
    "ff": 51.08914463651877
   },
   {
    "band": "Middle",
+   "regime_band": "mid",
    "ha": 83.862671,
    "ff": 25.648433205983896
   },
   {
    "band": "Drier ground",
+   "regime_band": "low",
    "ha": 247.223414,
    "ff": 5.204827953016322
   }

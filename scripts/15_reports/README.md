@@ -43,13 +43,23 @@ branch. Investigate before shipping. **Do not update the manifest to make it pas
 
 ### Versions
 
-**v1.3** (this repo) — see `docs/change_reports/REPORTS_gate1_close.md`. Fixed: the caption
-branch wired to a sidecar nothing wrote; the C1 lookup slug; the cell size and record span typed
-into client text; a build-metadata count that disagreed with the build; and a render check that
-could not run, could not scan and could not fail. **v1.2 was never issued** — v1.1 is the parent.
+**v1.4** — rulings R-1 to R-5. Page-fill band: **above 92% is an ERROR and fails the build;
+below 70% is a WARN and never does**; nothing between is reported. Wetness bars are coloured by
+`regime_band`, not by a flood-frequency cutoff — the cutoff was a second classification of rows
+already classified, and the two disagreed on 10 of 21 bars. Document set fixed at **32**.
+See `docs/change_reports/REPORTS_rulings_R1_R5.md`.
 
-**The band the fill check enforces (80–92%) is not the band the handoff states (70–90%).**
-Unresolved, design-seat. Do not retune either silently.
+**v1.3** — see `docs/change_reports/REPORTS_gate1_close.md`. Fixed: the caption branch wired to a
+sidecar nothing wrote; the C1 lookup slug; the cell size and record span typed into client text; a
+build-metadata count that disagreed with the build; and a render check that could not run, could
+not scan and could not fail. **v1.2 was never issued** — v1.1 is the parent.
+
+### Every check here can be made to fail
+
+That is the standing requirement, not a nicety: a check that has only ever passed is untested.
+`tests/` proves the caption branch fires both ways, that an over-full page fails the build while
+dead space does not, and that a **wrong value** trips a contract canary — data-level drift, per
+Ruling J, never a schema break, and never against the live database.
 
 ## Data flow
 

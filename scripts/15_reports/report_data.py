@@ -38,7 +38,15 @@ print(f'registry OK — {len(REG)} rows; {len(EXPECT)} constants asserted at 1e-
 # used to type "25 m"; PIXEL_SIDE_M is 24.970268, and the 25 m nominal is the value
 # CLAUDE.md warns inflates every area by 0.238%. Rounded for the reader, derived in
 # the code, so the two can never drift apart.
-sys.path.insert(0, os.path.join(ROOT, 'scripts', 'lib'))
+# Resolved MODULE-relative first, then ROOT. gayini_params is source that ships beside this
+# module (scripts/lib next to scripts/15_reports); GAYINI_ROOT locates the DATA — the database,
+# the figure renders, the output tree. Resolving code through the data root couples the two, and
+# pointing GAYINI_ROOT at a data-only fixture then breaks the import rather than the fixture.
+# Found by tests/test_canaries_can_fail.py before it could test a single canary.
+_LIB = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'lib')
+for _p in (_LIB, os.path.join(ROOT, 'scripts', 'lib')):
+    if os.path.isdir(_p) and _p not in sys.path:
+        sys.path.insert(0, _p)
 from gayini_params import PIXEL_SIDE_M                                    # noqa: E402
 
 SLOPE = REG['floor_flood_slope_64pdk']
@@ -135,8 +143,13 @@ def paddock_record(name):
       from v_census_by_zone_stratum where zone_name=:n and treed_context_flag=0
       group by 1""", n=name)
     BAND = {'low': 'Drier ground', 'mid': 'Middle', 'high': 'Wetter ground'}
-    r['bands'] = [{'band': BAND.get(x.regime_band, x.regime_band), 'ha': float(x.ha),
-                   'ff': float(x.ff)} for _, x in cen.iterrows() if x.regime_band in BAND]
+    # regime_band is carried through, not just its label: the figure colours the bars by
+    # band identity (R-2). Deriving colour from a flood-frequency cutoff instead invented a
+    # second classification of rows this query has already classified, and the two disagreed
+    # on 10 of 21 bars.
+    r['bands'] = [{'band': BAND.get(x.regime_band, x.regime_band), 'regime_band': x.regime_band,
+                   'ha': float(x.ha), 'ff': float(x.ff)}
+                  for _, x in cen.iterrows() if x.regime_band in BAND]
     r['bands'].sort(key=lambda b: -b['ff'])
     r['area_ha'] = float(cen[cen.regime_band.isin(BAND)].ha.sum())
     tre = q("""select sum(area_ha) ha from v_census_by_zone_stratum

@@ -153,7 +153,21 @@ traced to a source object by an independent path, the figure does not ship.**
 
 ---
 
-## 6. The document set — unresolved, needs a design-seat ruling
+## 6. The document set — RESOLVED: 32 (R-4, 4 August 2026)
+
+**`RPTSCOPE_report_set.csv` governs — 7 paddock reports, 25 site reports.** Gate 4 closes with
+no work in it.
+
+**The §2 rule is deferred on capacity, not rejected**, and it — not a fresh selection made with
+results already in view — governs any post-deadline extension. That ordering is the point: a set
+chosen after seeing which paddocks produced interesting numbers is not the same object as a set
+chosen by a pre-registered rule, however similar the membership.
+
+The rest of this section is retained as the record of what was decided against.
+
+---
+
+### Superseded — the discrepancy as it stood
 
 | source | paddocks | sites | total |
 |---|---|---|---|
@@ -214,9 +228,31 @@ fallback. A different inventory therefore produces `CHANGED` on the affected uni
 `EXPECTED_OUTPUT.json` as shipped was built with **1 C1 render and 11 D2 renders**. Gate 0 reports
 5 C1 and 25 D2 available on the repo, so `CHANGED` on those units is expected and correct.
 
-**Page fill target 70–90%**, measured against non-white pixels — the figure canvas is warm cream
-and a dark-ink threshold reads it as an empty page. Above ~93% Word spills and produces a blank
-page. All 32 documents in this delivery sit inside the band.
+**Page fill — R-1, 4 August 2026. Supersedes the 70–90% band.**
+
+Measured against non-white pixels: the figure canvas is warm cream, and a dark-ink threshold
+reads it as an empty page.
+
+| | |
+|---|---|
+| **above 92%** | **ERROR — fails the build.** Word spills content to a phantom page |
+| 70–92% | not reported |
+| **below 70%** | **WARN — never fails the build.** Dead space is a design observation, not a defect |
+
+The old band conflated a functional failure with an aesthetic one. It was also stated three
+ways — 70–90% here and in the template spec, 80–92% in `check_page_fill.py`, and 68–93% in the
+design seat's in-session QA, which is what produced *"0 of 32 outside tolerance"*. One
+instrument measured, a second was documented, and a third asserted the pass.
+
+**The claim that all 32 documents sat inside the band was not true under any of the three.**
+Measured on the delivered documents with their own instrument: 42 of 83 pages fall outside
+80–92%, and 12 outside 70–90%. **No page of any build has ever exceeded 92%**, so the failure
+the band exists to prevent has not occurred. Only the upper bound has a failure mode behind it;
+failing a build on 42 of 83 pages for whitespace produces a permanently-red check, and I-11
+applies to permanently-red exactly as it does to permanently-green.
+
+Proven in both directions by `tests/test_page_fill_fires.py`: a deliberately over-full fixture
+page (95%) fails the build, and the 12 real dead-space pages do not.
 
 ### Page model
 
@@ -338,7 +374,7 @@ digit literals in template strings before every batch.**
 
 Do not decide these in a build session; return them:
 
-- the 32-vs-52 document set (§6);
+- ~~the 32-vs-52 document set (§6)~~ — **settled 4 Aug 2026, R-4: 32.** See §6;
 - any change to the page model, section order, or the plain-language register;
 - whether the marginal wording on Bala 29ca's Inland part is right — it is `Declining` at `trend_z`
   −1.108 against a −1.000 cut, `dist_to_nearest_cut` 0.038, and it flips to `Unremarkable` at cuts

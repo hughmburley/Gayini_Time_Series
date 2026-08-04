@@ -22,6 +22,13 @@ CM={'Aeolian Chenopod Shrublands':GOLD,'Riverine Chenopod Shrublands':TEAL,
 CD={'Aeolian Chenopod Shrublands':AEO_D,'Riverine Chenopod Shrublands':'#2A6560',
     'Inland Floodplain Shrublands / Swamps':'#1B4E86'}
 STATE_COL={'Recovering':'#2E6B2E','Declining':RUST,'Persistently poor':'#8A3324','Unremarkable':MUTED}
+# Wetness bars are coloured by regime_band, the classification the bars already carry and
+# are labelled with (Drier ground / Middle / Wetter ground). They were previously coloured
+# by a typed flood-frequency cutoff (>20, >5), which is a second classification of the same
+# rows — and the two disagreed on 10 of 21 bars: on Dinan 10 'Middle' and 'Drier ground'
+# came out the same colour, and on four paddocks 'Middle' was indistinguishable from
+# 'Wetter ground'. One figure must not assert two band systems (R-2, 4 Aug).
+BANDC={'low':GOLD,'mid':TEAL,'high':BLUE}
 plt.rcParams.update({'font.family':'DejaVu Serif','font.size':9,
  'axes.edgecolor':FAINT,'axes.labelcolor':MUTED,'text.color':HEAD,'xtick.color':MUTED,
  'ytick.color':MUTED,'axes.spines.top':False,'axes.spines.right':False,'figure.facecolor':CREAM,
@@ -367,7 +374,7 @@ def fig_comp(r,tag):
     a1.set_title('What kind of country this is',loc='left',fontsize=10,color=HEAD,fontweight='bold')
     a1.grid(axis='y',visible=False)
     yb=np.arange(len(bands))[::-1]
-    a2.barh(yb,[b['ha'] for b in bands],color=[BLUE if b['ff']>20 else (TEAL if b['ff']>5 else GOLD) for b in bands],height=.60)
+    a2.barh(yb,[b['ha'] for b in bands],color=[BANDC.get(b['regime_band'],GREY) for b in bands],height=.60)
     for yy,b in zip(yb,bands):
         a2.text(b['ha']*1.03,yy,f"{b['ff']:.0f}% of years",va='center',fontsize=8.4,color=MUTED)
     a2.set_yticks(yb); a2.set_yticklabels([b['band'] for b in bands],fontsize=8.6)

@@ -17,9 +17,22 @@ session.
 3. **Never save a matplotlib figure with `bbox_inches='tight'`.** It changes the output aspect
    ratio, so the width→height calculation in `img()` no longer matches and axis labels clip.
 
-**Page fill target 70–90%**, measured against non-white pixels — the figure canvas is warm cream
-and a dark-ink threshold reads it as an empty page. Above ~93% Word spills and produces a blank
-page. All 32 documents in this delivery sit inside the band.
+**Page fill — R-1, 4 August 2026. Supersedes the 70–90% band.**
+
+Measured against non-white pixels: the figure canvas is warm cream, and a dark-ink threshold
+reads it as an empty page.
+
+| | |
+|---|---|
+| **above 92%** | **ERROR — fails the build.** Word spills content to a phantom page |
+| 70–92% | not reported |
+| **below 70%** | **WARN — never fails the build.** Dead space is a design observation, not a defect |
+
+Only the upper bound has a failure mode behind it. The band was previously stated three
+different ways — 70–90% here, 80–92% in `check_page_fill.py`, 68–93% in the design seat's
+in-session QA — and the claim that all 32 documents sat inside it held under none of them. No
+page of any build has exceeded 92%. Full reasoning in the handoff §7; both directions proven by
+`tests/test_page_fill_fires.py`.
 
 ### Page model
 
