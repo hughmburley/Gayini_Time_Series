@@ -17,6 +17,15 @@ risk a reader is not already warned about.
   INTERNAL_ONLY  anything whose interpretation is open - F2, and anything downstream of the
                  sensor step-change verdict.
   HOLD           reserved for artefacts that FAILED Gate L1's cross-check.
+
+THE LINE BETWEEN METHODS_DOC AND INTERNAL_ONLY (Ruling AC, 4 Aug) - recorded here so the next
+classifier does not re-litigate it:
+
+    A NUMBER THAT LIMITS A CLAIM IS METHODS. A NUMBER THAT SUPPORTS ONE IS A FINDING.
+
+The step-change floor and the 13.33% BOUND what may be said, so they ship. The four-paddock
+zonal values ANSWER the question the whole reference-state stream turns on, and six numbers
+about exactly those four paddocks cannot be published neutrally, so they do not.
 """
 import csv, sqlite3, sys
 from pathlib import Path
@@ -113,11 +122,11 @@ def main():
       "taskU_gateU2_series_35yr.csv":      ("METHODS_DOC", PROPERTY, "The 35-year context series behind the epoch placement. Method input."),
       "taskU_gateU2_bala_reference.csv":   ("INTERNAL_ONLY", PROPERTY, "Reference-paddock context. Interpretation open under Rule 2."),
       "taskU_gateU3_stable_ground.csv":    ("METHODS_DOC", BOTH_VALID, "The two stable-ground controls and why BOTH FAILED - S1 has no dynamic range, S2 is not stable. A stated non-result."),
-      "taskU_gateU3_facts.csv":            ("METHODS_DOC", BOTH_VALID, "Includes the 13.33% and its 11,449.25 ha numerator. A bounding statement with its denominator."),
+      "taskU_gateU3_facts.csv":            ("METHODS_DOC", BOTH_VALID, "Includes the 13.33% and its 11,449.25 ha numerator. RULING AC: this number LIMITS a claim - at most that share of the property could have a woody explanation for its floor - so it is methods, not a finding."),
       "taskU_gateU3_density_scaling.csv":  ("METHODS_DOC", BOTH_VALID, "U3.6: no density scaling is derivable, R2 0.0120 and 0.000088 with opposite-sign slopes. A stated non-result."),
       "taskU_gateU3_u36_blocks.csv":       ("METHODS_DOC", BOTH_VALID, "The 500 m blocks behind U3.6. Method input."),
       "taskU_U3_7_offset_uniformity.csv":  ("METHODS_DOC", PROPERTY, "U3.7: the vertical offset is NOT spatially uniform, so +0.303 m is withdrawn. A stated non-result."),
-      "taskU_gateU4a_zonal_structure.csv": ("INTERNAL_ONLY", PROPERTY, "Zonal structure feeding F3. Downstream of the reference-state reading; interpretation open."),
+      "taskU_gateU4a_zonal_structure.csv": ("INTERNAL_ONLY", PROPERTY, "Zonal structure feeding F3. RULING AC: a number that LIMITS a claim is methods; a number that SUPPORTS one is a finding. These six values answer the question the reference-state stream turns on, about exactly the four paddocks in question, and cannot be published neutrally."),
       "taskU_R6_bala_floor_flood_placement.csv": ("INTERNAL_ONLY", PROPERTY, "R6. Computed on the census temporal p05 - Rule 2 applies directly."),
     }
     for fn, (ship, denom, reason) in TABLES.items():
