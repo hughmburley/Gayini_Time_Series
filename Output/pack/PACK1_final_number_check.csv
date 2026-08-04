@@ -109,9 +109,9 @@ what_we_dont_know Part 1,"8,300",T3_gateB1_threshold_sweep.csv - persistent area
 what_we_dont_know Part 1,80%,T3_gateB1_threshold_sweep.csv - cut,DECLARED,1,1
 what_we_dont_know Part 1,"4,179",T3_gateB1_threshold_sweep.csv - persistent area at 80% cut,DECLARED,1,1
 what_we_dont_know Part 1,2,"T3-I5 - persistent ground floods roughly twice as often as the property average | parameter - the T13 sweep cut range 0.50 to 1.50 (T13 spec section 5) | T13 Gate C - 2 of those 3 in Bala 29ca, verified this session",DECLARED,3,1
-what_we_dont_know Part 1,"988,831","census_by_zone_stratum - non-treed scope, verified independently P3 S2",DECLARED,1,1
-what_we_dont_know Part 1,"1,080,157","parameter - census pixel count (census_by_zone_stratum, verified P3 S2)",DECLARED,1,1
-what_we_dont_know Part 1,91.55%,"census_by_zone_stratum - non-treed share, verified independently P3 S2",DECLARED,1,1
+what_we_dont_know Part 1,"988,831","census_by_zone_stratum - non-treed scope, summed at build time",DECLARED,1,1
+what_we_dont_know Part 1,"1,080,157","parameter - census pixel count (gayini_params.TOTAL_CENSUS_PX, reconciled against census_by_zone_stratum at build time)",DECLARED,1,1
+what_we_dont_know Part 1,91.55%,"census_by_zone_stratum - non-treed share, computed at build time",DECLARED,1,1
 what_we_dont_know Part 1,8.00%,"t13_parts_recovering_count | census_by_zone_stratum - Floodplain Woodland/Forest share 8.00%, verified P3 S2 | census_by_zone_stratum - Floodplain Woodland/Forest share %, verified P3 S2",PINNED,3,1
 what_we_dont_know Part 1,0.46%,"census_by_zone_stratum - Other/minor units share %, verified P3 S2",DECLARED,1,1
 what_we_dont_know Part 1,17,"two-floor divergence, spec section 6 / T2_zone_annual_veg_extraction.md section 94",DECLARED,1,1

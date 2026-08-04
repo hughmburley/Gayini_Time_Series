@@ -96,6 +96,14 @@ Eight of the twelve discrepancies would have been caught on sight. `dim_headline
 
 First-50-MB SHA-256 (`50*1024*1024`, 1 MB chunks), as in `sha256_first50()`. The R registrars' whole-file `digest::digest(algo="sha256")` is a **different** convention and must not be used for asset registration — including inside `write_and_register_figure()`.
 
+### Deterministic emission
+
+**Any artefact whose checksum is compared must be emitted in a deterministic order.** Sets, dicts
+and anything hash-ordered get `sorted()` before emission — Python randomises string hashing per
+process, so an unsorted set makes a build output differ between runs from identical inputs (I-46,
+Ruling V). `lint_guardrails.py`'s `hash_order` lint reports these; it is **advisory**, not enforcing,
+because 97 sites exist and only those feeding a checksummed artefact matter. Triage before enforcing.
+
 ### Figures: write and register in one transaction
 
 Figures went unregistered at scale because every path wrote in R and registered later in Python, so the two steps could land in different sessions. **R owns both halves** via `write_and_register_figure()` (ggsave → SHA-256 → `INSERT OR REPLACE` via RSQLite, one call). `register_taskM_gateC_assets.py` remains the template for rasters and parquet.

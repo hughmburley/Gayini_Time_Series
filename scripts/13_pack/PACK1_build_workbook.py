@@ -5,12 +5,14 @@ EVERY number on How_we_know is QUERIED LIVE (P4-6 / AD-B). Nothing on that sheet
 Contents and 00_START_HERE.md both generate from PACK1_item_list.csv - one source, so they
 cannot disagree (P4-4).
 """
-import sqlite3, csv, hashlib, datetime, os
+import sqlite3, csv, hashlib, datetime, os, sys
 from pathlib import Path
 import openpyxl
 from openpyxl.styles import Font, Alignment
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / "scripts" / "lib"))
+import gayini_params          # constants come from here, never from a literal
 PACK = ROOT / "Output" / "pack"
 DB = ROOT / "Output" / "database" / "Gayini_Results.sqlite"
 RUN = "PACK1_P4_20260803"
@@ -54,6 +56,14 @@ LIVE["tables"]     = c.execute("SELECT COUNT(*) FROM table_asset").fetchone()[0]
 # RT-2: three registries are written by this build, not two. report_asset moved 59->60 in the SAME
 # transaction that moved table_asset 4->5 (the write I-44 was about) and was silently absent.
 LIVE["reports"]    = c.execute("SELECT COUNT(*) FROM report_asset").fetchone()[0]
+# census scope, queried not typed - gayini_params owns the total, the DB owns the split (I-46 round)
+CENSUS_PX, NONTREED_PX = c.execute(
+    "SELECT SUM(n_pixels), SUM(CASE WHEN treed_context_flag = 0 AND regime_band <> 'context' "
+    "THEN n_pixels ELSE 0 END) FROM census_by_zone_stratum").fetchone()
+assert CENSUS_PX == gayini_params.TOTAL_CENSUS_PX, (
+    f"STOP - census total {CENSUS_PX} != gayini_params.TOTAL_CENSUS_PX "
+    f"{gayini_params.TOTAL_CENSUS_PX}")
+NONTREED_PCT = 100 * NONTREED_PX / CENSUS_PX
 print(f"  LIVE: registered={LIVE['registered']} pinned={LIVE['pinned']} reproduce={LIVE['reproduce']} "
       f"drift={LIVE['drift']} coverage={LIVE['coverage']:.1f}%")
 
@@ -317,11 +327,11 @@ PARAMS = {
  1.0:"parameter - 1 pp of threshold, the elasticity numerator (T3 Gate B1)",
  11.0:"parameter - 11 census strata (census_by_zone_stratum)",
  9.0:"parameter - 9 non-treed strata (treed_context_flag=0 AND regime_band<>'context')",
- 1080157.0:"parameter - census pixel count (census_by_zone_stratum, verified P3 S2)",
+ float(CENSUS_PX):"parameter - census pixel count (gayini_params.TOTAL_CENSUS_PX, reconciled against census_by_zone_stratum at build time)",
 }
 RESULTS = {
- 988831.0:"census_by_zone_stratum - non-treed scope, verified independently P3 S2",
- 91.55:"census_by_zone_stratum - non-treed share, verified independently P3 S2",
+ float(NONTREED_PX):"census_by_zone_stratum - non-treed scope, summed at build time",
+ round(NONTREED_PCT,2):"census_by_zone_stratum - non-treed share, computed at build time",
  8.0:"census_by_zone_stratum - Floodplain Woodland/Forest share %, verified P3 S2",
  0.46:"census_by_zone_stratum - Other/minor units share %, verified P3 S2",
  2.0:"T13 Gate C - 2 of those 3 in Bala 29ca, verified this session",

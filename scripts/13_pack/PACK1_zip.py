@@ -20,7 +20,13 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 PACK = ROOT / "Output" / "pack"
 MANIFEST = PACK / "PACK1_assembly_manifest.csv"
-ZIP = ROOT / "Output" / "Gayini_Adrian_pack_20260803.zip"
+# One file per version. A re-seal NEVER overwrites its predecessor - overwriting is deleting, and
+# Ruling T says the superseded archive is kept (I-17: two versions of one artefact, one stale, is
+# the project's most common discrepancy - the fix is to keep both and MARK one, not to keep one).
+ZIPS = {"v1":   ROOT / "Output" / "Gayini_Adrian_pack_20260803.zip",
+        "v1.1": ROOT / "Output" / "Gayini_Adrian_pack_v1.1_20260804.zip"}
+SUPERSEDE_REASON = ("reading order changed by FIG1-T1; contents identical in substance, "
+                    "three files reordered")
 
 def sha50(p: Path) -> str:
     """First-50-MB SHA-256 - the one project checksum convention."""
@@ -32,7 +38,11 @@ def sha50(p: Path) -> str:
             h.update(b); n += len(b)
     return h.hexdigest()
 
-def main(record: bool):
+def main(record: bool, version: str):
+    ZIP = ZIPS[version]
+    if ZIP.exists():
+        raise SystemExit(f"STOP - {ZIP.name} already exists. A re-seal writes a NEW version file; "
+                         f"it never overwrites a sealed archive. Bump the version or remove nothing.")
     files = sorted(p for p in PACK.rglob("*") if p.is_file())
     if not files: raise SystemExit("STOP - pack folder is empty.")
 
@@ -68,17 +78,26 @@ def main(record: bool):
         return
     with open(MANIFEST, encoding="utf-8") as f:
         cols = next(csv.reader(f)); rows = list(csv.DictReader(open(MANIFEST, encoding="utf-8")))
-    rows = [r for r in rows if r["item_id"] != "PACK_ZIP"]        # idempotent: replace, never append twice
-    rows.append({"item_id": "PACK_ZIP", "type": "zip",
+    # Every prior zip row is MARKED superseded, not dropped (Ruling T). Idempotent: re-running this
+    # version replaces only its own row.
+    me = f"PACK_ZIP_{version}"
+    for r in rows:
+        if r["item_id"].startswith("PACK_ZIP") and r["item_id"] != me:
+            r["type"] = "zip_superseded"
+            r["shares_file_with"] = f"SUPERSEDED by {me} - {SUPERSEDE_REASON}"
+    rows = [r for r in rows if r["item_id"] != me]
+    rows.append({"item_id": me, "type": "zip",
                  "source_path": "Output/pack/ (all files)",
                  "pack_path": ZIP.relative_to(ROOT).as_posix(),
                  "sha256_source": zhash, "sha256_pack_copy": zhash,
                  "verified_after_copy": 1, "shares_file_with": "",
-                 "source_still_present": 1})
+                 "source_still_present": int(ZIPS["v1"].exists())})
     with open(MANIFEST, "w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=cols); w.writeheader(); w.writerows(rows)
     print(f"  recorded PACK_ZIP in {MANIFEST.name} ({len(rows)} rows)")
 
 if __name__ == "__main__":
-    ap = argparse.ArgumentParser(); ap.add_argument("--record", action="store_true")
-    main(ap.parse_args().record)
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--record", action="store_true")
+    ap.add_argument("--version", default="v1.1", choices=sorted(ZIPS))
+    a = ap.parse_args(); main(a.record, a.version)

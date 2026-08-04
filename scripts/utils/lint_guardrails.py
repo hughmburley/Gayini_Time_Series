@@ -7,6 +7,11 @@ Three lints, each of which MUST be able to fail (proven by `fixture-test`):
   or_ignore     - `INSERT OR IGNORE` in scripts/11_database/ or any register_*.
   whole_digest  - `digest::digest(file=...)` (whole-file, wrong convention) in the
                   same registrar scope.
+  hash_order    - iterating a set, or a dict's .keys()/.values()/.items(), directly in a
+                  `for` without sorted(). Ruling V / I-46: Python randomises string
+                  hashing per process, so an unsorted set makes a build artefact differ
+                  between runs from identical inputs. ANY ARTEFACT WHOSE CHECKSUM IS
+                  COMPARED MUST BE EMITTED IN A DETERMINISTIC ORDER.
 
 Baseline: existing (pre-T5) violations that cannot be safely rewritten now - the
 Task-M registrars' OR IGNORE and the gate-E whole-file digest would invalidate
@@ -42,6 +47,14 @@ CODE_EXTS = {".r", ".py", ".ps1", ".sql"}
 # constant in code - a visible, reviewable change - so nobody can silently append
 # a new violation to lint_baseline.json to hide it. Lower it as debt is paid down.
 BASELINE_LOCK = 15
+
+# ADVISORY lints are reported and never fail the run. `hash_order` (Ruling V / I-46) lands here
+# rather than as an enforcing lint or as 97 new baseline entries: baselining them would take the
+# baseline from 15 to 112 and turn it into the suppression file the lock above exists to prevent.
+# Most of the 97 are benign - iterating a dict to print or to build a query. The rule only BITES
+# where the loop feeds an artefact whose checksum is compared, and that distinction cannot be made
+# by regex. Triage the 97 by hand, fix the emitters, then move this to enforcing and drop the entry.
+ADVISORY = {"hash_order"}
 
 
 def rel(p: Path) -> str:
@@ -107,8 +120,33 @@ def whole_digest_violations():
     return out
 
 
+HASH_ORDER_PAT = re.compile(
+    r"\bfor\s+[\w, ()]+\s+in\s+(?!sorted\()"
+    r"(set\(|\{|[\w.\[\]\"']+\.(keys|values|items)\()"
+)
+
+
+def hash_order_violations():
+    # Python files only: `for x in set(...)`, `for x in {...}`, `for k in d.keys()` and friends,
+    # not wrapped in sorted(). This is where non-determinism turns into a false drift signal on a
+    # checksummed artefact, which is a correctness problem rather than a style one.
+    out = []
+    for p in iter_code_files(["scripts"]):
+        r = rel(p)
+        if r == SELF or p.suffix.lower() != ".py":
+            continue
+        for i, line in _lines(p):
+            if line.lstrip().startswith("#"):
+                continue
+            if HASH_ORDER_PAT.search(line):
+                out.append(dict(lint="hash_order", file=r, line=i,
+                                token="unsorted set/dict iteration", text=line.strip()))
+    return out
+
+
 def all_violations():
-    return magic_number_violations() + or_ignore_violations() + whole_digest_violations()
+    return (magic_number_violations() + or_ignore_violations() + whole_digest_violations()
+            + hash_order_violations())
 
 
 def vkey(v) -> str:
@@ -127,7 +165,7 @@ def summarise(vs, label):
     for v in vs:
         by.setdefault(v["lint"], []).append(v)
     print(f"--- {label}: {len(vs)} ---")
-    for lint in ("magic_number", "or_ignore", "whole_digest"):
+    for lint in ("magic_number", "or_ignore", "whole_digest", "hash_order"):
         for v in by.get(lint, []):
             print(f"  [{v['lint']}] {v['file']}:{v['line']}  {v['token']}  | {v['text'][:70]}")
 
@@ -135,7 +173,8 @@ def summarise(vs, label):
 def main(mode: str) -> int:
     vs = all_violations()
     baseline = load_baseline()
-    new = [v for v in vs if vkey(v) not in baseline]
+    new = [v for v in vs if vkey(v) not in baseline and v["lint"] not in ADVISORY]
+    advisory = [v for v in vs if v["lint"] in ADVISORY]
 
     # Fail closed on baseline growth: a baseline that can be appended to silently
     # becomes a suppression file.
@@ -157,12 +196,15 @@ def main(mode: str) -> int:
     if mode == "fixture-test":
         return fixture_test()
 
-    summarise(vs, "all violations")
+    summarise([v for v in vs if v["lint"] not in ADVISORY], "all violations")
     summarise(new, "NEW (non-baselined) violations")
+    print(f"--- ADVISORY (reported, never fails): {len(advisory)} ---")
+    print(f"  hash_order: {len(advisory)} unsorted set/dict iterations. Only those feeding a "
+          f"checksummed artefact matter; triage by hand, then enforce.")
     if mode == "check" and (new or grown):
         if new:
             print(f"\nFAIL: {len(new)} new guardrail violation(s). Use gayini_params, "
-                  "INSERT OR REPLACE, and first-50-MB SHA-256.")
+                  "INSERT OR REPLACE, first-50-MB SHA-256, and sorted() before emitting.")
         if grown:
             print(f"\nFAIL: baseline grew to {len(baseline)} > lock {BASELINE_LOCK}. "
                   "Fix the violation instead of baselining it, or bump BASELINE_LOCK on purpose.")
@@ -177,21 +219,23 @@ def fixture_test() -> int:
         ROOT / "scripts" / "_lint_fixture_magic.py": "area = 0.0625  # banned literal\n",
         ROOT / "scripts" / "11_database" / "register__lint_fixture.py":
             "sql = 'INSERT OR IGNORE INTO t VALUES (1)'\nx = 'digest::digest(file=p)'\n",
+        ROOT / "scripts" / "_lint_fixture_order.py":
+            "rows = []\nfor nm in set(names):\n    rows.append(nm)\n",
     }
     baseline = load_baseline()
     try:
         for path, body in fixtures.items():
             path.write_text(body, encoding="utf-8")
         vs = all_violations()
-        new = [v for v in vs if vkey(v) not in baseline]
+        new = [v for v in vs if vkey(v) not in baseline]   # advisory INCLUDED here on purpose
         got = {v["lint"] for v in new if "_lint_fixture" in v["file"]}
-        need = {"magic_number", "or_ignore", "whole_digest"}
+        need = {"magic_number", "or_ignore", "whole_digest", "hash_order"}
         print("[fixture-test] lints that fired on the broken fixtures:", sorted(got))
         for v in new:
             if "_lint_fixture" in v["file"]:
                 print(f"    FIRED [{v['lint']}] {v['file']}:{v['line']}  {v['text']}")
         ok = need <= got
-        print(f"[fixture-test] all three lints fire on a broken fixture: {ok}")
+        print(f"[fixture-test] all four lints fire on a broken fixture: {ok}")
         return 0 if ok else 1
     finally:
         for path in fixtures:
