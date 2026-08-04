@@ -35,7 +35,8 @@ con = sqlite3.connect(f"file:{DB.as_posix()}?mode=ro", uri=True); con.execute("P
 c = con.cursor()
 PINS = dict(c.execute("SELECT number_id, pinned_value FROM dim_headline_number "
                       "WHERE pinned_value IS NOT NULL"))
-items = list(csv.DictReader(open(PACK/"PACK1_item_list.csv", encoding="utf-8")))
+items = sorted(csv.DictReader(open(PACK/"PACK1_item_list.csv", encoding="utf-8")),
+               key=lambda r: int(r["display_order"]))   # FIG1-T1
 audit = list(csv.DictReader(open(ROOT/"Output/tables/RPTSCOPE_claim_audit.csv", encoding="utf-8")))
 
 # ---------- P4-6: EVERY figure here is a LIVE QUERY. None is typed. -------------------------
@@ -149,7 +150,8 @@ lines = ["# Start here", "", "**Gayini reference-state assessment — pack for A
          "below is **generated from `PACK1_item_list.csv`**, which is also what the workbook's Contents",
          "sheet reads — so the two cannot disagree. Filenames were deliberately **not** renamed: the pack",
          "path and the registry path are identical, so no mapping can drift.", "",
-         "| item | file | what it answers |", "|---|---|---|"]
+         "Items are ordered **by the argument they make**, not by item code: what bounds the pack and",
+         "the data behind it first, then the argument itself, then the supporting detail.", ""]
 WHAT = {"M1":"where the paddocks are","M2":"where the monitoring sites are",
  "M3":"which country stays green longest","M4":"which parts are coming back and which are going backwards",
  "M4b":"how that classification moves when the cut is loosened or tightened",
@@ -160,8 +162,18 @@ WHAT = {"M1":"where the paddocks are","M2":"where the monitoring sites are",
  "F6":"whether grazing intensity shows up in the floor","F7":"Bala 29ca, part by part",
  "T1":"the four conserved paddocks side by side","T2":"every part of the property, to look up",
  "T3":"what this analysis cannot tell you","T1_render":"T1 as a picture"}
+SECTION_WHY = {
+ "Read first": "T3 bounds everything the rest of the pack can mean; T1 and T2 are the data the maps draw.",
+ "The argument": "Where the country is, that cover follows water, the gap and who drives it, who beats "
+                 "their water, which parts, and how much the answer moves when the cut does.",
+ "Supporting detail": "Grain, decomposition, per-paddock trajectories, the three-arm comparison, "
+                      "coverage and persistence."}
+cur = None
 for i in items:
-    fp = i["file_path"].replace("Output/","") if i["file_path"] else "—"
+    if i["section"] != cur:
+        cur = i["section"]
+        lines += ["", f"### {cur}", "", SECTION_WHY[cur], "",
+                  "| item | file | what it answers |", "|---|---|---|"]
     name = Path(i["file_path"]).name if i["file_path"] else "—"
     lines.append(f"| **{i['item_id']}** | `{name}` | {WHAT.get(i['item_id'],'')} |")
 lines += ["", f"*{len([x for x in items if x['item_id']!='T1_render'])} items in "
@@ -191,11 +203,12 @@ sheet("By_question",
       [["#","the question","the answer","why — in plain terms","number_id (provenance)"]] +
       [[k,v[0],v[1],v[2],v[3]] for k,v in ANSWERS.items()],
       [6,44,44,96,46])
-sheet("Contents",
-      [["item","file","what it answers","sha256 (source)","registered_in"]] +
-      [[i["item_id"], Path(i["file_path"]).name if i["file_path"] else "—",
+ws_contents = sheet("Contents",
+      [["#","section","item","file","what it answers","sha256 (source)","registered_in"]] +
+      [[i["display_order"], i["section"], i["item_id"],
+        Path(i["file_path"]).name if i["file_path"] else "—",
         WHAT.get(i["item_id"],""), (i["sha256"] or "")[:16], i["registered_in"]] for i in items],
-      [10,52,54,20,46])
+      [5,20,10,52,54,20,46])
 sheet("Two_cautions", [["caution","what it means"]] + [[a,b] for a,b in CAUTIONS], [42,104])
 
 cov = (f"Of the {LIVE['pinned']} numbers in this pack's registry that carry a pinned value, "
@@ -225,6 +238,17 @@ sheet("How_we_know",
         "Every value is produced by a live query at build time. Counts move as work lands; a typed "
         "copy would be stale within the hour, and has been four times."]],
       [40,64,86])
+
+# P4-4 / FIG1-T1: the two generated documents must agree on item, filename AND order. Derived
+# from the rendered artefacts, not asserted - a criterion stated as a literal is not a check (I-40).
+md_rows = [tuple(x.strip(" *`") for x in ln.strip("|").split("|")[:2])
+           for ln in (PACK/"00_START_HERE.md").read_text(encoding="utf-8").splitlines()
+           if ln.startswith("| **")]
+xl_rows = [(r[2], r[3]) for r in ws_contents.iter_rows(min_row=2, values_only=True)]
+assert md_rows == xl_rows, ("STOP - 00_START_HERE.md and Contents disagree"
+                            f"\n  md: {md_rows}\n  xl: {xl_rows}")
+print(f"  P4-4: 00_START_HERE.md and Contents agree on item, filename and order "
+      f"({len(md_rows)} rows each)")
 
 out = PACK/"Gayini_Adrian_pack.xlsx"
 wb.save(out); print(f"  wrote {out.name} (5 sheets)")
@@ -391,7 +415,9 @@ def scan(loc, text, ids, contract=True):
         res, state, n = resolve(loc, v, dp, is_word, ids, contract)
         checks.append(dict(location=loc, number_as_written=raw, resolves_to=res, state=state,
                            n_matching_sources=n, agrees=int(state != "UNRESOLVED")))
-    for nm in set(names):
+    # sorted, NOT set order: Python randomises string hashing per process, so an unsorted set made
+    # this file differ between runs with identical inputs - spurious drift in a provenance artefact
+    for nm in sorted(set(names)):
         checks.append(dict(location=loc, number_as_written=nm,
                            resolves_to="identifier, name or date - not a quantity",
                            state="NAME_NOT_QUANTITY", n_matching_sources=0, agrees=1))
