@@ -1,0 +1,214 @@
+{
+ "built": "2026-08-04",
+ "builder_version": "1.3",
+ "builder": "scripts/15_reports",
+ "n": 32,
+ "built_with": {
+  "c1_renders_present": [
+   "Bala_26ca",
+   "Bala_28ca",
+   "Bala_29ca",
+   "Dinan_10",
+   "Dinan_8"
+  ],
+  "c1_renders_count": 5,
+  "d2_renders_present": 25,
+  "d2_renders_units": [
+   "GA_001",
+   "GA_002",
+   "GA_003",
+   "GA_004",
+   "GA_005",
+   "GA_006",
+   "GA_007",
+   "GA_008",
+   "GA_009",
+   "GA_010",
+   "GA_025",
+   "GA_026",
+   "GA_027",
+   "GA_028",
+   "GA_034",
+   "GA_035",
+   "GA_036",
+   "GA_043",
+   "GA_053",
+   "GA_054",
+   "GA_055",
+   "GA_056",
+   "GA_057",
+   "GA_058",
+   "GA_066"
+  ],
+  "note": "Fingerprints depend on which C1/D2 renders resolve. A different render inventory changes the map caption and the site page-1 caption, so verify_batch will report CHANGED for affected units. That is an explained input difference, not drift — confirm the diff is confined to those strings, then re-fingerprint with the new inventory here."
+ },
+ "note": "text_sha256 is over the whitespace-normalised visible text of word/document.xml. Zip bytes differ run to run (timestamps); visible text must not.",
+ "documents": [
+  {
+   "document": "Gayini_paddock_report_Bala_15.docx",
+   "text_sha256": "24deaac2b566c082f822d578f52955d72a73b2575b486fd9b7b8a0db67558f9d",
+   "chars": 12224
+  },
+  {
+   "document": "Gayini_paddock_report_Bala_26ca.docx",
+   "text_sha256": "2ea8d525391fa4c073063128f98bf6f5c06bc286e9e1fa177f2e4b6138b9fe99",
+   "chars": 14222
+  },
+  {
+   "document": "Gayini_paddock_report_Bala_27ca.docx",
+   "text_sha256": "03b1bc89cdf44d1b963a06466ebe485714fbdb4e4d9aaec46cdd41b186ad277a",
+   "chars": 12607
+  },
+  {
+   "document": "Gayini_paddock_report_Bala_28ca.docx",
+   "text_sha256": "aba803250829812fec1be61f30f7cb596345949f81d79092c261e6252d62a8f5",
+   "chars": 15124
+  },
+  {
+   "document": "Gayini_paddock_report_Bala_29ca.docx",
+   "text_sha256": "f9dd3ee3f382a313c3e2aad248476df2ece67e6b7a8997525cbf75ee556a55cc",
+   "chars": 16713
+  },
+  {
+   "document": "Gayini_paddock_report_Dinan_10.docx",
+   "text_sha256": "578b70c6a5d7b7eefcb9342700516022b2a576e0c27bb7eeedc5057adc950e23",
+   "chars": 15171
+  },
+  {
+   "document": "Gayini_paddock_report_Dinan_8.docx",
+   "text_sha256": "4291c7a7f409e3d2f7a2ec79a776abc76482909fed5727a05282d3f445cb3551",
+   "chars": 14967
+  },
+  {
+   "document": "Gayini_site_report_GA_001.docx",
+   "text_sha256": "123f858970e16dc0997b9e05625505d4010226793cb94e98069d42fb25c2d824",
+   "chars": 4494
+  },
+  {
+   "document": "Gayini_site_report_GA_002.docx",
+   "text_sha256": "700ddfa4a4201c08ee998a85578f0cad72dc2d9952c65121dcc35f7300783442",
+   "chars": 4426
+  },
+  {
+   "document": "Gayini_site_report_GA_003.docx",
+   "text_sha256": "3faa707c548929e7afbd1a8d409eeb67226e54020fd3e0f15b8bf31d1c565666",
+   "chars": 4492
+  },
+  {
+   "document": "Gayini_site_report_GA_004.docx",
+   "text_sha256": "abcfadab5b52c121495d5450d8d29a7d3babafd8a8bb61cf37802f595a12c9d0",
+   "chars": 4385
+  },
+  {
+   "document": "Gayini_site_report_GA_005.docx",
+   "text_sha256": "614840b2cd03f5e9d29c98e0beee52134a2ea560a6cd6b75b5214a02d140b9e3",
+   "chars": 4440
+  },
+  {
+   "document": "Gayini_site_report_GA_006.docx",
+   "text_sha256": "fed20809d26833a1f326fe7f154ed9032e81ab22d9b0f54f6db213bb48c772c7",
+   "chars": 4512
+  },
+  {
+   "document": "Gayini_site_report_GA_007.docx",
+   "text_sha256": "8c8999fcc29f531733d54f78585d5589a12033f5e2236c2e198b54f0fc2c0da6",
+   "chars": 4444
+  },
+  {
+   "document": "Gayini_site_report_GA_008.docx",
+   "text_sha256": "9a991297d7722061a5a8a6ff49691510572540bdb8a8c10c617dcee67a62478a",
+   "chars": 4215
+  },
+  {
+   "document": "Gayini_site_report_GA_009.docx",
+   "text_sha256": "92caa02d04b3310a67201cb87654d3d228695b851736a94d1eac49cb9a9509ad",
+   "chars": 4238
+  },
+  {
+   "document": "Gayini_site_report_GA_010.docx",
+   "text_sha256": "e27a3301b8bbf0a54ef8e577171df6bce3d7fdc6eedfbc5824f96b07f66d527f",
+   "chars": 4215
+  },
+  {
+   "document": "Gayini_site_report_GA_025.docx",
+   "text_sha256": "cd2438b653dd65cb77c058918142850f1cac661e7e9a5f18878fc4a619d9dd0e",
+   "chars": 4205
+  },
+  {
+   "document": "Gayini_site_report_GA_026.docx",
+   "text_sha256": "619e0c8fa72f79b7af04d7f970bf0dc61a543754a30de2d64c603f80cc85df08",
+   "chars": 4204
+  },
+  {
+   "document": "Gayini_site_report_GA_027.docx",
+   "text_sha256": "1dfc2edc9e6ae6ad593eba03946ae114ffa062d161d570a6ea299e418763e099",
+   "chars": 4209
+  },
+  {
+   "document": "Gayini_site_report_GA_028.docx",
+   "text_sha256": "c9e0aba416db4f82514210ee775d07a6e217693b6d3496bebc4291d5b9c3874c",
+   "chars": 4283
+  },
+  {
+   "document": "Gayini_site_report_GA_034.docx",
+   "text_sha256": "3e929cc83024379257e9cac8c6e78b8ff81c9d481e110ef1fe27c5751db8ce4d",
+   "chars": 4232
+  },
+  {
+   "document": "Gayini_site_report_GA_035.docx",
+   "text_sha256": "f0543bc8b8be5c75e7b2c4c6e54abb355b80f40d9715600663ea1afd02b89b4f",
+   "chars": 4211
+  },
+  {
+   "document": "Gayini_site_report_GA_036.docx",
+   "text_sha256": "a5fe10bbce8fcadd50d6d519c426f6ad3e454eefe61b885430b66c4274a13577",
+   "chars": 4245
+  },
+  {
+   "document": "Gayini_site_report_GA_043.docx",
+   "text_sha256": "7af0690ed94e2d88457efb2da752583178d201fb890b09673b58f3b53355b661",
+   "chars": 4296
+  },
+  {
+   "document": "Gayini_site_report_GA_053.docx",
+   "text_sha256": "12c37183b288a03fd94ba96d147065d9f77a3d1126e5fa3d5f050459d5030854",
+   "chars": 4262
+  },
+  {
+   "document": "Gayini_site_report_GA_054.docx",
+   "text_sha256": "2e5e6cd15aae2255bdc2f0d16c7082f76653a9975ba6611123ff8694a3abbb14",
+   "chars": 4337
+  },
+  {
+   "document": "Gayini_site_report_GA_055.docx",
+   "text_sha256": "9d216504a4cd17f2847173118b6146ce01aa9468cdf654e27589227527d589ca",
+   "chars": 4253
+  },
+  {
+   "document": "Gayini_site_report_GA_056.docx",
+   "text_sha256": "ea95a5de54fcef39259ef4d4af7d49dfb1d0e814d5964ca1ff2445316146626c",
+   "chars": 4259
+  },
+  {
+   "document": "Gayini_site_report_GA_057.docx",
+   "text_sha256": "1a12d38c2b05d2adf682127db1a79dfec66faa63b0a93c3d077a16d90f586c9a",
+   "chars": 4385
+  },
+  {
+   "document": "Gayini_site_report_GA_058.docx",
+   "text_sha256": "143027e6005a27a6fc1601fabddfca894a85610598cae70f40b7a22c278f8c21",
+   "chars": 4237
+  },
+  {
+   "document": "Gayini_site_report_GA_066.docx",
+   "text_sha256": "f202659a98bfc12b66903145cb1cf932bb9c353fa19775950ac997df15613e9f",
+   "chars": 4486
+  }
+ ],
+ "supersedes": {
+  "version": "1.1",
+  "reason": "Render inventory changed: 5 C1 renders resolve on the repo against 1 for the design seat, and 25 D2 against 10. Diff confirmed confined to the map caption (4 paddocks) and the site page-1 caption (15 sites); no number moved. Also v1.3 code changes: D-2 caption wired to figs_meta, c1_slug matched to the producer, pixel side derived, gap_slope_derived removed.",
+  "fingerprints_moved": 19,
+  "documents_added": 0
+ }
+}
