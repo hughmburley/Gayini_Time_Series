@@ -44,13 +44,12 @@ Grain, decomposition, per-paddock trajectories, the three-arm comparison, covera
 | item | file | what it answers |
 |---|---|---|
 | **M5** | `M5_dual_grain_floor_and_flood.png` | cover and water, at paddock and at part grain |
-| **F4** | `T2_F_gap_decomposition.png` | how the conserved-grazed gap narrowed |
 | **F1** | `T2_E_paddock_trajectories.png` | how each conserved paddock's floor tracks the grazed range |
 | **F2** | `T2_E_paddock_trajectories_mean.png` | the same, on mean cover |
 | **F6** | `T6_A_three_arm_grid.png` | whether grazing intensity shows up in the floor |
 | **M2** | `T2_G_plot_paddock_coverage.png` | where the monitoring sites are |
 | **M3** | `T2_B2_duration_map.png` | which country stays green longest |
 
-*17 items in 17 files. F7 is a panel of M4's figure and shares its file; T1 ships as data with T1_render as its picture.*
+*16 items in 16 files. F7 is a panel of M4's figure and shares its file; T1 ships as data with T1_render as its picture.*
 
 **Read `Gayini_what_we_dont_know.md` before quoting anything from this pack.**

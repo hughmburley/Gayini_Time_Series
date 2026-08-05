@@ -24,9 +24,11 @@ MANIFEST = PACK / "PACK1_assembly_manifest.csv"
 # Ruling T says the superseded archive is kept (I-17: two versions of one artefact, one stale, is
 # the project's most common discrepancy - the fix is to keep both and MARK one, not to keep one).
 ZIPS = {"v1":   ROOT / "Output" / "Gayini_Adrian_pack_20260803.zip",
-        "v1.1": ROOT / "Output" / "Gayini_Adrian_pack_v1.1_20260804.zip"}
-SUPERSEDE_REASON = ("reading order changed by FIG1-T1; contents identical in substance, "
-                    "three files reordered")
+        "v1.1": ROOT / "Output" / "Gayini_Adrian_pack_v1.1_20260804.zip",
+        "v1.2": ROOT / "Output" / "Gayini_Adrian_pack_v1.2_20260805.zip"}
+SUPERSEDE_REASON = ("v1.2: F4 cut (period-boundary statistic, barred elsewhere); the three "
+                    "reference-state figures re-copied from rebuilt registered sources; the "
+                    "twelve outstanding captions written, so no item is PENDING_P3")
 
 def sha50(p: Path) -> str:
     """First-50-MB SHA-256 - the one project checksum convention."""
@@ -99,5 +101,5 @@ def main(record: bool, version: str):
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--record", action="store_true")
-    ap.add_argument("--version", default="v1.1", choices=sorted(ZIPS))
+    ap.add_argument("--version", default="v1.2", choices=sorted(ZIPS))
     a = ap.parse_args(); main(a.record, a.version)

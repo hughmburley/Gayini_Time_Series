@@ -16,10 +16,13 @@ ITEMS = Path(__file__).resolve().parents[2] / "Output" / "pack" / "PACK1_item_li
 # The spec's section table names 16 of the 18 rows. F7 and T1_render are unplaced there: F7 is a
 # panel of M4's figure and shares its file, and T1_render is T1 as a picture. Each is placed
 # immediately after its partner so the pair reads together. THAT PLACEMENT IS CC'S, NOT THE SPEC'S.
+# F4 is CUT at v1.2: its early/late windows are a period-boundary statistic barred
+# elsewhere in the project, and it decomposes a change F3 shows is not occurring. It
+# stays in the methods document, demoted. Its figure_asset row is NOT deleted.
 ORDER = [
     ("Read first",        ["T3", "T1", "T1_render", "T2"]),
     ("The argument",      ["M1", "F5", "F3", "M5b", "M4", "F7", "M4b"]),
-    ("Supporting detail", ["M5", "F4", "F1", "F2", "F6", "M2", "M3"]),
+    ("Supporting detail", ["M5", "F1", "F2", "F6", "M2", "M3"]),
 ]
 
 def main():

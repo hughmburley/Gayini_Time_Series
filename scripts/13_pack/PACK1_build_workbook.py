@@ -168,7 +168,7 @@ WHAT = {"M1":"where the paddocks are","M2":"where the monitoring sites are",
  "M5":"cover and water, at paddock and at part grain","M5b":"which paddocks beat or miss their water",
  "F1":"how each conserved paddock's floor tracks the grazed range","F2":"the same, on mean cover",
  "F3":"whether conserved country is pulling away from grazed country",
- "F4":"how the conserved-grazed gap narrowed","F5":"cover against water across all 64 paddocks",
+"F5":"cover against water across all 64 paddocks",
  "F6":"whether grazing intensity shows up in the floor","F7":"Bala 29ca, part by part",
  "T1":"the four conserved paddocks side by side","T2":"every part of the property, to look up",
  "T3":"what this analysis cannot tell you","T1_render":"T1 as a picture"}
@@ -436,6 +436,54 @@ for n, t, nid in CLAIMS:                     scan(f"Start_here claim {n}", t, ni
 for k, (qq, a, why, nid) in ANSWERS.items(): scan(f"By_question {k}", why,
                                                   [] if nid.startswith("(none") else nid.split(","))
 for a, b in CAUTIONS:                        scan("Two_cautions", b, [], contract=False)
+# v1.2: the item-list captions are scanned too. Until now the check covered the workbook
+# sheets and the what-we-dont-know page but NOT the pack captions, so every number written in
+# a caption was outside it entirely. Each caption gets its OWN id contract - resolve() only
+# consults PINS through the ids passed in, so scanning with ids=[] would silently resolve
+# nothing to a pin and report every registered number as unresolved.
+CAPTION_IDS = {
+ "T1":  ["ref_paddock_flood_rank_bala26ca","ref_paddock_flood_rank_bala28ca",
+         "ref_paddock_flood_rank_bala27ca","ref_paddock_flood_rank_bala29ca"],
+ "T2":  ["t13_parts_recovering_count","t13_parts_declining_count",
+         "t13_parts_persistently_poor_count","t13_parts_unremarkable_count"],
+ "M4b": ["t13_parts_recovering_count","t13_recovering_survive_drop2wettest"],
+ "M5b": ["bala15_xsec_residual","t10_bala29ca_xsec_residual",
+         "t10_dinan10_xsec_residual","dinan13_xsec_residual"],
+ "F5":  ["floor_flood_r_64pdk"],
+ "F3":  ["t10_gap_annual_slope_B_excl29ca","t10_gap_annual_r_B_excl29ca",
+         "ref_grazed_gap_annual_ref3_excl29ca_mean","t10_gap_annual_slope_C_29ca",
+         "t10_gap_annual_slope_A_all4"],
+ "F6":  ["three_arm_unzoned_inferred_above_14day_count","three_arm_unzoned_plot_above_14day_count"],
+}
+# Quantities a caption writes that are not pins: parameters, words, and dates the tokenizer
+# reads as numbers. Declared per caption so the global table cannot absorb them silently.
+_WORDS_IN_CAPTIONS = {
+ 3.0:"'three communities' - a count in words, not a measurement",
+ 1/3:"'a third' - a proportion in words (WORDS maps 'third' to 1/3), not a measurement",
+ 2.0:"'the two' - the pair being contrasted in the sentence, not a measurement",
+ 0.0:"'crossing zero' - the axis reference, not a measurement",
+ 30.0:"'around thirty years' - stated as approximate in the caption itself",
+ 60.0:"derived and stated - 64 zones less the 4 conserved",
+ 14.0:"'14-day rotational' - the name of a grazing regime, not a quantity",
+ 1990.0:"'the 1990s' - a decade, not a measurement",
+ 2000.0:"'the 2000s' - a decade, not a measurement",
+ 2023.0:"parameter - last water year of the record (1988-2023 span)",
+ 118.0:"parameter - 118 paddock-parts before the support rule (T2 limitation)",
+ 16.0:"t13_parts_declining_count", 77.0:"t13_parts_unremarkable_count",
+ 61.0:"ref_paddock_flood_rank_bala29ca (61st of 64)",
+ 17.6:"bala15_xsec_residual (-17.62, written to 1 dp)",
+ 16.8:"t10_bala29ca_xsec_residual", 15.1:"t10_dinan10_xsec_residual (-15.06, written to 1 dp)",
+ 15.0:"dinan13_xsec_residual (-15.04, written to 1 dp)",
+ 0.71:"floor_flood_r_64pdk", 2.1:"ref_grazed_gap_annual_ref3_excl29ca_mean (-2.073)",
+ 0.057:"t10_gap_annual_slope_B_excl29ca", 0.22:"t10_gap_annual_r_B_excl29ca",
+ 0.919:"t10_gap_annual_slope_C_29ca", 0.273:"t10_gap_annual_slope_A_all4",
+ 32.0:"'about 32 percentage points' - the Aeolian raw floor gap, stated as approximate",
+}
+for _it in items:
+    if _it.get("caption"):
+        _loc = f"Caption {_it['item_id']}"
+        DECLARED_BY_LOC.setdefault(_loc, {}).update(_WORDS_IN_CAPTIONS)
+        scan(_loc, _it["caption"], CAPTION_IDS.get(_it["item_id"], []))
 scan("How_we_know", cov + " " + FALSIF, [], contract=False)
 for key in ("registered","pinned","reproduce","drift","nopath","figures","tables","reports"):
     checks.append(dict(location="How_we_know", number_as_written=str(LIVE[key]),
@@ -474,7 +522,7 @@ try:
                 "checksum_sha256,path_exists,qa_status,run_id,superseded_flag,framing_label,"
                 "provenance_note,support_level) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)",
                 ("table_pack1_item_list","Output/pack/PACK1_item_list.csv",
-                 "PACK-1 item list - 17 items, 17 files","pack_item_list",len(items),
+                 "PACK-1 item list - 16 items, 16 files","pack_item_list",len(items),
                  sha50(PACK/"PACK1_item_list.csv"),1,"REVIEW",RUN,0,"census_8058",
                  "Single source for both 00_START_HERE.md and the workbook Contents sheet.","mixed"))
     cw.commit(); print("  COMMIT - workbook + item list registered")

@@ -69,14 +69,104 @@ By_question Q7,four,parameter - 4 conserved paddocks; also the 4 water years sin
 Two_cautions,thirty-five,"parameter - 35 water years, 1988-2022 (record length)",DECLARED,1,1
 Two_cautions,two,"T13 Gate C - 2 of those 3 in Bala 29ca, verified this session",DECLARED,1,1
 Two_cautions,veg_p05_spatial,"identifier, name or date - not a quantity",NAME_NOT_QUANTITY,0,1
-How_we_know,98,live query: pinned,DECLARED,1,1
+Caption T1,3rd,"ref_paddock_flood_rank_bala26ca | 'three communities' - a count in words, not a measurement | parameter - 3 grazing regimes / 3 non-treed communities",PINNED,3,1
+Caption T1,6th,"ref_paddock_flood_rank_bala28ca | t10_bala29ca_inland_level_deficit | t10_bala29ca_inland_level_deficit (5.8, written to 0 dp)",PINNED,3,1
+Caption T1,31st,"ref_paddock_flood_rank_bala27ca | derived and stated - 2019 minus 1988 is 31 years, 'three decades'",PINNED,2,1
+Caption T1,61st,ref_paddock_flood_rank_bala29ca | ref_paddock_flood_rank_bala29ca (61st of 64),PINNED,2,1
+Caption T1,64,"parameter - 64 management zones (dim_management_zone, 64 rows)",DECLARED,1,1
+Caption T1,5%,parameter - dim_management_zone reserves 5 cropping-history columns,DECLARED,1,1
+Caption T1,one,"parameter - 1 pp of threshold, the elasticity numerator (T3 Gate B1)",DECLARED,1,1
+Caption T1,four,parameter - 4 conserved paddocks; also the 4 water years since management changed,DECLARED,1,1
+Caption T1,Bala 26ca,"identifier, name or date - not a quantity",NAME_NOT_QUANTITY,0,1
+Caption T1,Bala 28ca,"identifier, name or date - not a quantity",NAME_NOT_QUANTITY,0,1
+Caption T1,Bala 29ca,"identifier, name or date - not a quantity",NAME_NOT_QUANTITY,0,1
+Caption T1_render,two,"'the two' - the pair being contrasted in the sentence, not a measurement | T13 Gate C - 2 of those 3 in Bala 29ca, verified this session",DECLARED,2,1
+Caption T1_render,four,parameter - 4 conserved paddocks; also the 4 water years since management changed,DECLARED,1,1
+Caption T1_render,T1,"identifier, name or date - not a quantity",NAME_NOT_QUANTITY,0,1
+Caption T2,115,parameter - 115 paddock-parts (fact_zone_community_part_classification),DECLARED,1,1
+Caption T2,8,"t13_parts_recovering_count | t13_parts_persistently_poor_count | census_by_zone_stratum - Floodplain Woodland/Forest share %, verified P3 S2",PINNED,3,1
+Caption T2,16,t13_parts_declining_count,PINNED,1,1
+Caption T2,14,"t13_parts_persistently_poor_count | '14-day rotational' - the name of a grazing regime, not a quantity",PINNED,2,1
+Caption T2,77,t13_parts_unremarkable_count,PINNED,1,1
+Caption T2,118,parameter - 118 paddock-parts before the support rule (T2 limitation),DECLARED,1,1
+Caption T2,3,"t13_parts_recovering_count | t13_parts_declining_count | 'three communities' - a count in words, not a measurement",PINNED,4,1
+Caption T2,one,"parameter - 1 pp of threshold, the elasticity numerator (T3 Gate B1)",DECLARED,1,1
+Caption T2,three,"t13_parts_recovering_count | t13_parts_declining_count | 'three communities' - a count in words, not a measurement",PINNED,4,1
+Caption T2,Bala 15,"identifier, name or date - not a quantity",NAME_NOT_QUANTITY,0,1
+Caption T2,Bala 28ca,"identifier, name or date - not a quantity",NAME_NOT_QUANTITY,0,1
+Caption T2,M4b,"identifier, name or date - not a quantity",NAME_NOT_QUANTITY,0,1
+Caption M1,64,"parameter - 64 management zones (dim_management_zone, 64 rows)",DECLARED,1,1
+Caption M1,14,"'14-day rotational' - the name of a grazing regime, not a quantity",DECLARED,1,1
+Caption M1,four,parameter - 4 conserved paddocks; also the 4 water years since management changed,DECLARED,1,1
+Caption M1,sixty,derived and stated - 64 zones less the 4 conserved,DECLARED,1,1
+Caption F5,0.71,floor_flood_r_64pdk,PINNED,1,1
+Caption F5,64,"parameter - 64 management zones (dim_management_zone, 64 rows)",DECLARED,1,1
+Caption F5,one,"parameter - 1 pp of threshold, the elasticity numerator (T3 Gate B1)",DECLARED,1,1
+Caption F5,four,parameter - 4 conserved paddocks; also the 4 water years since management changed,DECLARED,1,1
+Caption F5,half,"parameter - the T13 sweep cut range 0.50 to 1.50 (T13 spec section 5) | derived and stated - r=0.71 gives r-squared 0.504, 'about half'",DECLARED,2,1
+Caption F5,first,"parameter - 1 pp of threshold, the elasticity numerator (T3 Gate B1)",DECLARED,1,1
+Caption F5,M5b,"identifier, name or date - not a quantity",NAME_NOT_QUANTITY,0,1
+Caption F3,+0.057,t10_gap_annual_slope_B_excl29ca,PINNED,1,1
+Caption F3,0.22,t10_gap_annual_r_B_excl29ca,PINNED,1,1
+Caption F3,2.1,ref_grazed_gap_annual_ref3_excl29ca_mean | ref_grazed_gap_annual_ref3_excl29ca_mean (-2.073),PINNED,2,1
+Caption F3,+0.919,t10_gap_annual_slope_C_29ca,PINNED,1,1
+Caption F3,+0.273,t10_gap_annual_slope_A_all4,PINNED,1,1
+Caption F3,zero,"'crossing zero' - the axis reference, not a measurement",DECLARED,1,1
+Caption F3,one,"parameter - 1 pp of threshold, the elasticity numerator (T3 Gate B1)",DECLARED,1,1
+Caption F3,four,parameter - 4 conserved paddocks; also the 4 water years since management changed,DECLARED,1,1
+Caption F3,Bala 29ca,"identifier, name or date - not a quantity",NAME_NOT_QUANTITY,0,1
+Caption M5b,-17.6,"bala15_xsec_residual | bala15_xsec_residual (-17.62, written to 1 dp)",PINNED,2,1
+Caption M5b,-16.8,t10_bala29ca_xsec_residual,PINNED,1,1
+Caption M5b,-15.1,"t10_dinan10_xsec_residual | t10_dinan10_xsec_residual (-15.06, written to 1 dp)",PINNED,2,1
+Caption M5b,-15.0,"dinan13_xsec_residual | dinan13_xsec_residual (-15.04, written to 1 dp) | RPTSCOPE_report_set.csv EXCLUDED rows - 15 standard-grazing sites (R1b, independent count)",PINNED,3,1
+Caption M5b,Bala 15,"identifier, name or date - not a quantity",NAME_NOT_QUANTITY,0,1
+Caption M5b,Bala 29ca,"identifier, name or date - not a quantity",NAME_NOT_QUANTITY,0,1
+Caption M5b,Dinan 10,"identifier, name or date - not a quantity",NAME_NOT_QUANTITY,0,1
+Caption M5b,Dinan 13,"identifier, name or date - not a quantity",NAME_NOT_QUANTITY,0,1
+Caption M4,115,parameter - 115 paddock-parts (fact_zone_community_part_classification),DECLARED,1,1
+Caption F7,three,"'three communities' - a count in words, not a measurement | parameter - 3 grazing regimes / 3 non-treed communities",DECLARED,2,1
+Caption F7,third,"'a third' - a proportion in words (WORDS maps 'third' to 1/3), not a measurement",DECLARED,1,1
+Caption F7,Bala 29ca,"identifier, name or date - not a quantity",NAME_NOT_QUANTITY,0,1
+Caption M4b,3,"t13_parts_recovering_count | 'three communities' - a count in words, not a measurement | parameter - 3 grazing regimes / 3 non-treed communities",PINNED,3,1
+Caption M4b,15,"t13_parts_recovering_count | t10_dinan10_xsec_residual (-15.06, written to 1 dp) | dinan13_xsec_residual (-15.04, written to 1 dp)",PINNED,4,1
+Caption M4b,8,"t13_parts_recovering_count | census_by_zone_stratum - Floodplain Woodland/Forest share %, verified P3 S2",PINNED,2,1
+Caption M4b,one,"parameter - 1 pp of threshold, the elasticity numerator (T3 Gate B1)",DECLARED,1,1
+Caption M4b,two,"'the two' - the pair being contrasted in the sentence, not a measurement | T13 Gate C - 2 of those 3 in Bala 29ca, verified this session",DECLARED,2,1
+Caption M4b,five,t13_recovering_survive_drop2wettest | parameter - dim_management_zone reserves 5 cropping-history columns,PINNED,2,1
+Caption M4b,eight,"t13_parts_recovering_count | census_by_zone_stratum - Floodplain Woodland/Forest share %, verified P3 S2",PINNED,2,1
+Caption M5,one,"parameter - 1 pp of threshold, the elasticity numerator (T3 Gate B1)",DECLARED,1,1
+Caption M5,two,"'the two' - the pair being contrasted in the sentence, not a measurement | T13 Gate C - 2 of those 3 in Bala 29ca, verified this session",DECLARED,2,1
+Caption F1,1988,parameter - first water year of the record,DECLARED,1,1
+Caption F1,-2023,parameter - last water year of the record (1988-2023 span),DECLARED,1,1
+Caption F1,one,"parameter - 1 pp of threshold, the elasticity numerator (T3 Gate B1)",DECLARED,1,1
+Caption F1,thirty,'around thirty years' - stated as approximate in the caption itself,DECLARED,1,1
+Caption F1,half,"parameter - the T13 sweep cut range 0.50 to 1.50 (T13 spec section 5) | derived and stated - r=0.71 gives r-squared 0.504, 'about half'",DECLARED,2,1
+Caption F1,Bala 29ca,"identifier, name or date - not a quantity",NAME_NOT_QUANTITY,0,1
+Caption F2,32,"'about 32 percentage points' - the Aeolian raw floor gap, stated as approximate | t10_bala29ca_aeolian_level_deficit | t10_bala29ca_aeolian_level_deficit (32.1, written to 0 dp)",DECLARED,3,1
+Caption F2,4,parameter - 4 conserved paddocks; also the 4 water years since management changed,DECLARED,1,1
+Caption F2,1990,"'the 1990s' - a decade, not a measurement",DECLARED,1,1
+Caption F2,2000,"'the 2000s' - a decade, not a measurement",DECLARED,1,1
+Caption F2,Bala 29ca,"identifier, name or date - not a quantity",NAME_NOT_QUANTITY,0,1
+Caption F6,14,"'14-day rotational' - the name of a grazing regime, not a quantity",DECLARED,1,1
+Caption F6,two,"'the two' - the pair being contrasted in the sentence, not a measurement | T13 Gate C - 2 of those 3 in Bala 29ca, verified this session",DECLARED,2,1
+Caption F6,three,"'three communities' - a count in words, not a measurement | parameter - 3 grazing regimes / 3 non-treed communities",DECLARED,2,1
+Caption F6,six,"three_arm_unzoned_inferred_above_14day_count | t10_bala29ca_inland_level_deficit (5.8, written to 0 dp)",PINNED,2,1
+Caption F6,eight,"three_arm_unzoned_plot_above_14day_count | census_by_zone_stratum - Floodplain Woodland/Forest share %, verified P3 S2",PINNED,2,1
+Caption F6,nine,parameter - 9 non-treed strata (treed_context_flag=0 AND regime_band<>'context'),DECLARED,1,1
+Caption M2,66,parameter - 66 monitoring plots (dim_plot),DECLARED,1,1
+Caption M2,one,"parameter - 1 pp of threshold, the elasticity numerator (T3 Gate B1)",DECLARED,1,1
+Caption M2,fifteen,"dinan13_xsec_residual (-15.04, written to 1 dp) | RPTSCOPE_report_set.csv EXCLUDED rows - 15 standard-grazing sites (R1b, independent count)",DECLARED,2,1
+Caption M2,third,"'a third' - a proportion in words (WORDS maps 'third' to 1/3), not a measurement",DECLARED,1,1
+Caption M3,three,"'three communities' - a count in words, not a measurement | parameter - 3 grazing regimes / 3 non-treed communities",DECLARED,2,1
+Caption M3,five,parameter - dim_management_zone reserves 5 cropping-history columns,DECLARED,1,1
+How_we_know,99,live query: pinned,DECLARED,1,1
 How_we_know,81,live query: reproduce,DECLARED,1,1
-How_we_know,82.7%,live query: coverage,DECLARED,1,1
+How_we_know,81.8%,live query: coverage,DECLARED,1,1
 How_we_know,0,"live query: drift | parameter - the T13 sweep cut range 0.50 to 1.50 (T13 spec section 5) | census_by_zone_stratum - Other/minor units share %, verified P3 S2",DECLARED,4,1
 How_we_know,17,"live query: nopath | two-floor divergence, spec section 6 / T2_zone_annual_veg_extraction.md section 94",DECLARED,2,1
 How_we_know,second,"T13 Gate C - 2 of those 3 in Bala 29ca, verified this session",DECLARED,1,1
-How_we_know,101,live query: registered,LIVE_QUERY,1,1
-How_we_know,98,live query: pinned,LIVE_QUERY,1,1
+How_we_know,102,live query: registered,LIVE_QUERY,1,1
+How_we_know,99,live query: pinned,LIVE_QUERY,1,1
 How_we_know,81,live query: reproduce,LIVE_QUERY,1,1
 How_we_know,0,live query: drift,LIVE_QUERY,1,1
 How_we_know,17,live query: nopath,LIVE_QUERY,1,1
