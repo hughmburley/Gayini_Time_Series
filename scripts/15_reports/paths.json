@@ -8,5 +8,6 @@
   "docs_dir": "{repo_root}/Output/reports",
   "figure_source_c1": "{repo_root}/Output/figures",
   "figure_source_d2": "{repo_root}/Output/figures/dashboards",
-  "tables": "{repo_root}/Output/tables"
+  "tables": "{repo_root}/Output/tables",
+  "census": "{repo_root}/Output/census"
 }

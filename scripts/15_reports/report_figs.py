@@ -3,17 +3,24 @@
 The expectation line is drawn from the REGISTERED constants read by report_data,
 never refitted (RS note 31 July, item 1).
 """
-import json, os, glob, re, sqlite3
+import json, os, glob, re, sqlite3, sys
 import numpy as np, pandas as pd
 import matplotlib; matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
 import matplotlib.patheffects as pe
+import matplotlib.colors as mcolors
+import matplotlib.ticker as mticker
 from PIL import Image
 import geopandas as gpd
 
-from config import DB, GPKG, FIGSRC_C1, FIGSRC_D2, FIGS_DIR as OUT, UNITS_DIR, require
+from config import (DB, GPKG, ROOT, CENSUS_DIR, FIGSRC_C1, FIGSRC_D2,
+                    FIGS_DIR as OUT, UNITS_DIR, require)
 require(DB,'Gayini_Results.sqlite'); require(GPKG,'Gayini_Results.gpkg')
+# R-13 item 4: the cell size is never typed into the renderer.
+sys.path.insert(0,os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),'lib'))
+sys.path.insert(0,os.path.join(ROOT,'scripts','lib'))
+from gayini_params import PIXEL_SIDE_M                                     # noqa: E402
 INK,CREAM,GOLD,TEAL,BLUE,GREY='#0F3947','#F8F7F2','#C79A3B','#3B8A8F','#2165AC','#7C837E'
 RUST,MUTED,FAINT,HEAD='#9C5B2E','#5F6B67','#8A8378','#26302E'
 AEO_D,GRN_D,GRN_M,DRY,BARE='#8A5F1E','#2E6B2E','#5F9150','#C9B98C','#EAE3D2'
@@ -49,6 +56,38 @@ PARTS=pd.read_sql("select zone_name,community,level,state_registered from fact_z
 SITES=pd.read_sql("""select p.plot_id,p.simplified_vegetation_group community,
   avg(v.annual_wet_any)*100 ff,avg(v.mean_total_veg_pct) tot from v_plot_year_analysis_spine v
   join dim_plot p using(plot_id) where p.treed_plot_flag=0 group by 1,2""",con)
+
+ZONE_FID=dict(pd.read_sql('select zone_name,zone_fid from dim_management_zone',con).values)
+
+# ------------------------------------------------------------------ R-13 census substrate
+# The paddock map is rebuilt from the pixel census, for all 64. It used to come from a
+# pre-existing C1 render where one existed (21) and a bare gpkg outline where it did not (43) —
+# same report series, two kinds of page, and 43 of 64 readers told neither what country they
+# were looking at nor how wet it is. The gpkg's vegetation_units layer cannot fix that: 20
+# features for the property, 17 invalid.
+#
+# Loaded ONCE and windowed per paddock. Reading a 1,080,157-row parquet 64 times would be the
+# same mistake in a different place.
+_CEN=pd.read_parquet(os.path.join(CENSUS_DIR,'gayini_pixel_census_8058.parquet'),
+                     columns=['pixel_id','x_8058','y_8058','veg_regime_class','treed_context_flag'])
+_ZA=pd.read_parquet(os.path.join(CENSUS_DIR,'gayini_pixel_zone_assignment.parquet'))
+CENSUS=_CEN.merge(_ZA,on='pixel_id',how='left')
+del _CEN,_ZA
+
+# The canonical bivariate palette, from the class table that named the C1 renders:
+# R/gayini_veg_regime_functions.R:26 — code = community(1..5)*10 + band(1..3), context = 0.
+# veg_regime_class is carried per pixel, so the map colours from the registered scheme rather
+# than from a scheme invented here.
+REGIME_RGB={11:'#E5D3A0',12:'#C79A3C',13:'#8F6E24',      # Aeolian  low/mid/high
+            21:'#B3E0D6',22:'#3FAE97',23:'#27725F',      # Riverine low/mid/high
+            31:'#AAC6E4',32:'#2E6DB0',33:'#1B4270',      # Inland   low/mid/high
+            40:'#9E9E9E',                                 # Floodplain Woodland / Forest
+            50:'#E0E0E0'}                                 # Other / minor units
+# Columns of the matrix legend, dry -> wet, labelled in page 3's register (R-13).
+MATRIX_COLS=[('the dry rises','Aeolian',(11,12,13)),
+             ('the middle country','Riverine',(21,22,23)),
+             ('the channel country','Inland Floodplain',(31,32,33))]
+MATRIX_ROWS=['drier','middle','wetter']
 
 META={}
 
@@ -256,23 +295,160 @@ def fig_effect(r,tag):
     ax.text(SD+.4,y.max()+.05,'ordinary range',fontsize=7.6,color=FAINT,va='center',path_effects=HALO_S)
     return save(fig,f'{tag}_effect')
 
-def fig_map(r,tag):
-    """Paddock locator map.
+def _nice_scale(span_m):
+    """A round scale-bar length near a fifth of the map width."""
+    target=span_m/5.0
+    for v in (100,200,250,500,1000,2000,2500,5000,10000,20000,25000):
+        if v>=target: return v
+    return 50000
 
-    Preference order:
-      1. the registered C1 checkerboard render, if present on disk (best: carries vegetation);
-      2. a locator built from management_zones + plots.
-    The GeoPackage vegetation_units layer is NOT usable for mapping — see README §Known defects.
+
+def fig_map_census(r,tag):
+    """The paddock map, rebuilt from the pixel census for all 64 (R-13).
+
+    Keeps what the C1 render did better than any outline: the 3x3 matrix legend, which teaches
+    the encoding by showing it rather than asking the reader to hold "darker = wetter" in mind;
+    graticule labels, so there is something real to locate against; and NEIGHBOURS AT FULL
+    STRENGTH, because half the value of this map is comparative — you can only see that a
+    paddock is wetter than the ground beside it if both render alike. Adds a scale bar, place
+    names in page 3's register, and grey explicitly labelled, because under R-9 the reader must
+    be able to see the part of the paddock the report does not cover.
+
+    The focus outline is traced from the CENSUS PIXELS, not from the stored polygon. R-13 allows
+    omitting it where geometry is unsound; tracing the pixel mask is strictly better, because it
+    is exact for all 64 including Bala 29ca, whose polygon is 5 coincident vertices at 0.6 m
+    extent. The pixels carry the shape, which was R-13's own premise.
     """
-    src=f"{FIGSRC_C1}/C1_veg_regime_paddock_{c1_slug(r['unit'])}_data.png"
-    if os.path.exists(src):
-        im=Image.open(src).convert('RGB')
-        m=im.crop((150,230,1950,1900)); l=im.crop((2400,470,3280,1440)); g=64
-        out=Image.new('RGB',(m.width+g+l.width,max(m.height,l.height)),(248,247,242))
-        out.paste(m,(0,(out.height-m.height)//2)); out.paste(l,(m.width+g,(out.height-l.height)//2))
-        META[tag]={'map_kind':'c1','sites_drawn':True,'neighbours_drawn':0,
-                   'sites_expected':len(r['sites'])}
-        p=f'{OUT}/{tag}_mapc1.png'; out.save(p); return p
+    fid=ZONE_FID.get(r['unit'])
+    if fid is None: return None
+    foc=CENSUS[CENSUS.zone_fid==fid]
+    if not len(foc): return None
+
+    PS=float(PIXEL_SIDE_M)
+    fx0,fx1=foc.x_8058.min(),foc.x_8058.max(); fy0,fy1=foc.y_8058.min(),foc.y_8058.max()
+    pad=max(max(fx1-fx0,fy1-fy0)*0.40,700.0)
+    win=CENSUS[(CENSUS.x_8058>=fx0-pad)&(CENSUS.x_8058<=fx1+pad)&
+               (CENSUS.y_8058>=fy0-pad)&(CENSUS.y_8058<=fy1+pad)]
+
+    # Rasterise: cells tile exactly because the grid step IS the pixel size. A fixed marker
+    # size gives a dotted look at some scales and overlap at others (R-13 item 1).
+    x0=win.x_8058.min(); ytop=win.y_8058.max()
+    col=np.rint((win.x_8058.values-x0)/PS).astype(int)
+    row=np.rint((ytop-win.y_8058.values)/PS).astype(int)
+    H,W=int(row.max())+1,int(col.max())+1
+    cls=np.full((H,W),-1,np.int16); cls[row,col]=win.veg_regime_class.values
+    fmask=np.zeros((H,W),bool); sel=(win.zone_fid.values==fid)
+    fmask[row[sel],col[sel]]=True
+    extent=[x0-PS/2,x0+(W-.5)*PS,ytop-(H-.5)*PS,ytop+PS/2]
+
+    img=np.zeros((H,W,4),float)
+    for code,hx in REGIME_RGB.items():
+        m=cls==code
+        if m.any(): img[m]=mcolors.to_rgba(hx)
+
+    fig=plt.figure(figsize=(9.2,5.3),dpi=DPI)
+    gs=fig.add_gridspec(1,2,width_ratios=[1,.42],left=.075,right=.985,top=.935,bottom=.105,wspace=.04)
+    ax=fig.add_subplot(gs[0,0]); lg=fig.add_subplot(gs[0,1]); lg.axis('off')
+
+    ax.imshow(img,extent=extent,origin='upper',interpolation='nearest',zorder=2)
+    ax.contour(fmask.astype(float),levels=[.5],colors=[INK],linewidths=2.1,
+               extent=extent,origin='upper',zorder=4)
+
+    ax.set_xlim(extent[0],extent[1]); ax.set_ylim(extent[2],extent[3])
+    ax.set_aspect('equal')
+    ax.set_facecolor(CREAM)
+    for s in ('top','right'): ax.spines[s].set_visible(True)
+    for s in ax.spines.values(): s.set_color(FAINT); s.set_linewidth(.7)
+    ax.grid(True,color='#FFFFFF',alpha=.30,lw=.6,zorder=3)
+    ax.tick_params(labelsize=7.4)
+    # One decimal: at these extents a 0 dp km label repeats itself down the axis, which is a
+    # graticule that cannot be read against.
+    ax.xaxis.set_major_locator(mticker.MaxNLocator(5))
+    ax.yaxis.set_major_locator(mticker.MaxNLocator(5))
+    ax.xaxis.set_major_formatter(mticker.FuncFormatter(lambda v,_: f'{v/1000:,.1f}'))
+    ax.yaxis.set_major_formatter(mticker.FuncFormatter(lambda v,_: f'{v/1000:,.1f}'))
+    ax.set_xlabel('Easting (km, GDA2020 NSW Lambert)',fontsize=7.6)
+    ax.set_ylabel('Northing (km)',fontsize=7.6)
+    ax.set_title(f'{r["unit"]} and the country around it',loc='left',
+                 fontsize=10.5,color=HEAD,fontweight='bold')
+
+    # scale bar
+    sb=_nice_scale(extent[1]-extent[0])
+    sx=extent[0]+(extent[1]-extent[0])*.045; sy=extent[2]+(extent[3]-extent[2])*.058
+    ax.plot([sx,sx+sb],[sy,sy],color=HEAD,lw=3.2,solid_capstyle='butt',zorder=6)
+    ax.text(sx+sb/2,sy+(extent[3]-extent[2])*.030,
+            f'{sb/1000:g} km' if sb>=1000 else f'{sb:g} m',
+            ha='center',va='bottom',fontsize=7.4,color=HEAD,path_effects=HALO,zorder=6)
+
+    # ---- 3x3 matrix legend: community across, wetness down.
+    # Column heads carry the PLACE NAME over the botanical short name, because page 3's table
+    # reads "The channel country — Inland Floodplain" and the legend must match that register.
+    # Place names are wrapped by hand: at this width "the middle country" on one line collides
+    # with its neighbours, and matplotlib's wrap= does not apply to a text drawn in axes coords.
+    lg.set_xlim(0,1); lg.set_ylim(0,1)
+    cw,ch,x_left,y_top=.265,.105,.135,.665
+    lg.text(0,y_top+.245,'What kind of country,',fontsize=8.6,color=HEAD,fontweight='bold')
+    lg.text(0,y_top+.205,'and how wet it is',fontsize=8.6,color=HEAD,fontweight='bold')
+    for ci,(place,short,codes) in enumerate(MATRIX_COLS):
+        cx=x_left+ci*cw
+        w1,w2=place.rsplit(' ',1)
+        lg.text(cx+cw*.42,y_top+.115,w1,fontsize=6.5,color=HEAD,ha='center')
+        lg.text(cx+cw*.42,y_top+.078,w2,fontsize=6.5,color=HEAD,ha='center')
+        lg.text(cx+cw*.42,y_top+.038,short,fontsize=6.0,color=FAINT,ha='center')
+        for ri,code in enumerate(codes):
+            lg.add_patch(Rectangle((cx,y_top-(ri+1)*ch),cw*.84,ch*.88,
+                                   facecolor=REGIME_RGB[code],edgecolor='white',lw=.8))
+    for ri,lab in enumerate(MATRIX_ROWS):
+        lg.text(x_left-.022,y_top-(ri+.56)*ch,lab,fontsize=7.0,color=MUTED,ha='right',va='center')
+
+    yb=y_top-3*ch-.075
+    present=set(np.unique(cls[cls>0]).tolist())
+    if 40 in present:
+        lg.add_patch(Rectangle((x_left,yb-.052),cw*.88,ch*.9,facecolor=REGIME_RGB[40],
+                               edgecolor='white',lw=.8))
+        lg.text(x_left+cw*.95,yb-.052+ch*.45,'woodland — not measured',fontsize=7.0,
+                color=MUTED,va='center')
+        yb-=.078
+    if 50 in present:
+        lg.add_patch(Rectangle((x_left,yb-.052),cw*.88,ch*.9,facecolor=REGIME_RGB[50],
+                               edgecolor='white',lw=.8))
+        lg.text(x_left+cw*.95,yb-.052+ch*.45,'other / minor units',fontsize=7.0,
+                color=MUTED,va='center')
+        yb-=.078
+    lg.plot([x_left,x_left+.30],[yb-.030,yb-.030],color=INK,lw=2.1)
+    lg.text(x_left+.34,yb-.030,f'{r["unit"]}',fontsize=7.0,color=MUTED,va='center')
+
+    n_nb=int(pd.unique(win.zone_fid.dropna()).size)-1
+    META[tag]={'map_kind':'census','sites_drawn':False,'neighbours_drawn':max(n_nb,0),
+               'sites_expected':len(r['sites']),
+               'woodland_drawn':bool(40 in present),'outline_drawn':True,
+               'source':'gayini_pixel_census_8058.parquet'}
+    p=save(fig,f'{tag}_map')
+    # Remove the map variants this one supersedes. report_build picks by file existence, so a
+    # _mapc1 or _maploc left over from an earlier build would sit in the output directory
+    # ready to shadow the current family — a stale artefact silently outranking a fresh one,
+    # the same hazard class as the Word lock file. Build outputs, regenerable, safe to drop.
+    # (No .flags entry here: report_figs never wrote one — that sidecar was read by
+    # report_build and produced by nothing, which is the D-2 defect. Cleaning up a file that
+    # never existed would be the same fiction from the other side. lint check C caught it.)
+    for old in (f'{OUT}/{tag}_mapc1.png',f'{OUT}/{tag}_maploc.png'):
+        if os.path.exists(old): os.remove(old)
+    return p
+
+
+def fig_map(r,tag):
+    """Paddock map. Preference order:
+
+      1. the census checkerboard (R-13) — every paddock, derived at render time;
+      2. a locator built from management_zones + plots;
+      3. the composition figure.
+
+    2 and 3 are unreachable on the current inventory, because every zone has census pixels.
+    They are RETAINED deliberately: a fallback is not deleted because today's inventory does
+    not need it (R-13). The GeoPackage vegetation_units layer is not usable for mapping.
+    """
+    p=fig_map_census(r,tag)
+    if p is not None: return p
     z=_MZ[_MZ.management_zone==r['unit']]
     if not len(z): return None
     bb=z.total_bounds

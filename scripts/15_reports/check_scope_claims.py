@@ -189,9 +189,52 @@ def check_composition_prose():
                 'a trace community exists but is not named in a trailing clause')
 
 
+# ---------------------------------------------------------------- F. R-9 coverage disclosure
+def _nf(v):
+    return f'{round(v):,}'
+
+
+def check_coverage_disclosure():
+    """R-9: BOTH areas on the face of every paddock report, all 64, no threshold.
+
+    Also reconciles the Area card's components against the total, because a header quoting a
+    paddock total whose own subtitle does not account for it is the footprint defect again —
+    and it would have happened on the 5 paddocks carrying 'Other / minor units', where
+    reported + woodland understates the paddock by up to 223.53 ha."""
+    for f in sorted(glob.glob(os.path.join(UNITS_DIR, 'paddock_*.json'))):
+        r = json.load(open(f, encoding='utf8'))
+        slug = r['unit'].replace(' ', '_').replace('/', '-')
+        p = os.path.join(DOCS_DIR, f'Gayini_paddock_report_{slug}.docx')
+        if not os.path.exists(p):
+            continue
+        t = visible(p)
+        # Anchor on the HEADER's combined form. A first version searched the whole document
+        # for the two areas separately and was satisfied by the Area card while the header
+        # had been gutted — it could not tell header disclosure from card disclosure, which
+        # is the only thing R-9 is about. The percentage appears nowhere else.
+        head = (rf"{re.escape(_nf(r['area_total_ha']))} ha\s*·\s*"
+                rf"{re.escape(_nf(r['area_ha']))} ha reported "
+                rf"\({round(r['coverage_pct'])}%\)")
+        if not re.search(head, t):
+            add('ERROR', 'R-9', r['unit'],
+                f"coverage not on the header: expected \"{_nf(r['area_total_ha'])} ha · "
+                f"{_nf(r['area_ha'])} ha reported ({round(r['coverage_pct'])}%)\"")
+        if f"{_nf(r['area_ha'])} ha reported" not in t:
+            add('ERROR', 'R-9', r['unit'], 'the Area card does not state the reported area')
+        parts = r['area_ha'] + r['area_treed_ha'] + r['area_other_ha']
+        if abs(parts - r['area_total_ha']) > 0.05:
+            add('ERROR', 'R-9', r['unit'],
+                f'area components {parts:.2f} ha do not sum to the total '
+                f'{r["area_total_ha"]:.2f} ha')
+        if r['area_treed_ha'] >= 0.5 and 'woodland, not measurable' not in t:
+            add('ERROR', 'R-9', r['unit'],
+                f'{r["area_treed_ha"]:.0f} ha of woodland is excluded but not disclosed')
+
+
 def main():
     for fn in (check_band_areas, check_property_is_a_set,
-               check_support_separation, check_site_counts, check_composition_prose):
+               check_support_separation, check_site_counts, check_composition_prose,
+               check_coverage_disclosure):
         fn()
     err = [f for f in findings if f[0] == 'ERROR']
     print()

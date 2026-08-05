@@ -184,6 +184,17 @@ def paddock_record(name):
         where zone_name=:n and treed_context_flag=1""", n=name).ha[0]
     r['area_treed_ha'] = float(tre or 0)
 
+    # R-9: coverage on the face of the report. The paddock is THREE components, not two.
+    # `treed_context_flag = 0` alone admits ten strata, not nine — it lets 'Other / minor units'
+    # in (308.70 ha across 5 zones property-wide, exactly CLAUDE.md's figure). So in-scope +
+    # woodland understates the paddock for Bala 1 (by 223.53 ha), Mara 5a (47.51), Bala 2
+    # (24.07) and Mara 5 (0.31). The total is taken from the census, and the parts are derived
+    # from it, so the header can never quote a total its own subtitle does not account for.
+    r['area_total_ha'] = float(q("""select sum(area_ha) ha from v_census_by_zone_stratum
+        where zone_name=:n""", n=name).ha[0] or 0)
+    r['area_other_ha'] = max(0.0, r['area_total_ha'] - r['area_ha'] - r['area_treed_ha'])
+    r['coverage_pct'] = (100.0 * r['area_ha'] / r['area_total_ha']) if r['area_total_ha'] else 0.0
+
     # ---- contract row: residual from the REGISTERED line (page 4) — read, never refit
     res = q("select residual, rank, predicted_floor, mean_floor, mean_flood "
             "from v_zone_floor_flood_residual where zone_fid=:f", f=fid)

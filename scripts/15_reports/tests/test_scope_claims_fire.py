@@ -72,6 +72,13 @@ def build_fixture(root, mode):
         if not doctor_docx(target, tmp, '17% Riverine', '17% Riverine and 0% Aeolian'):
             sys.exit('STOP: R-8 zero-percent anchor not found in the fixture document')
         os.replace(tmp, target)
+    elif mode == 'r9_coverage':
+        # the pre-R-9 header: in-scope area only, the paddock total absent
+        tmp = target + '.tmp'
+        if not doctor_docx(target, tmp, '1,563 ha  ·  1,371 ha reported (88%)',
+                           '1,371 ha in scope'):
+            sys.exit('STOP: R-9 header anchor not found in the fixture document')
+        os.replace(tmp, target)
     elif mode == 'two_rules':
         tmp = target + '.tmp'
         # the sentence the spec requires in every report
@@ -95,6 +102,7 @@ CASES = [
     ('two_rules',      1, 'C10',         'a missing two-flood-rules sentence must be rejected'),
     ('r8_count',       1, 'R-8',         'page 1 claiming more kinds than page 3 shows must be rejected'),
     ('r8_zero_pct',    1, 'R-8',         'a community printed at 0% must be rejected'),
+    ('r9_coverage',    1, 'R-9',         'a header without the paddock total must be rejected'),
 ]
 
 

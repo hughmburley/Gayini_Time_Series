@@ -105,7 +105,13 @@ function paddockDoc(r){
 
   // ---- page 1
   kids.push(titleBlock('Paddock report',r.unit,
-    `${nf(r.area_ha)} ha in scope  ·  ${r.conserved?'grazing removed':'grazed'}  ·  ${r.year_first}–${r.year_last} (${r.n_years} years)  ·  `+
+    // R-9: BOTH numbers, always, all 64. No threshold — for the 39 paddocks at 95-100% the
+    // second figure is unremarkable and the reader learns nothing they had not assumed, and
+    // disclosure then scales with the problem instead of firing at a cut someone must defend.
+    // Mara 1 reports 53 of 345 ha; without this the page shows a whole-paddock map beside a
+    // headline covering 15% of it.
+    `${nf(r.area_total_ha)} ha  ·  ${nf(r.area_ha)} ha reported (${Math.round(r.coverage_pct)}%)  ·  `+
+    `${r.conserved?'grazing removed':'grazed'}  ·  ${r.year_first}–${r.year_last} (${r.n_years} years)  ·  `+
     `${r.n_sites} monitoring ${r.n_sites===1?'site':'sites'}`),gap(90));
   const leftKids=[kicker('In plain terms'),
     rich([[plainTerms(r),{}]],{after:95}),rule(),
@@ -152,7 +158,18 @@ function paddockDoc(r){
       body(sitesLine(r),{after:0}));
   }
   const rightKids=[];
-  if(has(F('mapc1'))){
+  if(has(F('map'))){
+    // R-13 map + R-9 caption. Grey is now VISIBLE on the page, so the caption states what it
+    // means and carries the area with it, rather than the disclosure resting on the header
+    // alone. The boundary is traced from the census pixels, so it is exact for every paddock —
+    // there is no "stored outline is simplified" case left to caption (R-11(b) dissolved).
+    const wood=FMETA[g]&&FMETA[g].woodland_drawn;
+    rightKids.push(img(F('map'),486),
+      cap('Colour shows which kind of country the ground belongs to; darker shading within each '
+        +'colour marks the wetter parts of that type. '
+        +(wood?`Grey is woodland — ${nf(r.area_treed_ha)} ha here, which the satellite cannot measure through, so no figure in this report covers it. `:'')
+        +'The country around the paddock is drawn the same way, so the two can be compared.'));
+  } else if(has(F('mapc1'))){
     rightKids.push(img(F('mapc1'),486),
       cap('Colour shows which kind of country the ground belongs to. Darker shading within each colour marks the wetter parts of that type.'));
   } else if(has(F('maploc'))){
@@ -173,7 +190,7 @@ function paddockDoc(r){
   kids.push(table([new TableRow({children:[
     cell(leftKids,{w:LW,pad:0,padx:0}),cell([gap(20)],{w:GUT,pad:0,padx:0}),
     cell(rightKids,{w:RW,pad:0,padx:0})]})],[LW,GUT,RW]),gap(80),
-    cards([['Area in scope',`${nf(r.area_ha)} ha`,r.area_treed_ha>1?`plus ${nf(r.area_treed_ha)} ha woodland, excluded`:'non-treed ground',INK,PANEL_W],
+    cards([['Area',`${nf(r.area_total_ha)} ha`,areaSub(r),INK,PANEL_W],
       ['Floods in',`${f1(r.ff)}%`,`of years · ${ordinal(r.rank_ff)} wettest of ${r.n_paddocks}`,INK,PANEL_A],
       ['Thin-ground cover',`${f1(r.floor)}%`,multi?'an average of unlike parts':`${ordinal(r.rank_floor)} of ${r.n_paddocks}`,AEO_D,PANEL_W],
       ['Monitoring sites',`${r.n_sites}`,siteCard(r),r.n_sites?GRN:MUTED,PANEL_W]]));
@@ -310,6 +327,16 @@ function sitesLine(r){
   return `${r.n_sites} of the property's monitoring sites sit inside ${r.unit}`+
     (r.n_sites_treed>0?`. ${r.n_sites_total} sites fall inside the boundary in total; ${r.n_sites_treed} sit under tree canopy, where the satellite cannot see the ground beneath, and are excluded from every figure in this report.`
       :`, so what this record shows can be checked against ground measurement.`);
+}
+// R-9: the Area card's subtitle accounts for the WHOLE paddock, so the total on its face is
+// never a number the card itself leaves unexplained. Three components, because
+// treed_context_flag = 0 admits ten strata not nine: reported ground, woodland, and
+// 'Other / minor units' (5 paddocks, 308.70 ha property-wide).
+function areaSub(r){
+  const parts=[`${nf(r.area_ha)} ha reported`];
+  if(r.area_treed_ha>=0.5) parts.push(`${nf(r.area_treed_ha)} ha woodland, not measurable`);
+  if(r.area_other_ha>=0.5) parts.push(`${nf(r.area_other_ha)} ha other ground, not classified`);
+  return parts.join(' · ');
 }
 function siteCard(r){
   if(r.n_sites===0) return 'none inside this paddock';
