@@ -26,6 +26,7 @@ import glob, os, shutil, subprocess, sys, tempfile
 import numpy as np
 from PIL import Image
 from config import DOCS_DIR
+from docxset import built_docx
 
 # --- R-1, 4 August 2026: the band conflated a functional failure with an aesthetic one ---
 # It was stated three ways — 70-90 in the handoff and template spec, 80-92 here, and 68-93 in
@@ -75,7 +76,7 @@ def main():
     if not pdftoppm:
         sys.exit('STOP: pdftoppm (Poppler) not found. Install Poppler or put it on PATH.')
 
-    docs = sys.argv[1:] or sorted(glob.glob(os.path.join(DOCS_DIR, '*.docx')))
+    docs = sys.argv[1:] or built_docx(DOCS_DIR)
     if not docs:
         sys.exit(f'STOP: no .docx to check in {DOCS_DIR}. A check that scans nothing '
                  f'must not report success.')

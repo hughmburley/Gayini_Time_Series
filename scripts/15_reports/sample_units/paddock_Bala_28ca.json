@@ -101,6 +101,14 @@
   }
  ],
  "n_recovering": 0,
+ "trace_communities": [
+  {
+   "community": "Aeolian Chenopod Shrublands",
+   "short": "Aeolian",
+   "share": 0.05,
+   "ha": 0.6854292525000001
+  }
+ ],
  "series": {
   "year": [
    1988,

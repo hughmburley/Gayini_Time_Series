@@ -215,6 +215,23 @@ def paddock_record(name):
     r['parts'] = parts
     r['n_recovering'] = sum(p['state'] == 'Recovering' for p in parts)
 
+    # R-8, 4 Aug 2026. Page 1 counts the parts that reach the part-classification support
+    # rule — exactly the rows page 3 will show — not the communities in the census. The two
+    # pages then cannot disagree, because they read the same object rather than because a
+    # threshold was tuned until they matched.
+    #
+    # A community present in the census but below that rule is a TRACE: named, never counted,
+    # never given a percentage, never printed as 0%. Derived from the set difference, so no
+    # paddock is named in code. Affects 3 of 64 — Bala 15 (23 px), Bala 28ca (10 px), Mara 3
+    # (ONE 24.97 m cell, 0.0624 ha). A percentage cut would have been a new constant to
+    # defend; the support rule is already in force and already registered.
+    _classified = {p['community'] for p in parts}
+    r['trace_communities'] = [
+        {'community': c['community'], 'short': c['short'],
+         'share': c['share'], 'ha': c['share'] / 100 * r['area_ha']}
+        for c in r['composition']
+        if c['short'] != 'Woodland' and c['community'] not in _classified]
+
     # ---- annual gap series (page 4) — series derived; SLOPE read from the registry
     me = q("""select water_year, veg_p05_spatial floor, flood_frac_pct ff, veg_mean
         from fact_zone_veg_annual where zone_fid=:f and series_variant='mean_of_seasons'

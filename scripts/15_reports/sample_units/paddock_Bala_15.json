@@ -78,6 +78,14 @@
   }
  ],
  "n_recovering": 1,
+ "trace_communities": [
+  {
+   "community": "Riverine Chenopod Shrublands",
+   "short": "Riverine",
+   "share": 0.27,
+   "ha": 1.4267565585000002
+  }
+ ],
  "series": {
   "year": [
    1988,

@@ -21,6 +21,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 MOD  = os.path.dirname(HERE)
 sys.path.insert(0, MOD)
 from config import DOCS_DIR                                     # noqa: E402
+from docxset import built_docx                                  # noqa: E402
 
 
 def run_check(paths):
@@ -48,7 +49,7 @@ def main():
             fails.append('an over-full page did not fail the build — the ERROR branch is dead')
 
     # ---- 2. dead space must NOT fail
-    real = sorted(glob.glob(os.path.join(DOCS_DIR, 'Gayini_paddock_report_*.docx')))
+    real = built_docx(DOCS_DIR, 'Gayini_paddock_report_*.docx')
     if not real:
         sys.exit('STOP: no built paddock reports to check — run the batch first')
     code, out = run_check(real)

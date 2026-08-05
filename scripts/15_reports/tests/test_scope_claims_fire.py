@@ -20,6 +20,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 MOD  = os.path.dirname(HERE)
 sys.path.insert(0, MOD)
 from config import DOCS_DIR, UNITS_DIR                          # noqa: E402
+from docxset import built_docx                                  # noqa: E402
 
 
 def doctor_docx(src, dst, old, new):
@@ -44,7 +45,7 @@ def build_fixture(root, mode):
     os.makedirs(units, exist_ok=True)
     for f in glob.glob(os.path.join(UNITS_DIR, '*.json')):
         shutil.copy(f, units)
-    for f in glob.glob(os.path.join(DOCS_DIR, '*.docx')):
+    for f in built_docx(DOCS_DIR):
         shutil.copy(f, docs)
 
     target = os.path.join(docs, 'Gayini_paddock_report_Bala_28ca.docx')
@@ -59,6 +60,18 @@ def build_fixture(root, mode):
         r = json.load(open(p, encoding='utf8'))
         r['bands'][0]['ha'] = r['bands'][0]['ha'] + 40.0      # plausible, not absurd
         json.dump(r, open(p, 'w', encoding='utf8'), indent=1)
+    elif mode == 'r8_count':
+        # page 1 claims a kind of country that page 3 does not show — the pre-R-8 defect
+        tmp = target + '.tmp'
+        if not doctor_docx(target, tmp, 'spans 2 kinds of country',
+                           'spans 3 kinds of country'):
+            sys.exit('STOP: R-8 count anchor not found in the fixture document')
+        os.replace(tmp, target)
+    elif mode == 'r8_zero_pct':
+        tmp = target + '.tmp'
+        if not doctor_docx(target, tmp, '17% Riverine', '17% Riverine · 0% Aeolian'):
+            sys.exit('STOP: R-8 zero-percent anchor not found in the fixture document')
+        os.replace(tmp, target)
     elif mode == 'two_rules':
         tmp = target + '.tmp'
         # the sentence the spec requires in every report
@@ -80,6 +93,8 @@ CASES = [
     ('property_area',  1, 'footprint',   '"the property" given an area must be rejected'),
     ('band_area',      1, 'footprint',   'band areas that do not sum must be rejected'),
     ('two_rules',      1, 'C10',         'a missing two-flood-rules sentence must be rejected'),
+    ('r8_count',       1, 'R-8',         'page 1 claiming more kinds than page 3 shows must be rejected'),
+    ('r8_zero_pct',    1, 'R-8',         'a community printed at 0% must be rejected'),
 ]
 
 

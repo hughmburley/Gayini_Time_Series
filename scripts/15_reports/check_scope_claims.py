@@ -28,6 +28,7 @@ Run:  python check_scope_claims.py        (from scripts/15_reports)
 """
 import glob, json, os, re, sys, zipfile
 from config import DOCS_DIR, UNITS_DIR
+from docxset import built_docx
 
 TOL_HA = 0.05          # band areas are printed to 0 dp; reconcile the underlying values
 findings = []
@@ -83,7 +84,7 @@ AREA_NEAR_PROPERTY = re.compile(
 
 
 def check_property_is_a_set():
-    for p in sorted(glob.glob(os.path.join(DOCS_DIR, '*.docx'))):
+    for p in built_docx(DOCS_DIR):
         for s in sentences(visible(p)):
             if AREA_NEAR_PROPERTY.search(s):
                 add('ERROR', 'footprint', os.path.basename(p),
@@ -98,7 +99,7 @@ SITE_FF    = re.compile(r'saw water in \d[\d.]*% of years|site (?:floods|flooded
 
 
 def check_support_separation():
-    docs = sorted(glob.glob(os.path.join(DOCS_DIR, '*.docx')))
+    docs = built_docx(DOCS_DIR)
     missing = []
     for p in docs:
         t = visible(p)
@@ -133,9 +134,50 @@ def check_site_counts():
                     f'document says {m.group(1)} sites, unit record has n_sites={r["n_sites"]}')
 
 
+# ---------------------------------------------------------------- E. R-8 composition prose
+SPANS = re.compile(r'spans (\d+) kinds of country')
+ENTIRELY = re.compile(r'\bis entirely\b')
+ZERO_PCT = re.compile(r'\b0% [A-Z]')
+
+
+def check_composition_prose():
+    """R-8: page 1 must count the parts page 3 will show, not the census communities.
+
+    Enforced against the DOCUMENT, not the unit record, because the claim is about what the
+    reader sees. A percentage that rounds to 0 and the word "entirely" over a trace are the
+    two ways the old sentence was wrong; both are checked."""
+    for f in sorted(glob.glob(os.path.join(UNITS_DIR, 'paddock_*.json'))):
+        r = json.load(open(f, encoding='utf8'))
+        slug = r['unit'].replace(' ', '_').replace('/', '-')
+        p = os.path.join(DOCS_DIR, f'Gayini_paddock_report_{slug}.docx')
+        if not os.path.exists(p):
+            continue
+        t = visible(p)
+        n_parts = len(r['parts'])
+        trace = r.get('trace_communities', [])
+
+        m = SPANS.search(t)
+        if m and int(m.group(1)) != n_parts:
+            add('ERROR', 'R-8', r['unit'],
+                f'page 1 says {m.group(1)} kinds of country, {n_parts} classified part(s)')
+        if not m and n_parts > 1:
+            add('ERROR', 'R-8', r['unit'],
+                f'{n_parts} parts but no "spans N kinds" sentence')
+        if ZERO_PCT.search(t):
+            add('ERROR', 'R-8', r['unit'],
+                f'a community printed at 0%: {ZERO_PCT.search(t).group(0)}')
+        if trace and ENTIRELY.search(t):
+            add('ERROR', 'R-8', r['unit'],
+                f'"is entirely" used while a trace community exists '
+                f'({", ".join(c["short"] for c in trace)})')
+        if trace and 'to report on separately' not in t:
+            add('ERROR', 'R-8', r['unit'],
+                'a trace community exists but is not named in a trailing clause')
+
+
 def main():
     for fn in (check_band_areas, check_property_is_a_set,
-               check_support_separation, check_site_counts):
+               check_support_separation, check_site_counts, check_composition_prose):
         fn()
     err = [f for f in findings if f[0] == 'ERROR']
     print()

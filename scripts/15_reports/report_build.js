@@ -71,13 +71,32 @@ const f1=n=>n.toFixed(1), f0=n=>Math.round(n).toString();
 const nf=n=>n.toLocaleString('en-AU',{maximumFractionDigits:0});
 const slug=s=>s.replace(/ /g,'_').replace(/\//g,'-');
 const has=f=>fs.existsSync(f);
+// "a", "a and b", "a, b and c" — no paddock currently has more than one trace community,
+// but the clause is derived from a set difference, so it must not assume one.
+const andList=a=>a.length<2?(a[0]||''):a.slice(0,-1).join(', ')+' and '+a[a.length-1];
+// R-8 says a percentage that rounds to zero is never printed. That applies to a CLASSIFIED
+// part too, not only to a trace: Bala 8/11's Riverine reaches the support rule (3.1 ha) and so
+// must be counted and shown, but f0() rendered it "spans 2 kinds of country — 100% Inland
+// Floodplain · 0% Riverine" — two kinds summing to 100 and 0. Both ends mislead, so both are
+// bounded. Affects 1 of 64.
+const pct=s=>s>0&&s<0.5?'under 1%':(s<100&&s>99.5?'over 99%':`${f0(s)}%`);
 const CANNOT='What this can and cannot tell us. The satellite record measures cover, not condition — not whether it is native or introduced. Read it as "how much, and how green", never as a condition score.';
 
 /* ---------------------------------------------------------------- paddock */
 function paddockDoc(r){
   const g=slug(r.unit), F=n=>`${FIG}/${g}_${n}.png`;
-  const comp=r.composition.filter(c=>c.short!=='Woodland');
-  const compTxt=comp.map(c=>`${f0(c.share)}% ${c.short}`).join(' · ');
+  // R-8: page 1 lists the parts that reach the part-classification support rule — exactly the
+  // rows page 3 shows — not every community in the census. Previously it listed the census
+  // composition, so Bala 28ca announced "3 kinds of country ... 0% Aeolian" over a parts table
+  // holding two rows. A community below the rule is a TRACE: named in a trailing clause, never
+  // counted, never given a percentage.
+  // Sorted share-descending to keep the established listing order: parts arrive ordered by
+  // community name, composition was share-descending, and the two differ for 15 of 64. Without
+  // this, R-8 would silently reorder page 1 in those 15 — a change nobody ruled on.
+  const comp=r.parts.map(p=>({short:p.short,share:p.share})).sort((a,b)=>b.share-a.share);
+  const compTxt=comp.map(c=>`${pct(c.share)} ${c.short}`).join(' · ');
+  const trace=r.trace_communities||[];
+  const traceNames=andList(trace.map(t=>t.short));
   const multi=r.parts.length>1;
   const kids=[];
 
@@ -90,9 +109,14 @@ function paddockDoc(r){
     kicker('The country it covers'),
     body(multi
       ? `${r.unit} spans ${comp.length} kinds of country — ${compTxt}. `+
+        (trace.length?`A few cells of ${traceNames} fall inside the boundary, too few to report on separately. `:'')+
         (r.area_treed_ha>1?`A further ${nf(r.area_treed_ha)} ha of woodland is left out of every figure here: tree canopy hides the ground beneath it. `:'')+
         `Because those kinds of country behave differently, the whole-paddock figures below are averages across places that are not alike.`
-      : `${r.unit} is entirely ${comp[0].short} country, so the figures in this report describe it directly. `+
+      // "entirely" is false wherever a trace exists — the second defect in this sentence.
+      : (trace.length
+          ? `${r.unit} is almost entirely ${comp[0].short} country, with a trace of ${traceNames} too small to report on separately. `+
+            `The figures in this report describe it directly. `
+          : `${r.unit} is entirely ${comp[0].short} country, so the figures in this report describe it directly. `)+
         (r.area_treed_ha>1?`A further ${nf(r.area_treed_ha)} ha of woodland is left out: tree canopy hides the ground beneath it.`:'')),
     rule(),kicker('The water'),
     rich([['Averaged across the paddock, ',{}],[r.unit,{}],[' was under water in ',{}],

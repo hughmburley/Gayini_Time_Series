@@ -118,6 +118,7 @@
   }
  ],
  "n_recovering": 1,
+ "trace_communities": [],
  "series": {
   "year": [
    1988,

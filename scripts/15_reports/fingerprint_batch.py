@@ -18,6 +18,7 @@ Run:  python fingerprint_batch.py --confirm --version 1.3 --note "..."
 """
 import argparse, hashlib, json, os, re, sys, zipfile
 from config import DOCS_DIR, FIGS_DIR
+from docxset import built_docx
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 MANIFEST = os.path.join(HERE, 'EXPECTED_OUTPUT.json')
@@ -67,7 +68,7 @@ def main():
 
     prev = json.load(open(MANIFEST, encoding='utf8')) if os.path.exists(MANIFEST) else {}
 
-    docs = sorted(f for f in os.listdir(DOCS_DIR) if f.endswith('.docx'))
+    docs = [os.path.basename(p) for p in built_docx(DOCS_DIR)]
     if not docs:
         sys.exit(f'STOP: no .docx under {DOCS_DIR}')
 
