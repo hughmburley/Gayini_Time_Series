@@ -63,13 +63,13 @@ def build_fixture(root, mode):
     elif mode == 'r8_count':
         # page 1 claims a kind of country that page 3 does not show — the pre-R-8 defect
         tmp = target + '.tmp'
-        if not doctor_docx(target, tmp, 'spans 2 kinds of country',
-                           'spans 3 kinds of country'):
+        if not doctor_docx(target, tmp, 'spans two kinds of country',
+                           'spans three kinds of country'):
             sys.exit('STOP: R-8 count anchor not found in the fixture document')
         os.replace(tmp, target)
     elif mode == 'r8_zero_pct':
         tmp = target + '.tmp'
-        if not doctor_docx(target, tmp, '17% Riverine', '17% Riverine · 0% Aeolian'):
+        if not doctor_docx(target, tmp, '17% Riverine', '17% Riverine and 0% Aeolian'):
             sys.exit('STOP: R-8 zero-percent anchor not found in the fixture document')
         os.replace(tmp, target)
     elif mode == 'two_rules':

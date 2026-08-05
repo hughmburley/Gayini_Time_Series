@@ -135,7 +135,18 @@ def check_site_counts():
 
 
 # ---------------------------------------------------------------- E. R-8 composition prose
-SPANS = re.compile(r'spans (\d+) kinds of country')
+# R-12(a): the count is a word, not a numeral. Both forms are matched so the check catches a
+# regression to numerals rather than silently failing to find the sentence at all.
+NUMWORD = {w: i for i, w in enumerate(
+    ['no', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'])}
+SPANS = re.compile(r'spans (\d+|[a-z]+) kinds of country')
+
+
+def spans_count(m):
+    """The N in 'spans N kinds', word or numeral. None if unparseable — which is itself a
+    finding, not something to swallow."""
+    tok = m.group(1)
+    return int(tok) if tok.isdigit() else NUMWORD.get(tok)
 ENTIRELY = re.compile(r'\bis entirely\b')
 ZERO_PCT = re.compile(r'\b0% [A-Z]')
 
@@ -157,7 +168,10 @@ def check_composition_prose():
         trace = r.get('trace_communities', [])
 
         m = SPANS.search(t)
-        if m and int(m.group(1)) != n_parts:
+        if m and spans_count(m) is None:
+            add('ERROR', 'R-8', r['unit'],
+                f'"spans {m.group(1)} kinds of country" — count not parseable as a number')
+        elif m and spans_count(m) != n_parts:
             add('ERROR', 'R-8', r['unit'],
                 f'page 1 says {m.group(1)} kinds of country, {n_parts} classified part(s)')
         if not m and n_parts > 1:

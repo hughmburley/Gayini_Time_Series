@@ -94,7 +94,10 @@ function paddockDoc(r){
   // community name, composition was share-descending, and the two differ for 15 of 64. Without
   // this, R-8 would silently reorder page 1 in those 15 — a change nobody ruled on.
   const comp=r.parts.map(p=>({short:p.short,share:p.share})).sort((a,b)=>b.share-a.share);
-  const compTxt=comp.map(c=>`${pct(c.share)} ${c.short}`).join(' · ');
+  // R-12(b): joined with "and", not the middot. The middot is this batch's METADATA separator —
+  // headers, card subtitles — so inside running prose it reads as a header fragment. With three
+  // communities "80% Inland · 10% Riverine · 10% Aeolian" is not a sentence; the and-list is.
+  const compTxt=andList(comp.map(c=>`${pct(c.share)} ${c.short}`));
   const trace=r.trace_communities||[];
   const traceNames=andList(trace.map(t=>t.short));
   const multi=r.parts.length>1;
@@ -108,7 +111,10 @@ function paddockDoc(r){
     rich([[plainTerms(r),{}]],{after:95}),rule(),
     kicker('The country it covers'),
     body(multi
-      ? `${r.unit} spans ${comp.length} kinds of country — ${compTxt}. `+
+      // R-12(a): numword, not a numeral. numword() is already the established usage across this
+      // batch ("Ten monitoring sites sit inside…"), so a numeral here was inconsistent with the
+      // register the reports already keep — a defect, not a style preference.
+      ? `${r.unit} spans ${numword(comp.length)} kinds of country — ${compTxt}. `+
         (trace.length?`A few cells of ${traceNames} fall inside the boundary, too few to report on separately. `:'')+
         (r.area_treed_ha>1?`A further ${nf(r.area_treed_ha)} ha of woodland is left out of every figure here: tree canopy hides the ground beneath it. `:'')+
         `Because those kinds of country behave differently, the whole-paddock figures below are averages across places that are not alike.`
