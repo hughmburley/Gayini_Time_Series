@@ -72,6 +72,18 @@ def build_fixture(root, mode):
         if not doctor_docx(target, tmp, '17% Riverine', '17% Riverine and 0% Aeolian'):
             sys.exit('STOP: R-8 zero-percent anchor not found in the fixture document')
         os.replace(tmp, target)
+    elif mode == 'r15_parts_verdict':
+        # the PRE-FIX Dinan 10 sentence, verbatim: recovery attributed to the bare parts,
+        # a singular subject with a plural verb, and no area
+        t2 = os.path.join(docs, 'Gayini_paddock_report_Dinan_10.docx')
+        tmp = t2 + '.tmp'
+        if not doctor_docx(t2, tmp,
+                'anywhere on the property, and neither is coming back. Riverine is coming back, '
+                'but that is 59 ha — 7% of the paddock — and the whole-paddock figure '
+                'does not move with it. ',
+                'anywhere on the property — and one of them are coming back. '):
+            sys.exit('STOP: R-15 anchor not found in the fixture document')
+        os.replace(tmp, t2)
     elif mode == 'two_rules':
         tmp = target + '.tmp'
         # the sentence the spec requires in every report
@@ -95,6 +107,7 @@ CASES = [
     ('two_rules',      1, 'C10',         'a missing two-flood-rules sentence must be rejected'),
     ('r8_count',       1, 'R-8',         'page 1 claiming more kinds than page 3 shows must be rejected'),
     ('r8_zero_pct',    1, 'R-8',         'a community printed at 0% must be rejected'),
+    ('r15_parts_verdict', 1, 'R-15',     'recovery attributed to parts that are not recovering must be rejected'),
 ]
 
 

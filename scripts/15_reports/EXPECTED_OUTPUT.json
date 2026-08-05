@@ -1,6 +1,6 @@
 {
- "built": "2026-08-04",
- "builder_version": "1.5",
+ "built": "2026-08-05",
+ "builder_version": "1.8",
  "builder": "scripts/15_reports",
  "n": 32,
  "built_with": {
@@ -46,13 +46,13 @@
  "documents": [
   {
    "document": "Gayini_paddock_report_Bala_15.docx",
-   "text_sha256": "47c291cc8c71c793834ac9116902a14839d329fecf503368977c8a5fbf5f2763",
-   "chars": 12239
+   "text_sha256": "cd9beebbab09954d1cd7d15923f9104eb23fe7f827693731382ef3a9a1858a81",
+   "chars": 12303
   },
   {
    "document": "Gayini_paddock_report_Bala_26ca.docx",
-   "text_sha256": "49a9359ae4c5a42e92484a3c451a86f2119f37d34b45cd21874c4cc52b6e213b",
-   "chars": 14225
+   "text_sha256": "ad0db185bf8500f64a5acb19c1b2dc5c421405ffd6cd0aa486728ce12a2266c2",
+   "chars": 14228
   },
   {
    "document": "Gayini_paddock_report_Bala_27ca.docx",
@@ -61,23 +61,23 @@
   },
   {
    "document": "Gayini_paddock_report_Bala_28ca.docx",
-   "text_sha256": "a69cf584bf3ec6b9cde26d4256fc794fce6a29780973a516bceaff9469cdbcfa",
-   "chars": 15127
+   "text_sha256": "454e3f1ec6014880da843f9017737f6520cb5429fae38042dc7916d49fd5cac3",
+   "chars": 15198
   },
   {
    "document": "Gayini_paddock_report_Bala_29ca.docx",
-   "text_sha256": "197af00fc8dad6acc11b4f65dda4ff29633c6418908fb2f61702b388ea3fb1db",
-   "chars": 16716
+   "text_sha256": "f1c81ec9b0c95fa7041c9ca30dc401824dec4bdb3a2af13cb0b030ef99158e60",
+   "chars": 16719
   },
   {
    "document": "Gayini_paddock_report_Dinan_10.docx",
-   "text_sha256": "4ab50f08b2231f5affd0fd55e61c86834faedfd0ddb8aa47c6e839d739446679",
-   "chars": 15186
+   "text_sha256": "fc66bd6d4bc5ef825032c0a5a78bb0a1de3f40770716e6b5daf3585b66ad1d0f",
+   "chars": 15302
   },
   {
    "document": "Gayini_paddock_report_Dinan_8.docx",
-   "text_sha256": "da86128164de1c3a88875b54ce278a07ad080dde78da5ff035e704f2f0167d4d",
-   "chars": 14970
+   "text_sha256": "b038e6cf132fcb35404d52027f99c152d2f13710a4b6802ecdf3705393d4ec63",
+   "chars": 14972
   },
   {
    "document": "Gayini_site_report_GA_001.docx",
@@ -206,9 +206,9 @@
   }
  ],
  "supersedes": {
-  "version": "1.4",
-  "reason": "R-6: grid described as 24.97 m, two decimal places, in all 7 paddock reports (19 text sites). Section 8.1 resolved: Bala 29ca's annual gap points now come from the artefact the registered slope was fitted to, which changes the figure only - no document text. Diff classified in full: 19 cell size, 8 map caption, 6 network sentence, nothing else.",
-  "fingerprints_moved": 7,
+  "version": "1.5",
+  "reason": "R-15 parts verdict on Dinan 10 (sets not counts, verb agreement, area stated), plus the same verb/join defect in the marginal-parts sentence on Dinan 8. Cumulative with R-8 composition prose and R-12 register, which had not been re-fingerprinted. Diff classified in full against an unchanged control; nothing unaccounted.",
+  "fingerprints_moved": 6,
   "documents_added": 0
  }
 }

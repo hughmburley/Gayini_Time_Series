@@ -337,16 +337,53 @@ function stateLine(pt){
   if(pt.marginal||pt.robust_changed) s+=', marginally';
   return cape(s);
 }
+/* R-15, 5 Aug 2026. Two sets, not two counts.
+
+   The old line asked `rec.length===low.length` — whether the number of recovering parts equals
+   the number of bare ones — and then said "they are coming back", asserting that the BARE parts
+   are the recovering ones. On Dinan 10 the bare parts are Aeolian and Inland Floodplain, both
+   Persistently poor, and the one recovering part is Riverine at rank 6 of 37. It rendered:
+
+     "Two of this paddock's three parts are among the most bare country of their kind anywhere
+      on the property — and one of them are coming back."
+
+   Three faults in one sentence: it attributes recovery to parts that are not recovering, the
+   verb does not agree with its subject, and it gives no sense of scale — Dinan 10's recovery is
+   58.9 ha of 841.1, 7% of the paddock, while the whole-paddock figure shows no change at all.
+
+   One of the seven reports in this set manifests it. Bala 29ca's bare and recovering sets are
+   genuinely identical, so the count test was right there by coincidence; Dinan 8 has no bare
+   parts and takes the other branch; Bala 26ca and 28ca have neither. So this is a patch.
+
+   Set membership decides the wording; area is stated whenever recovery sits outside the bare
+   set, because that is exactly the case where a reader would otherwise scale it to the paddock. */
 function partsVerdict(r){
   const rec=r.parts.filter(p=>p.state==='Recovering'), low=r.parts.filter(p=>p.rank<=2);
+  const lowKey=new Set(low.map(p=>p.short));
+  const both=rec.filter(p=>lowKey.has(p.short));        // bare AND coming back
+  const outside=rec.filter(p=>!lowKey.has(p.short));    // coming back, but not among the bare
+  const noneOf=n=>n===1?'it is not':(n===2?'neither is':'none of them is');
   let s='';
-  if(low.length) s+=`${cape(numword(low.length))} of this paddock's ${numword(r.parts.length)} parts ${low.length===1?'is':'are'} among the most bare country of ${low.length===1?'its':'their'} kind anywhere on the property`;
-  if(rec.length) s+=(s?` — and ${rec.length===low.length?'they are':`${numword(rec.length)} of them are`} coming back. `:`${cape(numword(rec.length))} of this paddock's parts ${rec.length===1?'is':'are'} coming back. `);
-  else if(s) s+='. ';
+  if(low.length){
+    s+=`${cape(numword(low.length))} of this paddock's ${numword(r.parts.length)} parts ${low.length===1?'is':'are'} among the most bare country of ${low.length===1?'its':'their'} kind anywhere on the property`;
+    if(both.length&&both.length===low.length) s+=` — and ${low.length===1?'it is':'they are'} coming back. `;
+    else if(both.length) s+=` — and ${numword(both.length)} of ${low.length===1?'them':'those'} ${both.length===1?'is':'are'} coming back. `;
+    else s+=`, and ${noneOf(low.length)} coming back. `;
+  }
+  if(outside.length){
+    const ha=outside.reduce((a,p)=>a+(p.ha||0),0), share=ha/r.area_ha*100;
+    s+=`${s?'':`${cape(numword(outside.length))} of this paddock's parts ${outside.length===1?'is':'are'} coming back. `}`;
+    if(s&&low.length) s+=`${cape(andList(outside.map(p=>p.short)))} ${outside.length===1?'is':'are'} coming back, but that is ${nf(ha)} ha — ${f0(share)}% of the paddock — and the whole-paddock figure does not move with it. `;
+  }
   s+=`The whole-paddock figure of ${f0(r.floor)}% describes none of ${r.parts.length===2?'those two places':'those three places'} on its own. `+
      `Where this report gives a single number for the paddock, read it as an average across country that is not alike.`;
   const marg=r.parts.filter(p=>p.marginal||p.robust_changed);
-  if(marg.length) s+=` ${cape(marg.map(m=>m.short).join(' and '))} sits close to the boundary between two of these descriptions, and would read differently under a slightly different cut — it is reported as classified, not as certain.`;
+  // Same defect class as R-15's, in the same function and in a report shipping today: with
+  // three marginal parts this read "Aeolian and Inland Floodplain and Riverine SITS close to
+  // the boundary ... IT IS reported as classified" — a chained join and a singular verb over a
+  // plural subject. Dinan 8 is the only paddock in this set with more than one. R-15 says
+  // "agree the verb"; this is that, and andList already exists.
+  if(marg.length) s+=` ${cape(andList(marg.map(m=>m.short)))} ${marg.length===1?'sits':'sit'} close to the boundary between two of these descriptions, and would read differently under a slightly different cut — ${marg.length===1?'it is':'they are'} reported as classified, not as certain.`;
   return s;
 }
 function residualLine(r){

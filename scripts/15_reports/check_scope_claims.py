@@ -189,9 +189,55 @@ def check_composition_prose():
                 'a trace community exists but is not named in a trailing clause')
 
 
+# ---------------------------------------------------------------- G. R-15 parts verdict
+# The old sentence compared COUNTS — "is the number of recovering parts the same as the number
+# of bare ones?" — and then said "they are coming back", attributing recovery to the bare parts.
+# On Dinan 10 the bare parts are Aeolian and Inland Floodplain, both Persistently poor; the one
+# recovering part is Riverine at rank 6 of 37. So the check is on SET membership, computed from
+# the unit record and tested against what the document says.
+OF_THEM = re.compile(r'most bare country[^.]*?—\s*and\s+(?:they are|[a-z]+ of (?:them|those) (?:is|are))\s+coming back')
+BAD_VERB = re.compile(r'\b(?:one|two|three) of (?:them|those) are coming back'
+                      r'|\b(?:two|three)[^.]{0,60}\bsits close to the boundary'
+                      r'|\bone\b[^.]{0,60}\bsit close to the boundary')
+
+
+def check_parts_verdict():
+    """R-15: the sentence must not attribute recovery to parts that are not recovering."""
+    for f in sorted(glob.glob(os.path.join(UNITS_DIR, 'paddock_*.json'))):
+        r = json.load(open(f, encoding='utf8'))
+        if len(r['parts']) < 2:
+            continue
+        slug = r['unit'].replace(' ', '_').replace('/', '-')
+        p = os.path.join(DOCS_DIR, f'Gayini_paddock_report_{slug}.docx')
+        if not os.path.exists(p):
+            continue
+        t = visible(p)
+        low = {x['short'] for x in r['parts'] if x['rank'] <= 2}
+        rec = {x['short'] for x in r['parts'] if x['state'] == 'Recovering'}
+
+        # the "and they/N of them are coming back" clause may only appear when the recovering
+        # parts really are among the bare ones
+        if OF_THEM.search(t) and not (rec and low and rec <= low):
+            add('ERROR', 'R-15', r['unit'],
+                f'the bare-parts sentence claims recovery among them, but bare={sorted(low)} '
+                f'and recovering={sorted(rec)}')
+        if BAD_VERB.search(t):
+            add('ERROR', 'R-15', r['unit'],
+                f'verb does not agree with its subject: '
+                f'"{BAD_VERB.search(t).group(0)[:70]}"')
+        # recovery outside the bare set must carry its area, or a reader scales 7% to 100%
+        outside = [x for x in r['parts']
+                   if x['state'] == 'Recovering' and x['short'] not in low]
+        if low and outside and 'of the paddock' not in t:
+            add('ERROR', 'R-15', r['unit'],
+                f'{", ".join(x["short"] for x in outside)} is recovering outside the bare set '
+                f'but the share of the paddock is not stated')
+
+
 def main():
     for fn in (check_band_areas, check_property_is_a_set,
-               check_support_separation, check_site_counts, check_composition_prose):
+               check_support_separation, check_site_counts, check_composition_prose,
+               check_parts_verdict):
         fn()
     err = [f for f in findings if f[0] == 'ERROR']
     print()

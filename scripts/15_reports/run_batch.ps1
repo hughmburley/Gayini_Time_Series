@@ -6,8 +6,23 @@
 # a derived value in this code at some point: digit literals in client prose, ${...} inside
 # a quoted JS string (which renders literally), counts recorded about the build that
 # disagree with the build, and companion files read but never produced.
-$ErrorActionPreference = "Stop"
+# NOT $ErrorActionPreference = "Stop". Under Stop, ANY native command that writes to stderr
+# raises a terminating NativeCommandError even when it exits 0 — and gayini_params emits a
+# UserWarning about its own skipped self-check, which aborted the whole batch at step 1.
+# A warning from a dependency must not look like a failed build. Exit codes are checked
+# explicitly below instead, which is the thing that actually distinguishes the two.
+$ErrorActionPreference = "Continue"
 Set-Location $PSScriptRoot
+
+function Invoke-Step([string]$label, [scriptblock]$cmd, [bool]$fatal = $true) {
+  Write-Host $label
+  & $cmd
+  if ($LASTEXITCODE -ne 0) {
+    if ($fatal) { throw "$label failed with exit code $LASTEXITCODE" }
+    return $false
+  }
+  return $true
+}
 
 $paddocks = @("Bala 26ca","Bala 27ca","Bala 28ca","Bala 29ca","Bala 15","Dinan 10","Dinan 8")
 $sites    = @("GA_001","GA_002","GA_057","GA_003","GA_004","GA_005","GA_006","GA_007",
@@ -18,12 +33,10 @@ Write-Host "== 0/5  pre-batch lint"
 python lint_builder.py
 if ($LASTEXITCODE -ne 0) { throw "lint_builder.py failed - fix before building" }
 
-Write-Host "== 1/5  data layer (registry asserts + contract canaries)"
-python report_data.py --paddocks @paddocks --sites @sites
-Write-Host "== 2/5  figures"
-python report_figs.py
-Write-Host "== 3/5  documents"
-node report_build.js
+Invoke-Step "== 1/5  data layer (registry asserts + contract canaries)" `
+  { python report_data.py --paddocks @paddocks --sites @sites } | Out-Null
+Invoke-Step "== 2/5  figures" { python report_figs.py } | Out-Null
+Invoke-Step "== 3/5  documents" { node report_build.js } | Out-Null
 
 Write-Host "== 4/5  reproduction check"
 python verify_batch.py
