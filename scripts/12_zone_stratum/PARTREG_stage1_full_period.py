@@ -248,6 +248,22 @@ def boot_slope(recs, xk, yk, weighted, n=N_BOOT):
             float(np.quantile(a, 0.975)), len(a))
 
 
+# Number rule 1: cite the fit_id, never the value. 2.4 and 2.5_p50 agree to four
+# decimals BY COINCIDENCE - different y, different x, intercepts 7.93 pp apart on
+# variables whose means are 66.1 and 78.0. Recorded here so the two cannot be read
+# as one quantity by anyone matching on the value.
+COLLISION = {
+    "2.4_median_weighted":
+        "NUMERAL COLLISION: this slope agrees with fit 2.5_p50 to four decimals BY "
+        "COINCIDENCE. Different quantities - y here is the across-year MEDIAN of the p05 "
+        "series and x is the median inundation; 2.5_p50 uses the across-year MEAN of the "
+        "within-year p50 against mean inundation. Intercepts differ by 7.93 pp. Cite the "
+        "fit_id, never the value.",
+    "2.5_p50":
+        "NUMERAL COLLISION: this slope agrees with fit 2.4_median_weighted to four decimals "
+        "BY COINCIDENCE. See that row. Cite the fit_id, never the value.",
+}
+
 fits = []
 
 
@@ -256,6 +272,7 @@ def record(tag, note, recs, xk, yk, weighted, boot=True):
     f = ols([r[xk] for r in recs], [r[yk] for r in recs], w)
     lo, mid, hi, nb = boot_slope(recs, xk, yk, weighted) if boot else (None, None, None, 0)
     fits.append(dict(fit_id=tag, description=note, period_label=PERIOD,
+                     collision_note=COLLISION.get(tag, ""),
                      weighting="pixel-weighted (part cell count)" if weighted else "unweighted",
                      y_variable=yk, x_variable=xk, community="all pooled",
                      support_level="pixel", aggregation_unit="part",
