@@ -169,3 +169,41 @@ era* and the three are comparable as a set.
 
 **The GeoPackage is registered in `table_asset`, not `spatial_layer_asset`** — the latter is an
 import registry and a build-output row there is a category error. Recorded on the row.
+
+---
+
+## 9 · Two reconciliations a reviewer will ask for
+
+Both were raised at the design seat on inspecting the GeoPackage, and both resolve exactly rather
+than approximately. They belong here as well as in the data dictionary, because they are the kind
+of thing a co-author needs to be able to hand over without re-deriving.
+
+### 9.1 · Why the export totals 49,604.8 ha and the footprint ladder says 49,606.9
+
+**Both are right, at different scopes, and the gap is not a polygon-against-raster discrepancy.**
+
+| | cells | ha |
+|---|---:|---:|
+| all zoned non-treed ground — **118 parts** (the SCHEM-1 ladder) | 795,602 | 49,606.9 |
+| the **115 supported** parts (this export) | 795,568 | 49,604.8 |
+| difference | **34** | **2.1** |
+
+Thirty-four cells is **exactly** the three sub-support parts: Bala 15 · Riverine (23) + Bala 28ca ·
+Aeolian (10) + Mara 3 · Aeolian (1) = 34. The polygonisation contributes nothing — geometry area and
+attribute area agree.
+
+**For the analysis footprint the ladder is authoritative; for this table the 115-part total is.**
+Anything that differences the two is measuring the support rule, not an error.
+
+### 9.2 · Why the residuals do not sum to zero
+
+Their **unweighted** means are about **+0.82**, **+0.23** and **+0.70** percentage points for the
+cropping era, post-management and whole record.
+
+**The fit is pixel-weighted, so it is the *weighted* residual mean that is guaranteed to vanish —
+and it does, to within 1e-6 in all three periods.** That is the proof, not a reassurance. An
+unweighted average of a weighted fit's residuals carries no such guarantee, and the sign of the gap
+just says that the smaller parts sit above the line slightly more often than the large ones.
+
+**This is a property of the estimator, not a defect in the table.** Source:
+`Output/tables/PARTREG_part_residuals.csv`, weights in `n_pixels_part`.
