@@ -63,6 +63,8 @@ print(f"[in] Stage 1 spine {len(spine):,} part-years, "
 
 con = sqlite3.connect(f"file:{DB.as_posix()}?mode=ro", uri=True)
 con.execute("PRAGMA query_only=1")
+conserved = {zf for (zf,) in con.execute(
+    "SELECT zone_fid FROM dim_management_zone WHERE grazing_excluded = 1")}
 allflood = defaultdict(list)
 for zf, cm, wy, f in con.execute(
         "SELECT zone_fid, community, water_year, flood_frac_pct FROM fact_zone_community_flood_annual"):
@@ -112,6 +114,7 @@ for code, lo, hi, plabel in PERIODS:
                    n_years_in_window=n_window, min_years_required=need,
                    meets_support=int(len(sel) >= need),
                    n_pixels_part=int(float(m["n_pixels_part"])), weight=float(m["n_pixels_part"]),
+                   conserved=int(int(m["zone_fid"]) in conserved),
                    floor_mean=float(np.mean([r["floor"] for r in sel])),
                    inund_mean=float(np.mean([r["inund"] for r in sel])))
         for lab, vals in (("floor", [r["floor"] for r in sel]), ("inund", [r["inund"] for r in sel])):
@@ -239,7 +242,7 @@ for code, lo, hi, plabel in PERIODS:
         a_ = attr.setdefault(r["part_id"], dict(
             part_id=r["part_id"], zone_fid=r["zone_fid"], zone_name=r["zone_name"],
             community=r["community"], community_short=r["community_short"],
-            n_pixels_part=r["n_pixels_part"], support_level="pixel",
+            n_pixels_part=r["n_pixels_part"], conserved=r["conserved"], support_level="pixel",
             residual_basis="each period's OWN fitted line, never the whole-record line",
             comparison_rule="RELATIONSHIPS only; period LEVELS are never compared"))
         for k in ("n_years", "floor_mean", "inund_mean", "predicted_floor", "residual",

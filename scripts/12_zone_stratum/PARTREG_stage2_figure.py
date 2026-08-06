@@ -53,8 +53,8 @@ def alpha_of(v):
     return 0.95 - 0.65 * t
 
 
-fig = plt.figure(figsize=(16.0, 7.6), dpi=200, facecolor=BG)
-fig.subplots_adjust(left=0.045, right=0.988, top=0.815, bottom=0.275, wspace=0.16)
+fig = plt.figure(figsize=(16.0, 8.1), dpi=200, facecolor=BG)
+fig.subplots_adjust(left=0.045, right=0.988, top=0.815, bottom=0.325, wspace=0.16)
 axes = [fig.add_subplot(1, 3, i + 1) for i in range(3)]
 
 for ax, (code, title, plabel, ylab) in zip(axes, PANELS):
@@ -69,13 +69,22 @@ for ax, (code, title, plabel, ylab) in zip(axes, PANELS):
     sl, it = float(f["slope"]), float(f["intercept"])
     for r in R:
         deep, mark, _ = PAL[r["community_short"]]
+        cons = r["conserved"] == "1"
         ax.scatter(float(r["inund_mean"]), float(r["floor_mean"]),
                    s=8 + 90 * np.sqrt(float(r["n_pixels_part"]) / 32399),
-                   facecolor=mark, edgecolor=deep, lw=0.5,
-                   alpha=alpha_of(r["floor_spread_iqr"]), zorder=3)
+                   facecolor=mark, edgecolor=(INK if cons else deep), lw=(2.0 if cons else 0.5),
+                   alpha=alpha_of(r["floor_spread_iqr"]), zorder=(4 if cons else 3))
     xs = np.linspace(0, 62, 40)
+    if code == "post_management":
+        fa = F["S2_cropping_era_common"]
+        ax.plot(xs, float(fa["intercept"]) + float(fa["slope"]) * xs, color=INK, lw=1.6,
+                ls=(0, (5, 4)), alpha=0.45, zorder=4)
+        ax.text(61, float(fa["intercept"]) + float(fa["slope"]) * 61 + 1.5,
+                "cropping era, for comparison", fontsize=8.2, color=INK, alpha=0.7, ha="right")
     ax.plot(xs, it + sl * xs, color=INK, lw=2.8, zorder=5)
     ax.set_xlim(0, 62); ax.set_ylim(0, 100)
+    ax.set_xticks([0, 10, 20, 30, 40, 50, 60])
+    ax.set_yticks([0, 20, 40, 60, 80, 100])
     ax.set_title(f"{title}   ·   {plabel}", fontsize=12, color=HEAD, weight="bold",
                  loc="left", pad=7)
     ax.text(0.03, 0.965,
@@ -90,56 +99,64 @@ for ax, (code, title, plabel, ylab) in zip(axes, PANELS):
                       fontsize=9.5, color=BODY)
 
 # ---- the opacity key, drawn rather than described ------------------------------
-ax0 = axes[0]
-for i, (lab, v) in enumerate((("steady", IQ_LO), ("", (IQ_LO + IQ_HI) / 2), ("swings", IQ_HI))):
-    ax0.scatter(3.0 + i * 4.6, 9.0, s=70, facecolor="#7C837E", edgecolor="#4E5450",
-                lw=0.5, alpha=alpha_of(v), zorder=4, clip_on=False)
-ax0.text(3.0, 15.0, "steady", fontsize=8.0, color=MUTED, ha="center")
-ax0.text(12.2, 15.0, "swings", fontsize=8.0, color=MUTED, ha="center")
-ax0.text(3.0, 3.0, "opacity = across-year spread of the cover floor (IQR)",
-         fontsize=8.0, color=MUTED, ha="left")
+# Panel B's lower-right, not the upper-left the ruling suggested: every panel's
+# upper-left already carries its fit statistics, and B's lower-right is genuinely empty.
+ax0 = axes[1]
+for i, v in enumerate((IQ_LO, (IQ_LO + IQ_HI) / 2, IQ_HI)):
+    ax0.scatter(40.0 + i * 5.0, 14.0, s=70, facecolor="#7C837E", edgecolor="#4E5450",
+                lw=0.5, alpha=alpha_of(v), zorder=4)
+ax0.text(40.0, 20.5, "steady", fontsize=8.0, color=MUTED, ha="center")
+ax0.text(50.0, 20.5, "swings", fontsize=8.0, color=MUTED, ha="center")
+ax0.text(45.0, 6.5, "opacity = across-year spread (IQR)",
+         fontsize=8.0, color=MUTED, ha="center")
 
 # ---- community legend on the last panel ----------------------------------------
 h = [plt.Line2D([], [], marker="o", ls="", markerfacecolor=m, markeredgecolor=d,
                 markersize=8, label=f"{lab}  (n={sum(1 for r in rows['whole_record'] if r['community_short']==k)})")
      for k, (d, m, lab) in PAL.items()]
+h.append(plt.Line2D([], [], marker="o", ls="", markerfacecolor="#FFFFFF", markeredgecolor=INK,
+                    markeredgewidth=2.0, markersize=8, label="conserved  (8 parts, no line fitted)"))
 leg = axes[2].legend(handles=h, loc="lower right", fontsize=8.6, frameon=True,
                      facecolor="#FFFFFF", edgecolor="#DDD8CC", labelcolor=BODY)
 leg.get_frame().set_linewidth(0.8)
 
 # ---- furniture ------------------------------------------------------------------
-fig.text(0.045, 0.955, "P A R T   G R A I N   ·   T H R E E   P E R I O D S", fontsize=10.5,
+fig.text(0.045, 0.960, "P A R T   G R A I N   ·   T H R E E   P E R I O D S", fontsize=10.5,
          color=RUST, weight="bold", ha="left")
-fig.text(0.045, 0.900, "Does the cover-and-water relationship change between eras?",
+fig.text(0.045, 0.910, "Does the cover-and-water relationship change between eras?",
          fontsize=18, color=HEAD, weight="bold", ha="left")
-fig.text(0.045, 0.855,
+fig.text(0.045, 0.868,
          "2014–2017 is excluded as a transition: control passed to the Nari Nari Tribal Council in 2013 and the "
          "irrigation bank cuts are dated 2018, so the four years between belong to neither window.",
          fontsize=9.2, color=RUST, ha="left")
 
 L = [
-    (0.205, 8.8, HEAD,
+    (0.258, 8.8, HEAD,
      "WHAT IS COMPARED, AND WHAT IS NOT.  Only the fitted relationships. Period levels are never compared: "
      "a slope is robust to how wet a window happened to be, because both axes move together; a mean is not."),
-    (0.170, 8.8, HEAD,
+    (0.226, 8.8, HEAD,
+     "The eight conserved parts are ringed and NO line is fitted to them: eight parts spanning nearly the whole "
+     "wetness range, in one block of the property, is the reference-state design this project has already shown "
+     "does not work."),
+    (0.194, 8.8, HEAD,
      "All three slope intervals overlap, so the flatter post-management relationship is reported, not claimed — "
      "and it rests on five water years, a far weaker basis than 35 for any summary."),
-    (0.130, 8.0, MUTED,
+    (0.156, 8.0, MUTED,
      "Spread, never uncertainty — no interval is placed on it, because consecutive years are not independent "
      "observations.  On the water axis, year-to-year movement within a part is "
      f"{float(RATIO['ratio_within_over_between']):.1f}× the differences in mean wetness between parts"),
-    (0.098, 8.0, MUTED,
+    (0.128, 8.0, MUTED,
      f"(median across-year SD {float(RATIO['within_part_across_year_median_sd']):.1f} against a between-part SD of "
      f"{float(RATIO['between_part_sd_of_mean_water']):.1f}), and {RATIO['parts_with_water_iqr_over_92']} parts have a "
      "water IQR above 92 points — so the water axis carries no spread marks at all: drawn raw, every point would be a"),
-    (0.066, 8.0, MUTED,
+    (0.100, 8.0, MUTED,
      "bar wider than the plot's meaningful range.  That ratio is the argument for comparing cover at like wetness "
      "rather than between periods."),
-    (0.030, 7.6, MUTED,
+    (0.062, 7.6, MUTED,
      "Support: pixel, aggregated to part.  All 115 supported parts meet support in all three periods, so the common-set "
      "restriction drops none and costs nothing.  Pixel-weighted by part cell count.  Residuals in the attribute table "
      "are against each period's OWN line."),
-    (0.006, 7.6, MUTED,
+    (0.034, 7.6, MUTED,
      "Intervals are 2,000 bootstrap draws resampling paddocks with replacement, clustered on zone_fid.  No p-values."),
 ]
 for yy, sz, col, txt in L:
