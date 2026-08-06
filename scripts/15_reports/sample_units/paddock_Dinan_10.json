@@ -347,6 +347,11 @@
   ]
  },
  "gap_source": "derived: paddock floor minus grazed baseline, this module",
+ "gap_slope_derived": 0.400006,
+ "gap_r_derived": 0.640284,
+ "gap_slope_shown": 0.400006,
+ "gap_direction": "closing",
+ "gap_line_drawn": true,
  "year_first": 1988,
  "year_last": 2022,
  "n_years": 35,

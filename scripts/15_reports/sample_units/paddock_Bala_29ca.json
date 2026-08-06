@@ -347,6 +347,11 @@
   ]
  },
  "gap_source": "T10_annual_gap_series.csv :: C_29ca",
+ "gap_slope_derived": 0.919287,
+ "gap_r_derived": 0.845688,
+ "gap_slope_shown": 0.919,
+ "gap_direction": "closing",
+ "gap_line_drawn": true,
  "year_first": 1988,
  "year_last": 2022,
  "n_years": 35,

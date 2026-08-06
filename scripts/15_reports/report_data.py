@@ -77,6 +77,12 @@ def t10_gap_series(series):
     return {'year': [int(y) for y in g.water_year], 'value': [float(v) for v in g.gap_pp]}
 
 
+# R-16 constants, from the ruling, with ONE home. The slope band inside which the gap is
+# neither closing nor widening, and the correlation below which no trend line is drawn.
+# report_figs and report_build both read the decisions these produce, never the cuts.
+GAP_SLOPE_FLAT = 0.05
+GAP_R_MIN = 0.30
+
 SLOPE = REG['floor_flood_slope_64pdk']
 INTER = REG['floor_flood_intercept_64pdk']
 RSD   = REG['floor_flood_residual_sd_64pdk']
@@ -265,11 +271,29 @@ def paddock_record(name):
         gap = (me.set_index('water_year').floor - GRAZED_YR).dropna()
         r['gap'] = {'year': [int(y) for y in gap.index], 'value': [float(v) for v in gap.values]}
         r['gap_source'] = 'derived: paddock floor minus grazed baseline, this module'
-    # gap_slope_derived removed v1.3. Nothing read it — not report_figs.py, not
-    # report_build.js — and np.polyfit's last-bit ordering made it differ in the 15th
-    # significant figure between machines, so it was noise in every unit-record diff.
-    # The §8.1 reconciliation derives the slope explicitly from
-    # Output/tables/T10_annual_gap_series.csv, where it has a reader and a stated method.
+    # gap_slope_derived was removed at v1.3 because nothing read it. R-16 gives it a reader:
+    # the gap figure's caption must state the direction, the slope and the correlation, and
+    # must not draw a trend line through noise. So it returns, WITH a reader and a stated
+    # method — which is the condition on which it was withdrawn, not a reversal of it.
+    #
+    # Rounded to 6 dp on emission. The reason it was noise in the v1.3 diffs was np.polyfit's
+    # last-bit ordering differing between machines at the 15th significant figure; rounding
+    # far beyond the 3 dp the caption prints makes the record stable without touching what a
+    # reader sees.
+    _gy = np.asarray(r['gap']['year'], float); _gv = np.asarray(r['gap']['value'], float)
+    r['gap_slope_derived'] = round(float(np.polyfit(_gy, _gv, 1)[0]), 6)
+    r['gap_r_derived'] = round(float(np.corrcoef(_gy, _gv)[0, 1]), 6)
+
+    # The direction and the draw/omit decision are settled HERE, once, and both the figure and
+    # its caption read them. Computing them in each place would let a caption describe a trend
+    # the figure did not draw — the R-8 failure in a new costume.
+    # Slope of record: the registered value where one exists, since that is what the figure
+    # draws; otherwise the derived one.
+    _sl = r['gap_slope_registered'] if r['gap_slope_registered'] is not None else r['gap_slope_derived']
+    r['gap_slope_shown'] = float(_sl)
+    r['gap_direction'] = ('closing' if _sl > GAP_SLOPE_FLAT
+                          else 'widening' if _sl < -GAP_SLOPE_FLAT else 'neither')
+    r['gap_line_drawn'] = bool(abs(r['gap_r_derived']) >= GAP_R_MIN)
 
     r['year_first']=int(me.water_year.min()); r['year_last']=int(me.water_year.max())
     r['n_years']=int(me.water_year.nunique())

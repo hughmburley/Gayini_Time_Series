@@ -246,7 +246,7 @@ function paddockDoc(r){
           cap('The other conserved paddocks, on the same measure.')]:[])],{w:L,pad:0,padx:0}),
       cell([gap(20)],{w:GUT,pad:0,padx:0}),
       cell([img(F('gap'),416),
-        cap('One point per water year — no period boundaries. The dashed line is the fitted trend.')],{w:R,pad:0,padx:0})]})],[L,GUT,R]));
+        cap(gapCaption(r))],{w:R,pad:0,padx:0})]})],[L,GUT,R]));
 
   // ---- last page : sites
   kids.push(pb(),...runHead(`${r.unit} — the monitoring sites`,P(NP,NP)));
@@ -310,6 +310,33 @@ function sitesLine(r){
   return `${r.n_sites} of the property's monitoring sites sit inside ${r.unit}`+
     (r.n_sites_treed>0?`. ${r.n_sites_total} sites fall inside the boundary in total; ${r.n_sites_treed} sit under tree canopy, where the satellite cannot see the ground beneath, and are excluded from every figure in this report.`
       :`, so what this record shows can be checked against ground measurement.`);
+}
+/* R-16. The pattern lives here, not in the figure title, and it is derived per paddock.
+   The title used to assert "Closing the gap" for all 64 — wrong for 45 of them.
+
+   Follows the project's own standing rule, which this figure was breaking: where we describe a
+   trend we give its slope and its correlation, and stop there. No p-value, no verdict.
+
+   direction and gap_line_drawn come from the unit record, so this caption and the figure cannot
+   disagree about whether there is a line to describe. */
+function gapCaption(r){
+  const sl=r.gap_slope_shown, rr=r.gap_r_derived;
+  const src=r.gap_slope_registered!=null?', read from the results registry':'';
+  // Same minus glyph on both numbers: toFixed() emits an ASCII hyphen, and "−0.003 ... -0.01"
+  // inside one parenthesis is two different characters for one meaning.
+  const sgn=(v,dp)=>`${v<0?'−':''}${Math.abs(v).toFixed(dp)}`;
+  const num=`${sl>=0?'+':''}${sgn(sl,3)} points a year, correlation ${sgn(rr,2)}`;
+  let s='One point per water year — no period boundaries. ';
+  if(!r.gap_line_drawn)
+    return s+`Year-to-year movement is larger than any trend running through it (${num}), so no `
+            +`trend line is drawn: on this measure the paddock neither gained on the rest of the `
+            +`property nor fell behind it.`;
+  if(r.gap_direction==='closing')
+    return s+`Across the record the difference narrowed (${num}${src}). The dashed line is that trend.`;
+  if(r.gap_direction==='widening')
+    return s+`Across the record the difference widened (${num}${src}). The dashed line is that trend.`;
+  return s+`Across the record the difference neither narrowed nor widened to any degree the `
+          +`record can distinguish (${num}${src}). The dashed line is that trend.`;
 }
 function siteCard(r){
   if(r.n_sites===0) return 'none inside this paddock';

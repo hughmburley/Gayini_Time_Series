@@ -234,10 +234,67 @@ def check_parts_verdict():
                 f'but the share of the paddock is not stated')
 
 
+# ---------------------------------------------------------------- H. R-16 gap caption
+DIR_WORD = {'closing': 'narrowed', 'widening': 'widened',
+            'neither': 'neither narrowed nor widened'}
+
+
+def check_gap_caption():
+    """R-16: the gap figure must not assert a pattern the paddock does not have.
+
+    The title used to read "Closing the gap, year by year" for all 64 — wrong for 45 of them,
+    and live in two shipped documents. The pattern now lives in the caption and is derived, so
+    the check is that the caption's direction matches the unit record, that the slope and the
+    correlation are both given (the project's standing rule for describing a trend), and that a
+    caption never describes a trend line the figure did not draw."""
+    for f in sorted(glob.glob(os.path.join(UNITS_DIR, 'paddock_*.json'))):
+        r = json.load(open(f, encoding='utf8'))
+        if 'gap_direction' not in r:
+            continue
+        slug = r['unit'].replace(' ', '_').replace('/', '-')
+        p = os.path.join(DOCS_DIR, f'Gayini_paddock_report_{slug}.docx')
+        if not os.path.exists(p):
+            continue
+        t = visible(p)
+        m = re.search(r'One point per water year[^‖]*', t)
+        if not m:
+            add('ERROR', 'R-16', r['unit'], 'the gap caption is missing')
+            continue
+        capt = m.group(0)
+
+        want = DIR_WORD[r['gap_direction']]
+        if r['gap_line_drawn']:
+            if want not in capt:
+                add('ERROR', 'R-16', r['unit'],
+                    f'caption does not say "{want}" for a {r["gap_direction"]} gap')
+            if 'no trend line is drawn' in capt:
+                add('ERROR', 'R-16', r['unit'],
+                    'caption says no trend line is drawn, but the figure drew one')
+        else:
+            if 'no trend line is drawn' not in capt:
+                add('ERROR', 'R-16', r['unit'],
+                    f'|r| = {abs(r["gap_r_derived"]):.2f} is below the cut so no line is drawn, '
+                    f'but the caption does not say so')
+            # Match the ASSERTION, not the bare word. A first version tested `'narrowed' in capt
+            # and 'neither' not in capt`, and the no-line caption contains "neither gained ...
+            # nor fell behind" in an unrelated clause — so the guard suppressed the very finding
+            # the check exists for, and the fixture passed. Same shape as I-47: a fragment match
+            # colliding with text that is not the claim.
+            for phrase in ('the difference narrowed', 'the difference widened'):
+                if phrase in capt:
+                    add('ERROR', 'R-16', r['unit'],
+                        f'caption asserts "{phrase}" where no trend line is drawn')
+        if 'correlation' not in capt:
+            add('ERROR', 'R-16', r['unit'],
+                'a described trend must give its correlation as well as its slope')
+        if 'points a year' not in capt:
+            add('ERROR', 'R-16', r['unit'], 'the caption does not give the slope')
+
+
 def main():
     for fn in (check_band_areas, check_property_is_a_set,
                check_support_separation, check_site_counts, check_composition_prose,
-               check_parts_verdict):
+               check_parts_verdict, check_gap_caption):
         fn()
     err = [f for f in findings if f[0] == 'ERROR']
     print()

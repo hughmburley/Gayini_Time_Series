@@ -127,28 +127,65 @@ def fig_scatter(r,tag):
     return save(fig,f'{tag}_scatter')
 
 def fig_gap(r,tag):
+    """The gap series. R-16: the figure states the VARIABLE; the caption states the pattern.
+
+    The title used to read "Closing the gap, year by year" for every paddock unconditionally.
+    Measured across all 64: 26 are widening, so the title stated the opposite; 19 are flat, so it
+    asserted a trend that is absent. Wrong on 45 of 64, and live in two shipped documents —
+    Bala 26ca (slope -0.003, r -0.01) and Bala 27ca (slope -0.176). A title generated without
+    consulting the data it sits beside; the same class as R-2's bars and Dinan 10's pronoun.
+
+    And where |r| is small the dashed line invites a reading the data does not support. 41 of 64
+    sit below r = 0.30. The two endpoint labels were read off THAT LINE, not off the series, so
+    they presented a fitted value as though it were a measurement. Below the cut, the line and
+    both labels are omitted: a paddock whose gap does not move should show a series that visibly
+    does not move, with nothing drawn through it.
+    """
     yr=np.array(r['gap']['year']); v=np.array(r['gap']['value'])
     sl=r['gap_slope_registered']; b,a=np.polyfit(yr,v,1)
     if sl is not None: a=v.mean()-sl*yr.mean(); b=sl
     fit=a+b*yr
+    # Read, not recomputed: report_data settles it once so the caption cannot describe a trend
+    # this figure did not draw.
+    draw_fit=bool(r.get('gap_line_drawn',True))
     fig,ax=plt.subplots(figsize=(5.4,3.4),dpi=DPI); fig.subplots_adjust(left=.165,right=.975,top=.865,bottom=.155)
     ax.axhline(0,color=MUTED,lw=1.2)
     ax.fill_between(yr,v,0,color=RUST,alpha=.16,lw=0)
     ax.plot(yr,v,color=RUST,lw=1.5,marker='o',ms=3.2)
-    ax.plot(yr,fit,color=INK,lw=2.0,ls=(0,(5,3)))
-    ax.set_ylim(min(v.min(),fit.min())-9,max(5,v.max()+5))
-    ax.text(yr.min()+.4,fit[0]-6,f'{abs(fit[0]):.0f} points below',fontsize=8.4,color=INK,
-            fontweight='bold',va='top',path_effects=HALO)
-    ax.text(yr.max()-.2,fit[-1]+4.5,f'{abs(fit[-1]):.0f} points below',fontsize=8.4,color=INK,
-            fontweight='bold',ha='right',va='bottom',path_effects=HALO)
-    ax.text(yr.max()-.2,1.4,'level with the rest of the property',fontsize=7.4,color=MUTED,
-            ha='right',path_effects=HALO)
-    ax.set_xlim(yr.min()-.5,yr.max()+.5)
+    lo=min(v.min(),fit.min() if draw_fit else v.min())-9
+    hi=max(5,v.max()+5); span=hi-lo
+    ax.set_ylim(lo,hi); ax.set_xlim(yr.min()-.5,yr.max()+.5)
+    if draw_fit:
+        ax.plot(yr,fit,color=INK,lw=2.0,ls=(0,(5,3)))
+        # Endpoint labels placed OUTWARD from the line and clamped inside the axes, and the
+        # zero-line note moved to whichever side the series is not occupying. Both used to be
+        # positioned by a fixed offset, which collided on Bala 15 where the fitted line ends
+        # close to zero — the endpoint label and "level with the rest of the property" landed
+        # on top of each other and neither could be read.
+        for x,yv,ha in ((yr.min()+.4,fit[0],'left'),(yr.max()-.2,fit[-1],'right')):
+            below=yv<0
+            ypos=yv-span*.055 if below else yv+span*.045
+            ypos=min(max(ypos,lo+span*.06),hi-span*.06)
+            ax.text(x,ypos,f'{abs(yv):.0f} points {"below" if below else "above"}',fontsize=8.4,
+                    color=INK,fontweight='bold',ha=ha,va='center',path_effects=HALO)
+    # The note labels the ZERO LINE, so it sits against it — not at the foot of the axes, where
+    # on an all-negative series it would caption a line at the opposite edge of the plot. It goes
+    # to whichever end the series runs FURTHEST from zero, which is the end where the space
+    # beside the zero line is free. It used to sit at a fixed right-hand offset, which on Bala 15
+    # — whose fitted line ends near zero — landed on top of the endpoint label, both unreadable.
+    left_far=abs(v[:len(v)//2]).mean()>abs(v[len(v)//2:]).mean()
+    ax.text(yr.min()+.4 if left_far else yr.max()-.2,-span*.028,
+            'level with the rest of the property',fontsize=7.4,color=MUTED,
+            ha='left' if left_far else 'right',va='top',path_effects=HALO)
     ax.set_ylabel('Difference from the rest of\nthe property (points)',fontsize=8.5)
     ax.set_xlabel('Water year',fontsize=8.5)
-    ax.set_title('Closing the gap, year by year',loc='left',fontsize=10.5,color=HEAD,fontweight='bold')
+    # Neutral: names the variable, so it cannot be wrong for any paddock. Set at 9.0 rather than
+    # the 10.5 the other figures use — this title is 54 characters against a 5.4 in canvas and
+    # clipped its own last word at the larger size.
+    ax.set_title('Cover compared with the rest of the property, year by year',
+                 loc='left',fontsize=9.0,color=HEAD,fontweight='bold')
     if sl is not None:
-        ax.text(.985,1.012,f'trend +{sl:.3f} pp a year, read from the registry',transform=ax.transAxes,
+        ax.text(.985,1.012,f'trend {sl:+.3f} pp a year, read from the registry',transform=ax.transAxes,
                 fontsize=6.8,color=FAINT,va='bottom',ha='right')
     return save(fig,f'{tag}_gap')
 

@@ -1,6 +1,6 @@
 {
  "built": "2026-08-05",
- "builder_version": "1.8",
+ "builder_version": "1.9",
  "builder": "scripts/15_reports",
  "n": 32,
  "built_with": {
@@ -46,38 +46,38 @@
  "documents": [
   {
    "document": "Gayini_paddock_report_Bala_15.docx",
-   "text_sha256": "cd9beebbab09954d1cd7d15923f9104eb23fe7f827693731382ef3a9a1858a81",
-   "chars": 12303
+   "text_sha256": "18fc65f98ce764439a3246c58f0454900b3310009b7317769205e381d89b2787",
+   "chars": 12381
   },
   {
    "document": "Gayini_paddock_report_Bala_26ca.docx",
-   "text_sha256": "ad0db185bf8500f64a5acb19c1b2dc5c421405ffd6cd0aa486728ce12a2266c2",
-   "chars": 14228
+   "text_sha256": "60edd2ac7782bc75083306e1011a182e53888388e46698b6c7c988e241b88677",
+   "chars": 14422
   },
   {
    "document": "Gayini_paddock_report_Bala_27ca.docx",
-   "text_sha256": "2e15be00b544d227e79b39ad1faa6ede8857327ac2364fb898c058a3271cec3e",
-   "chars": 12622
+   "text_sha256": "b7f2aee2e9a009022353e137cefa2c59d4cf691665722d09c559b955777d1bf9",
+   "chars": 12704
   },
   {
    "document": "Gayini_paddock_report_Bala_28ca.docx",
-   "text_sha256": "454e3f1ec6014880da843f9017737f6520cb5429fae38042dc7916d49fd5cac3",
-   "chars": 15198
+   "text_sha256": "208c525fee0b2e24061775b96cd8e0f72bea3c1ae808494c284751d397eda560",
+   "chars": 15276
   },
   {
    "document": "Gayini_paddock_report_Bala_29ca.docx",
-   "text_sha256": "f1c81ec9b0c95fa7041c9ca30dc401824dec4bdb3a2af13cb0b030ef99158e60",
-   "chars": 16719
+   "text_sha256": "2cbbbf0e573b5cd714af7502992b99838d97fcf9c679aec94746c34becc1cac1",
+   "chars": 16829
   },
   {
    "document": "Gayini_paddock_report_Dinan_10.docx",
-   "text_sha256": "fc66bd6d4bc5ef825032c0a5a78bb0a1de3f40770716e6b5daf3585b66ad1d0f",
-   "chars": 15302
+   "text_sha256": "b00762b4c38f13a77008dbb0daaa80a8f61908f8b434536afb7410f70dcd3b39",
+   "chars": 15380
   },
   {
    "document": "Gayini_paddock_report_Dinan_8.docx",
-   "text_sha256": "b038e6cf132fcb35404d52027f99c152d2f13710a4b6802ecdf3705393d4ec63",
-   "chars": 14972
+   "text_sha256": "b003c8a0827e9a54dbf92401c541a9444ecdebfbed904f522502d8828f8ff804",
+   "chars": 15050
   },
   {
    "document": "Gayini_site_report_GA_001.docx",
@@ -206,9 +206,9 @@
   }
  ],
  "supersedes": {
-  "version": "1.5",
-  "reason": "R-15 parts verdict on Dinan 10 (sets not counts, verb agreement, area stated), plus the same verb/join defect in the marginal-parts sentence on Dinan 8. Cumulative with R-8 composition prose and R-12 register, which had not been re-fingerprinted. Diff classified in full against an unchanged control; nothing unaccounted.",
-  "fingerprints_moved": 6,
+  "version": "1.8",
+  "reason": "R-16: the gap figure's title states the variable, not the pattern; the pattern moves to a per-paddock caption giving direction, slope and correlation; no trend line where |r| < 0.30. Diff confined to the gap caption on all 7 paddock reports (2 blocks each); 25 site reports unchanged.",
+  "fingerprints_moved": 7,
   "documents_added": 0
  }
 }

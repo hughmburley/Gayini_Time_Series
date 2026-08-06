@@ -84,6 +84,16 @@ def build_fixture(root, mode):
                 'anywhere on the property — and one of them are coming back. '):
             sys.exit('STOP: R-15 anchor not found in the fixture document')
         os.replace(tmp, t2)
+    elif mode == 'r16_gap_pattern':
+        # the pre-R-16 assertion: a closing gap claimed on a paddock whose gap does not move.
+        # Bala 26ca has slope -0.003, r -0.01 - no trend line is drawn for it at all.
+        t2 = os.path.join(docs, 'Gayini_paddock_report_Bala_26ca.docx')
+        tmp = t2 + '.tmp'
+        if not doctor_docx(t2, tmp,
+                'Year-to-year movement is larger than any trend running through it',
+                'Across the record the difference narrowed'):
+            sys.exit('STOP: R-16 anchor not found in the fixture document')
+        os.replace(tmp, t2)
     elif mode == 'two_rules':
         tmp = target + '.tmp'
         # the sentence the spec requires in every report
@@ -108,6 +118,7 @@ CASES = [
     ('r8_count',       1, 'R-8',         'page 1 claiming more kinds than page 3 shows must be rejected'),
     ('r8_zero_pct',    1, 'R-8',         'a community printed at 0% must be rejected'),
     ('r15_parts_verdict', 1, 'R-15',     'recovery attributed to parts that are not recovering must be rejected'),
+    ('r16_gap_pattern', 1, 'R-16',       'a closing gap asserted where the gap does not move must be rejected'),
 ]
 
 
