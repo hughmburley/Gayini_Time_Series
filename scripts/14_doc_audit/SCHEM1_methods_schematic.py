@@ -151,7 +151,7 @@ CX_BR, BWB = 9.90, 2.10
 RAIL_L, RAIL_W = 11.45, 4.15
 
 Y_SRC, H_SRC = 6.94, 0.98
-Y_ANN, H_ANN = 5.88, 0.84
+Y_ANN, H_ANN = 5.72, 1.00
 Y_RES, H_RES = 4.28, 1.33
 Y_JOIN, H_JOIN = 3.18, 0.82
 Y_PU, H_PU = 1.78, 1.15
@@ -178,18 +178,22 @@ arrow(CX_W, Y_SRC, CX_W, Y_ANN + H_ANN, BLUE_E)
 
 # ---- row 2 - one layer per year -------------------------------------------------
 box(LC, Y_ANN, BW, H_ANN, WARM_F, WARM_E)
-t(CX_C, Y_ANN + 0.61, "One cover layer per year", 11.5, WARM_E, "bold")
-t(CX_C, Y_ANN + 0.32, f"green and dry added together, then averaged\n"
+t(CX_C, Y_ANN + 0.80, "One cover layer per year", 11.5, WARM_E, "bold")
+t(CX_C, Y_ANN + 0.45, f"green and dry added together, then averaged\n"
                       f"over the usable seasons  ·  {n_years} years, {yr_lo}–{yr_hi + 1}", 9.0)
+t(CX_C, Y_ANN + 0.14, f"{n_years} annual layers, one value per cell per year", 7.4, MUTED)
 
 box(LWx, Y_ANN, BW, H_ANN, BLUE_F, BLUE_E)
-t(CX_W, Y_ANN + 0.61, "Already one layer per year", 11.5, BLUE_E, "bold")
-# Ruling AP: purpose, not operation. The valid stack is presence-only {1} in every
-# band of both the 8058 and the native 28355 product - no zeros anywhere - so the
-# denominator currently removes nothing. It is a safeguard, not a filter.
-t(CX_W, Y_ANN + 0.28, "two of them: seen wet, and seen at all\n"
-                      "the second is the denominator, so that cloud\n"
-                      "can never be counted as dry ground", 8.6, ls_=1.25)
+t(CX_W, Y_ANN + 0.80, "Already one layer per year", 11.5, BLUE_E, "bold")
+# Ruling AP, amended 6 Aug: state the saturation rather than the intent. Verified
+# across all 35 bands of BOTH the 8058 and the native 28355 valid stacks - values
+# are {1, 255} only, no zeros anywhere, so the zeros were never there rather than
+# lost on reprojection. valid_pixels equals the paddock's non-treed cell count in
+# 2,240 of 2,240 zone-years.
+t(CX_W, Y_ANN + 0.45, "two of them: seen wet, and seen at all — but the\n"
+                      "any-observation rule saturates, so every cell is seen\n"
+                      "every year: the denominator is a safeguard, not a filter", 8.6, ls_=1.25)
+t(CX_W, Y_ANN + 0.14, "no zeros in either projection, all 35 bands", 7.4, MUTED)
 
 arrow(CX_C, Y_ANN, CX_C, Y_RES + H_RES, WARM_E)
 arrow(CX_W, Y_ANN, CX_W, Y_RES + H_RES, BLUE_E)
