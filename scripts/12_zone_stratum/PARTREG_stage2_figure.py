@@ -109,6 +109,8 @@ ax0.text(40.0, 20.5, "steady", fontsize=8.0, color=MUTED, ha="center")
 ax0.text(50.0, 20.5, "swings", fontsize=8.0, color=MUTED, ha="center")
 ax0.text(45.0, 6.5, "opacity = across-year spread (IQR)",
          fontsize=8.0, color=MUTED, ha="center")
+axes[0].text(0.03, 0.795, "marker area ∝ part size  (33 to 32,399 cells)",
+             transform=axes[0].transAxes, fontsize=8.0, color=MUTED, style="italic")
 
 # ---- community legend on the last panel ----------------------------------------
 h = [plt.Line2D([], [], marker="o", ls="", markerfacecolor=m, markeredgecolor=d,

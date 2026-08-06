@@ -135,7 +135,8 @@ fig.text(0.015, 0.900, "Which parts hold more or less cover than their water pre
          fontsize=18, color=HEAD, weight="bold", ha="left")
 fig.text(0.015, 0.842,
          "Each panel is measured against its OWN period's fitted line, so the three read as one comparable set. "
-         "2014–2017 is excluded as a transition. Dashed outline = the eight conserved parts.",
+         "115 parts — 27 paddocks hold a single community and appear undivided. 2014–2017 is excluded as a "
+         "transition. Dashed outline = the eight conserved parts.",
          fontsize=9.2, color=RUST, ha="left")
 for y, sz, col, txt in [
     (0.125, 8.6, HEAD,
@@ -237,7 +238,18 @@ L += ["", "## Per-period columns", "",
       "| column | units | meaning |", "|---|---|---|"]
 for k, (u, m) in PER_UNITS.items():
     L.append(f"| `{k}` | {u} | {m} |")
-L += ["", "---", "", "## Three things to know before using this", "",
+L += ["", "## Two numbers a reader will difference", "",
+      "**Total area here is 49,604.8 ha; the SCHEM-1 footprint ladder says 49,606.9 ha.** Both are right, at "
+      "different scopes. The ladder counts **all 795,602** zoned non-treed cells — all 118 parts. This export "
+      "counts the **115 supported** parts, 795,568 cells. The 34-cell, 2.1 ha difference is exactly the three "
+      "sub-support parts (Bala 15 · Riverine 23 cells, Bala 28ca · Aeolian 10, Mara 3 · Aeolian 1). It is not "
+      "a polygon-against-raster discrepancy. **For the analysis footprint, the ladder is authoritative; for this "
+      "table, the 115-part total is.**", "",
+      "**Residuals do not sum to zero, and should not.** Their unweighted means are about +0.82, +0.23 and +0.70 "
+      "percentage points for the cropping era, post-management and whole record. The fit is **pixel-weighted**, so "
+      "it is the *weighted* residual mean that is zero — and it is, to within 1e-6 in all three periods. An "
+      "unweighted average of a weighted fit's residuals carries no such guarantee.", "",
+      "---", "", "## Three things to know before using this", "",
       "**Spread is not uncertainty.** The `*_spread_*` columns describe how much a part moved between years. "
       "No confidence interval is placed on them, because 35 consecutive years are not 35 independent observations.", "",
       "**A residual is a departure from a fitted expectation — not a condition score, and not a management "

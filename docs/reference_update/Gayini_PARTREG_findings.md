@@ -48,6 +48,26 @@ the methods document at V13, three days from the deadline. **This is an article 
 The caveat travels with the number: it is written into `partreg_s1_slope_115parts.caveat`, so
 anyone reading the value without the figure still meets it.
 
+## 3a · Bala 29ca — the argument in three rows
+
+**The clearest single demonstration that the management zone is not an ecological unit** (L-01),
+and the most article-ready thing in this work. Whole-record residuals, from
+`Output/tables/PARTREG_part_residuals.csv`:
+
+| part | residual | rank of 115 | cells |
+|---|---:|---:|---:|
+| Bala 29ca · **Aeolian** | **−24.85 pp** | 2 | 11,848 |
+| Bala 29ca · **Riverine** | **−21.58 pp** | 3 | 12,141 |
+| Bala 29ca · **Inland** | **+5.87 pp** | 84 | 12,687 |
+
+One paddock, one management category, three near-equal thirds. **Its Inland third holds more cover
+than its water predicts, while the other two thirds are the 2nd and 3rd worst on the property.**
+
+The registered paddock-grain residual for Bala 29ca is −16.80 pp
+(`v_zone_floor_flood_residual`). **It describes none of the three.** It is an average across
+ecological contexts that behave oppositely — which is exactly what L-01 says a paddock-grain number
+does where a fence encloses several communities, now measured rather than asserted.
+
 ## 4 · The percentile question is closed with evidence
 
 The sweep at p05 / p10 / p20 / p30 / p50 is **monotonic in slope, r and residual SD together** —
