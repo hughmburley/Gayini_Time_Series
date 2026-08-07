@@ -243,6 +243,47 @@ the V12→V14 change list.
 
 ---
 
+# Figure · Cover follows water, and the exceptions are the story
+
+**File:** `F5_cover_vs_water_64_paddocks.png` — methods document Figure 25
+**Status:** `RENDERED` · 7 August 2026 — **corrected and re-registered under Ruling AZ**
+**Producer:** `scripts/12_zone_stratum/build_adrian_pack_T1_F3_F5.R`
+
+## Axis labels
+
+> x: Share of the paddock's cells seen wet, mean over years (%)
+>
+> y: Cover floor, veg_p05_spatial (%)
+
+## Caption clause, corrected
+
+> How much cover a paddock holds in its poorest seasons rises with how much of it goes under —
+> wetter paddocks sit higher. This is a within-year extent averaged over the record, not how often
+> the paddock floods, which is a between-year quantity with no time axis.
+
+## Superseded — kept, not deleted
+
+~~x-axis: `Mean annual flood frequency (% of years wet)`. The axis plots `mean_flood` from
+`v_zone_floor_flood_residual` — the mean over 35 years of `flood_frac_pct`, a share of the paddock's
+CELLS seen wet within a water year. `(% of years wet)` states a denominator of years and so names
+`census_flood_frequency_pct`, a per-cell property with no time axis. **Ruling AY's family, third
+instance.**~~
+
+~~Caption: *"largely set by how often it floods"* — the between-year framing of a within-year
+quantity.~~
+
+~~`PACK1_build_workbook.py`, three occurrences of *"how often a paddock floods"* on the same fit.
+Corrected at source; the pack v1.2 workbook that shipped still carries them.~~
+
+**The y-axis was already correct** and is unchanged. The same `labs()` call named the cover quantity
+precisely and got the water quantity's denominator wrong — which is the shape of this whole error
+family.
+
+**Not changed, and noted:** the subtitle still reads *"52.7 + 0.548 x flood %"*. `flood %` is
+ambiguous rather than wrong, so it is left alone under Ruling AZ's scope.
+
+---
+
 # Pending
 
 Captions not yet drafted, listed so the gap is visible rather than forgotten.

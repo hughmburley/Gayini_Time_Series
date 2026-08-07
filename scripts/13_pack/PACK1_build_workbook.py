@@ -77,12 +77,12 @@ CLAIMS = [
  ("2","Bala 29ca's floor has been converging on the grazed median since 1988 at +0.92 percentage "
       "points a year. Conservation management began in 2019. The trend predates it by three decades.",
       "t10_gap_annual_slope_C_29ca"),
- ("3","How often a paddock floods correlates with its floor at r = 0.71 across all 64 paddocks — "
+ ("3","How much of a paddock goes under water correlates with its floor at r = 0.71 across all 64 paddocks — "
       "about half the variation between paddocks.", "floor_flood_r_64pdk"),
  ("4","82% of Bala 29ca's improvement survives removing the effect of the water it actually received, "
       "and the improvement is located in its dry western parts, not the paddock as a whole.",
       "bala29ca_improvement_surviving_water_pct"),
- ("5","The four conserved paddocks are not a matched comparison set. Ranked by how often they flood, "
+ ("5","The four conserved paddocks are not a matched comparison set. Ranked by how much of them goes under water, "
       "they sit 3rd, 6th, 31st and 61st of 64 — almost the entire wetness range of the property. They "
       "are not one condition, and no single number describes them.",
       "ref_paddock_flood_rank_bala26ca,ref_paddock_flood_rank_bala28ca,"
@@ -122,7 +122,7 @@ ANSWERS = {
        "register in this measure, or the unzoned country is grazed less rather than more.",
        "three_arm_standard_at_or_above_count"),
  "Q5":("What does drive ground cover?","WATER, AND IT IS NOT CLOSE",
-       "Across all 64 paddocks, how often a paddock floods correlates with its floor at r = 0.71 — "
+       "Across all 64 paddocks, how much of a paddock goes under water correlates with its floor at r = 0.71 — "
        "about half the variation between paddocks. The pattern follows channels and low ground and "
        "crosses paddock fences without noticing them.","floor_flood_r_64pdk"),
  "Q6":("Which country is coming back, and which is going backwards?",

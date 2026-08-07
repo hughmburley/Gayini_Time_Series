@@ -306,7 +306,12 @@ f5 <- ggplot(res, aes(mean_flood, mean_floor)) +
   labs(title = "Cover follows water, and the exceptions are the story",
        subtitle = sprintf("One point per paddock. Line = the registered expectation (%.1f + %.3f x flood %%). Shaded band = plus or minus one typical miss (%.1f pp).",
                           INT, SLP, SD),
-       x = "Mean annual flood frequency (% of years wet)",
+       # RULING AZ, 7 Aug 2026: was "Mean annual flood frequency (% of years wet)", which
+       # states a denominator of YEARS. This axis plots mean_flood from
+       # v_zone_floor_flood_residual - the mean over 35 years of flood_frac_pct, which is a
+       # share of the paddock's CELLS seen wet within a water year. Ruling AY's family,
+       # third instance. The y-axis below was already correct.
+       x = "Share of the paddock's cells seen wet, mean over years (%)",
        y = "Cover floor, veg_p05_spatial (%)") +
   theme_minimal(base_size = 10) +
   theme(legend.position = "bottom", plot.title = element_text(face = "bold", size = 13),
@@ -314,8 +319,10 @@ f5 <- ggplot(res, aes(mean_flood, mean_floor)) +
 
 cap_f5 <- paste0(
   "Support level: pixel (whole-paddock means over 1988-2022, non-treed ground), 64 paddocks. ",
-  "How much cover a paddock holds in its poorest seasons is largely set by how often it floods - ",
-  "wetter paddocks sit higher. The green line is the expectation registered for the property, and ",
+  "How much cover a paddock holds in its poorest seasons rises with how much of it goes under - ",
+  "wetter paddocks sit higher. This is a within-year extent averaged over the record, not how ",
+  "often the paddock floods, which is a between-year quantity with no time axis (Ruling AZ). ",
+  "The green line is the expectation registered for the property, and ",
   "the shaded band is one typical miss either side, so a point inside the band is behaving normally ",
   "for its water. Two paddocks sit far below: Bala 29ca and Dinan 10 hold about 15 to 17 points ",
   "less cover than their water predicts, the second and third largest shortfalls of 64. ",
