@@ -204,15 +204,25 @@ function paddockDoc(r){
       rich([['Almost every figure elsewhere in this report is an average across the whole paddock. For ',{}],
         [r.unit,{}],[' that average hides more than it shows, because the paddock spans more than one kind of country — and ',{}],
         ['the parts do not behave alike.',{bold:true}]],{after:80}),
-      body('Each kind of country has its own normal, so the fair question is not how a part compares with the paddock or with the property, but how it compares with the same kind of country elsewhere.',{after:80}),
+      body('Each kind of country has its own normal, so the fair question is not how a part compares with the paddock or with the property, but how it compares with the same kind of country elsewhere.',{after:55}),
+      // REPORT-2 §3.3 — one sentence, fixed wording, no per-paddock composition.
+      body('Within one kind of country, the drier parts carry less cover in their poorest patches. So the first comparison reflects how wet a part is as much as how it is faring. The second allows for that.',{after:80}),
       img(F('parts'),940),
       cap('Each grey dot is one part of one paddock somewhere on Gayini. The coloured diamonds are the parts of this paddock, placed against every other part of the same kind of country. The vertical line is what is typical for that country.'),
       gap(50),
-      dt(['This part of the paddock','Area','Cover on the thinnest twentieth','Compared with the same country elsewhere',`Over ${r.n_years} years`],
+      // REPORT-2 §3.1: BOTH comparison columns stay. The first is what the ground actually
+      // carries; the second is what it carries relative to its water. Neither replaces the
+      // other and nothing here may imply that one corrects the other.
+      //
+      // Ranks in both, never percentage points in the second. A 5 pp shortfall in wet country
+      // and a 15 pp shortfall in dry country are not comparable quantities — the typical miss
+      // runs from about 12.8 pp on the driest quarter of the property to 3.8 pp on the wettest.
+      // A rank within community sidesteps that; percentage points would import it.
+      dt(['This part of the paddock','Area','Cover on the thinnest twentieth','Compared with the same country elsewhere','For the water it gets',`Over ${r.n_years} years`],
         r.parts.map(pt=>[`${cape(pt.place)} — ${pt.short}`,pt.ha?`${nf(pt.ha)} ha`:'—',`${f0(pt.level)}%`,
-          rankPhrase(pt),stateLine(pt)])
-          .concat([[`Whole paddock (the average)`,`${nf(r.area_ha)} ha`,`${f0(r.floor)}%`,'—','—']]),
-        [3900,1200,2600,3200,4500]),
+          rankPhrase(pt),waterPhrase(pt),stateLine(pt)])
+          .concat([[`Whole paddock (the average)`,`${nf(r.area_ha)} ha`,`${f0(r.floor)}%`,'—','—','—']]),
+        [3400,1050,2150,2950,2950,2900]),
       gap(55),
       rich([['What this changes. ',{bold:true}],[partsVerdict(r),{}]],{after:0}));
     pg=4;
@@ -228,7 +238,12 @@ function paddockDoc(r){
           ['What it carries',`${f1(r.floor)}%`,'',AEO_D,PANEL_A],
           ['Difference',`${r.residual>0?'+':'−'}${f1(Math.abs(r.residual))} pp`,'',r.residual<-r.fit.resid_sd?RUST:GRN,PANEL_W]]),
         gap(85),
-        body(residualLine(r),{after:80}),
+        body(residualLine(r),{after:55}),
+        // REPORT-2 §3.4, verbatim from the spec. A reader will take the slope of the
+        // between-paddock line as what water buys HERE. It is not that quantity, and the
+        // quantity it is mistaken for is about three times smaller. No figure is given for the
+        // within-place response: it is unregistered and stays out of a deliverable.
+        body('This line describes how paddocks differ from one another over the long run. It is not what an extra point of flooding would add to this paddock. That is a different and smaller number.',{after:80}),
         kicker('What this comparison does and does not do'),
         body('It does put a dry paddock alongside dry country rather than alongside the farm as a whole, which is the fairer test.',{after:55}),
         body(multi?'It does not separate the effect of country type from the effect of condition — this is a whole-paddock figure, so it averages the parts set out on page 3.':'It does not separate the effect of country type from the effect of condition.',{after:55}),
@@ -358,6 +373,32 @@ function rankPhrase(pt){
   if(n<=of*0.25) return `among the lowest of ${of}`;
   if(n>=of*0.75) return `among the highest of ${of}`;
   return `${ordinal(n)} of ${of} — ordinary`;
+}
+// REPORT-2 §3.2. The wording is PRE-REGISTERED and this is a lookup on rank position, not
+// composed prose: composed wording is how a caption acquires a claim nobody ruled on. Rank 1 =
+// largest shortfall, within community, across all supported parts of that community.
+//
+// "High for its water" is NOT a condition claim. It means the part carries more cover than the
+// fitted line predicts; page 4 already says what that does and does not mean, and nothing here
+// attributes any position to grazing, conservation status or anything else.
+function waterPhrase(pt){
+  const n=pt.rank_water, of=pt.n_of, p=n/of;
+  // A missing rank must HALT, never fall through. Every comparison against undefined is false,
+  // so without this guard control reaches the last return and a part with no rank is labelled
+  // "among the highest for its water" — the most favourable wording in the table. Found on the
+  // first build: three unit records predated the column and Bala 29ca's Aeolian third, rank 1
+  // of 17 and the WORST of its community, rendered as among the highest of 17. The chain of
+  // ifs is exhaustive only for a finite rank; asserting that is cheaper than reordering it.
+  if(!Number.isFinite(n)||!Number.isFinite(of)||of<1||n<1||n>of)
+    throw new Error(`waterPhrase: ${pt.short} has no usable water rank (rank_water=${n}, `+
+      `n_of=${of}). The unit record predates REPORT-2 — re-run report_data.py for this paddock.`);
+  if(n===1) return `lowest of ${of} for its water`;
+  if(n===2) return `second-lowest of ${of} for its water`;
+  if(p<=0.10) return `among the lowest of ${of} for its water`;
+  if(p<=0.25) return `low for its water — ${ordinal(n)} of ${of}`;
+  if(p<=0.75) return `about what its water predicts — ${ordinal(n)} of ${of}`;
+  if(p<=0.90) return `high for its water — ${ordinal(n)} of ${of}`;
+  return `among the highest of ${of} for its water`;
 }
 function stateLine(pt){
   let s=pt.state.toLowerCase();

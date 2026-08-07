@@ -27,11 +27,38 @@ proof — the same status §8.4's own claim should have had.
 Run:  python check_scope_claims.py        (from scripts/15_reports)
 """
 import glob, json, os, re, sys, zipfile
-from config import DOCS_DIR, UNITS_DIR
+import pandas as pd
+from config import DOCS_DIR, UNITS_DIR, TABLES
 from docxset import built_docx
 
 TOL_HA = 0.05          # band areas are printed to 0 dp; reconcile the underlying values
 findings = []
+
+
+def _ordinal(n):
+    return f'{n}{"th" if 10 <= n % 100 <= 20 else {1: "st", 2: "nd", 3: "rd"}.get(n % 10, "th")}'
+
+
+def water_label(n, of):
+    """REPORT-2 §3.2's pre-registered vocabulary, transcribed from the spec.
+
+    Deliberately a SECOND implementation of waterPhrase(), not a shared one: a check that
+    imports the thing it checks tests only that the code ran. Transcribed from the ruling, so
+    a drift in either implementation shows up as a mismatch here."""
+    p = n / of
+    if n == 1:
+        return f'lowest of {of} for its water'
+    if n == 2:
+        return f'second-lowest of {of} for its water'
+    if p <= 0.10:
+        return f'among the lowest of {of} for its water'
+    if p <= 0.25:
+        return f'low for its water — {_ordinal(n)} of {of}'
+    if p <= 0.75:
+        return f'about what its water predicts — {_ordinal(n)} of {of}'
+    if p <= 0.90:
+        return f'high for its water — {_ordinal(n)} of {of}'
+    return f'among the highest of {of} for its water'
 
 
 def add(level, check, where, msg):
@@ -291,10 +318,58 @@ def check_gap_caption():
             add('ERROR', 'R-16', r['unit'], 'the caption does not give the slope')
 
 
+def check_water_rank_labels():
+    """REPORT-2 §5: every water-adjusted label checked against the ranks table, independently.
+
+    The label vocabulary is re-implemented here from the spec rather than imported from the
+    builder, so this is a second path to the same wording and not a restatement of the first.
+    Rank and count come from REPORT2_part_ranks.csv, never from the unit record.
+
+    Two failure modes this is aimed at. A silent DIRECTION FLIP — rank 1 means largest shortfall
+    on both columns, and a flip would be the hardest error in this batch to catch downstream,
+    because every label would still read as valid English. And a MISSING rank: the builder's
+    if-chain is exhaustive only for a finite rank, so before its guard existed an absent value
+    fell through to "among the highest", the most favourable wording available. Bala 29ca's
+    Aeolian third — rank 1 of 17, the worst of its community — rendered exactly that way."""
+    csv = os.path.join(TABLES, 'REPORT2_part_ranks.csv')
+    if not os.path.exists(csv):
+        add('ERROR', 'REPORT-2', 'batch', f'{os.path.basename(csv)} not found — '
+            'the labels cannot be checked against anything')
+        return
+    d = pd.read_csv(csv)
+    for f in sorted(glob.glob(os.path.join(UNITS_DIR, 'paddock_*.json'))):
+        r = json.load(open(f, encoding='utf8'))
+        if len(r['parts']) < 2:
+            continue                      # single-part paddocks carry no parts table
+        slug = r['unit'].replace(' ', '_').replace('/', '-')
+        p = os.path.join(DOCS_DIR, f'Gayini_paddock_report_{slug}.docx')
+        if not os.path.exists(p):
+            continue
+        t = visible(p)
+        rows = d[d.paddock_name == r['unit']]
+        if len(rows) != len(r['parts']):
+            add('ERROR', 'REPORT-2', r['unit'],
+                f'{len(r["parts"])} parts in the report, {len(rows)} in the ranks table')
+            continue
+        for _, x in rows.iterrows():
+            want = water_label(int(x.rank_water), int(x.n_of))
+            if want not in t:
+                add('ERROR', 'REPORT-2', r['unit'],
+                    f'{x.community_short} should read "{want}" '
+                    f'(rank {int(x.rank_water)} of {int(x.n_of)}) and does not')
+            # The two columns are different quantities and must not be conflated: where the
+            # ranks differ, the cover label must NOT also be the water label.
+            if int(x.rank_water) != int(x.rank_floor) and want == water_label(
+                    int(x.rank_floor), int(x.n_of)):
+                add('WARN', 'REPORT-2', r['unit'],
+                    f'{x.community_short} ranks {int(x.rank_floor)} on cover and '
+                    f'{int(x.rank_water)} for its water, but both land on the same wording')
+
+
 def main():
     for fn in (check_band_areas, check_property_is_a_set,
                check_support_separation, check_site_counts, check_composition_prose,
-               check_parts_verdict, check_gap_caption):
+               check_parts_verdict, check_gap_caption, check_water_rank_labels):
         fn()
     err = [f for f in findings if f[0] == 'ERROR']
     print()

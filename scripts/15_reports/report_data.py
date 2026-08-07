@@ -9,7 +9,7 @@ Emits one JSON record per unit for the document builder.
 import sqlite3, json, sys, os
 import numpy as np, pandas as pd
 
-from config import DB, ROOT, TABLES, UNITS_DIR as OUT, require
+from config import DB, ROOT, TABLES, PARTREG, UNITS_DIR as OUT, require
 require(DB, 'Gayini_Results.sqlite')
 
 con = sqlite3.connect(f'file:{DB}?mode=ro', uri=True)
@@ -119,6 +119,86 @@ PARTS_ALL = q("""select zone_name, community, level, trend_adj, trend_z, state_r
  from fact_zone_community_part_classification""")
 COMM_MED = PARTS_ALL.groupby('community')['level'].median().to_dict()
 
+# ------------------------------------------------------- REPORT-2 · water-adjusted part ranks
+#
+# The parts page already ranks each part's cover floor against the same community elsewhere.
+# That column does NOT hold wetness constant: within Inland Floodplain the floor rises about
+# +0.285 pp per point of wetness across a 6%-59% range, so a dry part reads as poor country for
+# a reason that has nothing to do with how it is faring. REPORT-2 adds a second column ranking
+# the part's DEPARTURE FROM ITS OWN EXPECTATION, which does hold wetness constant.
+#
+# Nothing is refitted and no residual is recomputed here (spec §4). Both quantities are read
+# whole from the registered PARTREG table; this module only ranks them.
+#
+# Ranks are WITHIN COMMUNITY across all 115 supported parts — not within the paddock (which
+# would manufacture a first/second/third in every paddock and invite exactly the reading the
+# part-grain argument exists to prevent) and not across the property (an Inland rank and an
+# Aeolian rank are positions in different distributions). The CSV's own
+# `whole_record__residual_rank_1_is_largest_shortfall` ranks across all 115 together and is
+# therefore NOT the column the reports need.
+#
+# Direction: rank 1 = worst on both columns, matching the existing floor column. A silent
+# direction flip here would be the hardest error in this batch to catch downstream.
+require(PARTREG, 'PARTREG_part_residuals.csv (pack v1.2)')
+_pr = pd.read_csv(PARTREG).rename(columns={
+    'whole_record__floor_mean': 'floor', 'whole_record__inund_mean': 'inund',
+    'whole_record__residual': 'residual'})
+_pr['rank_floor'] = _pr.groupby('community')['floor'].rank(method='min').astype(int)
+_pr['rank_water'] = _pr.groupby('community')['residual'].rank(method='min').astype(int)
+_pr['n_of'] = _pr.groupby('community')['part_id'].transform('count')
+
+# The join is (zone_fid, community) — both tables carry the full community string, so no
+# short-name mapping is interposed. A mapping dict here would be a second place for the
+# community vocabulary to live and a silent way to drop a part.
+_chk = PARTS_ALL.merge(q("select zone_fid, zone_name from dim_management_zone"), on='zone_name') \
+    .merge(_pr[['zone_fid', 'community']], on=['zone_fid', 'community'], how='outer', indicator=True)
+if (_chk._merge != 'both').any():
+    sys.exit(f'FAIL: PARTREG does not cover the classified parts one-for-one — '
+             f'{(_chk._merge != "both").sum()} unmatched of {len(_chk)}. Check the join keys.')
+
+# The floor column already on the parts page is computed from the classification table's own
+# `level`. If ranking PARTREG's floor disagreed with it, the two columns beside each other on
+# one row would be reading different objects. Asserted, not assumed.
+_cmp = PARTS_ALL.merge(q("select zone_fid, zone_name from dim_management_zone"), on='zone_name') \
+    .merge(_pr[['zone_fid', 'community', 'rank_floor']], on=['zone_fid', 'community'])
+_cmp['rank_build'] = _cmp.groupby('community')['level'].rank(method='min').astype(int)
+if (_cmp.rank_build != _cmp.rank_floor).any():
+    _d = _cmp[_cmp.rank_build != _cmp.rank_floor]
+    sys.exit(f'FAIL: the floor rank on the parts page disagrees with PARTREG on '
+             f'{len(_d)} parts, e.g. {_d.iloc[0].zone_name}/{_d.iloc[0].community}: '
+             f'page {_d.iloc[0].rank_build} vs PARTREG {_d.iloc[0].rank_floor}.')
+
+# Spec §5's stated invariant, asserted rather than eyeballed: Bala 29ca's Aeolian and Riverine
+# thirds sit near their communities' dry ends, so both columns must agree on them; only its
+# Inland third moves. If the dry thirds move, the join is wrong.
+_B29 = 'Bala 29ca'      # one home; also keeps the digits out of an f-string, where the prose
+                        # lint cannot tell a paddock name from a typed result number
+_b29 = _pr[_pr.paddock_name == _B29].set_index('community')
+for _c, _short in (('Aeolian Chenopod Shrublands', 'Aeolian'),
+                   ('Riverine Chenopod Shrublands', 'Riverine')):
+    _row = _b29.loc[_c]
+    if _row.rank_floor != _row.rank_water:
+        sys.exit(f'FAIL: {_B29} {_short} moves {_row.rank_floor} -> {_row.rank_water} '
+                 f'between the two rankings. The spec says it must not; the join is wrong.')
+if _b29.loc['Inland Floodplain Shrublands / Swamps'].rank_floor == \
+        _b29.loc['Inland Floodplain Shrublands / Swamps'].rank_water:
+    sys.exit(f'FAIL: {_B29} Inland does not move between the two rankings. '
+             'It is the one part that must; the join or the direction is wrong.')
+
+PART_RANK = {(int(x.zone_fid), x.community): (int(x.rank_floor), int(x.rank_water), int(x.n_of))
+             for _, x in _pr.iterrows()}
+
+# The derived table, emitted for QA to check the reports against by an independent path.
+# Registration as a table asset is session 1's, not this module's — flagged, not attempted.
+_out = os.path.join(TABLES, 'REPORT2_part_ranks.csv')
+_pr[['part_id', 'zone_fid', 'paddock_name', 'community', 'community_short', 'conserved',
+     'n_pixels_part', 'area_ha', 'floor', 'inund', 'residual',
+     'rank_floor', 'rank_water', 'n_of']].sort_values(['community', 'rank_water']).to_csv(
+    _out, index=False)
+print(f'REPORT-2 OK — {len(_pr)} parts ranked within community '
+      f'({", ".join(f"{k.split()[0]} {v}" for k, v in _pr.groupby("community").size().items())}); '
+      f'wrote {os.path.basename(_out)}')
+
 # network-level counts, derived (a typed literal is not a check)
 NET = q("""select
    sum(treed_plot_flag=0) n_nontreed, sum(treed_plot_flag=1) n_treed, count(*) n_total
@@ -208,12 +288,14 @@ def paddock_record(name):
     parts = []
     for _, x in pc.iterrows():
         share = next((cc['share'] for cc in r['composition'] if cc['community'] == x.community), None)
+        # REPORT-2: rank against the same community elsewhere on cover (existing) and on
+        # departure from expectation (new). Both read from PARTREG, both rank 1 = worst.
+        _rf, _rw, _rn = PART_RANK[(fid, x.community)]
         parts.append({
             'community': x.community, 'short': COMM_SHORT.get(x.community, x.community),
             'place': COMM_PLACE.get(x.community, x.community),
             'level': float(x['level']), 'vs_median': float(x['level'] - COMM_MED[x.community]),
-            'rank': int((PARTS_ALL[PARTS_ALL.community == x.community]['level'] < x['level']).sum() + 1),
-            'n_of': int((PARTS_ALL.community == x.community).sum()),
+            'rank': _rf, 'rank_water': _rw, 'n_of': _rn,
             'state': x.state_registered, 'state_words': STATE_WORDS[x.state_registered],
             'marginal': bool(x.marginal_flag), 'robust_changed': bool(x.robustness_changed),
             'drop2': x.state_drop2wettest, 'trend_z': float(x.trend_z),

@@ -5,10 +5,9 @@ least informative one: a checker that has only ever agreed with the thing it che
 shown to disagree with anything. This injects each defect class into a copy of the real batch and
 asserts the checker rejects it.
 
-Three injections, one per class:
-  1. FOOTPRINT  "the property" given an area
-  2. FOOTPRINT  a band area that no longer sums to the stated in-scope area
-  3. C10        a document missing the two-flood-rules sentence
+One injection per defect class — see CASES at the foot of the file for the current list. Each
+is a WRONG VALUE the checker must reject, not merely an input that makes it crash: a fixture
+that only breaks the code path proves reachability, not detection (Ruling J).
 
 Nothing under Output/ is modified: the fixture is a temp GAYINI_ROOT holding doctored copies.
 
@@ -19,7 +18,7 @@ import glob, json, os, re, shutil, subprocess, sys, tempfile, zipfile
 HERE = os.path.dirname(os.path.abspath(__file__))
 MOD  = os.path.dirname(HERE)
 sys.path.insert(0, MOD)
-from config import DOCS_DIR, UNITS_DIR                          # noqa: E402
+from config import DOCS_DIR, UNITS_DIR, TABLES                  # noqa: E402
 from docxset import built_docx                                  # noqa: E402
 
 
@@ -47,6 +46,13 @@ def build_fixture(root, mode):
         shutil.copy(f, units)
     for f in built_docx(DOCS_DIR):
         shutil.copy(f, docs)
+    # REPORT-2's ranks table resolves from GAYINI_ROOT too, so the fixture needs its own copy
+    # or the unmutated case fails on a missing file rather than passing clean.
+    tables = os.path.join(root, 'Output', 'tables')
+    os.makedirs(tables, exist_ok=True)
+    ranks = os.path.join(TABLES, 'REPORT2_part_ranks.csv')
+    if os.path.exists(ranks):
+        shutil.copy(ranks, tables)
 
     target = os.path.join(docs, 'Gayini_paddock_report_Bala_28ca.docx')
     if mode == 'property_area':
@@ -94,6 +100,28 @@ def build_fixture(root, mode):
                 'Across the record the difference narrowed'):
             sys.exit('STOP: R-16 anchor not found in the fixture document')
         os.replace(tmp, t2)
+    elif mode == 'report2_direction_flip':
+        # REPORT-2 §2: rank 1 = largest shortfall on BOTH columns. A silent direction flip is
+        # the hardest error here to catch downstream, because every label still reads as valid
+        # English — "among the highest of 61 for its water" on the part that is the worst.
+        # Reverse the water rank in the ranks table and the built labels must stop matching.
+        import csv as _csv
+        p = os.path.join(tables, 'REPORT2_part_ranks.csv')
+        rows = list(_csv.DictReader(open(p, encoding='utf8')))
+        for x in rows:
+            x['rank_water'] = str(int(x['n_of']) + 1 - int(x['rank_water']))
+        with open(p, 'w', encoding='utf8', newline='') as fh:
+            w = _csv.DictWriter(fh, fieldnames=rows[0].keys()); w.writeheader(); w.writerows(rows)
+    elif mode == 'report2_missing_rank':
+        # The pre-guard builder fell through to "among the highest" for a part with no rank.
+        # Bala 29ca's Aeolian third is rank 1 of 17 — the WORST of its community — and rendered
+        # exactly that way. Inject that sentence back and the check must reject it.
+        t2 = os.path.join(docs, 'Gayini_paddock_report_Bala_29ca.docx')
+        tmp = t2 + '.tmp'
+        if not doctor_docx(t2, tmp, 'lowest of 17 for its water',
+                           'among the highest of 17 for its water'):
+            sys.exit('STOP: REPORT-2 missing-rank anchor not found in the fixture document')
+        os.replace(tmp, t2)
     elif mode == 'two_rules':
         tmp = target + '.tmp'
         # the sentence the spec requires in every report
@@ -119,6 +147,8 @@ CASES = [
     ('r8_zero_pct',    1, 'R-8',         'a community printed at 0% must be rejected'),
     ('r15_parts_verdict', 1, 'R-15',     'recovery attributed to parts that are not recovering must be rejected'),
     ('r16_gap_pattern', 1, 'R-16',       'a closing gap asserted where the gap does not move must be rejected'),
+    ('report2_direction_flip', 1, 'REPORT-2', 'a reversed water rank must be rejected'),
+    ('report2_missing_rank', 1, 'REPORT-2',   'the pre-guard "among the highest" label on the worst part must be rejected'),
 ]
 
 
