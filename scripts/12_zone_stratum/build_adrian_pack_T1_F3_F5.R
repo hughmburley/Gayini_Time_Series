@@ -304,7 +304,10 @@ f5 <- ggplot(res, aes(mean_flood, mean_floor)) +
   geom_text(data = lab, aes(x = lx, y = ly, label = calltxt),
             hjust = 0, size = 3.0, colour = "grey15") +
   labs(title = "Cover follows water, and the exceptions are the story",
-       subtitle = sprintf("One point per paddock. Line = the registered expectation (%.1f + %.3f x flood %%). Shaded band = plus or minus one typical miss (%.1f pp).",
+       # RULING AZ-a: was "%.1f + %.3f x flood %%". "flood %%" names no denominator, and a reader
+       # who has just been told the axis is a share of cells has no reason to carry that across
+       # to the equation. The loose phrasing is what let the between-year vocabulary in.
+       subtitle = sprintf("One point per paddock. Line = the registered expectation (%.1f + %.3f x wet cell share %%). Shaded band = plus or minus one typical miss (%.1f pp).",
                           INT, SLP, SD),
        # RULING AZ, 7 Aug 2026: was "Mean annual flood frequency (% of years wet)", which
        # states a denominator of YEARS. This axis plots mean_flood from
