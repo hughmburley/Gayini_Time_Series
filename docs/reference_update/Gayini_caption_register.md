@@ -208,6 +208,41 @@ single-community note, both of which belong in the legend text rather than in a 
 
 ---
 
+# Figure · The same country, two ways of looking at it
+
+**File:** `M5_dual_grain_floor_and_flood.png`
+**Status:** `DRAFT` · 7 August 2026 — **corrected under Ruling AY, not yet re-rendered**
+**Producer:** `scripts/12_zone_stratum/build_T11_v2_dual_grain.R`
+
+## Colour-scale labels
+
+> cover scale: veg_p05_spatial (%)
+>
+> flood scale: share of cells seen wet (%), mean over years
+
+## Caption clause, corrected
+
+> Top row is how much cover the poorest patches carry; bottom row is what share of its cells were
+> seen wet in a year, averaged over the record. That is a within-year extent, not how often the
+> ground floods — between-year flood frequency is a different quantity with no time axis.
+
+## Superseded — kept, not deleted
+
+~~Cover scale label: `veg_p05 (%)`. The panels plot `AVG(veg_p05_spatial)`, so this named the census
+temporal floor — the pair the ground-cover metadata record calls the most confusable in the project.~~
+
+~~Flood scale label: `flood (% yrs)`. The panels plot `AVG(flood_frac_pct)`, a share of cells within
+a year. `% yrs` asserts a denominator of years and names `census_flood_frequency_pct`.~~
+
+~~Caption clause: *"bottom row is how often the ground floods"* — the between-year framing of a
+within-year quantity.~~
+
+**Not re-rendered.** The producer registers as it renders, and registration is gated. The registry
+row still carries the superseded caption; updating it is proposed, not written. Carried as **C6** in
+the V12→V14 change list.
+
+---
+
 # Pending
 
 Captions not yet drafted, listed so the gap is visible rather than forgotten.

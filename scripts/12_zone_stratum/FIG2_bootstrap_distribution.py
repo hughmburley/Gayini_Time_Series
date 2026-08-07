@@ -123,8 +123,8 @@ print(f"  its interval is NOT registered, so it is computed here with the same p
       f"and seed and labelled as such\n")
 
 # ---------------------------------------------------------------- the figure
-fig = plt.figure(figsize=(15.0, 7.2), dpi=200, facecolor=BG)
-fig.subplots_adjust(left=0.05, right=0.985, top=0.775, bottom=0.245, wspace=0.16)
+fig = plt.figure(figsize=(15.0, 8.6), dpi=200, facecolor=BG)
+fig.subplots_adjust(left=0.05, right=0.985, top=0.810, bottom=0.335, wspace=0.16)
 axA, axB = fig.add_subplot(1, 2, 1), fig.add_subplot(1, 2, 2)
 for a in (axA, axB):
     a.set_facecolor("#FFFFFF")
@@ -144,7 +144,9 @@ clipped = {fid: int(((D[fid] < CLIP_LO) | (D[fid] > CLIP_HI)).sum()) for fid, *_
 lo, hi = CLIP_LO, CLIP_HI
 binsA = np.linspace(lo, hi, 70)
 for fid, lab, cs, col in SETS:
-    d = np.clip(D[fid], CLIP_LO, CLIP_HI)
+    # DROPPED, not stacked. Clipping into the end bin produced a spike at CLIP_LO that
+    # read as a mode of the Aeolian distribution; it was an artefact of the disposal.
+    d = D[fid][(D[fid] >= CLIP_LO) & (D[fid] <= CLIP_HI)]
     axA.hist(d, bins=binsA, color=col, alpha=0.42, zorder=2,
              label=f"{lab}   {float(FITS[fid]['slope']):+.3f}")
     axA.axvline(float(FITS[fid]["slope"]), color=col, lw=1.8, zorder=4)
@@ -160,13 +162,15 @@ la = axA.legend(loc="upper right", fontsize=8.6, frameon=True, facecolor="#FFFFF
                 edgecolor="#DDD8CC", labelcolor=BODY, title="solid line = observed slope")
 la.get_title().set_fontsize(8.0); la.get_title().set_color(MUTED)
 la.get_frame().set_linewidth(0.8)
-_cl = ", ".join(f"{lab} {clipped[fid]}" for fid, lab, _, _ in SETS if clipped[fid])
-fig.text(0.05, 0.222,
-         f"Panel A axis clipped to [{CLIP_LO:+.1f}, {CLIP_HI:+.1f}]; draws outside are stacked into "
-         f"the end bins — {_cl}. Aeolian's 2.5th percentile is "
-         f"{np.quantile(D['2.6_aeolian'], 0.025):+.2f} and its 97.5th "
-         f"{np.quantile(D['2.6_aeolian'], 0.975):+.2f}; the lower bound lies off the axis.",
-         fontsize=7.8, color=MUTED, ha="left")
+_cl = ", ".join(f"{clipped[fid]} of {len(D[fid])} {lab}" for fid, lab, _, _ in SETS
+                if clipped[fid])
+import textwrap as _t0
+fig.text(0.05, 0.278, _t0.fill(
+    f"Panel A axis clipped to [{CLIP_LO:+.1f}, {CLIP_HI:+.1f}]; draws outside it are DROPPED from the "
+    f"histogram, not stacked into the end bins, which would have put a false mode at the clip — {_cl}. "
+    f"Aeolian's 2.5th percentile is {np.quantile(D['2.6_aeolian'], 0.025):+.2f} and its 97.5th "
+    f"{np.quantile(D['2.6_aeolian'], 0.975):+.2f}; the lower bound lies off the axis.", 196),
+    fontsize=7.8, color=MUTED, ha="left", va="top", linespacing=1.6)
 
 loB = min(pad_d.min(), D["2.3_weighted"].min()); hiB = max(pad_d.max(), D["2.3_weighted"].max())
 binsB = np.linspace(loB, hiB, 60)
@@ -189,24 +193,31 @@ lb = axB.legend(loc="upper right", fontsize=8.6, frameon=True, facecolor="#FFFFF
 lb.get_title().set_fontsize(8.0); lb.get_title().set_color(MUTED)
 lb.get_frame().set_linewidth(0.8)
 
-fig.text(0.05, 0.945, "Methods and questions", fontsize=10.5, color=BODY, ha="left")
-fig.text(0.05, 0.895, "How much the fitted slope moves when the paddocks are resampled",
+fig.text(0.05, 0.955, "Methods and questions", fontsize=10.5, color=BODY, ha="left")
+fig.text(0.05, 0.912, "How much the fitted slope moves when the paddocks are resampled",
          fontsize=18, color=HEAD, weight="bold", ha="left")
-fig.text(0.05, 0.845,
+fig.text(0.05, 0.868,
          "This shows how far the slope could sit from where it landed, given which paddocks happened "
          "to be measured. It does not show how often the observed slope was found: the resampling is "
          "centred on it by construction.",
          fontsize=9.2, color=HEAD, ha="left")
 import textwrap
-fig.text(0.05, 0.175, textwrap.fill(
+_skew = {fid: float(np.quantile(D[fid], 0.5)) - float(FITS[fid]["slope"]) for fid, *_ in SETS}
+fig.text(0.05, 0.232, textwrap.fill(
     "Panel A: the pooled line is compact and sits clear of the three community distributions. Inland "
     "Floodplain is compact too; both chenopod distributions are wide and sprawl across a range that "
-    "includes zero, which is why no community line is drawn on the cover-and-water figure. Panel B: "
+    "includes zero, which is why no community line is drawn on the cover-and-water figure. Aeolian is "
+    f"also the only distribution that is badly skewed: its observed slope is "
+    f"{float(FITS['2.6_aeolian']['slope']):+.3f} while its bootstrap median is "
+    f"{np.quantile(D['2.6_aeolian'], 0.5):+.3f}, so the observed value sits well off the centre of its "
+    "own distribution — a stronger statement about how unstable that fit is than the interval width "
+    f"alone. The pooled and Inland medians sit within {max(abs(_skew['2.3_weighted']), abs(_skew['2.6_inland'])):.3f} "
+    "of their observed slopes. Panel B: "
     "the paddock-grain and part-grain distributions are almost entirely superimposed — changing the "
     "unit from the paddock to the paddock × community part moved the answer by less than the width "
     "of either distribution.", 172),
     fontsize=8.8, color=HEAD, ha="left", va="top", linespacing=1.6)
-fig.text(0.05, 0.072, textwrap.fill(
+fig.text(0.05, 0.088, textwrap.fill(
     f"2,000 draws, resampling paddocks with replacement, clustered on zone_fid, seed {BOOT_SEED} "
     "recorded. 115 parts sit in 64 paddocks, so 64 clusters — not 115 observations — bound the "
     "precision. Recovered draws reproduce the registered 2.5th, 50th and 97.5th percentiles exactly "

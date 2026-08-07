@@ -130,10 +130,19 @@ labdf <- data.frame(x = lxy[,1], y = lxy[,2] - 0.075 * yr, lab = lc$zone_name)
 
 p11 <- deco(panel(foot,    "floor", RAMP_FLOOR, lim_floor, "Cover floor — paddock grain (64)",  FALSE, NULL))
 p12 <- deco(panel(pgv_ok,  "floor", RAMP_FLOOR, lim_floor, "Cover floor — part grain (115)",    TRUE,
-                  "veg_p05\n(%)", sub, labdf))
+                  # RULING AY, 7 Aug 2026: was "veg_p05 (%)", which names the CENSUS TEMPORAL
+                  # floor. These panels plot AVG(veg_p05_spatial) - the SPATIAL floor, taken
+                  # across a unit's cells within one water year and then averaged over years.
+                  # The two differ by up to 17 points at fine grain and are never compared.
+                  "veg_p05_spatial\n(%)", sub, labdf))
 p21 <- deco(panel(foot,    "flood", RAMP_FLOOD, lim_flood, "Flood frequency — paddock grain (64)", FALSE, NULL))
 p22 <- deco(panel(pgv_ok,  "flood", RAMP_FLOOD, lim_flood, "Flood frequency — part grain (115)",   TRUE,
-                  "flood\n(% yrs)", sub))
+                  # RULING AY: was "flood (% yrs)", which states a denominator of YEARS and so
+                  # names census_flood_frequency_pct - a per-cell long-run property with no
+                  # time axis. These panels plot AVG(flood_frac_pct): the share of a unit's
+                  # CELLS seen wet within one water year, averaged over the 35 years. The
+                  # "% yrs" form asserted the wrong denominator in words. Never use it here.
+                  "share of cells\nseen wet (%)\nmean over years", sub))
 
 key <- data.frame(x = c(1, 2), y = c(1, 1),
                   lab = c(NOT_ASSESSED, BELOW_SUPPORT), f = c(COL_NA, COL_SUB))
@@ -168,7 +177,9 @@ cap1 <- paste0(
   "Support level: pixel (35-year means, non-treed ground). The same two measurements, drawn twice. ",
   "The left column shows each paddock as a single value; the right column breaks each paddock into ",
   "its vegetation communities. Top row is how much cover the poorest patches carry; bottom row is ",
-  "how often the ground floods. The two rows look alike, which is the point — water organises cover ",
+  "what share of its cells were seen wet in a year, averaged over the record. That is a within-year ",
+  "extent, not how often the ground floods — between-year flood frequency is a different quantity ",
+  "with no time axis (Ruling AY). The two rows look alike, which is the point — water organises cover ",
   "more strongly than any management boundary does. The two columns do not, which is the second ",
   sprintf("point: a paddock average hides a median of %.1f percentage points of difference between the ", med_spr),
   sprintf("parts of the same paddock, and up to %.1f. Dinan 1 reads %.1f as a paddock; its three parts read ", max_spr, d1p),
