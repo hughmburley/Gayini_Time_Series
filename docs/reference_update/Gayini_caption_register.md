@@ -56,9 +56,11 @@ deliverables register applies: one claim, one sentence a non-specialist can foll
 
 ## Legend keys
 
-> conserved paddocks (ringed)
+> conserved parts (ringed)
 >
 > larger circles are larger parts
+>
+> cropping-era line, for comparison (panel B)
 
 ## Legend
 
@@ -80,8 +82,8 @@ deliverables register applies: one claim, one sentence a non-specialist can foll
 > within them, so part of any distance from the line is which community a part sits in. These slopes
 > describe how places differ from one another over the long run, not what an extra point of
 > inundation would add to a paddock, which is a different and smaller quantity. The eight conserved
-> paddocks are ringed and no line is fitted to them: eight parts in one block of the property is not
-> a comparison set.
+> parts are ringed and no line is fitted to them: eight parts in one block of the property is not a
+> comparison set.
 
 ## Methods
 
@@ -143,36 +145,59 @@ irrigation bank cuts are dated 2018. The four years between belong to neither wi
 # Figure · Which parts hold more or less cover than their water predicts
 
 **File:** `PARTREG_S2_residual_maps_three_periods.png`
-**Status:** `DRAFT` · 7 August 2026 — footer replacement only, panels unchanged
+**Status:** `DRAFT` · 7 August 2026, second pass — caption restyled to match the scatter
+**Panel order:** C, A, B, as on the scatter.
 
-## Footer, replacing the current tick note
+## Title
 
-> One common colour scale across all three panels, at ±8.1 and ±16.2 pp. **8.08 pp is the average
-> miss across all parts. It is not the typical miss anywhere in particular.** Distance from the line
-> is about three times larger on the driest quarter of the property than on the wettest — near 12.8
-> pp against 3.8 pp. Dry parts therefore appear more extreme, and wet parts less extreme, than they
-> are relative to their own country. Compare a part to others at similar wetness, not to the whole
-> map.
->
-> No cause is attributed. A residual is a departure from a fitted expectation. It is not condition
-> and it is not management. The line is fitted across all three communities pooled, so part of any
-> residual is which community the part sits in.
->
+> Which parts hold more or less cover than their water predicts
+
+## Legend
+
+> Residual from the fitted cover-and-water expectation, mapped on the paddock × community part, three
+> periods. Each panel is measured against its own period's fitted line, so the three read as one
+> comparable set: panel C the whole record 1988–2022, panel A the cropping era 1988–2013, panel B the
+> post-management window 2018–2022. The four years 2014–2017 fall in no period. 115 parts are
+> mapped; 27 paddocks hold a single community and appear undivided, which is not missing data. Blue
+> is more cover than the part's water predicts and red is less, on one common colour scale across
+> all three panels with ticks at ±8.1 and ±16.2 pp. 8.08 pp is the average miss across all parts, not
+> the typical miss anywhere in particular: distance from the line is about three times larger on the
+> driest quarter of the property than on the wettest, near 12.8 pp against 3.8 pp, so dry parts
+> appear more extreme and wet parts less extreme than they are relative to their own country.
+> Compare a part to others at similar wetness, not to the whole map. No cause is attributed — a
+> residual is a departure from a fitted expectation, not condition and not management — and the line
+> is fitted across all three communities pooled, so part of any residual is which community the part
+> sits in. The eight conserved parts are outlined dashed and no line is fitted to them.
+
+## Methods
+
 > Support: pixel, aggregated to part. 115 parts, whole record 1988–2022. Residuals are measured
-> against each period's own fitted line. **Every interval behind these numbers is conditional on the
-> inputs being correct** — sampling variation only, not the satellite products' own classification
-> error.
+> against each period's own fitted line. Every interval behind these numbers is conditional on the
+> inputs being correct and carries sampling variation only, not the classification error of the
+> satellite products.
 
 ## Sources
 
 | number | source |
 |---|---|
 | 8.08 pp | fit `2.3_weighted`, `resid_sd` |
-| 12.8 pp driest quarter · 3.8 pp wettest | `cap_residual_sd_water_quartile_1` … `_4`. Reproduced in R at pack v1.3 T0 and **registered**; sample (n−1) SD within type-7 quartiles |
+| 12.8 pp driest quarter · 3.8 pp wettest | `cap_residual_sd_water_quartile_1` … `_4`, registered at pack v1.3 T0 |
+| +0.547 · +0.592 · +0.324 panel slopes | fits `S2_whole_record_common`, `S2_cropping_era_common`, `S2_post_management_common` |
 
-**This footer change is not optional.** The current wording invites a reader to treat 8.08 pp as a
-typical miss everywhere, which overstates dry parts and understates wet ones. Bala 29ca's two dry
-thirds are the parts most affected.
+## What changed in this pass, and why
+
+**The caption is now one continuous block in two sizes**, matching the scatter. It had three
+paragraphs separated by blank lines beneath a rust-coloured subtitle above a grey body — three
+treatments where the scatter has two. Two figures in one pack styled differently reads as unfinished.
+
+**The rust subtitle is absorbed into the legend.** It carried the per-period basis and the
+single-community note, both of which belong in the legend text rather than in a second heading.
+
+## Superseded — kept, not deleted
+
+~~The rust subtitle and the three-paragraph footer of the first pass, 7 August 2026.~~
+
+~~The original tick note, which let 8.08 pp read as the typical miss everywhere.~~
 
 ---
 

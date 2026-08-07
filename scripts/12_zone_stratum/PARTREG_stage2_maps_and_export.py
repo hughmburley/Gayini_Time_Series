@@ -105,8 +105,8 @@ print(f"[scale] common symmetric scale +/-{RLIM:.2f} pp; tick unit 1 SD = {SD_UN
       f"(whole record, part grain)")
 
 # ----------------------------------------------------------------- the maps
-fig = plt.figure(figsize=(16.0, 7.8), dpi=200, facecolor=BG)
-fig.subplots_adjust(left=0.015, right=0.905, top=0.760, bottom=0.335, wspace=0.03)
+fig = plt.figure(figsize=(16.0, 8.2), dpi=200, facecolor=BG)
+fig.subplots_adjust(left=0.015, right=0.905, top=0.800, bottom=0.360, wspace=0.03)
 norm = Normalize(-RLIM, RLIM)
 for i, (code, title, plabel, ylab) in enumerate(PERIODS):
     ax = fig.add_subplot(1, 3, i + 1)
@@ -133,26 +133,23 @@ cb.set_label("Cover above (blue)\nor below (red)\nexpectation  (pp)", fontsize=8
              color=BODY, labelpad=10)
 
 # eyebrow rule, as on the scatter: plain words, no version or grain jargon on the face
-fig.text(0.015, 0.952, "Ground cover and water", fontsize=10.5, color=BODY, ha="left")
-fig.text(0.015, 0.900, "Which parts hold more or less cover than their water predicts",
-         fontsize=18, color=HEAD, weight="bold", ha="left")
-fig.text(0.015, 0.856,
-         __import__("textwrap").fill(
-         "Each panel is measured against its OWN period's fitted line, so the three read as one comparable set. "
-         "115 parts — 27 paddocks hold a single community and appear undivided. 2014–2017 is excluded as a "
-         "transition. Dashed outline = the eight conserved parts.", 168),
-         fontsize=9.2, color=RUST, ha="left", va="top", linespacing=1.5)
-# T2: the footer is REPLACED and comes from the caption register, not from this file.
-# The task list makes this edit non-optional - the previous wording invited a reader to
-# treat 8.08 pp as the typical miss everywhere, overstating dry parts and understating wet.
 import sys as _sys, textwrap as _tw
 _sys.path.insert(0, str(ROOT / "scripts" / "13_pack"))
-from caption_register import blocks as _blocks, strip_md as _strip     # noqa: E402
-_y = 0.272
-for _para in _blocks("PARTREG_S2_residual_maps_three_periods.png", "Footer"):
-    _t = _tw.fill(_strip(_para), 168)
-    fig.text(0.015, _y, _t, fontsize=8.2, color=HEAD, ha="left", va="top", linespacing=1.55)
-    _y -= 0.0235 * (_t.count(chr(10)) + 1) + 0.016
+from caption_register import blocks as _b, strip_md as _sm      # noqa: E402
+_F = "PARTREG_S2_residual_maps_three_periods.png"
+
+fig.text(0.015, 0.952, "Ground cover and water", fontsize=10.5, color=BODY, ha="left")
+fig.text(0.015, 0.900, _sm(_b(_F, "Title")[0]), fontsize=18, color=HEAD, weight="bold", ha="left")
+
+# ONE CONTINUOUS BLOCK IN TWO SIZES, matching the scatter. The rust subtitle and the
+# three blank-line-separated paragraphs of the first pass are gone: two figures in one
+# pack styled differently reads as unfinished.
+_y = 0.300
+_cap = _tw.fill(_sm(_b(_F, "Legend")[0]), 196)
+fig.text(0.015, _y, _cap, fontsize=9.0, color=HEAD, ha="left", va="top", linespacing=1.62)
+_y -= 0.0248 * (_cap.count(chr(10)) + 1) + 0.022
+_meth = _tw.fill(_sm(_b(_F, "Methods")[0]), 218)
+fig.text(0.015, _y, _meth, fontsize=8.0, color=MUTED, ha="left", va="top", linespacing=1.62)
 
 FIG.parent.mkdir(parents=True, exist_ok=True)
 fig.savefig(FIG, dpi=200, facecolor=BG)

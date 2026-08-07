@@ -116,6 +116,9 @@ h.append(plt.Line2D([], [], marker="o", ls="", markerfacecolor="#FFFFFF", marker
                     markeredgewidth=1.8, markersize=8, label=strip_md(keys[0])))
 h.append(plt.Line2D([], [], marker="o", ls="", markerfacecolor="#CFCABA",
                     markeredgecolor="#8A8378", markersize=11, label=strip_md(keys[1])))
+# the dashed reference line was unexplained on the face once the old annotation went
+h.append(plt.Line2D([], [], color=LINE, lw=1.4, ls=(0, (5, 4)), alpha=0.7,
+                    label=strip_md(keys[2])))
 leg = axes[2].legend(handles=h, loc="lower right", fontsize=9.0, frameon=True,
                      facecolor="#FFFFFF", edgecolor="#DDD8CC", labelcolor=BODY)
 leg.get_frame().set_linewidth(0.8)
