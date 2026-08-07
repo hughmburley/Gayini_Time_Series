@@ -155,6 +155,13 @@ FIG.parent.mkdir(parents=True, exist_ok=True)
 fig.savefig(FIG, dpi=200, facecolor=BG)
 plt.close(fig)
 
+# The QGIS style is written from RLIM and CMAP - the same objects the printed maps use -
+# so screen and page cannot diverge. Written standalone once, it did: see the module.
+from write_residual_qml import write_qml                       # noqa: E402
+_lim, _nc = write_qml(SP / 'PARTREG_part_residuals.qml', RLIM, CMAP)
+print(f'[wrote] PARTREG_part_residuals.qml  {_nc} classes, +/-{_lim:.4f} pp, from the '
+      f'printed maps own RLIM and CMAP')
+
 # ---------------------------------------------------------------------------------
 # FIG-2 section 2 - one page per period, same producer, looped.
 # The three-panel figure is legible as a set and illegible one panel at a time: Bala
