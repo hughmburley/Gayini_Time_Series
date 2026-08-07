@@ -103,6 +103,9 @@ for ax, (code, sec) in zip(axes, PANELS):
     ax.set_xticks([0, 10, 20, 30, 40, 50, 60]); ax.set_yticks([0, 20, 40, 60, 80, 100])
     ax.set_title(strip_md(blocks(F3, sec)[0]), fontsize=12.5, color=HEAD, weight="bold",
                  loc="left", pad=8)
+    # FIG-2 section 1: both statistics on the face, from the register
+    ax.text(0.035, 0.955, strip_md(blocks(F3, sec)[1]), transform=ax.transAxes,
+            fontsize=9.4, color=HEAD, va="top")
     ax.set_xlabel("share of the part's cells seen wet, mean over the period  (%)",
                   fontsize=9.5, color=BODY)
     if code == "whole_record":

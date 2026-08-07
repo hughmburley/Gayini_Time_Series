@@ -43,7 +43,10 @@ RUST, GOLD = "#9C5B2E", "#C79A3B"
 PAL = {"aeolian": ("#8A5F1E", "#C79A3B", "Aeolian Chenopod"),
        "riverine": ("#2A6560", "#3B8A8F", "Riverine Chenopod"),
        "inland": ("#1B4E86", "#2165AC", "Inland Floodplain")}
-STAMP = "I N T E R N A L   ·   N O T   F O R   D I S T R I B U T I O N"
+# FIG-2 section 3: these go to Adrian as a separate attachment, OUTSIDE the pack, so the
+# covering note's sentence stays true while a collaborator who should see them does.
+STAMP = ("P R O V I S I O N A L   ·   unregistered   ·   for reference, "
+         "not for onward circulation")
 FOOT1 = ("Support level: pixel, aggregated to the unit.  Unit construction: unzoned = 8-connected "
          "component within one community, outside every management zone; real parts = paddock × "
          "community.  Period 1988–2022, 35 water years.")
@@ -107,7 +110,7 @@ def furniture(fig, kicker, title, sub):
     fig.text(0.045, 0.962, kicker, fontsize=10.5, color=RUST, weight="bold", ha="left")
     fig.text(0.045, 0.917, title, fontsize=18, color=HEAD, weight="bold", ha="left")
     fig.text(0.045, 0.877, sub, fontsize=9.2, color=RUST, ha="left")
-    fig.text(0.985, 0.962, STAMP, fontsize=8.6, color="#B03A2E", weight="bold", ha="right")
+    fig.text(0.985, 0.962, STAMP, fontsize=8.2, color="#B03A2E", weight="bold", ha="right")
 
 
 def axstyle(ax):
@@ -216,15 +219,18 @@ axA.text(0.015, 0.965, "both slopes are within (unit fixed effects), pixel-weigh
 up = np.array([float(r["slope"]) for r in rows(T / "UNZONED_stageA1_per_patch_slopes.csv")])
 rp = np.array([float(r["slope"]) for r in rows(T / "WITHIN1_per_part_slopes.csv")])
 bins = np.linspace(0, 0.8, 33)
-axB.hist(np.clip(rp, 0, 0.8), bins=bins, color="#B9C4C0", edgecolor="#8A8378", lw=0.4, zorder=2,
-         label=f"real parts — {int((rp > 0).sum())} of {len(rp)} positive")
-axB.hist(np.clip(up, 0, 0.8), bins=bins, color="#2165AC", edgecolor="#1B4E86", lw=0.5, alpha=0.72,
-         zorder=3, label=f"unzoned patches — {int((up > 0).sum())} of {len(up)} positive")
+# DENSITIES, not counts: 91 patches against 115 parts, so raw bar heights are not
+# comparable and the unzoned distribution's apparent rightward shift is partly an n effect.
+axB.hist(np.clip(rp, 0, 0.8), bins=bins, density=True, color="#B9C4C0", edgecolor="#8A8378",
+         lw=0.4, zorder=2, label=f"real parts — {int((rp > 0).sum())} of {len(rp)} positive")
+axB.hist(np.clip(up, 0, 0.8), bins=bins, density=True, color="#2165AC", edgecolor="#1B4E86",
+         lw=0.5, alpha=0.72, zorder=3,
+         label=f"unzoned patches — {int((up > 0).sum())} of {len(up)} positive")
 axB.axvline(0, color="#B03A2E", lw=2.0, zorder=6)
 axB.text(0.006, axB.get_ylim()[1] * 0.96, "zero", fontsize=8.6, color="#B03A2E", weight="bold")
 axB.set_xlim(-0.03, 0.8)
 axB.set_xlabel("per-unit slope  (pp of cover per pp of wetness)", fontsize=10, color=BODY)
-axB.set_ylabel("units", fontsize=10, color=BODY)
+axB.set_ylabel("density  (area sums to 1 in each set)", fontsize=10, color=BODY)
 axB.set_title("B · every unit in both sets sits to the right of zero", fontsize=11.5,
               color=HEAD, weight="bold", loc="left", pad=8)
 lb = axB.legend(loc="upper right", fontsize=8.8, frameon=True, facecolor="#FFFFFF",
@@ -257,4 +263,4 @@ fig.savefig(f2, dpi=200, facecolor=BG); plt.close(fig)
 print(f"[wrote] {f2.name}  ({f2.stat().st_size/1024:.0f} KB)")
 print(f"\nmedian size: real parts {np.median(rpc):,.0f} cells, unzoned {np.median(uzc):,.0f} cells "
       f"({np.log10(np.median(rpc)) - np.log10(np.median(uzc)):.2f} decades)")
-print("INTERNAL - not registered, not for distribution.")
+print("PROVISIONAL - unregistered, for reference, not for onward circulation. Not in the pack.")

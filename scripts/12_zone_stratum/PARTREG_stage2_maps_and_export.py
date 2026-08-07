@@ -154,6 +154,51 @@ fig.text(0.015, _y, _meth, fontsize=8.0, color=MUTED, ha="left", va="top", lines
 FIG.parent.mkdir(parents=True, exist_ok=True)
 fig.savefig(FIG, dpi=200, facecolor=BG)
 plt.close(fig)
+
+# ---------------------------------------------------------------------------------
+# FIG-2 section 2 - one page per period, same producer, looped.
+# The three-panel figure is legible as a set and illegible one panel at a time: Bala
+# 29ca's thirds are a few millimetres across on it. IDENTICAL SCALE AND TICKS across
+# all four outputs, read from the SAME constants (RLIM, SD_UNIT, norm) that the
+# three-panel figure used, so they cannot diverge on a later run. The corrected footer
+# from the caption register goes on every one.
+for _code, _title, _plabel, _ylab in PERIODS:
+    f1 = plt.figure(figsize=(13.0, 10.4), dpi=200, facecolor=BG)
+    f1.subplots_adjust(left=0.02, right=0.86, top=0.855, bottom=0.300)
+    a1 = f1.add_subplot(111)
+    a1.set_facecolor("#FFFFFF"); a1.set_axis_off()
+    zones.plot(ax=a1, facecolor="#F1EEE6", edgecolor="#D8D2C4", linewidth=0.35, zorder=1)
+    draw.plot(ax=a1, column=f"{_code}__residual", cmap=CMAP, norm=norm,
+              edgecolor="#8A8378", linewidth=0.18, zorder=2)
+    _c = draw[draw.conserved == 1]
+    _c.boundary.plot(ax=a1, color="#1A1A1A", linewidth=1.3, linestyle=(0, (2.4, 1.8)), zorder=4)
+    # at full page the part labels become readable, which they are not on the three-panel
+    for _, _r in draw.iterrows():
+        _p = _r.geometry.representative_point()
+        a1.text(_p.x, _p.y, f"{_r['whole_record__residual' if _code == 'whole_record' else _code + '__residual']:+.0f}",
+                fontsize=4.6, color="#3A3A3A", ha="center", va="center", zorder=6)
+    _cax = f1.add_axes([0.875, 0.40, 0.014, 0.40])
+    _cb = f1.colorbar(plt.cm.ScalarMappable(norm=norm, cmap=CMAP), cax=_cax)
+    _cb.set_ticks(ticks); _cb.set_ticklabels([f"{t:+.1f}" for t in ticks])
+    _cb.ax.tick_params(colors=MUTED, labelsize=8.4, length=2)
+    _cb.outline.set_edgecolor("#CFCABA")
+    _cb.set_label("Cover above (blue)" + chr(10) + "or below (red)" + chr(10) +
+                  "expectation  (pp)", fontsize=8.6, color=BODY, labelpad=10)
+    f1.text(0.02, 0.955, "Ground cover and water", fontsize=10.5, color=BODY, ha="left")
+    f1.text(0.02, 0.912, _sm(_b(_F, "Title")[0]), fontsize=17, color=HEAD, weight="bold", ha="left")
+    f1.text(0.02, 0.878, f"{_title}  ·  {_plabel}  ·  {_ylab}  ·  numbers are the residual in "
+                         f"percentage points", fontsize=10.5, color=HEAD, ha="left")
+    _yy = 0.255
+    _cp = _tw.fill(_sm(_b(_F, "Legend")[0]), 158)
+    f1.text(0.02, _yy, _cp, fontsize=8.8, color=HEAD, ha="left", va="top", linespacing=1.62)
+    _yy -= 0.0205 * (_cp.count(chr(10)) + 1) + 0.020
+    f1.text(0.02, _yy, _tw.fill(_sm(_b(_F, "Methods")[0]), 176), fontsize=7.8, color=MUTED,
+            ha="left", va="top", linespacing=1.62)
+    _out = FIG.parent / f"PARTREG_S2_residual_map_{_code}.png"
+    f1.savefig(_out, dpi=200, facecolor=BG)
+    plt.close(f1)
+    print(f"[wrote] {_out.name}  ({_out.stat().st_size/1024:.0f} KB)  same scale +/-{RLIM:.2f}, "
+          f"ticks from the same constant")
 print(f"[wrote] {FIG.name}  ({FIG.stat().st_size/1024:.0f} KB)")
 
 # --------------------------------------------------------------- the export

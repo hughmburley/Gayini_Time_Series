@@ -45,14 +45,20 @@ deliverables register applies: one claim, one sentence a non-specialist can foll
 ## Panel C
 
 > C · whole record · 1988–2022
+>
+> r 0.687   ·   weighted R² 0.47
 
 ## Panel A
 
 > A · cropping era · 1988–2013
+>
+> r 0.684   ·   weighted R² 0.47
 
 ## Panel B
 
 > B · post-management · 2018–2022
+>
+> r 0.579   ·   weighted R² 0.34
 
 ## Legend keys
 
@@ -102,6 +108,7 @@ deliverables register applies: one claim, one sentence a non-specialist can foll
 | +0.324 · r 0.579 · [+0.192, +0.462] | fit `S2_post_management_common` |
 | +0.521, unweighted | fit `2.3_unweighted` |
 | +0.285 · [+0.18, +0.40] Inland | fit `2.6_inland` |
+| weighted R² 0.47 · 0.47 · 0.34 | r² of the stored `r` on fits `2.3_weighted`, `S2_cropping_era_common`, `S2_post_management_common`. Not refitted. **Weighted**, because the fits are pixel-weighted by part cell count and an unqualified R² invites an unweighted recomputation |
 | chenopod slopes span zero | fits `2.6_riverine` [−0.291, +1.121], `2.6_aeolian` [−6.438, +1.570] |
 | 0.0005 against the registered paddock line | `floor_flood_slope_64pdk` against fit `2.3_weighted` |
 | 66.7 → 75.0 across Inland wetness fifths | `cap_inland_floor_wetness_fifth_1` … `_5`, registered at pack v1.3 T0 |
