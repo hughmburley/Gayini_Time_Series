@@ -80,6 +80,10 @@ def blocks(figure_file: str, section_startswith: str) -> list[str]:
         raise KeyError(f"caption register has no entry for {figure_file}; "
                        f"it knows: {sorted(_CACHE)}")
     secs = _CACHE[figure_file]
+    # an EXACT heading wins over a prefix, or "Legend" silently returns "Legend keys"
+    exact = [k for k in secs if k.lower() == section_startswith.lower()]
+    if exact:
+        return secs[exact[0]]
     hits = [k for k in secs if k.lower().startswith(section_startswith.lower())]
     if not hits:
         raise KeyError(f"{figure_file}: no section starting '{section_startswith}'; "
@@ -93,6 +97,9 @@ def section_name(figure_file: str, section_startswith: str) -> str:
     if _CACHE is None:
         _parse.__wrapped__ if False else None
         blocks(figure_file, section_startswith)
+    exact = [k for k in _CACHE[figure_file] if k.lower() == section_startswith.lower()]
+    if exact:
+        return exact[0]
     hits = [k for k in _CACHE[figure_file]
             if k.lower().startswith(section_startswith.lower())]
     return hits[0]

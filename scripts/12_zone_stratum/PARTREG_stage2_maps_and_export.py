@@ -51,9 +51,12 @@ INK, BG, HEAD, BODY, MUTED, RUST = "#0F3947", "#F8F7F2", "#26302E", "#5F6B67", "
 RAMP = ["#8C3A2B", "#B2182B", "#E8A798", "#F5F0EC", "#A8C6E0", "#2171B5", "#0B3D73"]
 CMAP = LinearSegmentedColormap.from_list("gayini_residual", RAMP)
 
-PERIODS = [("cropping_era", "A · cropping era", "1988–2013", "26 water years"),
-           ("post_management", "B · post-management", "2018–2022", "5 water years"),
-           ("whole_record", "C · whole record", "1988–2022", "35 water years")]
+# Panel order C, A, B on BOTH figures, decided rather than inherited: the whole record
+# is the result and the two eras are the sensitivity test. Letters stay attached to
+# their periods, so a reader moving between the figures meets the same C, A and B.
+PERIODS = [("whole_record", "C · whole record", "1988–2022", "35 water years"),
+           ("cropping_era", "A · cropping era", "1988–2013", "26 water years"),
+           ("post_management", "B · post-management", "2018–2022", "5 water years")]
 
 # ------------------------------------------------------------------- inputs
 attr = {r["part_id"]: r for r in csv.DictReader(open(
@@ -129,8 +132,8 @@ cb.outline.set_edgecolor("#CFCABA")
 cb.set_label("Cover above (blue)\nor below (red)\nexpectation  (pp)", fontsize=8.6,
              color=BODY, labelpad=10)
 
-fig.text(0.015, 0.952, "P A R T   G R A I N   ·   R E S I D U A L   M A P S", fontsize=10.5,
-         color=RUST, weight="bold", ha="left")
+# eyebrow rule, as on the scatter: plain words, no version or grain jargon on the face
+fig.text(0.015, 0.952, "Ground cover and water", fontsize=10.5, color=BODY, ha="left")
 fig.text(0.015, 0.900, "Which parts hold more or less cover than their water predicts",
          fontsize=18, color=HEAD, weight="bold", ha="left")
 fig.text(0.015, 0.856,
