@@ -1,0 +1,3 @@
+"check","what","section","target","got","tolerance","agrees","halt_condition","expected_to_disagree"
+"part-year (115 parts in 64 paddocks)__within_slope","part-year (115 parts in 64 paddocks) pooled within slope","5",0.161271,0.161270968760519,0.001,TRUE,FALSE,FALSE
+"patch-year (93 unzoned patches)__within_slope","patch-year (93 unzoned patches) pooled within slope","5",0.210573,0.21057259836261,0.001,TRUE,FALSE,FALSE

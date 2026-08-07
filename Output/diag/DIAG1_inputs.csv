@@ -1,0 +1,8 @@
+role,name,path,rows,sha256_first50,note
+input,PARTREG_part_residuals.csv,Output/pack/PARTREG/tables/PARTREG_part_residuals.csv,115,e04b3134388791c7e3c8c320617b8c5016c621cab4cf5109aa3cd58b74874175,between source
+input,PARTREG_S2_regression_coefficients.csv,Output/pack/PARTREG/tables/PARTREG_S2_regression_coefficients.csv,8,df46cd3364fe8c5edba54b84a1164bd34a34a2b75f5b400ad1329731e1548914,coefficients
+input,PARTREG_part_year_floor_inund.csv,Output/tables/PARTREG_part_year_floor_inund.csv,4025,44caa792a790df5f9068ea3f09153ddb6c0bdae9bb1cdf8566dc2f5acd4728d6,part-year source
+input,UNZONED_stageA1_patch_year.csv,Output/tables/UNZONED_stageA1_patch_year.csv,3253,9bea92ec837e6a57c044c4560215ecc98fcc8cbf7a985f0d2a32d16a8d8f1eea,patch-year source
+boundary CSV written for R,DIAG1_between_parts.csv,Output/diag/analysis/DIAG1_between_parts.csv,345,77e3ef0aecd1497c187d930959110d994081c800b510c78004514a007126494a,read by R/diag/
+boundary CSV written for R,DIAG1_part_year.csv,Output/diag/analysis/DIAG1_part_year.csv,4025,1427adc27f162a7e520b44ac98249e9ae66da7472f7747dc2d61c8a3221f0d0c,read by R/diag/
+boundary CSV written for R,DIAG1_patch_year.csv,Output/diag/analysis/DIAG1_patch_year.csv,3253,f9d526890ca5bf781287dbc901b8366c3ec7308c388ac152abd37c1de3329a39,read by R/diag/

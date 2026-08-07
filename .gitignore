@@ -44,6 +44,22 @@ Output/*
 Output/pack/*
 !Output/pack/*.csv
 !Output/pack/*.md
+# DIAG-1 / SPAT-1 (Ruling BB, 7 Aug 2026): the assumptions record is tracked for
+# CITABILITY, not rebuildability. METHODS-REG cites this document, and a methods
+# appendix citing an artefact absent from the repository is the one-sided citation
+# XCHECK-1 flagged, made structural. The PANELS stay ignored - they are re-rendered
+# from the tracked tables. Same four-line shape as the pack rules above, and the
+# 'analysis/' subfolder needs its own pair because 'Output/diag/*' excludes the
+# DIRECTORY: those three boundary CSVs are the bytes every result row's checksum
+# refers to, so a citation cannot be verified without them.
+!Output/diag/
+Output/diag/*
+!Output/diag/*.csv
+!Output/diag/*.md
+!Output/diag/*.txt
+!Output/diag/analysis/
+Output/diag/analysis/*
+!Output/diag/analysis/*.csv
 working/
 /archive/
 _local_archive/

@@ -1,0 +1,4 @@
+"check","what","section","target","got","tolerance","agrees","halt_condition","expected_to_disagree"
+"lag_same_year","same-year within slope with lagged water added","4.1",0.1379,0.137932107954053,0.002,TRUE,FALSE,FALSE
+"lag_prev_year","previous-year within slope","4.1",0.1178,0.117783518002217,0.002,TRUE,FALSE,FALSE
+"long_run_sum","long-run sum of the distributed lag","4.1",0.2557,0.25571562595627,0.002,TRUE,FALSE,FALSE

@@ -1,0 +1,13 @@
+DIAG-1 section 2.1 fixture - the reproduction check shown able to fail
+
+Perturbation: n_pixels_part on the Bala 29ca / Aeolian part, whole record, 11848 -> 23696.
+No y or x value was altered. Only one weight moved.
+
+Slope under the perturbation: 0.587506 (target 0.547274, moved +0.040232).
+Tolerance: 5e-06. The move is 8046x the tolerance.
+
+The check FIRED. Verbatim failure:
+DIAG-1 HALT (spec section 2.1): FIXTURE_perturbed_weight - target 0.547274, got 0.587506, tolerance 5e-06.
+Everything downstream would be diagnosing a different model. Run stopped.
+
+This is a value-level fixture, not a crash. The code path did not break; it returned a WRONG NUMBER and the assertion rejected it. Ruling J: a check that errors is not a check that catches.
