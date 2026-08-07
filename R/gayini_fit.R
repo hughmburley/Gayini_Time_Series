@@ -18,6 +18,13 @@
 #   3. R-SIDE INTERVALS ARE STABILITY CHECKS AND ARE NEVER REGISTERED. Registered
 #      values stand. Nothing here writes to the database.
 #
+#   4. EVERY INTERVAL IS CONDITIONAL ON THE INPUTS BEING CORRECT (Ruling AW). Both
+#      source products are modelled - fractional cover and the open-water
+#      classification - and carry their own validation error, which nothing in this
+#      project propagates. Every row therefore ships an interval_conditionality
+#      column, so the qualifier travels with the number rather than living only in
+#      the metadata records.
+#
 # The input CSV's first-50-MB SHA-256 is recorded on every row, so a result can
 # always be traced to the bytes it was fitted on.
 
@@ -122,5 +129,10 @@ gayini_fit <- function(csv_path, y, x, weights = NULL, cluster = NULL,
     source_csv = basename(csv_path),
     source_sha256_first50 = gayini_sha256_first50_file(csv_path),
     interval_status = "R-side stability check - NOT registered",
+    interval_conditionality = paste(
+      "CONDITIONAL ON THE INPUTS BEING CORRECT (Ruling AW, 7 Aug 2026). This interval carries",
+      "sampling variation only. It does NOT include the ingested products' own classification and",
+      "calibration error - fractional cover and the open-water classification are modelled products",
+      "with published validation error that nothing in this project propagates."),
     stringsAsFactors = FALSE)
 }
