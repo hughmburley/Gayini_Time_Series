@@ -60,6 +60,13 @@ Output/diag/*
 !Output/diag/analysis/
 Output/diag/analysis/*
 !Output/diag/analysis/*.csv
+# GLM-1, same rationale and same four-line shape (Ruling BB): the findings, the
+# pre-registration and the comparison tables are tracked for citability; the envelope
+# plots are re-rendered from them.
+!Output/glm/
+Output/glm/*
+!Output/glm/*.csv
+!Output/glm/*.md
 working/
 /archive/
 _local_archive/
