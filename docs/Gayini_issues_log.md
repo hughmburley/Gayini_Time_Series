@@ -183,6 +183,16 @@ series. Full detail in `docs/change_reports/TaskU_gate*.md`.*
 
 **Cadence:** review `BLOCK` and `EXTERNAL` at each task boundary. Everything else weekly.
 
+**EDITS CONTAINING AN ESCAPE GO THROUGH A FILE, NEVER A SHELL HEREDOC** (Ruling DS,
+9 Aug 2026). Any edit carrying an escape sequence, a newline, or a quoted string spanning
+more than one line is written to a file and applied from that file, and **parse-checked
+before rendering**. A chained heredoc mangles `\n` silently — it produced R that still
+parsed but held a literal line break inside a string, **three times in two days**. The
+control moves upstream: verifying the content afterwards stays as the backstop but is no
+longer the primary defence, because **a check that fires three times in two days is a
+control in the wrong place**. Extends [[I-60]]'s second surface rather than opening a new
+entry.
+
 **ONE EDIT PER DELIVERY CYCLE ON A CLIENT-FACING DOCUMENT** (Ruling DJ, 8 Aug 2026). A
 document the client holds is edited **once per cycle, never twice**. A correction found
 between passes is **recorded in the task report and held** until that document's pass

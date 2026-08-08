@@ -1,24 +1,25 @@
 #!/usr/bin/env python
-"""Ruling DL - what does the tercile cut cost, measured. REPORT ONLY, nothing applied.
+"""Ruling DL - the SIZE of a design trade-off, measured. REPORT ONLY, nothing applied.
 
-veg_regime_class_8058.tif assigned every cell to a wetness band by cutting the
-INTERPOLATED surface at the fixed breaks in regime_band_breaks.csv. Band MEMBERSHIP, not
-just the quoted boundary values, therefore came from a surface we have since superseded.
+WHAT THIS IS NOT. It is not the cost of a mistake. veg_regime_class_8058.tif assigned
+every cell to a wetness band by cutting the INTERPOLATED surface at the fixed breaks in
+regime_band_breaks.csv, and Ruling DQ ratifies that as a DOCUMENTED DESIGN TRADE-OFF:
+balanced strata are unreachable on the counted surface. It takes only 35 distinct values
+(k/35), so 25,000-50,000 cells share every candidate boundary and a recut lands on shares
+like 41.6 / 30.2 / 28.2% instead of thirds. The interpolated surface is continuous and can
+split evenly. Given balanced strata against surface consistency, the build took balanced
+strata. This script measures what that choice costs; it does not allege an error.
 
 Two measurements, because they answer different questions:
 
   A. SAME breaks, COUNTED surface. Isolates the surface change with the boundaries held
      fixed - how many cells sit on the other side of an unchanged line.
-  B. RECUT terciles on the counted surface, then assign. This is what DL asks for: the
-     boundaries move too, because they are quantiles of the surface being cut.
+  B. RECUT terciles on the counted surface, then assign. The boundaries move too, because
+     they are quantiles of the surface being cut.
 
 THE CLASS RASTER IS NOT TOUCHED. It is the footprint every zonal statistic is masked to
-and it does not move before 10 August.
-
-A caveat that is itself a finding: the counted surface takes only 35 distinct values
-(k/35), so exact terciles are not achievable - every candidate boundary is shared by
-thousands of cells. The interpolated surface, being continuous, could split cleanly. The
-recut therefore reports the closest achievable split and the tie mass at each boundary.
+and it does not move before 10 August. Any future decision to recut is a SEPARATE RULING
+weighing balanced strata against surface consistency, and this table is its input.
 """
 from __future__ import annotations
 
@@ -117,9 +118,14 @@ def main() -> int:
     df["period_label"] = "1988-2022 (35 water years)"
     df["weighting"] = "unweighted over cells"
     df["scope_filter"] = "treed_context_flag = 0 AND regime_band <> 'context'"
-    df["estimand"] = ("CONSEQUENCE of having cut wetness bands on the interpolated "
-                      "surface. REPORT ONLY under Ruling DL - the class raster is not "
-                      "modified and does not move before 10 August.")
+    df["estimand"] = ("SIZE OF A DOCUMENTED DESIGN TRADE-OFF (Ruling DQ), not of a "
+                      "defect: the wetness bands were cut on the interpolated surface "
+                      "because balanced strata are unreachable on the counted one - "
+                      "35 distinct values, 25,000-50,000 cells on every candidate "
+                      "boundary, a recut landing on 41.6 / 30.2 / 28.2%. REPORT ONLY: "
+                      "the class raster is not modified and does not move before "
+                      "10 August; any future recut is a separate ruling weighing "
+                      "balanced strata against surface consistency.")
     OUT.mkdir(parents=True, exist_ok=True)
     df.to_csv(OUT / "DL_tercile_recut_consequence.csv", index=False, lineterminator="\n")
     print(f"\n  [wrote] Output/diag/DL_tercile_recut_consequence.csv")

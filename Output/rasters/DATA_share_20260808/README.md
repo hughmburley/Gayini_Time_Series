@@ -56,25 +56,25 @@ the name rather than the index.
 communities** — Aeolian "high" starts at 5.71% where Inland "high" starts at 34.42%.
 They are not comparable across communities as levels.
 
-> **The boundary values in the table above, and every statement of the form "Aeolian high
-> starts at 5.71%", are quantiles of the OLDER INTERPOLATED SURFACE, not of the counted
-> one.** So is each cell's band membership: this raster was built by cutting the
-> interpolated surface at those breaks. Recutting the same terciles on
-> `flood_frequency_counted_8058.tif` moves **97,211 cells — 9.8% of the non-treed
-> census — into a different band** (Aeolian 14.0%, Riverine 14.8%, Inland 8.0%). Holding
-> the published breaks fixed and only changing the surface still moves **48,101 cells,
+> **These boundaries were cut on the older interpolated surface, and that was a deliberate
+> design choice rather than an error.** Balanced strata are only reachable that way. The
+> counted surface takes just **35 distinct values**, so 25,000–50,000 cells share every
+> candidate boundary and a recut lands on shares like **41.6 / 30.2 / 28.2%** instead of a
+> clean third each. The interpolated surface is continuous and can split evenly. Given a
+> choice between balanced strata and surface consistency, the build took balanced strata.
+>
+> **What that choice costs, measured.** The boundary values in the table above — and every
+> statement of the form *"Aeolian high starts at 5.71%"* — are quantiles of the
+> interpolated surface, and so is each cell's band membership. Recutting the same terciles
+> on `flood_frequency_counted_8058.tif` would move **97,211 cells, 9.8% of the non-treed
+> census**, into a different band (Riverine 14.8%, Aeolian 14.0%, Inland 8.0%). Holding
+> the published breaks fixed and changing only the surface still moves **48,101 cells,
 > 4.9%**.
 >
-> **The class raster has not been changed and is not being changed before delivery** — it
-> is the footprint every zonal statistic is masked to, and moving it would invalidate
-> every number computed against it. This is recorded so the boundary values are read for
-> what they are.
->
-> A related caveat: on the counted surface an exact tercile is **unreachable**. It takes
-> only 35 distinct values, so tens of thousands of cells share each candidate boundary —
-> a recut lands on shares like 41.6 / 30.2 / 28.2% rather than a clean third each. The
-> interpolated surface, being continuous, could split evenly. That is likely why it was
-> used.
+> **The class raster is not changing before delivery.** It is the footprint every zonal
+> statistic is masked to, and moving it would invalidate every number computed against it.
+> Whether to recut later is a decision that weighs balanced strata against surface
+> consistency, and it is taken separately.
 
 **The non-treed selection is `treed_context_flag = 0 AND regime_band <> 'context'`**,
 which is codes **11–33 only: 988,831 pixels of 1,080,157.**
