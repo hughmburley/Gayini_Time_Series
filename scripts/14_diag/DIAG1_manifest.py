@@ -31,6 +31,7 @@ EXEMPT = {
     "DIAG1_manifest.csv": "the manifest itself",
     "SPAT1_inputs.csv": "provenance ledger of file checksums; describes files, not estimates",
     "SPAT1_checks.csv": "check ledger; each row names its own target and section",
+    "EX1_gate3_checks.csv": "check ledger; each row names its own target and section",
 }
 
 

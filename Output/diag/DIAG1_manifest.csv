@@ -2,9 +2,11 @@ file,name,kind,bytes,rows,carries_section7_columns,note,sha256_first50
 Output/diag/analysis/DIAG1_between_parts.csv,DIAG1_between_parts.csv,csv,179546,345.0,yes,,77e3ef0aecd1497c187d930959110d994081c800b510c78004514a007126494a
 Output/diag/analysis/DIAG1_part_year.csv,DIAG1_part_year.csv,csv,1203939,4025.0,yes,,1427adc27f162a7e520b44ac98249e9ae66da7472f7747dc2d61c8a3221f0d0c
 Output/diag/analysis/DIAG1_patch_year.csv,DIAG1_patch_year.csv,csv,1317598,3253.0,yes,,f9d526890ca5bf781287dbc901b8366c3ec7308c388ac152abd37c1de3329a39
+Output/diag/analysis/EX1_gate3_census_cells.csv.gz,EX1_gate3_census_cells.csv.gz,gz,13801490,,,,7297d5bcc45f6362370be6ebcce9002e216bc53dc3e382981b32ac4e73d0d0e1
 Output/diag/analysis/SPAT1_pairs.csv,SPAT1_pairs.csv,csv,1693581,6555.0,yes,,01b017c2478d99d15e44653541062086dc79738f52293adce48b4edb4a2e5962
 Output/diag/analysis/SPAT1_part_centroids.csv,SPAT1_part_centroids.csv,csv,41980,115.0,yes,,b4dc30828a9e97b1636364b9580255033ba4cd5792173adb933095cb608f0c07
 Output/diag/analysis/SPAT1_perm_draws.rds,SPAT1_perm_draws.rds,rds,1225019,,,,c4deaf20aa3dac840546894e0cc75755e00ba9312da5293e649084c20d6d1d55
+Output/diag/BE_dashboard_scope_check.csv,BE_dashboard_scope_check.csv,csv,1825,3.0,yes,,201621f97b678dfa12b0cf32160b1a11d938b239fa5fe15c8389499fb3b1e76d
 Output/diag/DIAG1_between_pointwise.csv,DIAG1_between_pointwise.csv,csv,191862,345.0,yes,,6b7178120f7a1de3123573ccfadb3277a523027e284e11c1fe96910b139fccdd
 Output/diag/DIAG1_carried_from_WITHIN1.csv,DIAG1_carried_from_WITHIN1.csv,csv,5464,10.0,yes,,f8179a37b149cb3209301fece51afc586e3c601d762d034983e802d71a558a2f
 Output/diag/DIAG1_diagnostics.md,DIAG1_diagnostics.md,md,21988,,,,1a7be3adb833bc5383ee009b4ff7eeef7e991b90ef51d5cc4503979d56bf688e
@@ -23,6 +25,9 @@ Output/diag/DIAG1_reproduction_checks_stageE.csv,DIAG1_reproduction_checks_stage
 Output/diag/DIAG1_unzoned_between_not_applicable.csv,DIAG1_unzoned_between_not_applicable.csv,csv,607,1.0,exempt,"a recorded absence, not an estimate",5435da1393541dc9a1828eb169128c3cf0b3dc687168563ed1cffe78cae6c901
 Output/diag/DIAG1_within_diagnostics.csv,DIAG1_within_diagnostics.csv,csv,113952,186.0,yes,,b1fad3f465a33815b29c17b7f04312a705cd37511a439abfe6fd6976b0ab5a32
 Output/diag/DIAG1_within_pointwise.csv,DIAG1_within_pointwise.csv,csv,4446925,7278.0,yes,,1a8c453de311eba0bb1d73e0284eb85f62674c86d8666feba0d77a3fef8227b6
+Output/diag/EX1_gate3_checks.csv,EX1_gate3_checks.csv,csv,2182,19.0,exempt,check ledger; each row names its own target and section,31b193cd41c77cfba3c53787e58180e2e3d94cdcb360f7a0607410fdd23800fc
+Output/diag/EX1_gate3_community_by_floodbin.csv,EX1_gate3_community_by_floodbin.csv,csv,29298,56.0,yes,,9640296f59a4a0649c1806d57847f56173c345c77a504e78b7334cc7a6815650
+Output/diag/EXEMPLAR1_report.md,EXEMPLAR1_report.md,md,8975,,,,468e446109a12f800a38f0940e89ec139b981f70cf57b2d8dec3b21364ac8f5d
 Output/diag/figures/DIAG1_A2_panels_cropping_era.png,DIAG1_A2_panels_cropping_era.png,png,470175,,,,27bb252d208f131e1bdd1ec96b2a70ffd0749003be8d63736ceca583866200e9
 Output/diag/figures/DIAG1_A2_panels_post_management.png,DIAG1_A2_panels_post_management.png,png,472028,,,,8851b07cd71fd6064cca89228722575bb8f9b19b0fe3e6ce461b58b52cdc981d
 Output/diag/figures/DIAG1_A2_panels_whole_record.png,DIAG1_A2_panels_whole_record.png,png,471289,,,,8d7bb42575f6ec182326a46d2b4490fa18c4f3c3386010ed4171d8d04c13efbb

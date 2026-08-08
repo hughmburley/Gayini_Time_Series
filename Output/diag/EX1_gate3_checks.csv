@@ -1,0 +1,20 @@
+"check","what","section","target","got","tolerance","agrees","halt_condition","expected_to_disagree"
+"r_floor_vs_water","r, per-cell temporal p05 against flood frequency","1",0.676,0.681118140604654,0.005,FALSE,FALSE,FALSE
+"r_median_vs_water","r, per-cell temporal p50 against flood frequency","1",0.566,0.57036562255568,0.005,TRUE,FALSE,FALSE
+"inland_p05_dry__fixed","Inland mean p05, driest bin","1",37.9,45.204735672631,0.5,FALSE,FALSE,FALSE
+"inland_p05_wet__fixed","Inland mean p05, wettest bin","1",77.1,78.4290517901907,0.5,FALSE,FALSE,FALSE
+"inland_p50_dry__fixed","Inland mean p50, driest bin","1",74.3,76.7413275686479,0.5,FALSE,FALSE,FALSE
+"inland_p50_wet__fixed","Inland mean p50, wettest bin","1",88.7,90.8241051757493,0.5,FALSE,FALSE,FALSE
+"inland_gap_dry__fixed","Inland gap, driest bin","1",36.4,31.5365918960169,0.5,FALSE,FALSE,FALSE
+"inland_gap_wet__fixed","Inland gap, wettest bin","1",11.3,12.3950533855586,0.5,FALSE,FALSE,FALSE
+"inland_p05_dry__decile","Inland mean p05, driest bin","1",37.9,40.0545295900575,0.5,FALSE,FALSE,FALSE
+"inland_p05_wet__decile","Inland mean p05, wettest bin","1",77.1,74.975023372044,0.5,FALSE,FALSE,FALSE
+"inland_p50_dry__decile","Inland mean p50, driest bin","1",74.3,75.0509545349365,0.5,FALSE,FALSE,FALSE
+"inland_p50_wet__decile","Inland mean p50, wettest bin","1",88.7,87.6414399147583,0.5,FALSE,FALSE,FALSE
+"inland_gap_dry__decile","Inland gap, driest bin","1",36.4,34.996424944879,0.5,FALSE,FALSE,FALSE
+"inland_gap_wet__decile","Inland gap, wettest bin","1",11.3,12.6664165427142,0.5,FALSE,FALSE,FALSE
+"inland_p05_rises_more_than_p50__fixed","Inland: the floor rises further than the median (the published finding)","1",1,1,0,TRUE,FALSE,FALSE
+"inland_gap_narrows__fixed","Inland: the median-minus-floor gap narrows with water","1",1,1,0,TRUE,FALSE,FALSE
+"inland_p05_rises_more_than_p50__decile","Inland: the floor rises further than the median (the published finding)","1",1,1,0,TRUE,FALSE,FALSE
+"inland_gap_narrows__decile","Inland: the median-minus-floor gap narrows with water","1",1,1,0,TRUE,FALSE,FALSE
+"aeolian_cells_above_50","Aeolian cells above 50% flood frequency","1",511,490,0,FALSE,FALSE,FALSE
