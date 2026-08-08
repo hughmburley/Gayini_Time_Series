@@ -183,6 +183,14 @@ series. Full detail in `docs/change_reports/TaskU_gate*.md`.*
 
 **Cadence:** review `BLOCK` and `EXTERNAL` at each task boundary. Everything else weekly.
 
+**ONE EDIT PER DELIVERY CYCLE ON A CLIENT-FACING DOCUMENT** (Ruling DJ, 8 Aug 2026). A
+document the client holds is edited **once per cycle, never twice**. A correction found
+between passes is **recorded in the task report and held** until that document's pass
+arrives, so it lands as a single reviewable diff rather than as two generations of text in
+one file. **The interim exposure is accepted deliberately** — the alternative is worse.
+Worked case: DC and BT both corrected the DATA-1 share README on 8 Aug; both were held for
+BR's pass rather than applied the night they were issued.
+
 **ATTRIBUTING AN ERROR CORRECTLY DOES NOT RESOLVE IT** (LID-1, Ruling AB — I-40 family). An error logged against the design seat is still an **open question about the artefact**, not a closed one about the person. **Log the attribution AND the recheck.** Worked case: the 13.33% withdrawal. The figure was checked against `census_by_zone_stratum` — a Landsat census product that could only ever return *absent*, which is not *wrong* (I-42's shape) — and withdrawn, with the source named as the design seat. Naming the source was the correct part and the part that made it worse: attributing it upward **closed** the question instead of opening it. Its denominator, 85,882.6 ha, was in the database the whole time. **The 13.33% is reinstated as a Task U result with its own denominator; I-40's eighth instance stands as logged for the census statement, with this correction recorded against it.**
 
 **ID hygiene:** a proposed issue ID must be checked against the on-disk log before use — never assigned from memory or a prior chat. (I-21/I-22 were mis-referenced from memory twice; the on-disk assignments — I-21 `hardcoded_path`, I-22→C-11 dashboards — are authoritative. The renumbered rows above, C-12 and I-24, took the next free IDs.)

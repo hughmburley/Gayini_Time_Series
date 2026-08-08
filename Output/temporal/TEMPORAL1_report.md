@@ -169,8 +169,14 @@ the more important result, so it goes first.**
 | Inland | 77.06 | **77.00** | **−0.05** | 940 |
 
 **All 942 near-permanent cells are Inland.** The Aeolian and Riverine wet-end rows — the
-60- and 69-cell rows DA flagged — contain none at all, so their thinness is not an
-open-water problem.
+60- and 69-cell rows DA flagged — contain **none at all**.
+
+> **Ruling DH: these are two independent caveats and no document may present them as
+> one.** DA's `LOW SUPPORT` flag on the Aeolian and Riverine wet-end rows is a
+> **sample-size** caveat and nothing else — 60 and 69 cells, 3.7 and 4.3 ha. The
+> open-water question is **Inland-only** and is closed by DG. Merging them would invent a
+> water problem in two communities that have no near-permanent cells, and would dilute a
+> sample-size problem that is real.
 
 **Why the direction reverses: the removed cells are better covered than the bin they sit
 in, not worse.** Their mean temporal p05 is **77.96** against the bin's **77.06**. They do
@@ -178,10 +184,13 @@ not read as open water in the fractional-cover product, which is the same conclu
 Gate 2 reached from the other side — the veg map does not classify them as water, and the
 cover product does not see them as water either.
 
-**So the concern that open water inflates or deflates the wet end is not supported.** The
-effect is −0.05 pp on 77.06, which is negligible in either direction, and the sign is
-opposite to the one predicted. The published rows stand unchanged; the sensitivity is a
-companion table (`TEMPORAL1_wet_end_sensitivity.csv`), not a replacement.
+**Ruling DG closes this.** The premise behind the prediction is withdrawn: these cells do
+not read as low cover, **no open-water distortion of the wet end is supported in either
+direction**, and **no correction to the published values is warranted**. The effect is
+−0.05 pp on Inland and exactly zero elsewhere. The published rows stand unchanged and the
+sensitivity is a companion table (`TEMPORAL1_wet_end_sensitivity.csv`), not a replacement.
+**This is a closed question, not a residual caveat**, and nothing downstream should carry
+it as one.
 
 **Two counts are reported separately** because collapsing them would mislead: **942 rows**
 fall at or above 90% wetness in Inland's k ≥ 25 bin, but only **940** carry a percentile —
@@ -197,18 +206,27 @@ Gate 3 need not have used the interpolated surface.
 
 ### Ruling DC — the text BR must put in the README
 
-DC strengthens BT's replacement text. **Recording the required wording here so tomorrow's
-pass carries it verbatim; the README is not edited tonight**, because BR rewrites that
-same document and two passes over one client-facing file is how two generations of text
-end up in it.
+DC strengthens BT's replacement text, and **Ruling DG amends it again** — see below.
+**Recording the required wording here so tomorrow's pass carries it verbatim; the README
+is not edited tonight.**
+
+> **Ruling DJ makes that hold standing:** a client-facing document is edited **once per
+> delivery cycle, never twice**, and a correction is recorded in the report until its pass
+> arrives. The overnight exposure — a false sentence in a tracked file the client holds —
+> **is accepted, and closes tomorrow as a single diff.**
 
 > The open-water exclusion **does not operate within the non-treed census**. 942 cells are
 > wet in 90% or more of the 35 water years and **940 retain a temporal percentile**;
 > `MIN_SEASONS = 50` removes 2. The producer's justification was verified on a ~347 ha
 > lake lying **wholly outside the veg footprint**, so the mechanism was never exercised
 > where the analysis reads. **Any claim that the temporal metric resolves the open-water
-> limitation is withdrawn — it inherits it.** Nobody may read the k ≥ 25 rows as having
-> had open water removed.
+> limitation is withdrawn — it inherits it.**
+>
+> **This does not put the published values in doubt.** Those cells were measured and they
+> are **well covered, not water-like**: their mean temporal 5th-percentile cover is
+> **77.96%** against **77.06%** for the wet bin as a whole. Removing them moves the Inland
+> wet-end value by **−0.05 pp** and moves Aeolian and Riverine not at all. **No correction
+> to any published value is warranted.**
 
 The README's current sentence — that `MIN_SEASONS = 50` "excludes permanent water" — is
 **false as it stands** and is the thing this replaces.
