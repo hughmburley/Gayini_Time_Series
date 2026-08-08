@@ -1,0 +1,5 @@
+role,name,path,rows,sha256_first50,note
+input,PARTREG_part_residuals.gpkg,Output/spatial_8058/PARTREG_part_residuals.gpkg,115,06422c63f1baa55518393a7faacc884668c5d406eb0b14e85f6bac9f9c6d46b5,"part geometry, EPSG:8058"
+input,DIAG1_between_parts.csv,Output/diag/analysis/DIAG1_between_parts.csv,345,77e3ef0aecd1497c187d930959110d994081c800b510c78004514a007126494a,"residuals; the authority, gpkg supplies geometry only"
+boundary file written for R,SPAT1_part_centroids.csv,Output/diag/analysis/SPAT1_part_centroids.csv,115,b4dc30828a9e97b1636364b9580255033ba4cd5792173adb933095cb608f0c07,centroids
+boundary file written for R,SPAT1_pairs.csv,Output/diag/analysis/SPAT1_pairs.csv,6555,01b017c2478d99d15e44653541062086dc79738f52293adce48b4edb4a2e5962,adjacency tolerance 1.0 m

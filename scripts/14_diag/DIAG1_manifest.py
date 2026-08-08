@@ -29,6 +29,8 @@ EXEMPT = {
     "DIAG1_reproduction_checks_stageE.csv": "check ledger; each row names its own target and section",
     "DIAG1_unzoned_between_not_applicable.csv": "a recorded absence, not an estimate",
     "DIAG1_manifest.csv": "the manifest itself",
+    "SPAT1_inputs.csv": "provenance ledger of file checksums; describes files, not estimates",
+    "SPAT1_checks.csv": "check ledger; each row names its own target and section",
 }
 
 

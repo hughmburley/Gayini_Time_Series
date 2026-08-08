@@ -2,6 +2,9 @@ file,name,kind,bytes,rows,carries_section7_columns,note,sha256_first50
 Output/diag/analysis/DIAG1_between_parts.csv,DIAG1_between_parts.csv,csv,179546,345.0,yes,,77e3ef0aecd1497c187d930959110d994081c800b510c78004514a007126494a
 Output/diag/analysis/DIAG1_part_year.csv,DIAG1_part_year.csv,csv,1203939,4025.0,yes,,1427adc27f162a7e520b44ac98249e9ae66da7472f7747dc2d61c8a3221f0d0c
 Output/diag/analysis/DIAG1_patch_year.csv,DIAG1_patch_year.csv,csv,1317598,3253.0,yes,,f9d526890ca5bf781287dbc901b8366c3ec7308c388ac152abd37c1de3329a39
+Output/diag/analysis/SPAT1_pairs.csv,SPAT1_pairs.csv,csv,1693581,6555.0,yes,,01b017c2478d99d15e44653541062086dc79738f52293adce48b4edb4a2e5962
+Output/diag/analysis/SPAT1_part_centroids.csv,SPAT1_part_centroids.csv,csv,41980,115.0,yes,,b4dc30828a9e97b1636364b9580255033ba4cd5792173adb933095cb608f0c07
+Output/diag/analysis/SPAT1_perm_draws.rds,SPAT1_perm_draws.rds,rds,1225019,,,,c4deaf20aa3dac840546894e0cc75755e00ba9312da5293e649084c20d6d1d55
 Output/diag/DIAG1_between_pointwise.csv,DIAG1_between_pointwise.csv,csv,191862,345.0,yes,,6b7178120f7a1de3123573ccfadb3277a523027e284e11c1fe96910b139fccdd
 Output/diag/DIAG1_carried_from_WITHIN1.csv,DIAG1_carried_from_WITHIN1.csv,csv,5464,10.0,yes,,f8179a37b149cb3209301fece51afc586e3c601d762d034983e802d71a558a2f
 Output/diag/DIAG1_diagnostics.md,DIAG1_diagnostics.md,md,21988,,,,1a7be3adb833bc5383ee009b4ff7eeef7e991b90ef51d5cc4503979d56bf688e
@@ -30,3 +33,11 @@ Output/diag/figures/DIAG1_C1_lag_and_series.png,DIAG1_C1_lag_and_series.png,png,
 Output/diag/figures/DIAG1_E1_within_parts.png,DIAG1_E1_within_parts.png,png,323022,,,,2239afc4132bbb97faeb29382be68e47b971d44bbf802297a96936b668a07358
 Output/diag/figures/DIAG1_E2_within_patches.png,DIAG1_E2_within_patches.png,png,318980,,,,b026aa8bad9fdd5968a08df6829884d5188fc720ffe4618cc47fa0bc33ce19a1
 Output/diag/figures/DIAG1_E3_within_findings.png,DIAG1_E3_within_findings.png,png,256365,,,,dc2472a1cc2a7b40b92cb4d68a879905875e9ffd08a6625f97b35c08d8f74100
+Output/diag/figures/SPAT1_F1_correlogram_and_moran.png,SPAT1_F1_correlogram_and_moran.png,png,329720,,,,246d14ed1b16aefa66417345c98c3101c40b026f54eca3150daf78ec54ed61cd
+Output/diag/figures/SPAT1_F2_residual_map_with_links.png,SPAT1_F2_residual_map_with_links.png,png,362137,,,,df23f6f665405b5f7e5be4a37f7ad9951795675e9dab165c2a1dcaa5a70de9a9
+Output/diag/SPAT1_checks.csv,SPAT1_checks.csv,csv,586,3.0,exempt,check ledger; each row names its own target and section,569fa80f318a3e2e500dc402e16af89573d3410d18db9bded0dfe1f78926840b
+Output/diag/SPAT1_correlogram.csv,SPAT1_correlogram.csv,csv,9686,18.0,yes,,8f22b48fbc67151d08d7a3b2f91aa816efa14cd09cc84fd1cbb75efac8abea84
+Output/diag/SPAT1_findings.md,SPAT1_findings.md,md,11438,,,,05a7dd5e2fabd4e717acc696a91e4b8eaa44d606b5b9c5395c10976e43e38250
+Output/diag/SPAT1_inputs.csv,SPAT1_inputs.csv,csv,773,4.0,exempt,"provenance ledger of file checksums; describes files, not estimates",156f900a6b3960952460576dd9d4845c4dc43d3a49c4488595a2afc10b857685
+Output/diag/SPAT1_morans_i.csv,SPAT1_morans_i.csv,csv,22503,24.0,yes,,d975f6a5dde51fd48eb59e0379025fa46d5c4eba67783fec155695ab3420a835
+Output/diag/SPAT1_scale_reference.csv,SPAT1_scale_reference.csv,csv,3162,6.0,yes,,fe3d99786f25f0a39fe977e9de747e4c23d9d3012898566ae9c5bcd985a594ee

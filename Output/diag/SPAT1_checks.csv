@@ -1,0 +1,4 @@
+"check","what","section","target","got","tolerance","agrees","halt_condition","expected_to_disagree"
+"moran_independent_code_path","Moran's I, matrix form against an explicit pair loop","verification",0.267018154179963,0.267018154179963,1e-12,TRUE,FALSE,FALSE
+"perm_mean_equals_expectation","permutation mean against -1/(m-1)","verification",-0.0112359550561798,-0.0112784606859769,0.00311388337421641,TRUE,FALSE,FALSE
+"FIXTURE_rewired_neighbours","random neighbours must NOT reproduce the real I","verification fixture",0.267018154179963,-0.00433808549371804,0.05,FALSE,FALSE,TRUE
