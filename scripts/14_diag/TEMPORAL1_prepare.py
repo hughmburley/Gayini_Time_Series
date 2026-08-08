@@ -184,6 +184,62 @@ def main() -> int:
     comm.to_csv(OUT / "TEMPORAL1_community_by_floodbin.csv", index=False, lineterminator="\n")
     print(f"  [wrote] TEMPORAL1_community_by_floodbin.csv  {len(comm)} rows")
 
+    # ---- Ruling DD: the wet end with near-permanent water removed ------------------
+    # ADDITIVE. The published k >= 25 rows above are NOT replaced; this is a companion
+    # table. A1's Gate 2 found that MIN_SEASONS = 50 leaves 940 cells that are wet in
+    # >= 90% of the 35 years inside the non-treed census, so the wet-end means include
+    # near-permanent water. This recomputes those rows without them.
+    #
+    # DESIGN-SEAT PREDICTION TO FALSIFY: removing them RAISES the wet-end p05, because
+    # open water reads as low fractional cover - which would make the published
+    # relationship conservative. The opposite direction is the more important result.
+    NEAR_PERM = 90.0
+    wet = nt[nt.wet_years_k >= 25]
+    srows = []
+    for cm, gg in wet.groupby("community"):
+        keep = gg[gg.flood_freq_pct < NEAR_PERM]
+        drop = gg[gg.flood_freq_pct >= NEAR_PERM]
+        # Two counts, because they differ and collapsing them misleads: rows dropped,
+        # and rows dropped that actually carried a percentile. The published mean
+        # already skipped the 2 MIN_SEASONS cells, so only the second count moves it.
+        srows.append({
+            "community": cm, "bin_label": "k >= 25",
+            "n_cells_published": len(gg),
+            "n_cells_with_percentile_published": int(gg.veg_p05.notna().sum()),
+            "n_rows_near_permanent_removed": len(drop),
+            "n_cells_with_percentile_removed": int(drop.veg_p05.notna().sum()),
+            "n_cells_after_removal": len(keep),
+            "mean_veg_p05_published": gg.veg_p05.mean(),
+            "mean_veg_p05_excl_near_permanent": keep.veg_p05.mean(),
+            "delta_p05": keep.veg_p05.mean() - gg.veg_p05.mean(),
+            "mean_veg_p50_published": gg.veg_p50.mean(),
+            "mean_veg_p50_excl_near_permanent": keep.veg_p50.mean(),
+            "delta_p50": keep.veg_p50.mean() - gg.veg_p50.mean(),
+            "mean_veg_p05_of_removed_cells": drop.veg_p05.mean() if len(drop) else np.nan,
+        })
+    sens = pd.DataFrame(srows)
+    sens["near_permanent_definition"] = (
+        f"flood_freq_pct >= {NEAR_PERM:.0f}% of the 35 water years, i.e. wet in at least "
+        f"{int(np.ceil(NEAR_PERM / 100 * 35))} of 35")
+    sens["additive_note"] = ("COMPANION TABLE under Ruling DD. The published k >= 25 rows "
+                             "in TEMPORAL1_community_by_floodbin.csv are unchanged and are "
+                             "not superseded by this.")
+    sens["support_level"] = "pixel"
+    sens["unit"] = "census cell (24.970268 m)"
+    sens["period_label"] = PERIOD
+    sens["weighting"] = "unweighted mean over cells"
+    sens["scope_filter"] = SCOPE
+    sens["y_basis"] = BASIS
+    sens["estimand"] = ("SENSITIVITY of the wet-end per-cell means to near-permanent water; "
+                        "not a replacement estimate")
+    sens.to_csv(OUT / "TEMPORAL1_wet_end_sensitivity.csv", index=False, lineterminator="\n")
+    print("  Ruling DD - wet end (k >= 25) with near-permanent water removed:")
+    for _, s in sens.iterrows():
+        print(f"    {s.community[:28]:30s} p05 {s.mean_veg_p05_published:6.2f} -> "
+              f"{s.mean_veg_p05_excl_near_permanent:6.2f} ({s.delta_p05:+.2f})   "
+              f"cells {s.n_cells_published:,} -> {s.n_cells_after_removal:,} "
+              f"({s.n_cells_with_percentile_removed} with a percentile removed)")
+
     # ---- the analysis CSV the R figure reads ---------------------------------------
     unit.to_csv(OUT / "TEMPORAL1_scatter_input.csv", index=False, lineterminator="\n")
 

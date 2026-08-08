@@ -76,7 +76,11 @@ trend is a display smoother and no coefficient is taken from it.
 prohibition restated in a column on every row.
 
 **4 · `TEMPORAL1_community_by_floodbin.csv`** — 21 rows, per community × wet-year bin,
-**bin edges as explicit columns** in whole years. No zone join.
+**bin edges as explicit columns** in whole years, with a `LOW SUPPORT` flag on the three
+rows under 1,000 cells. No zone join.
+
+**Companion (Ruling DD) · `TEMPORAL1_wet_end_sensitivity.csv`** — the k ≥ 25 rows
+recomputed without near-permanent water. **Additive; the published rows are unchanged.**
 
 ### What the outputs say (wording per Ruling DA)
 
@@ -151,12 +155,63 @@ that are *not* excluded as open water. They are chenopod and floodplain classes 
 map's own reckoning, but nobody should assume open water has been removed from the wet end
 of these tables.
 
+## 5c · Ruling DD — the wet end without near-permanent water. **Prediction falsified.**
+
+DD predicted that removing the 940 near-permanent-water cells would **raise** the wet-end
+p05, because open water reads as low fractional cover, which would make the published
+relationship conservative. **It does the opposite, and DD says the opposite direction is
+the more important result, so it goes first.**
+
+| k ≥ 25 | published | excl. near-permanent | Δ | cells removed |
+|---|---:|---:|---:|---:|
+| Aeolian | 69.32 | 69.32 | **0.00** | **0** |
+| Riverine | 60.85 | 60.85 | **0.00** | **0** |
+| Inland | 77.06 | **77.00** | **−0.05** | 940 |
+
+**All 942 near-permanent cells are Inland.** The Aeolian and Riverine wet-end rows — the
+60- and 69-cell rows DA flagged — contain none at all, so their thinness is not an
+open-water problem.
+
+**Why the direction reverses: the removed cells are better covered than the bin they sit
+in, not worse.** Their mean temporal p05 is **77.96** against the bin's **77.06**. They do
+not read as open water in the fractional-cover product, which is the same conclusion A1's
+Gate 2 reached from the other side — the veg map does not classify them as water, and the
+cover product does not see them as water either.
+
+**So the concern that open water inflates or deflates the wet end is not supported.** The
+effect is −0.05 pp on 77.06, which is negligible in either direction, and the sign is
+opposite to the one predicted. The published rows stand unchanged; the sensitivity is a
+companion table (`TEMPORAL1_wet_end_sensitivity.csv`), not a replacement.
+
+**Two counts are reported separately** because collapsing them would mislead: **942 rows**
+fall at or above 90% wetness in Inland's k ≥ 25 bin, but only **940** carry a percentile —
+the other 2 are the MIN_SEASONS cells, which the published mean had already skipped. Only
+the 940 move the number.
+
 ## 6 · Two findings for BQ tomorrow
 
 **The counted per-cell flood frequency already exists** as `flood_freq_pct` in
 `gayini_pixel_census_8058.parquet`, derived from `wet_years` / `valid_years`. BQ's raster
 is still worth building as a map product, but the *values* are already available and
 Gate 3 need not have used the interpolated surface.
+
+### Ruling DC — the text BR must put in the README
+
+DC strengthens BT's replacement text. **Recording the required wording here so tomorrow's
+pass carries it verbatim; the README is not edited tonight**, because BR rewrites that
+same document and two passes over one client-facing file is how two generations of text
+end up in it.
+
+> The open-water exclusion **does not operate within the non-treed census**. 942 cells are
+> wet in 90% or more of the 35 water years and **940 retain a temporal percentile**;
+> `MIN_SEASONS = 50` removes 2. The producer's justification was verified on a ~347 ha
+> lake lying **wholly outside the veg footprint**, so the mechanism was never exercised
+> where the analysis reads. **Any claim that the temporal metric resolves the open-water
+> limitation is withdrawn — it inherits it.** Nobody may read the k ≥ 25 rows as having
+> had open water removed.
+
+The README's current sentence — that `MIN_SEASONS = 50` "excludes permanent water" — is
+**false as it stands** and is the thing this replaces.
 
 **BQ's acceptance test is amended by Ruling CY to expect 35 distinct values, not 36.**
 `valid_years` = 35 for every non-treed cell, so k runs **0 to 34** — the 36th value
@@ -165,10 +220,13 @@ recorded in the README as a fact about the country, not as a tolerance. **Not wr
 the README tonight**, because BR rewrites that same document tomorrow and the two belong in
 one pass.
 
-**Incidental, for the same pass:** on counted values **571** Aeolian non-treed cells sit
-above 50% flood frequency (identical under `>` and `>=`; exactly k ≥ 18), against **490**
-measured on the interpolated raster at EXEMPLAR-1 Gate 3. CG predicted this count would
-shift and it has. Recorded, not presented as the Gate 3 rerun, which stays deferred.
+**Ruling DF — the 571-against-490 count.** On counted values **571** Aeolian non-treed
+cells sit above 50% flood frequency (identical under `>` and `>=`; exactly k ≥ 18),
+against **490** measured on the interpolated raster at EXEMPLAR-1 Gate 3. **This is
+recorded as confirming CG's prediction and is not the Gate 3 rerun.** Gate 3 stays
+deferred behind BQ. When it runs it reports r(p05) against the counted values and states
+explicitly **which surface each figure in the record was computed on** — the two are now
+known to differ and no figure may be quoted without naming its surface.
 
 ## 7 · Scope fact, carried under Ruling DB
 
