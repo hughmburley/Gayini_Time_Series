@@ -46,8 +46,23 @@ def check_prose():
     """Digit literals inside strings that reach a reader."""
     for fn in JS:
         p = os.path.join(HERE, fn)
+        in_block = False
         for i, line in enumerate(open(p, encoding='utf8'), 1):
-            if line.lstrip().startswith('//'):
+            # Block comments were scanned while // lines were skipped, and this project writes
+            # its corrections VISIBLY — a note saying `it keyed on gap_slope_registered > 0.3`
+            # uses backticks, so the lint read the record of the superseded cut as a live
+            # literal and reported a fixed defect as unfixed. I-47 / Ruling AK, in the linter
+            # itself. Comments are not client text by any route; they are skipped outright.
+            s = line.lstrip()
+            if in_block:
+                if '*/' in line:
+                    in_block = False
+                continue
+            if s.startswith('/*'):
+                if '*/' not in line[line.find('/*') + 2:]:
+                    in_block = True
+                continue
+            if s.startswith('//') or s.startswith('*'):
                 continue
             for tpl in re.findall(r'`([^`]*)`', line):
                 # strip ${...} — those are derived, which is the point

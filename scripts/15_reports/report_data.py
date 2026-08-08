@@ -190,6 +190,7 @@ PART_RANK = {(int(x.zone_fid), x.community): (int(x.rank_floor), int(x.rank_wate
 
 # The derived table, emitted for QA to check the reports against by an independent path.
 # Registration as a table asset is session 1's, not this module's — flagged, not attempted.
+os.makedirs(TABLES, exist_ok=True)   # config.py creates the output dirs it owns, not this one
 _out = os.path.join(TABLES, 'REPORT2_part_ranks.csv')
 _pr[['part_id', 'zone_fid', 'paddock_name', 'community', 'community_short', 'conserved',
      'n_pixels_part', 'area_ha', 'floor', 'inund', 'residual',

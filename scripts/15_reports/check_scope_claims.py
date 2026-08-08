@@ -366,10 +366,73 @@ def check_water_rank_labels():
                     f'{int(x.rank_water)} for its water, but both land on the same wording')
 
 
+def check_gap_prose_matches_caption():
+    """R-17: page 4's gap prose and page 4's gap caption must not contradict each other.
+
+    R-16 settled direction and draw/omit once and rewrote the CAPTION to read them; gapText, the
+    prose directly above it, was missed and still keyed on a registered slope only Bala 29ca has.
+    Five of the seven shipped reports asserted "has neither closed nor widened its gap" above a
+    caption reading "the difference widened (-0.176, correlation -0.35)".
+
+    The test is agreement on whether there is a change at all, not on wording — the two are
+    written in different registers on purpose, and pinning the phrasing here would make this
+    check fire on any future rewording rather than on a disagreement."""
+    for f in sorted(glob.glob(os.path.join(UNITS_DIR, 'paddock_*.json'))):
+        r = json.load(open(f, encoding='utf8'))
+        if 'gap_direction' not in r:
+            continue
+        slug = r['unit'].replace(' ', '_').replace('/', '-')
+        p = os.path.join(DOCS_DIR, f'Gayini_paddock_report_{slug}.docx')
+        if not os.path.exists(p):
+            continue
+        t = visible(p)
+        prose = re.search(r'Measured year by year[^‖]*', t)
+        capt = re.search(r'One point per water year[^‖]*', t)
+        if not prose or not capt:
+            add('ERROR', 'R-17', r['unit'], 'the gap prose or its caption is missing')
+            continue
+        prose_change = 'neither closed nor widened' not in prose.group(0)
+        capt_change = ('the difference narrowed' in capt.group(0)
+                       or 'the difference widened' in capt.group(0))
+        if prose_change != capt_change:
+            add('ERROR', 'R-17', r['unit'],
+                f'page 4 prose says the gap {"changed" if prose_change else "did not change"} '
+                f'but its own caption says it {"changed" if capt_change else "did not"}')
+        # The record's own direction is the arbiter of which way, where a change is claimed.
+        if prose_change and r['gap_direction'] in ('closing', 'widening'):
+            want = 'closed' if r['gap_direction'] == 'closing' else 'widened'
+            if f'has {want} ' not in prose.group(0):
+                add('ERROR', 'R-17', r['unit'],
+                    f'gap is {r["gap_direction"]} but the prose does not say it {want}')
+
+
+def check_at_expectation_claim():
+    """R-17: page 1 must not tell a paddock it carries about what its water predicts unless it does.
+
+    plainTerms' default said exactly that without consulting the residual, so it reached any
+    paddock whose parts were neither Recovering nor uniformly Declining. Bala 15's residual is
+    -17.62 — the largest shortfall on the property — and its page 1 carried the claim."""
+    CLAIM = 'carries about the cover its water would predict'
+    for f in sorted(glob.glob(os.path.join(UNITS_DIR, 'paddock_*.json'))):
+        r = json.load(open(f, encoding='utf8'))
+        if r.get('residual') is None or not r.get('fit'):
+            continue
+        slug = r['unit'].replace(' ', '_').replace('/', '-')
+        p = os.path.join(DOCS_DIR, f'Gayini_paddock_report_{slug}.docx')
+        if not os.path.exists(p):
+            continue
+        sd = r['fit']['resid_sd']
+        if CLAIM in visible(p) and abs(r['residual']) > sd:
+            add('ERROR', 'R-17', r['unit'],
+                f'page 1 claims the paddock carries about what its water predicts, but its '
+                f'residual is {r["residual"]:+.2f} against a residual SD of {sd:.2f}')
+
+
 def main():
     for fn in (check_band_areas, check_property_is_a_set,
                check_support_separation, check_site_counts, check_composition_prose,
-               check_parts_verdict, check_gap_caption, check_water_rank_labels):
+               check_parts_verdict, check_gap_caption, check_water_rank_labels,
+               check_gap_prose_matches_caption, check_at_expectation_claim):
         fn()
     err = [f for f in findings if f[0] == 'ERROR']
     print()

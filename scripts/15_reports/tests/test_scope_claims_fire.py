@@ -122,6 +122,28 @@ def build_fixture(root, mode):
                            'among the highest of 17 for its water'):
             sys.exit('STOP: REPORT-2 missing-rank anchor not found in the fixture document')
         os.replace(tmp, t2)
+    elif mode == 'r17_gap_prose':
+        # the PRE-R-17 sentence: page-4 prose asserting no change above a caption stating a
+        # widening of -0.176 pp a year. Five of seven shipped reports read this way.
+        # Anchored inside ONE run: the slope is bold and therefore a run of its own, so a
+        # phrase spanning it cannot be matched in document.xml at all.
+        t2 = os.path.join(docs, 'Gayini_paddock_report_Bala_27ca.docx')
+        tmp = t2 + '.tmp'
+        if not doctor_docx(t2, tmp, ' has widened its gap, at ',
+                ' has neither closed nor widened its gap to any degree the record can '
+                'distinguish, at '):
+            sys.exit('STOP: R-17 gap-prose anchor not found in the fixture document')
+        os.replace(tmp, t2)
+    elif mode == 'r17_at_expectation':
+        # plainTerms' pre-fix default on Bala 15, whose residual is -17.62 - the largest
+        # shortfall on the property - telling its reader the paddock is at expectation.
+        t2 = os.path.join(docs, 'Gayini_paddock_report_Bala_15.docx')
+        tmp = t2 + '.tmp'
+        if not doctor_docx(t2, tmp,
+                'carries less cover than comparable country once its water is allowed for',
+                'carries about the cover its water would predict'):
+            sys.exit('STOP: R-17 at-expectation anchor not found in the fixture document')
+        os.replace(tmp, t2)
     elif mode == 'two_rules':
         tmp = target + '.tmp'
         # the sentence the spec requires in every report
@@ -149,6 +171,8 @@ CASES = [
     ('r16_gap_pattern', 1, 'R-16',       'a closing gap asserted where the gap does not move must be rejected'),
     ('report2_direction_flip', 1, 'REPORT-2', 'a reversed water rank must be rejected'),
     ('report2_missing_rank', 1, 'REPORT-2',   'the pre-guard "among the highest" label on the worst part must be rejected'),
+    ('r17_gap_prose',    1, 'R-17',      'page-4 prose contradicting its own caption must be rejected'),
+    ('r17_at_expectation', 1, 'R-17',    'an at-expectation claim on a paddock beyond one residual SD must be rejected'),
 ]
 
 

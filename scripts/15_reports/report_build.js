@@ -311,15 +311,48 @@ function paddockDoc(r){
 
 /* --------------------------------------------------------------- helpers */
 const cape=s=>s.charAt(0).toUpperCase()+s.slice(1);
-function ordinal(n){const s=['th','st','nd','rd'],v=n%100;return n+(s[(v-20)%10]||s[v]||s[0]);}
+/* R-17, 7 Aug 2026. A function mapping a derived value to a label must HALT on missing, null,
+   NaN or out-of-range input, and must never be ordered so that fall-through lands on the
+   favourable end. Where a default is unavoidable it is the cautious end and says so.
+
+   `need` is the halt. It is deliberately noisy about which unit and which field, because the
+   failure it exists to prevent is silent: waterPhrase's if-chain was exhaustive for a finite
+   rank and, for anything else, returned the most favourable wording in its table. */
+function need(ok,fn,what,unit){
+  if(!ok) throw new Error(`${fn}: ${unit?unit+' — ':''}${what}. `+
+    `A label function must halt rather than fall through to a default.`);
+}
+const finite=v=>typeof v==='number'&&Number.isFinite(v);
+const STATES=new Set(['Recovering','Declining','Persistently poor','Unremarkable']);
+
+function ordinal(n){
+  need(finite(n)&&n>0,'ordinal',`cannot order ${JSON.stringify(n)}`);
+  const s=['th','st','nd','rd'],v=n%100;return n+(s[(v-20)%10]||s[v]||s[0]);}
+/* The default asserted "carries about the cover its water would predict" WITHOUT CONSULTING THE
+   RESIDUAL, so any paddock whose parts were neither Recovering nor uniformly Declining got it.
+   Bala 15's residual is -17.62, the largest shortfall on the property, and page 1 told its
+   reader the paddock carries about what its water predicts. Bala 26ca (-8.70) and Bala 28ca
+   (-8.31) are both beyond the 6.62 residual SD and said the same.
+
+   The at-expectation clause is now gated on the residual actually being within one SD, and the
+   two out-of-band cases reuse residualLine's already-ratified vocabulary rather than new prose.
+   The wording is flagged for ratification; the code is not held behind it. */
 function plainTerms(r){
+  need(r.parts.every(p=>STATES.has(p.state)),'plainTerms','a part carries no registered state',r.unit);
+  need(finite(r.residual)&&finite(r.fit&&r.fit.resid_sd),'plainTerms',
+    'no residual to test the at-expectation claim against',r.unit);
   const rec=r.parts.filter(p=>p.state==='Recovering'), dec=r.parts.filter(p=>p.state==='Declining');
   if(rec.length&&r.parts.length>1)
     return `${r.unit} carries some of the most bare ground of its kind on Gayini — and ${rec.length===1?'part of it is':`${rec.length} of its ${r.parts.length} parts are`} coming back. `+
       `Over thirty-five years it has climbed from far below what its water would predict toward it.`;
   if(dec.length&&dec.length===r.parts.length)
     return `${r.unit} is well-watered country carrying ordinary cover for its type, and the record shows it losing ground slowly rather than gaining it.`;
-  return `${r.unit} carries about the cover its water would predict, and the record over thirty-five years shows it holding rather than moving.`;
+  const sd=r.fit.resid_sd, tail=`the record over thirty-five years shows it holding rather than moving.`;
+  if(r.residual<-sd)
+    return `${r.unit} carries less cover than comparable country once its water is allowed for, and ${tail}`;
+  if(r.residual>sd)
+    return `${r.unit} carries more cover than its water alone would predict, and ${tail}`;
+  return `${r.unit} carries about the cover its water would predict, and ${tail}`;
 }
 function sitesLine(r){
   return `${r.n_sites} of the property's monitoring sites sit inside ${r.unit}`+
@@ -368,6 +401,11 @@ function numword(n){return ['no','one','two','three','four','five','six','seven'
   'eleven','twelve','thirteen'][n]||String(n);}
 function rankPhrase(pt){
   const n=pt.rank, of=pt.n_of;
+  // Fall-through here landed on "Nth of M — ordinary" with N and M rendered as "undefined":
+  // the middle of the range rather than the favourable end, but still a label asserting the
+  // part is ordinary on the strength of no data at all.
+  need(finite(n)&&finite(of)&&of>=1&&n>=1&&n<=of,'rankPhrase',
+    `no usable cover rank (rank=${n}, n_of=${of})`,pt.short);
   if(n===1) return `lowest of ${of} on the property`;
   if(n===2) return `second-lowest of ${of}`;
   if(n<=of*0.25) return `among the lowest of ${of}`;
@@ -401,6 +439,12 @@ function waterPhrase(pt){
   return `among the highest of ${of} for its water`;
 }
 function stateLine(pt){
+  // Halted on a null state only by accident, via TypeError on .toLowerCase(), with a message
+  // naming neither the unit nor the field. An UNRECOGNISED state was worse: it was echoed
+  // straight into the document, so a new classification class would print itself as though it
+  // were ratified client vocabulary.
+  need(STATES.has(pt.state),'stateLine',
+    `${JSON.stringify(pt.state)} is not a registered classification state`,pt.short);
   let s=pt.state.toLowerCase();
   if(pt.marginal||pt.robust_changed) s+=', marginally';
   return cape(s);
@@ -426,6 +470,14 @@ function stateLine(pt){
    Set membership decides the wording; area is stated whenever recovery sits outside the bare
    set, because that is exactly the case where a reader would otherwise scale it to the paddock. */
 function partsVerdict(r){
+  // Fall-through here is OMISSION, not a false claim: with no ranks and no states both filters
+  // come back empty and the bare/recovering finding simply vanishes, leaving the generic
+  // closing sentence. Cautious in R-17(b)'s sense, but silent — and a finding that disappears
+  // when its input goes missing looks identical to a paddock that has no finding.
+  need(r.parts.every(p=>finite(p.rank)&&STATES.has(p.state)),'partsVerdict',
+    'a part carries no rank or no registered state',r.unit);
+  need(r.parts.length<=3,'partsVerdict',
+    `${r.parts.length} parts — the closing sentence names "two" or "three" places only`,r.unit);
   const rec=r.parts.filter(p=>p.state==='Recovering'), low=r.parts.filter(p=>p.rank<=2);
   const lowKey=new Set(low.map(p=>p.short));
   const both=rec.filter(p=>lowKey.has(p.short));        // bare AND coming back
@@ -456,18 +508,54 @@ function partsVerdict(r){
 }
 function residualLine(r){
   const sd=r.fit.resid_sd;
+  // Both comparisons are false for a null residual, so fall-through landed on "sits within the
+  // ordinary range ... close to what its wetness predicts" — the reassuring end, asserted from
+  // an absent number.
+  need(finite(r.residual)&&finite(sd),'residualLine',
+    `no residual to place the paddock against (residual=${r.residual}, sd=${sd})`,r.unit);
   if(r.residual<-sd) return `Even allowing for how dry it is, ${r.unit} carries less cover than comparable country — ${ordinal(r.residual_rank)} lowest of the ${r.n_paddocks} paddocks on this measure.`;
   if(r.residual>sd) return `${r.unit} carries more cover than its water alone would predict, which places it above comparable country on the property.`;
   return `${r.unit} sits within the ordinary range of paddocks once its water is accounted for — its cover is close to what its wetness predicts.`;
 }
+/* R-17. This is page 4's prose about the gap, and it sat directly above the gap figure's own
+   caption. It keyed on `gap_slope_registered > 0.3` — and only Bala 29ca carries a registered
+   slope — so every other paddock fell through to "has neither closed nor widened its gap to any
+   degree the record can distinguish."
+
+   R-16 settled direction and draw/omit ONCE, in report_data.py, and rewrote the caption to read
+   them. This function was missed, so five of the seven shipped reports contradicted themselves
+   on one page:
+
+     Bala 27ca  prose  "has neither closed nor widened its gap"
+                caption "Across the record the difference widened (-0.176, correlation -0.35)"
+
+   Fall-through landed on "no change", which is not the cautious end when the caption beside it
+   asserts a change. It now reads the same two fields the caption reads, so the two cannot
+   disagree — R-16's principle applied to the site it missed.
+
+   Bala 29ca's sentence is unchanged: the conserved-set claim still fires on exactly the
+   condition it fired on before, so the one paddock Adrian holds both documents for does not
+   move. New wording is flagged for ratification. */
 function gapText(r){
-  const sl=r.gap_slope_registered;
-  if(sl!==null&&sl!==undefined&&sl>0.3)
-    return [['Measured year by year against the rest of the property, ',{}],[r.unit,{}],
-      [' has closed most of its gap, at ',{}],[`+${sl.toFixed(2)} points a year`,{bold:true,color:INK}],
-      ['. It began the record far below every comparable paddock and now sits close to level. This is the clearest signal in the conserved set — the other three show no movement against grazed country at all.',{}]];
-  return [['Measured year by year against the rest of the property, ',{}],[r.unit,{}],
-    [' has neither closed nor widened its gap to any degree the record can distinguish. It sits where it has sat for thirty-five years.',{}]];
+  need(r.gap_direction!=null&&r.gap_line_drawn!=null,'gapText',
+    'no gap direction or draw decision on the record',r.unit);
+  const lead=[['Measured year by year against the rest of the property, ',{}],[r.unit,{}]];
+  const flat=[' has neither closed nor widened its gap to any degree the record can distinguish. It sits where it has sat for thirty-five years.',{}];
+  if(!r.gap_line_drawn||r.gap_direction==='neither') return lead.concat([flat]);
+  // The conserved-set claim fires on a REGISTERED slope, not on a bare cut. The old condition
+  // carried a third threshold with no home, undocumented beside R-16's two — and it never did
+  // any work: Bala 29ca is the only paddock with a registered slope at all, and its 0.919
+  // cleared the cut anyway. Removing it changes no document and removes a number to defend.
+  const reg=r.gap_slope_registered;
+  if(r.gap_direction==='closing'&&reg!=null)
+    return lead.concat([[' has closed most of its gap, at ',{}],
+      [`+${reg.toFixed(2)} points a year`,{bold:true,color:INK}],
+      ['. It began the record far below every comparable paddock and now sits close to level. This is the clearest signal in the conserved set — the other three show no movement against grazed country at all.',{}]]);
+  const sl=r.gap_slope_shown;
+  need(finite(sl),'gapText',`direction is ${r.gap_direction} but there is no slope to state`,r.unit);
+  return lead.concat([[r.gap_direction==='closing'?' has closed its gap, at ':' has widened its gap, at ',{}],
+    [`${sl<0?'−':'+'}${Math.abs(sl).toFixed(2)} points a year`,{bold:true,color:INK}],
+    ['. The record shows what happened; it cannot show what caused it.',{}]]);
 }
 function unknowns(){return [kicker("What we don't know about this paddock"),
   body('Three things would change how this record should be read. None is in the data.',{after:70}),
@@ -538,9 +626,41 @@ function write(kids,file){
   return Packer.toBuffer(new Document({styles:{default:{document:{run:{font:FONT,size:18,color:BODY}}}},
     sections:[{properties:props,children:kids}]})).then(b=>fs.writeFileSync(file,b));
 }
+/* --paddocks / --sites were accepted and SILENTLY IGNORED: this stage globbed every unit record
+   and rebuilt all 32 whatever was asked for. That is how a stale record reaches a document — a
+   targeted data run refreshes two units, the targeted build then rewrites all of them, and the
+   thirty that were not refreshed are rebuilt from whatever generation happens to be on disk.
+   It is what put "among the highest of 17 for its water" on the worst part of Bala 29ca.
+
+   Selecting nothing is not the same as selecting everything, so a named unit with no record is
+   a STOP rather than a quietly shorter run. */
+function selectUnits(argv){
+  const want={paddock:[],site:[]};
+  let mode=null;
+  for(const a of argv){
+    if(a==='--paddocks'){mode='paddock';continue;}
+    if(a==='--sites'){mode='site';continue;}
+    if(a.startsWith('--')){mode=null;continue;}
+    if(mode) want[mode].push(a);
+  }
+  const all=fs.readdirSync(UNITS).filter(f=>f.endsWith('.json')).sort();
+  if(!want.paddock.length&&!want.site.length) return {files:all,all,targeted:false};
+  const pick=[],missing=[];
+  for(const [kind,names] of Object.entries(want))
+    for(const n of names){
+      const f=`${kind}_${slug(n)}.json`;
+      if(all.includes(f)) pick.push(f); else missing.push(n);
+    }
+  if(missing.length)
+    throw new Error(`no unit record for: ${missing.join(', ')}\n`+
+      `       Run report_data.py for these units first. A targeted build must not quietly `+
+      `skip what it was asked to produce.`);
+  return {files:pick.sort(),all,targeted:true};
+}
+
 (async()=>{
   fs.mkdirSync(OUTDIR,{recursive:true});
-  const files=fs.readdirSync(UNITS).filter(f=>f.endsWith('.json')).sort();
+  const {files,all,targeted}=selectUnits(process.argv.slice(2));
   const made=[];
   for(const f of files){
     const r=JSON.parse(fs.readFileSync(path.join(UNITS,f)));
@@ -552,5 +672,11 @@ function write(kids,file){
     made.push(`${name}  (${d.pages} pp)`);
     console.log(`  ${name}`);
   }
-  console.log(`\n${made.length} documents written to ${OUTDIR}`);
-})();
+  // What was built AND what was not. A run that reports only its output cannot be read as
+  // partial, and a partial rebuild that looks total is how two generations end up in one set.
+  console.log(`\n${made.length} document(s) written to ${OUTDIR}`);
+  console.log(targeted
+    ? `  TARGETED build — ${all.length-files.length} of ${all.length} unit record(s) NOT rebuilt; `+
+      `those documents are whatever the last run left.`
+    : `  FULL build — all ${all.length} unit record(s) rebuilt.`);
+})().catch(e=>{console.error(`\nSTOP: ${e.message}`);process.exit(1);});

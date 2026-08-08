@@ -19,7 +19,7 @@ import os, shutil, sqlite3, subprocess, sys, tempfile
 HERE = os.path.dirname(os.path.abspath(__file__))
 MOD  = os.path.dirname(HERE)
 sys.path.insert(0, MOD)
-from config import DB                                          # noqa: E402
+from config import DB, PARTREG                                 # noqa: E402
 
 ZONE  = 'Bala 29ca'
 SCALE = 1.05          # small enough to be plausible drift, far outside the 0.011 tolerance
@@ -37,6 +37,12 @@ def build_fixture(root, mutate):
     os.makedirs(dst, exist_ok=True)
     db = os.path.join(dst, os.path.basename(DB))
     shutil.copy(DB, db)
+    # REPORT-2: the data layer now requires the PARTREG table, and it resolves from GAYINI_ROOT.
+    # Without a copy the fixture STOPs on a missing file before reaching a single canary — which
+    # this file's own rule calls out: a test that cannot run must not look like one that passed.
+    pr = os.path.join(root, 'Output', 'pack', 'PARTREG', 'tables')
+    os.makedirs(pr, exist_ok=True)
+    shutil.copy(PARTREG, os.path.join(pr, os.path.basename(PARTREG)))
     if not mutate:
         return db
     con = sqlite3.connect(db)                    # the COPY, opened writable — never the original
