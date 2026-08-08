@@ -1,12 +1,17 @@
 # Gayini raster companion — 8 August 2026
 
-For Adrian. **12 raster files, 149.3 MB**, plus a `figures_for_adrian/` folder placed
+For Adrian. **13 raster files**, plus a `figures_for_adrian/` folder placed
 here separately — see the note at the end. Everything here is a copy; nothing was moved,
 renamed or re-derived, and every source file is still where it was.
 
 `DATA1_manifest.csv` carries every file with its size, first-50-MB SHA-256, band count,
-CRS, cell size, extent and year span. Each of the 12 rasters was verified against its
-source by checksum, not by the copy command returning success.
+CRS, cell size, extent and year span. Each raster was verified against its source by
+checksum, not by the copy command returning success.
+
+**This README was corrected on 9 August.** Two claims in the version you may already hold
+were wrong and are withdrawn below: that the flood-frequency values were "exact inside the
+footprint", and that `MIN_SEASONS = 50` "excludes permanent water". Both corrections are
+marked where they occur.
 
 **Nothing in this folder is registered or new.** These are the existing products.
 
@@ -73,29 +78,82 @@ never actually bites. The layer exists so the calculation *has* a denominator an
 future gap would be caught, not because it currently removes anything. 255 is nodata
 (20,944 cells outside the footprint).
 
-### 4 · The temporal percentiles are NOT the series the regression uses
+### 4 · The temporal percentiles are on a SEASONAL basis, and the description you were
+### sent says otherwise
 
-`veg_percentiles_8058/total_veg_p05..p50_8058.tif` are computed across the **140
-seasonal composites**, with `MIN_SEASONS = 50`. **The regression in the report uses an
-annual-basis series.** They are close relatives, not the same object, and the difference
-has not yet been quantified — a matched annual-basis build is in progress and the
-comparison will follow.
+`veg_percentiles_8058/total_veg_p05..p50_8058.tif` are computed across the **140 seasonal
+composites** — four per water year across 35 water years — with `MIN_SEASONS = 50`. The
+number of seasons behind each cell runs from **5 to 140**, median **118**.
 
-**`MIN_SEASONS = 50` does two jobs**, and the second one matters to anyone mapping the
-wetter country: it makes p05 a true percentile rather than an artefact of a short
-series, **and it excludes permanent water**. Cells that are wet nearly always fail the
-threshold and drop out.
+**They are not computed on the 35-value annual basis.** The written description you were
+sent describes an annual basis. **That description is wrong for these files, and a
+correction is coming to you separately.** The two are close relatives, not the same
+object, and the difference has not yet been quantified — the matched annual-basis build is
+outstanding.
+
+### `MIN_SEASONS = 50` — what it actually does here
+
+It makes p05 a true percentile rather than an artefact of a short series. That part
+holds.
+
+**The previous version of this README said it "excludes permanent water". That claim is
+withdrawn.** Measured inside the census, the threshold removes **2 cells of 988,831** — at
+90.2% and 95.4% flood frequency.
+
+**The open-water exclusion does not operate within the non-treed census.** 942 cells are
+wet in 90% or more of the 35 water years and **940 of them keep a temporal percentile**.
+The mechanism was verified when it was chosen, on a ~347 ha lake — but **that lake lies
+wholly outside the vegetation footprint**, so it was never exercised where the analysis
+reads. **Any claim that these percentiles resolve the open-water limitation is withdrawn:
+they inherit it.**
+
+**This does not put any published value in doubt.** Those 940 cells were measured, and
+they are **well covered rather than water-like** — their mean temporal 5th-percentile
+cover is **77.96%**, against **77.06%** for the wettest group as a whole. Removing them
+moves that group's value by **−0.05 percentage points**, and moves the Aeolian and
+Riverine figures not at all, because **every one of the 942 cells is Inland Floodplain**.
+**No correction to any published value is warranted.**
 
 ---
 
-## The extent caveat on `background_flood_frequency_8058.tif`
+## Two flood-frequency surfaces, and which one to use
 
-**This is the file that was asked for.** One band, `100 × wet water years ÷ valid water
-years`, per cell, derived from the 35-band native stack in this folder.
+**Use `flood_frequency_counted_8058.tif`.** It is new in this folder and it is the surface
+every number in the analysis derives from.
 
-**It covers the full raster window, not just the census footprint** — 99.8% of cells
-carry a value. Outside the property boundary the denominator *does* vary, so **values
-beyond the boundary are indicative only.** Inside the footprint they are exact.
+`100 × wet water years ÷ valid water years`, per cell. Because every census cell is
+observable in all 35 water years, its values are exactly *k*/35 and only **35 distinct
+values** occur inside the vegetation classes — *k* runs 0 to 34. **No cell in the
+non-treed country is wet in all 35 years.** That is a fact about this country, not a
+rounding tolerance.
+
+### `background_flood_frequency_8058.tif` — the older surface, and its correction
+
+**The previous version of this README said values were "exact inside the footprint".
+That claim is withdrawn.**
+
+That surface was **counted on the native EPSG:28355 grid and then interpolated onto the
+8058 census grid**. The analysis chain does the opposite: it reprojects the binary wet and
+valid bands **nearest neighbour** and counts on 8058. Interpolating a ratio and counting a
+ratio are not the same operation, and inside the census they disagree:
+
+| | |
+|---|---|
+| agree exactly | **24.95%** of cells |
+| differ by more than 1 percentage point | **28.89%** |
+| standard deviation of the difference | **1.48 pp** |
+| largest difference | **30.05 pp** |
+
+Measured on the 988,831 non-treed census cells.
+
+**It changes the map, not just the decimals.** Re-cutting the five flood zones from the
+interpolated surface moves **5.62%** of non-treed census cells into a different zone, and
+shrinks the never-flooded class from **79,065** cells to **52,934** — a third of it.
+
+Both surfaces are in this folder so the difference can be seen. **The counted one is
+correct for anything quantitative.** The older surface also covers the full raster window
+rather than the census footprint, and outside the property boundary its denominator does
+vary, so values beyond the boundary are indicative only.
 
 Range 0–100, `float32`, nodata `NaN`.
 
@@ -105,7 +163,8 @@ Range 0–100, `float32`, nodata `NaN`.
 
 | file | what |
 |---|---|
-| `background_flood_frequency_8058.tif` | the flood-frequency surface, 1 band |
+| `flood_frequency_counted_8058.tif` | **the flood-frequency surface to use**, counted on the 8058 grid, 1 band |
+| `background_flood_frequency_8058.tif` | the older interpolated surface, retained for comparison — see above |
 | `flood_zone_8058.tif` | flood frequency cut into 5 absolute zones — see below |
 | `veg_regime_class_8058.tif` | the 11 community × wetness classes above |
 | `inundation_annual_stack_native_28355/` | the source stack **before any reprojection**, EPSG:28355 at 25.0 m |

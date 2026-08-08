@@ -50,6 +50,12 @@ ITEMS = [
     (R / "inundation_annual_stack_8058/annual_valid_any_1988_2023_8058.tif",
      "inundation_annual_stack_8058",
      "The same valid stack on the census grid. Holds only 1 and 255 - see the README."),
+    (R / "flood_frequency_counted_8058.tif", "",
+     "THE FLOOD-FREQUENCY SURFACE TO USE. 100 x wet water years / valid water years, "
+     "COUNTED on the 8058 census grid (Ruling BQ). Values are exactly k/35, so only 35 "
+     "distinct values occur inside the vegetation classes - no non-treed cell is wet in "
+     "all 35 years. Supersedes background_flood_frequency_8058.tif for anything "
+     "quantitative; that surface was counted on 28355 and interpolated onto 8058."),
     (R / "flood_zone_8058.tif", "",
      "Wetness banding (low / mid / high) that the community x wetness classes rest on."),
     (R / "veg_regime_class_8058.tif", "",
