@@ -1,0 +1,6 @@
+fact,value,note
+non_treed_cells,988831,treed_context_flag = 0 AND regime_band <> 'context'
+cells_missing_temporal_p05,2,"Ruling BT: MIN_SEASONS = 50 removes 2 of 988,831"
+flood_freq_distinct_values,35,"Ruling BQ expects 36; observed k runs 0 to 34, so the 36th value (k = 35, every year wet) does not occur in non-treed country"
+non_treed_cells_inside_a_zone,795602,"80.5% of non-treed cells; the unit table describes these, not the whole census"
+non_treed_cells_outside_any_zone,193229,outside the 64 management zones

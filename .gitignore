@@ -167,6 +167,14 @@ Output/rasters/*
 !Output/rasters/DATA_share_20260808/
 Output/rasters/DATA_share_20260808/*
 !Output/rasters/DATA_share_20260808/README.md
+# TEMPORAL-1 (spec section 4.1, on the citability grounds of Rulings BB and CL): the
+# tables and the report are tracked; nothing else under Output/temporal is. Placed HERE,
+# at the end of the Output rules, for the reason Ruling CU records - a re-include above
+# the directory-exclusion that governs it is silently inert.
+!Output/temporal/
+Output/temporal/*
+!Output/temporal/*.csv
+!Output/temporal/*.md
 Output/database/*.sqlite
 Output/database/*.gpkg
 data_intermediate/
