@@ -112,8 +112,29 @@ gayini_dashboard_context <- function(root = getwd(),
 
 ## Helpers ----
 
-## Per-year between-year flood frequency (wet / valid) for a polygon, from the
-## native 28355 categorical stack (never resampled). Returns year, freq_pct, n_valid.
+## Per-year WITHIN-YEAR wet extent for a polygon, from the native 28355 categorical
+## stack (never resampled). Returns year, freq_pct, n_valid.
+##
+## QUANTITY (corrected 8 Aug 2026, Ruling BM — the previous comment read "Per-year
+## between-year flood frequency", which is a contradiction in terms: a between-year
+## frequency is a property of the whole record and has no per-year value).
+## Each element is 100 * Swet_pixels / Svalid_pixels computed ACROSS SPACE WITHIN ONE
+## YEAR. The denominator counts pixels valid in that year, NOT years. This is the
+## secondary "wet-extent coverage" metric (annual_occurrence_pct family), never the
+## headline. gayini_unit_flood_frequency() below is the between-year quantity.
+##
+## The MEAN of this series IS the unit's between-year flood frequency, because
+## Svalid_pixels is constant across all 35 years (verified 8 Aug 2026 for Bala 26ca /
+## 28ca / 29ca: one distinct value each; mean-of-years == pooled Swet/Svalid == the
+## pixel-mean of the between-year frequency raster, to 3 dp). The identity is exact
+## under a constant denominator; only the individual points are mislabelled.
+##
+## KNOWINGLY UNFIXED (Ruling BL, 8 Aug 2026): gayini_panel_annual_flooding() renders
+## this series under the between-year metric's name. No value is wrong (Ruling BE
+## found the panel/marker gap is pure scope — whole unit vs shown community — and
+## scales inversely with community share). The 81 rendered PNGs and 81 PDFs are NOT
+## re-rendered before 10 August. Fix the labels here and in R/gayini_dashboard_panels.R
+## together, then re-render the set in one pass.
 gayini_unit_flood_series <- function(geom_8058, ctx) {
   v  <- terra::vect(sf::st_transform(sf::st_geometry(geom_8058), terra::crs(ctx$wet_stack)))
   w  <- as.numeric(terra::extract(ctx$wet_stack,   v, fun = sum, na.rm = TRUE, ID = FALSE)[1, ])

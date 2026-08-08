@@ -136,8 +136,38 @@ gayini_panel_map <- function(spec, ctx, base_size = 9) {
 
 ## 2. ANNUAL FLOODING panel ----
 ##
-## Per-year between-year flood frequency (wet / valid years) for the unit, line +
-## 35-yr mean. NO transition line. `series` = data.frame(year, freq_pct[, n_valid]).
+## Per-year WITHIN-YEAR wet extent for the unit, line + 35-yr mean. NO transition
+## line. `series` = data.frame(year, freq_pct[, n_valid]), from
+## gayini_unit_flood_series() — see its header for the quantity in full.
+##
+## LABELS ARE KNOWINGLY WRONG AND KNOWINGLY UNFIXED (Rulings BE / BL, 8 Aug 2026).
+## Corrected 8 Aug 2026 from a comment that read "Per-year between-year flood
+## frequency", which is a contradiction in terms.
+##
+##   title  "Annual flooding, 1988-2023"                    -> names the between-year quantity
+##   y      "Flood freq. (%)"                               -> names the between-year quantity
+##   subtitle "(wet / valid years)"                         -> a YEARS denominator this series
+##                                                             does not have
+##   subtitle "Share of the unit wet each year"             -> CORRECT, and the only correct
+##                                                             description on the panel
+##
+## What is drawn is a share of GROUND within each year; the denominator is valid
+## PIXELS in that year. The MEAN of the line is a correct between-year flood
+## frequency for the unit (constant per-year denominator makes the identity exact);
+## the individual points are not.
+##
+## NO VALUE IS WRONG (Ruling BE). The 10% here vs 15.9% in the vegetation-response
+## panel on the Bala 29ca sheet is pure SCOPE: this panel is the whole unit, that
+## marker is the shown community only (32.7% of the paddock). Reconstructed from the
+## census, whole-unit 10.32 / shown-community 15.92 — both as printed. The gap
+## scales inversely with community share (26ca 98.1% -> 0.63 pp, 28ca 72.9% ->
+## 2.14 pp, 29ca 32.7% -> 5.60 pp).
+##
+## Under Ruling BL the 81 rendered PNGs and 81 PDFs are NOT re-rendered before
+## 10 August; FIGFIND1_index.md warns the reader in words instead. When this is
+## fixed, fix R/gayini_dashboard_compose.R's series comment in the same change and
+## re-render the whole set in one pass — a partial re-render would leave two
+## labelling generations on disk under one naming scheme.
 
 gayini_panel_annual_flooding <- function(series, base_size = 10, unit_note = NULL,
                                          date_lim = NULL, date_breaks = NULL) {
