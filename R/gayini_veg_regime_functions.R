@@ -50,6 +50,39 @@ gayini_veg_regime_classes <- function() {
 }
 
 
+## Ruling CQ (8 Aug 2026): the standing check for any NON-COMMUNITY series colour.
+##
+## A community colour carries an IDENTITY - which country this is. A series colour
+## carries a QUANTITY. When the two collide the reader cannot tell which meaning is
+## being used: the first EXEMPLAR-1 render drew the water series in #2E6DB0, which is
+## Inland Floodplain's own mid-band colour, so on an Inland figure one blue meant both.
+##
+## THIS IS A HALT CONDITION, NOT A COMMENT. Call it in the producer before drawing. Any
+## new series colour introduced from here must clear a minimum RGB distance of 40 from
+## every one of the 11 class colours, so the collision cannot be reintroduced quietly by
+## a later edit.
+##
+## Returns the measured minimum distance invisibly so a producer can print it.
+gayini_assert_series_colour <- function(colour, min_distance = 40,
+                                        classes = gayini_veg_regime_classes()) {
+  rgb_of <- function(h) grDevices::col2rgb(h)[, 1]
+  d <- vapply(classes$colour,
+              function(cc) sqrt(sum((rgb_of(colour) - rgb_of(cc))^2)), numeric(1))
+  nearest <- classes$colour[which.min(d)]
+  if (colour %in% classes$colour)
+    stop(sprintf("Ruling CQ: series colour %s IS a community class colour (%s)",
+                 colour, classes$label[match(colour, classes$colour)]))
+  if (min(d) < min_distance)
+    stop(sprintf(paste("Ruling CQ: series colour %s is only %.1f from class colour %s",
+                       "(%s); minimum is %.0f. A series colour must not be confusable",
+                       "with a community identity."),
+                 colour, min(d), nearest,
+                 classes$label[which.min(d)], min_distance))
+  invisible(list(colour = colour, min_distance = min(d), nearest_class_colour = nearest,
+                 nearest_class_label = classes$label[which.min(d)]))
+}
+
+
 ## Named colour vector keyed by class label (for scale_fill_manual).
 gayini_veg_regime_fill_values <- function(classes = gayini_veg_regime_classes()) {
   stats::setNames(classes$colour, classes$label)

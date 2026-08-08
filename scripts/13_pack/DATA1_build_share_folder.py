@@ -170,17 +170,53 @@ def main() -> int:
     mine = {DEST / r["destination_path"] for r in rows if r["copied"] == "yes"}
     mine |= {DEST / "DATA1_manifest.csv", DEST / "README.md"}
     foreign = sorted(p for p in DEST.rglob("*") if p.is_file() and p not in mine)
+
+    # RULING CR: verify the foreign files rather than only recording them. Every one is
+    # checksummed against Output/figures/, BY CONTENT FIRST and by filename second - a
+    # name match with a different checksum is a stale copy, which is a different and
+    # worse problem than a missing source, so the two are never collapsed.
+    fig_root = ROOT / "Output" / "figures"
+    by_sum: dict[str, list[Path]] = {}
+    by_name: dict[str, list[Path]] = {}
+    for f in fig_root.rglob("*"):
+        if f.is_file():
+            by_name.setdefault(f.name, []).append(f)
     for p in foreign:
+        cand = by_name.get(p.name, [])
+        for c in cand:
+            by_sum.setdefault(sha256_first50(c), []).append(c)
+
+    for p in foreign:
+        h = sha256_first50(p)
+        same_name = by_name.get(p.name, [])
+        exact = [c for c in same_name if sha256_first50(c) == h]
+        if exact:
+            src = exact[0].relative_to(ROOT).as_posix()
+            verdict = "VERIFIED - byte-identical to its source in Output/figures/"
+        elif same_name:
+            src = same_name[0].relative_to(ROOT).as_posix()
+            verdict = ("STALE - a file of this name exists in Output/figures/ but the "
+                       "checksums DIFFER; this copy is not the current render")
+            problems.append(f"{p.name}: STALE copy - differs from {src}")
+        elif p.suffix.lower() not in {".png", ".pdf", ".jpg", ".jpeg", ".tif", ".tiff"}:
+            # Not a figure, so no Output/figures/ source is expected. Stated as a fact
+            # about the file type rather than a guess about where it came from.
+            src = ""
+            verdict = ("NOT A FIGURE - no Output/figures/ source is expected for this "
+                       "file type; it is an original in this folder")
+        else:
+            src = ""
+            verdict = "NO SOURCE FOUND under Output/figures/ - origin not established"
+            problems.append(f"{p.name}: no source found under Output/figures/")
         rows.append({
             "filename": p.name, "copied": "NO - already present, not placed by DATA-1",
-            "source_path": "", "destination_path": p.relative_to(DEST).as_posix(),
-            "bytes": p.stat().st_size, "sha256_first50": sha256_first50(p),
+            "source_path": src, "destination_path": p.relative_to(DEST).as_posix(),
+            "bytes": p.stat().st_size, "sha256_first50": h,
             "bands": None, "crs_epsg": None, "cell_size_m": None, "extent": "",
             "dtype": "", "band_names_present": None, "first_band_name": "",
-            "last_band_name": "",
-            "verified": "NOT VERIFIED BY DATA-1 - this script did not copy it",
-            "description": "Placed in this folder by another session. Recorded so the "
-                           "manifest is a true account of the folder; not checked here."})
+            "last_band_name": "", "verified": verdict,
+            "description": "Placed in this folder by another session. Checked against "
+                           "Output/figures/ under Ruling CR; nothing moved or deleted."})
 
     m = pd.DataFrame(rows)
     m["year_span"] = [
@@ -206,9 +242,16 @@ def main() -> int:
     if foreign:
         fb = sum(p.stat().st_size for p in foreign)
         print(f"  ALREADY PRESENT, NOT PLACED BY DATA-1: {len(foreign)} files, "
-              f"{fb / 1e6:.1f} MB - recorded in the manifest, left untouched")
-        for p in sorted({q.parent.relative_to(DEST).as_posix() or '.' for q in foreign}):
-            print(f"    {p}/  ({sum(1 for q in foreign if (q.parent.relative_to(DEST).as_posix() or '.') == p)} files)")
+              f"{fb / 1e6:.1f} MB - left untouched")
+        fm = m[m.copied.str.startswith("NO - already present")]
+        v = int(fm.verified.str.startswith("VERIFIED").sum())
+        s = int(fm.verified.str.startswith("STALE").sum())
+        n = int(fm.verified.str.startswith("NO SOURCE").sum())
+        o = int(fm.verified.str.startswith("NOT A FIGURE").sum())
+        print(f"    Ruling CR: {v} byte-identical to Output/figures/, {s} stale, "
+              f"{n} with no source found, {o} not a figure")
+        for _, r in fm[~fm.verified.str.startswith("VERIFIED")].iterrows():
+            print(f"      {r.destination_path}  ->  {r.verified.split(' - ')[0]}")
     non8058 = m[(m.copied == "yes") & (m.crs_epsg != 8058)]
     if len(non8058):
         print(f"  NOT ON THE CANONICAL GRID ({len(non8058)}): "

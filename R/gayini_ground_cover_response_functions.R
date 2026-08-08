@@ -424,12 +424,21 @@ gayini_f7_monthly_lag_profile <- function(gc_timeseries, daily_monthly, dim_plot
 ## ~78% -> ~90% total-veg rise becomes visible. y is ZOOMED (coord_cartesian,
 ## not clipped) so rare low outliers still plot at the edge rather than vanish.
 
+## Ruling CP (8 Aug 2026): ONE IDIOM GOVERNS BOTH AXES.
+## The x previously carried limits = c(0, 100) on the SCALE while the y was zoomed with
+## coord_cartesian. A scale limit DROPS data; coord_cartesian zooms. Mixing the two in
+## one call meant the two axes behaved differently for the same reason the comment above
+## already gives for y. It was not dropping anything - annual_occurrence_pct maxes at
+## exactly 100.00 and scale limits are inclusive - but it sat on that boundary, so any
+## future value above 100 would have vanished silently rather than plotted at the edge.
+## The CJ sweep found 34 limits= sites; this is the only one changed, because it is the
+## only one where the data touches its own limit.
 gayini_veg_response_scale <- function(y_lo = 35) {
   list(
     ggplot2::scale_x_sqrt(breaks = c(0, 1, 5, 25, 50, 100),
                           labels = c("0", "1", "5", "25", "50", "100"),
-                          limits = c(0, 100), expand = ggplot2::expansion(mult = c(0, 0.02))),
-    ggplot2::coord_cartesian(ylim = c(y_lo, 100))
+                          expand = ggplot2::expansion(mult = c(0, 0.02))),
+    ggplot2::coord_cartesian(xlim = c(0, 100), ylim = c(y_lo, 100))
   )
 }
 

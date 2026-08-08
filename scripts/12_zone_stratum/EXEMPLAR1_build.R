@@ -94,19 +94,11 @@ source(file.path(root, "R/gayini_gradient_helpers.R"))   # gayini_focus_levels()
 source(file.path(root, "R/gayini_veg_regime_functions.R"))
 WATER <- "#5B6E7C"
 
-.rgb <- function(h) grDevices::col2rgb(h)[, 1]
-class_cols <- gayini_veg_regime_classes()$colour
-d_class <- vapply(class_cols, function(cc) sqrt(sum((.rgb(WATER) - .rgb(cc))^2)), numeric(1))
-d_pal <- vapply(PAL, function(cc) sqrt(sum((.rgb(WATER) - .rgb(cc))^2)), numeric(1))
-cat(sprintf("  water colour %s: min RGB distance %.1f to the 11 class colours (nearest %s),\n",
-            WATER, min(d_class), class_cols[which.min(d_class)]))
-cat(sprintf("                   min RGB distance %.1f to the three cover-line colours\n",
-            min(d_pal)))
-if (WATER %in% class_cols)
-  stop("Ruling CM: the water colour is one of the community class colours")
-if (min(d_class) < 40)
-  stop(sprintf("Ruling CM: water colour is only %.1f from class colour %s - too close",
-               min(d_class), class_cols[which.min(d_class)]))
+## Ruling CQ: the check is now the shared gayini_assert_series_colour(), not re-typed
+## here. It halts the run below a distance of 40.
+chk <- gayini_assert_series_colour(WATER)
+cat(sprintf("  water colour %s clears Ruling CQ: min RGB distance %.1f (nearest %s, %s)\n",
+            chk$colour, chk$min_distance, chk$nearest_class_colour, chk$nearest_class_label))
 
 ## ---- Ruling CM: a one-line locator ----------------------------------------------
 ## Where on the property, in words. Computed from the part centroid against the
