@@ -1,5 +1,7 @@
 fact,value,note
 non_treed_cells,988831,treed_context_flag = 0 AND regime_band <> 'context'
+non_treed_cells_wet_ge_90pct_of_years,942,"A1 Gate 2, VERIFIED not asserted"
+of_those_excluded_by_min_seasons,2,"so MIN_SEASONS = 50 does NOT scrub near-permanent water from the non-treed veg map: it removes 2 of these cells and 940 keep a temporal percentile. The mechanism is real - it was verified on a ~347 ha lake - but that lake lies outside the veg map, so inside the census the extent is negligible"
 cells_missing_temporal_p05,2,"Ruling BT: MIN_SEASONS = 50 removes 2 of 988,831"
 flood_freq_distinct_values,35,"Ruling BQ expects 36; observed k runs 0 to 34, so the 36th value (k = 35, every year wet) does not occur in non-treed country"
 non_treed_cells_inside_a_zone,795602,"80.5% of non-treed cells; the unit table describes these, not the whole census"

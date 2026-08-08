@@ -161,6 +161,15 @@ def main() -> int:
                 "gap_p50_minus_p05": gg.veg_p50.mean() - gg.veg_p05.mean(),
             })
     comm = pd.DataFrame(rows)
+    # Ruling DA: a thin bin must carry its own warning. Aeolian's top bin is 60 cells
+    # (3.7 ha) and Riverine's is 69 - a mean over that is not comparable to a mean over
+    # Inland's 16,626, and a reader scanning the column cannot see the difference.
+    comm["low_support_flag"] = np.where(comm.n_cells < 1000, "LOW SUPPORT", "")
+    comm["low_support_note"] = np.where(
+        comm.n_cells < 1000,
+        "Fewer than 1,000 cells (" + (comm.n_cells * PIXEL_AREA_HA).round(1).astype(str)
+        + " ha). Treat this bin's mean as indicative; it is not comparable to a "
+          "well-supported bin in the same column.", "")
     comm["support_level"] = "pixel"
     comm["unit"] = "census cell (24.970268 m)"
     comm["period_label"] = PERIOD
@@ -178,9 +187,27 @@ def main() -> int:
     # ---- the analysis CSV the R figure reads ---------------------------------------
     unit.to_csv(OUT / "TEMPORAL1_scatter_input.csv", index=False, lineterminator="\n")
 
+    # ---- Ruling A1 Gate 2: the open-water exclusion VERIFIED, not asserted ----------
+    # The producer justifies MIN_SEASONS = 50 partly as an open-water mask, verified on a
+    # ~347 ha lake that lies ENTIRELY OUTSIDE the veg map. Inside the non-treed census
+    # the mechanism is near-inert, and that is measured here rather than taken on trust.
+    wet90 = nt[nt.flood_freq_pct >= 90]
+    n_wet90_excluded = int(wet90.veg_p05.isna().sum())
+    print(f"  A1 Gate 2 (verified): {len(wet90):,} non-treed cells are wet in >=90% of "
+          f"years; {n_wet90_excluded} of them are excluded by MIN_SEASONS, "
+          f"{len(wet90) - n_wet90_excluded:,} retain a percentile")
+
     facts = pd.DataFrame([{
         "fact": "non_treed_cells", "value": len(nt),
         "note": "treed_context_flag = 0 AND regime_band <> 'context'"},
+        {"fact": "non_treed_cells_wet_ge_90pct_of_years", "value": len(wet90),
+         "note": "A1 Gate 2, VERIFIED not asserted"},
+        {"fact": "of_those_excluded_by_min_seasons", "value": n_wet90_excluded,
+         "note": "so MIN_SEASONS = 50 does NOT scrub near-permanent water from the "
+                 "non-treed veg map: it removes 2 of these cells and "
+                 f"{len(wet90) - n_wet90_excluded:,} keep a temporal percentile. The "
+                 "mechanism is real - it was verified on a ~347 ha lake - but that lake "
+                 "lies outside the veg map, so inside the census the extent is negligible"},
         {"fact": "cells_missing_temporal_p05", "value": n_p05_nan,
          "note": "Ruling BT: MIN_SEASONS = 50 removes 2 of 988,831"},
         {"fact": "flood_freq_distinct_values", "value": n_distinct,

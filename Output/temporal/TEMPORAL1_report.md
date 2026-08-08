@@ -78,16 +78,28 @@ prohibition restated in a column on every row.
 **4 · `TEMPORAL1_community_by_floodbin.csv`** — 21 rows, per community × wet-year bin,
 **bin edges as explicit columns** in whole years. No zone join.
 
-### What the outputs say
+### What the outputs say (wording per Ruling DA)
 
-The relationship is strong and monotone in every community. Per-cell temporal p05, by
-wet-year bin:
+**The relationship is clear and monotone in Inland Floodplain, which carries 16,626
+cells at the wet end. Riverine rises across its supported range. Aeolian is ragged, and
+its wet end rests on 60 cells.** Per-cell temporal p05 by wet-year bin, with cell counts
+beneath — because the counts are the reading:
 
 | community | k=0 | 1–2 | 3–5 | 6–10 | 11–17 | 18–24 | ≥25 |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| Aeolian | 44.7 | 44.7 | 46.5 | 53.5 | 52.7 | 47.6 | 69.3 |
-| Riverine | 32.8 | 40.4 | 45.2 | 49.4 | 54.9 | 59.4 | 60.9 |
-| Inland | 37.9 | 44.7 | 53.0 | 60.0 | 67.4 | 76.4 | 77.1 |
+| **Aeolian** | 44.7 | 44.7 | 46.5 | 53.5 | **52.7** | **47.6** | **69.3** |
+| *n cells* | 46,530 | 15,545 | 8,300 | 4,447 | 2,151 | **511** | **60** |
+| **Riverine** | 32.8 | 40.4 | 45.2 | 49.4 | 54.9 | 59.4 | **60.9** |
+| *n cells* | 66,838 | 42,506 | 34,538 | 32,081 | 14,232 | 3,394 | **69** |
+| **Inland** | 37.9 | 44.7 | 53.0 | 60.0 | 67.4 | 76.4 | 77.1 |
+| *n cells* | 19,711 | 47,878 | 76,927 | 154,624 | 246,258 | 155,603 | 16,626 |
+
+**Aeolian falls through k = 6–24 — 53.5 → 52.7 → 47.6 — before a 60-cell final bin lifts
+it to 69.3.** Sixty cells is 3.7 ha; Riverine's top bin is 69 cells, 4.3 ha. Neither
+supports a statement about wet Aeolian or wet Riverine country.
+
+**Three of the 21 rows carry a `LOW SUPPORT` flag** (under 1,000 cells) with their area in
+hectares, so the caveat travels in the table rather than only in this document.
 
 **The two cover metrics differ substantially at unit level**: `veg_p05_temporal_mean`
 minus published `veg_p05_spatial` runs **−24.21 to +10.53 pp, median −9.10**. They are
@@ -106,11 +118,13 @@ wet row. Using those edges on the **counted** per-cell flood frequency:
 |---|---:|---:|---|
 | p05, dry → wet | 37.9 → 77.1 | **37.88 → 77.06** | matches |
 | p50, dry → wet | 74.3 → 88.7 | **74.30 → 88.71** | matches |
-| gap, dry → wet | 36.4 → 11.3 | 36.42 → **11.66** | dry matches; wet differs |
+| gap, dry → wet | 36.4 → 11.3 → **11.7** | 36.42 → **11.66** | matches once corrected |
 
-**Two of three reproduce to two decimals.** The third differs from the design seat's own
-arithmetic rather than from mine: 88.7 − 77.1 = **11.6**, not the 11.3 quoted, and my
-11.66 is consistent with my own endpoints.
+**All three reproduce.** The gap row appeared to differ until Ruling CW resolved it: the
+quoted 11.3 was a transcription error, the computed value was 11.7, and the measured
+11.66 stands. It was flagged because it disagreed with the design seat'''s own arithmetic
+(88.7 − 77.1 = 11.6), not with mine — which is what a transcription error looks like from
+the outside. **No output was corrected.**
 
 **This resolves CG's diagnosis.** The EXEMPLAR-1 Gate 3 failure was *both* causes CG
 named — the interpolated surface *and* the bin edges — and on counted values with the
@@ -119,6 +133,24 @@ stated edges the numbers land.
 **The Gate 3 rerun itself was NOT attempted** (Rulings CS and CG): r(p05) and the Aeolian
 above-50% count stay deferred behind BQ.
 
+## 5b · Ruling A1's Gate 2 — the open-water exclusion, verified rather than asserted
+
+A1 requires this verified. It is, and **it returns a finding.**
+
+**942 non-treed census cells are wet in 90% or more of the 35 years. 940 of them keep a
+temporal percentile; MIN_SEASONS = 50 removes 2.** The threshold does **not** scrub
+near-permanent water out of the non-treed veg map.
+
+That does not contradict the producer's justification, which was verified on a ~347 ha
+lake — but **that lake lies entirely outside the veg map.** Where open water is mapped as
+water the mechanism never had to act; inside the census its extent is 2 cells. Consistent
+with Ruling BT, and now quantified at the wet end rather than in total.
+
+**Consequence for reading the wet bins:** the k ≥ 25 rows contain cells wet in most years
+that are *not* excluded as open water. They are chenopod and floodplain classes by the veg
+map's own reckoning, but nobody should assume open water has been removed from the wet end
+of these tables.
+
 ## 6 · Two findings for BQ tomorrow
 
 **The counted per-cell flood frequency already exists** as `flood_freq_pct` in
@@ -126,25 +158,55 @@ above-50% count stay deferred behind BQ.
 is still worth building as a map product, but the *values* are already available and
 Gate 3 need not have used the interpolated surface.
 
-**BQ expects 36 discrete values inside codes 11–33; there are 35.** `valid_years` = 35 for
-every non-treed cell, so k runs **0 to 34** — the 36th value (k = 35, wet in every year)
-**does not occur in non-treed country**. A fact about the data, not a defect, but BQ's
-acceptance test will fail as written unless it expects 35.
+**BQ's acceptance test is amended by Ruling CY to expect 35 distinct values, not 36.**
+`valid_years` = 35 for every non-treed cell, so k runs **0 to 34** — the 36th value
+(k = 35, wet in every year) **does not occur in non-treed country**. CY directs this be
+recorded in the README as a fact about the country, not as a tolerance. **Not written into
+the README tonight**, because BR rewrites that same document tomorrow and the two belong in
+one pass.
 
-## 7 · Scope fact worth carrying
+**Incidental, for the same pass:** on counted values **571** Aeolian non-treed cells sit
+above 50% flood frequency (identical under `>` and `>=`; exactly k ≥ 18), against **490**
+measured on the interpolated raster at EXEMPLAR-1 Gate 3. CG predicted this count would
+shift and it has. Recorded, not presented as the Gate 3 rerun, which stays deferred.
+
+## 7 · Scope fact, carried under Ruling DB
 
 **Only 795,602 of the 988,831 non-treed census cells (80.5%) fall inside a management
-zone.** The unit-level table and the scatter describe those; the community table
-describes all 988,831. The two are not interchangeable and each says which it uses.
+zone.** The unit-level table and the scatter describe **those 795,602**; the community
+table describes **all 988,831**.
+
+**Under Ruling DB this travels with the numbers, not only with the table.** Any document
+quoting the unit-level table carries it, and **no deliverable may present a number from one
+population as though it covered the other.** The 193,229 non-treed cells outside every
+paddock are real country and are absent from the scatter entirely.
 
 ## 8 · Outstanding
 
-**Rulings cited by the spec for which I hold no issued text: A1, A2, CA, CB.** CB's
-substance is stated inline in §2 (no pinned number moves, nothing registered is
-recomputed or superseded) and was honoured — **nothing was pinned, superseded or
-recomputed.** A1, A2 and CA are cited without content and nothing here depended on them.
+**A1, A2, CA and CB were issued after the run and are now held.** Compliance checked
+against the text rather than assumed:
 
-**No new `number_id` was created.** §6 requires every delivered quantity to carry one;
-these four outputs are tables and a figure with no new headline scalar, and inventing
-pins for 64 × 3 cell values would be the opposite of what the registry is for. All five
-qualifiers travel as columns on every row. Flagged rather than decided.
+- **A1** — published water value unchanged, no new water construction; metric named
+  `veg_p05_temporal_mean`; unit is the paddock, 64 points coloured by community, no site
+  panel; reconciliation table present. **All satisfied.** Its Gate 2 open-water requirement
+  was the one thing not done, and §5b now does it — with a finding.
+- **A2** — the community-level table was produced, as A2 requires.
+- **CA** — governs the scatter only. The EXEMPLAR-1 time-series figures are untouched and
+  correctly keep their year axis.
+- **CB** — honoured: **nothing was pinned, superseded or recomputed**, and the two-metric
+  prohibition is enforced on the figure and restated per row in the reconciliation table.
+
+**No new `number_id` was created, and Ruling CZ ratifies that.** §6's requirement applies
+to headline scalars reaching a deliverable, not to every cell of a 64-row table. All five
+qualifiers travel as columns. **If REPORT-2 or any deliverable quotes a single value out of
+these tables, that value gets a `number_id` at the point of quotation, with the table and
+this commit as its source.**
+
+**Ruling CW closes the endpoint reconciliation:** the design seat's 11.3 was a transcription
+error, the computed value was 11.7, and the measured 11.66 stands. No correction to any
+output.
+
+**Ruling CX makes the X label standing:** `mean_flood` is the share of the paddock's cells
+seen wet, mean over years, per Ruling AZ, and is never labelled a between-year flood
+frequency in any output, caption or column header. Where a spec conflicts with AZ on this,
+AZ wins.
