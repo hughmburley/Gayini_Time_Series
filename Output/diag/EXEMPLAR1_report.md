@@ -90,6 +90,23 @@ Cover is **`veg_p50_spatial`** (Ruling BX) — the floor does not appear. Water 
 **`inund_pct`** (Ruling BY). Units are named for a lay reader (Ruling BZ): *the Inland
 Floodplain country in Bala 22*. No metric slugs, no `fit_id`, no version stamps.
 
+**Ruling CM applied, and Ruling CE withdrawn — no second cover line.** Three changes:
+
+- **The water series left the community palette.** It was `#2E6DB0`, which *is* Inland
+  Floodplain's mid-band colour, so on an Inland figure one blue carried both a community
+  identity and a water quantity. It is now `#5B6E7C`, a desaturated slate — all three
+  community hues are saturated, so desaturation is what separates a quantity from an
+  identity. **Checked rather than eyeballed:** the producer asserts a minimum RGB
+  distance to all 11 class colours and halts below 40. Measured **59.7** (nearest
+  `#27725F`), and 46.6 to the three cover-line colours.
+- **A one-line locator**, computed from each part's centroid against the property's own
+  bounding box rather than typed: *"151 hectares within Dinan 3, in the north-west of
+  Gayini"*.
+- **Years with no detected water are drawn as an explicit zero** — a tick on the
+  baseline — because a zero-height bar draws nothing and is indistinguishable from a
+  missing year, which for the driest units is most of the record. The caption states the
+  count either way.
+
 The contrast the client asked for is stark. **Bala 22's Inland country holds ~89% cover
 through everything while water swings 0–100%. Dinan 3's Aeolian country swings 31–90%,
 collapsing in the 2008 drought, on essentially no flooding at all.** Wet country is

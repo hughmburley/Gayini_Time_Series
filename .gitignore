@@ -67,6 +67,13 @@ Output/diag/analysis/*
 Output/glm/*
 !Output/glm/*.csv
 !Output/glm/*.md
+# Ruling CL (8 Aug 2026): EXEMPLAR1_units.csv only, on the same citability grounds as
+# Output/diag/* under Ruling BB - it carries the nine units' support level, scope filter,
+# pixel constant, denominator and period label, and the report cites it. Output/tables is
+# NOT un-ignored wholesale; this is one targeted path.
+!Output/tables/
+Output/tables/*
+!Output/tables/EXEMPLAR1_units.csv
 working/
 /archive/
 _local_archive/

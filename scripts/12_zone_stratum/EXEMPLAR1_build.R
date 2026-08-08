@@ -29,6 +29,7 @@
 # and the registry row happen together, so a figure cannot exist unregistered.
 
 suppressPackageStartupMessages({
+  library(sf);
   library(ggplot2); library(patchwork); library(DBI); library(RSQLite)
 })
 
@@ -78,8 +79,54 @@ LAY <- c(aeolian = "Aeolian Chenopod country",
 lay_name <- function(cs, zn) sprintf("the %s in %s", LAY[[cs]], zn)
 
 PAL <- c(aeolian = "#C79A3B", riverine = "#3B8A8F", inland = "#2165AC")
-WATER <- "#2E6DB0"
 INK <- "#26302E"; BODY <- "#5F6B67"; MUTED <- "#8A8378"
+
+## ---- Ruling CM: the water colour must sit OUTSIDE the community palette ----------
+## The first render used #2E6DB0, which IS Inland Floodplain's mid-band colour in
+## gayini_veg_regime_classes(). On an Inland figure the same blue then carried both a
+## community IDENTITY and a water QUANTITY. The replacement is a strongly DESATURATED
+## slate: all three community hues are saturated (gold, teal, blue), so desaturation is
+## what separates a quantity from an identity here, and it still reads as water.
+##
+## Checked, not eyeballed: the minimum RGB distance to every one of the 11 class
+## colours is asserted, so a future edit cannot quietly reintroduce the collision.
+source(file.path(root, "R/gayini_gradient_helpers.R"))   # gayini_focus_levels()
+source(file.path(root, "R/gayini_veg_regime_functions.R"))
+WATER <- "#5B6E7C"
+
+.rgb <- function(h) grDevices::col2rgb(h)[, 1]
+class_cols <- gayini_veg_regime_classes()$colour
+d_class <- vapply(class_cols, function(cc) sqrt(sum((.rgb(WATER) - .rgb(cc))^2)), numeric(1))
+d_pal <- vapply(PAL, function(cc) sqrt(sum((.rgb(WATER) - .rgb(cc))^2)), numeric(1))
+cat(sprintf("  water colour %s: min RGB distance %.1f to the 11 class colours (nearest %s),\n",
+            WATER, min(d_class), class_cols[which.min(d_class)]))
+cat(sprintf("                   min RGB distance %.1f to the three cover-line colours\n",
+            min(d_pal)))
+if (WATER %in% class_cols)
+  stop("Ruling CM: the water colour is one of the community class colours")
+if (min(d_class) < 40)
+  stop(sprintf("Ruling CM: water colour is only %.1f from class colour %s - too close",
+               min(d_class), class_cols[which.min(d_class)]))
+
+## ---- Ruling CM: a one-line locator ----------------------------------------------
+## Where on the property, in words. Computed from the part centroid against the
+## property's own bounding box, never typed.
+CEN <- utils::read.csv(file.path(root, "Output/diag/analysis/SPAT1_part_centroids.csv"),
+                       stringsAsFactors = FALSE)
+bnd <- sf::st_bbox(sf::st_read(file.path(root, "Output/spatial_8058/gayini_boundary_epsg8058.gpkg"),
+                               quiet = TRUE))
+locator <- function(part_id) {
+  r <- CEN[CEN$part_id == part_id, ]
+  if (nrow(r) != 1) return("")
+  fx <- (r$centroid_x_8058 - bnd[["xmin"]]) / (bnd[["xmax"]] - bnd[["xmin"]])
+  fy <- (r$centroid_y_8058 - bnd[["ymin"]]) / (bnd[["ymax"]] - bnd[["ymin"]])
+  ns <- if (fy > 0.62) "north" else if (fy < 0.38) "south" else NA_character_
+  ew <- if (fx > 0.62) "east" else if (fx < 0.38) "west" else NA_character_
+  if (is.na(ns) && is.na(ew)) "in the middle of Gayini"
+  else if (is.na(ns)) sprintf("in the %s of Gayini", ew)
+  else if (is.na(ew)) sprintf("in the %s of Gayini", ns)
+  else sprintf("in the %s-%s of Gayini", ns, ew)
+}
 
 th <- function(base = 11) {
   theme_minimal(base_size = base) +
@@ -123,10 +170,19 @@ for (i in seq_len(nrow(pick))) {
     th()
 
   # BOTTOM - water. Ruling BY: a share of ground within each year.
+  # Ruling CM: a year with no detected water must be an EXPLICIT zero. A zero-height
+  # geom_col draws nothing, which on the page is indistinguishable from a missing year -
+  # and for the driest units that is most of the record. Zero years get a visible tick
+  # on the baseline, and the count is stated in the caption either way.
+  zero_years <- g$water_year[g$inund_pct <= 0]
   b <- ggplot(g, aes(water_year, inund_pct)) +
     geom_hline(yintercept = mean_water, linetype = "dashed", colour = "grey60",
                linewidth = 0.4) +
-    geom_col(fill = WATER, width = 0.68) +
+    geom_col(fill = WATER, width = 0.68)
+  if (length(zero_years))
+    b <- b + annotate("segment", x = zero_years - 0.34, xend = zero_years + 0.34,
+                      y = 0, yend = 0, colour = WATER, linewidth = 1.1)
+  b <- b +
     scale_y_continuous(limits = c(0, 100)) +
     # NEVER scale_x_continuous(limits=) here: a scale limit DROPS data, and with
     # geom_col the 1988 and 2022 bars extend past 1988/2022 and were silently deleted -
@@ -143,8 +199,9 @@ for (i in seq_len(nrow(pick))) {
     patchwork::plot_layout(heights = c(1, 1)) +
     patchwork::plot_annotation(
       title = sprintf("Ground cover and flooding: %s", nm),
-      subtitle = sprintf("%s hectares within %s · every year from 1988 to 2022",
-                         format(round(p$area_ha), big.mark = ","), p$zone_name),
+      subtitle = sprintf("%s hectares within %s, %s · every year from 1988 to 2022",
+                         format(round(p$area_ha), big.mark = ","), p$zone_name,
+                         locator(p$part_id)),
       theme = th())
 
   path <- file.path(OUT_DIR, sprintf("EX1_%s_%s.png", p$community_short,
@@ -159,6 +216,11 @@ for (i in seq_len(nrow(pick))) {
     "country's cells within each year. Lower panel: the share of this country's cells ",
     "seen under water within each year - this is NOT the headline flood frequency, ",
     "which counts wet years per cell and has no annual line. ",
+    if (length(zero_years))
+      sprintf(paste("%d of the 35 years had no water detected here; they are drawn as an",
+                    "explicit zero on the baseline so a dry year cannot be mistaken for a",
+                    "missing one. "), length(zero_years))
+    else "Water was detected in every one of the 35 years. ",
     "Scope: non-treed ground, whole area, full record, 1988-2022.")
 
   r <- gayini_write_and_register_figure(
