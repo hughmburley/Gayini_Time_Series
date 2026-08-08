@@ -149,6 +149,24 @@ scripts/06_mer/MER_threshold_code.txt
 
 # --- Tier 0 guard: data stays out of git ---
 Output/rasters/
+# Ruling CU (8 Aug 2026): the DATA-1 share README only - the client-facing document, and
+# BR is about to rewrite its extent caveat, so it is tracked FIRST in its current state
+# and the correction lands as a visible diff rather than as an untracked file appearing
+# already correct.
+#
+# THIS BLOCK MUST STAY BELOW the 'Output/rasters/' line above. An identical chain placed
+# higher up did nothing: that line excludes the DIRECTORY, later rules win, and git
+# cannot re-include a file inside an excluded directory. So the directory is re-included
+# here, its contents re-excluded, and only then can the one file be named.
+#
+# Everything else stays ignored - every raster, the whole of Output/rasters, the copied
+# tifs in the share folder, figures_for_adrian/, and DATA1_manifest.csv, which is
+# regenerable and whose producer is committed.
+!Output/rasters/
+Output/rasters/*
+!Output/rasters/DATA_share_20260808/
+Output/rasters/DATA_share_20260808/*
+!Output/rasters/DATA_share_20260808/README.md
 Output/database/*.sqlite
 Output/database/*.gpkg
 data_intermediate/
