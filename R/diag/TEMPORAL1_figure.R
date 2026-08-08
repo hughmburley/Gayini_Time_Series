@@ -51,8 +51,11 @@ p <- ggplot(d, aes(mean_flood, veg_p05_temporal_mean)) +
   coord_cartesian(xlim = c(0, max(d$mean_flood) * 1.04)) +
   labs(
     title = "Wetter paddocks hold more cover in their poorest seasons",
-    subtitle = paste("64 paddocks. Each point is one paddock's average, over its own cells, of that",
-                     "cell's 5th-percentile\ntotal ground cover across 140 seasonal composites."),
+    subtitle = paste0(
+      "64 paddocks. Each point is one paddock's average, over its own cells, of that ",
+      "cell's 5th-percentile total ground cover across 140 seasonal composites.\n",
+      "55 of the 64 are Inland Floodplain-dominant, so this is mostly a relationship ",
+      "WITHIN Inland country - it does not order the three communities against each other."),
     x = "Share of the paddock's cells seen wet, mean over years (%)",
     y = "Mean per-cell 5th-percentile ground cover (%)",
     caption = paste(
@@ -80,7 +83,12 @@ caption <- paste0(
   "Output/temporal/TEMPORAL1_reconciliation.csv. Points are sized by cell count and coloured ",
   "by the paddock's dominant community, whose share is recorded per paddock - a paddock is ",
   "not an ecological unit (L-01). Trend line is a display smoother; no coefficient is taken ",
-  "from it and no p-value is computed. Scope: ",
+  "from it and no p-value is computed. ",
+  "READ THE COMMUNITY COLOURS BEFORE THE SLOPE (Ruling DN): 55 of the 64 paddocks are ",
+  "Inland Floodplain-dominant, so this trend is predominantly a WITHIN-INLAND relationship ",
+  "and must not be read as ordering the three communities against one another. The upper ",
+  "end of the smoother's interval is carried by a SINGLE paddock at 58.9% wet - Bala 22 - ",
+  "which is why the band widens there. Scope: ",
   "treed_context_flag = 0 AND regime_band <> 'context', 1988-2022.")
 
 r <- gayini_write_and_register_figure(
