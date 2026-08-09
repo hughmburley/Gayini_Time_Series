@@ -284,6 +284,50 @@ ambiguous rather than wrong, so it is left alone under Ruling AZ's scope.
 
 ---
 
+# Figure · Wetter country holds more cover in its poorest seasons
+
+**File:** `PARTSCATTER_part_temporal_p05_vs_water.png`
+**Status:** `RENDERED` · 9 August 2026
+**Producer:** `scripts/14_diag/PARTSCATTER_prepare.py` → `R/diag/PARTSCATTER_figure.R`
+**Audience:** the client, replacing the 64-paddock figure in his Monday deck. In our own
+record the paddock-grain figure stands and is **not** superseded.
+
+## Title
+
+> Wetter country holds more cover in its poorest seasons
+
+## Axis labels
+
+> x: Share of the area's cells seen wet, mean over years (%)
+>
+> y: 5th-percentile ground cover, mean of cells (%)
+
+## Why the count is 100 and not 115
+
+> Of the 156 paddock x community areas inside the 64 paddocks, 34 are woodland or forest
+> country, set aside because ground cover under a canopy does not mean what it means in
+> the open, and 4 are minor units outside the three open communities. A further 18 hold
+> fewer than 500 cells — 171 ha, 0.3% of the open ground — and are dropped, because an
+> average over a few hundred cells does not stand beside one taken over thousands.
+
+**The 115 is this project's own number.** It is PARTREG's part count at a 33-cell floor,
+over the **same three** non-treed communities. The client's slide pairs it with a legend
+of **eight** vegetation communities; that eight comes from a different layer and no
+figure at this grain has ever carried it. Stated so the gap is read from the page rather
+than discovered in the room.
+
+## Sources
+
+| number | source |
+|---|---|
+| 156 → 118 → 100 areas; 171 ha dropped | `Output/temporal/PARTSCATTER_reconciliation_chain.csv` |
+| 34 woodland/forest · 4 minor units | `Output/temporal/PARTSCATTER_excluded_communities.csv` |
+| per-community n, water range, smoother drawn | `Output/temporal/PARTSCATTER_community_support.csv` |
+| Bala 22 at 58.9% wet, sole area above 50% | `Output/temporal/PARTSCATTER_scatter_input.csv` |
+| 115 areas at a 33-cell floor | `PARTREG_S2_three_periods_115_parts.png` caption, this file |
+
+---
+
 # Canonical axis labels (Ruling EC, 9 August 2026)
 
 **One quantity, one wording, across every product.** A label here is the canonical form;
@@ -294,12 +338,20 @@ in the same words on every figure.
 | quantity | canonical axis label | where the population and time step go | products using it |
 |---|---|---|---|
 | per-cell temporal 5th-percentile total ground cover | **"5th-percentile ground cover, per cell (%)"** | subtitle / footnote: measured for each cell across all seasons in the record rather than once a year, 5 to 140 measurements per cell, 1988–2022 | D1v2 paddock dashboards, response panel |
-| the same quantity, averaged over a unit's cells | **"5th-percentile ground cover, mean of cells (%)"** | as above, plus the unit and its cell count | `TEMPORAL1_paddock_temporal_p05_vs_water.png` |
+| the same quantity, averaged over a unit's cells | **"5th-percentile ground cover, mean of cells (%)"** | as above, plus the unit and its cell count | `TEMPORAL1_paddock_temporal_p05_vs_water.png`, `PARTSCATTER_part_temporal_p05_vs_water.png` |
 | share of a unit's census cells seen wet within a year | **"Share under water (%)"** | subtitle: share of the paddock's census cells wet that year, with the cell count and coverage share | D1v2 top panel |
 | the same, averaged over years | **"Share of cells wet, mean over years (%)"** | Rulings AZ and CX; never called a between-year flood frequency | D1v2 baseline gauge, `figure_f5_cover_vs_water_64_paddocks`, TEMPORAL-1 scatter x-axis |
+| the same, over a **paddock cut to one plant community** | **"Share of the area's cells seen wet, mean over years (%)"** | subtitle defines *area*: one paddock x community area, a single paddock cut to one plant community, averaged over its own cells, with the area count. Rulings AZ and CX; never called a between-year flood frequency | `PARTSCATTER_part_temporal_p05_vs_water.png` |
 | per-cell between-year flood frequency | **"How often it floods · between-year flood frequency (%)"** | footnote: pixel census, 24.97 m, counted on the 8058 grid | D1v2 response panel |
 | within-year median total ground cover, over a unit's cells | **"Median ground cover (%)"** | subtitle: measured across every census cell in the paddock, with the cell count and coverage share. The axis carries the quantity alone because the full form collided with the panel above it | D1v2 middle panel |
 | plot-support between-year flood frequency | **"Share of years under water, per plot (%)"** | plot support, named in full. Phrased to echo the top panel's *"Share under water"* for the same idea measured at a different support and over years rather than across cells — deliberately NOT the AZ/CX wording, because this one IS a genuine between-year frequency | D1v2 "Where it sits" boxplot |
+
+**The two water labels differ only in their population, and that is the whole point.**
+`"Share of cells wet, mean over years (%)"` is the paddock; `"Share of the area's cells
+seen wet, mean over years (%)"` is the paddock cut to one plant community. The tail —
+*seen wet, mean over years* — is identical in both because the quantity is identical;
+only the denominator moves. A figure that mixed them would be comparing a paddock's
+water with a part's under one axis title.
 
 **"Median ground cover" and "5th-percentile ground cover" are different quantities, not
 two names for one** (Ruling EE). The middle panel plots the within-year MEDIAN across a
