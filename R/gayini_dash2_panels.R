@@ -16,6 +16,14 @@ suppressPackageStartupMessages({library(ggplot2)})
 DASH2_PARTYEAR <- file.path("Output", "tables", "PARTREG_part_year_floor_inund.csv")
 
 
+## Ruling EC and spec 2.8: ONE sentence, defined once, used by the dashboards AND by
+## TEMPORAL-1, so the two products cannot drift into two descriptions of one method.
+## Plain register - no capitals-as-emphasis, no "TEMPORAL", no "140 SEASONAL composites".
+GAYINI_SEASONAL_BASIS_SENTENCE <- paste(
+  "Cover is measured for each cell across all seasons in the record rather than once a",
+  "year; the number of measurements behind a cell ranges from 5 to 140.")
+
+
 ## One paddock's annual series, built on ITS CENSUS CELLS ----
 ##
 ## Water is sum(wet_pixels) / sum(valid_pixels) across the paddock's parts - an exact
@@ -129,7 +137,7 @@ gayini_dash2_resp_fix <- function(p, subset_pct = NA_real_, subset_n = NA_intege
   ## against each other. 0-100 is the natural common range for a cover percentage.
   for (sc in p$scales$scales) {
     if ("y" %in% sc$aesthetics) {
-      sc$name <- "Cover in the poorest seasons (%)"
+      sc$name <- "5th-percentile ground cover, per cell (%)"   # Ruling EC
       sc$limits <- c(0, 100)
     }
   }
@@ -158,10 +166,10 @@ gayini_dash2_resp_fix <- function(p, subset_pct = NA_real_, subset_n = NA_intege
   p$labels$caption <- paste0(
     p$labels$caption, "\n",
     paste(strwrap(paste(
-      "Cover here is a per-cell reading taken over 140 seasonal composites, not over 35",
-      "annual values. Wetness bands on the map are cut separately for each plant",
-      "community, and a small share of cells falls either side of a band edge if the",
-      "alternative water surface is used."), width = 118), collapse = "\n"))
+      GAYINI_SEASONAL_BASIS_SENTENCE,
+      "Wetness bands on the map are cut separately for each plant community, and a small",
+      "share of cells falls either side of a band edge if the alternative water surface",
+      "is used."), width = 118), collapse = "\n"))
   p
 }
 

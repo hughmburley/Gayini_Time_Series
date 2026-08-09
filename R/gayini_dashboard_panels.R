@@ -128,8 +128,10 @@ gayini_panel_map <- function(spec, ctx, base_size = 9, inset_x = 0.015) {
     ## community x wetness key now lives on the whole-farm map at the front of the
     ## main report (its one home — flagged, not this task).
     cowplot::ggdraw(core) +
+      ## Ruling DY: THIS is the draw the paddock sheet uses - it does not go through
+      ## add_locator() above, which is why parameterising that one changed nothing.
       cowplot::draw_plot(gayini_locator_inset(spec$geom, ctx$boundary, ctx$management),
-                         x = 0.015, y = 0.66, width = 0.26, height = 0.30)
+                         x = inset_x, y = 0.66, width = 0.26, height = 0.30)
   } else {
     ## Stratum: whole-farm map with the class highlighted; subtitle names it, no key.
     core

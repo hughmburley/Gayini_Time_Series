@@ -284,6 +284,40 @@ ambiguous rather than wrong, so it is left alone under Ruling AZ's scope.
 
 ---
 
+# Canonical axis labels (Ruling EC, 9 August 2026)
+
+**One quantity, one wording, across every product.** A label here is the canonical form;
+a figure showing that quantity uses it verbatim. Where the full statement will not fit on
+an axis, the axis carries the quantity and the subtitle carries population and time step,
+in the same words on every figure.
+
+| quantity | canonical axis label | where the population and time step go | products using it |
+|---|---|---|---|
+| per-cell temporal 5th-percentile total ground cover | **"5th-percentile ground cover, per cell (%)"** | subtitle / footnote: measured for each cell across all seasons in the record rather than once a year, 5 to 140 measurements per cell, 1988–2022 | D1v2 paddock dashboards, response panel |
+| the same quantity, averaged over a unit's cells | **"5th-percentile ground cover, mean of cells (%)"** | as above, plus the unit and its cell count | `TEMPORAL1_paddock_temporal_p05_vs_water.png` |
+| share of a unit's census cells seen wet within a year | **"Share under water (%)"** | subtitle: share of the paddock's census cells wet that year, with the cell count and coverage share | D1v2 top panel |
+| the same, averaged over years | **"Share of cells wet, mean over years (%)"** | Rulings AZ and CX; never called a between-year flood frequency | D1v2 baseline gauge, `figure_f5_cover_vs_water_64_paddocks`, TEMPORAL-1 scatter x-axis |
+| per-cell between-year flood frequency | **"How often it floods · between-year flood frequency (%)"** | footnote: pixel census, 24.97 m, counted on the 8058 grid | D1v2 response panel |
+| plot-support between-year flood frequency | **"Annual wet freq. (% of years)"** | plot support — deliberately NOT relabelled to the AZ/CX wording, because it is a genuine between-year frequency | D1v2 "Where it sits" boxplot |
+
+**The two 5th-percentile forms share a stem on purpose.** The underlying quantity is one
+thing measured per cell; TEMPORAL-1 shows its mean over a unit's cells and the dashboards
+show the cells themselves. Naming the aggregation rather than renaming the quantity is
+what keeps them a matched pair.
+
+**Shared sentence, identical on both products** (spec 2.8), defined once in
+`GAYINI_SEASONAL_BASIS_SENTENCE`:
+
+> Cover is measured for each cell across all seasons in the record rather than once a
+> year; the number of measurements behind a cell ranges from 5 to 140.
+
+**Not permitted on a face** (Ruling EA): issue codes, ruling letters, `number_id`,
+`fit_id`, repository paths. **Not permitted anywhere on a client-facing artefact**
+(Ruling DT): sentences about project process, correspondence, internal review or a
+pending correction — those live in `Output/runs/RUN_<TASK>_<DATE>.md`.
+
+---
+
 # Pending
 
 Captions not yet drafted, listed so the gap is visible rather than forgotten.

@@ -53,14 +53,16 @@ p <- ggplot(d, aes(mean_flood, veg_p05_temporal_mean)) +
     title = "Wetter paddocks hold more cover in their poorest seasons",
     subtitle = paste0(
       "64 paddocks. Each point is one paddock's average, over its own cells, of that ",
-      "cell's 5th-percentile total ground cover across 140 seasonal composites.\n",
+      "cell's 5th-percentile total ground cover. Cover is measured for each cell across ",
+      "all seasons in the record rather than once a year; the number of measurements ",
+      "behind a cell ranges from 5 to 140.\n",
       "55 of the 64 are Inland Floodplain-dominant, so this is mostly a relationship ",
       "WITHIN Inland country - it does not order the three communities against each other."),
     x = "Share of the paddock's cells seen wet, mean over years (%)",
-    y = "Mean per-cell 5th-percentile ground cover (%)",
+    y = "5th-percentile ground cover, mean of cells (%)",   # Ruling EC
     caption = paste(
       "Support: pixel throughout - both axes describe census cells, and no site or plot",
-      "measurement appears, so the two supports are never mixed (C10).")) +
+      "measurement appears, so the two supports are never mixed.")) +
   theme_minimal(base_size = 11) +
   theme(panel.grid.minor = element_blank(),
         panel.grid.major = element_line(colour = "#EFEBE0", linewidth = 0.4),

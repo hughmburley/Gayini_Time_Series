@@ -169,7 +169,7 @@ gayini_locator_inset <- function(area, boundary, management = NULL, mark = NULL)
 ##
 ## Returns list(plot, overlap) and, if out_dir+basename given, saved paths.
 
-gayini_plot_area_map <- function(area,
+gayini_plot_area_map <- function(inset_x0 = 0.02, area,
                                  fill_layer,
                                  fill_spec,
                                  boundary,
@@ -206,7 +206,12 @@ gayini_plot_area_map <- function(area,
   map_band_hi   <- (rh_cap + rh_map) / tot
   title_band_lo <- (rh_cap + rh_map) / tot
   ins_local_y0 <- 0.64; ins_local_h <- 0.30
-  ins_local_x0 <- 0.02; ins_local_w <- 0.28
+  ## Ruling DY. 0.02 puts the locator over the latitude labels on any map whose extent
+  ## reaches the top-left - it clipped them on Bala 19, Mara 21, Bala 29ca and Dinan 9.
+  ## THIS is the locator the paddock checkerboard draws; an identical parameter added to
+  ## gayini_panel_map() in the DASH2 pass had no effect because that is a second path.
+  ## `inset_x0` is additive and defaults to the old value, so nothing else moves.
+  ins_local_x0 <- inset_x0; ins_local_w <- 0.28
 
   map_with_inset <- cowplot::ggdraw(map_core)
   if (inset) {
