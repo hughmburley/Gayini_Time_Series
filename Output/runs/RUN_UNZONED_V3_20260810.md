@@ -14,6 +14,10 @@ Never a reference, a control, or unmanaged, in any column, file, caption or sent
 
 **Two, both at the Arm B STOP, and one of them the spec pre-registered as a stop.**
 
+**BOTH RESOLVED by the design seat, 10 August. D1 → OLS-within leads, and Ruling EK
+issued; D2 → no fit, and Ruling EL issued. Recorded below as raised, with the resolution
+attached, rather than rewritten.**
+
 **D1 · §4.4's point estimate moved materially, so which estimate leads §4.6 and the
 findings note?** The spec expects the AR(1) refit to *widen the interval and hold the
 point estimate*. It did neither.
@@ -36,12 +40,37 @@ would lead with **+0.1436** and carry +0.2106 beside it. But the comparator +0.1
 OLS-within figure, so **the like-for-like comparison is +0.2106 against +0.1613**, and
 swapping estimators mid-comparison would be the exact error §5 forbids.
 
+**RESOLVED — Ruling EK.** *Where a sensitivity analysis is run on one side of a stated
+comparison, it is run on the other side before either result is reported.* The asymmetry
+was the real problem: one side had a serial-correlation sensitivity and the other did not,
+so the 31.8% drop could not be read at all. **EK run, and it settles cleanly:**
+
+| side | OLS-within | GLS AR(1) | move | φ |
+|---|---:|---:|---:|---:|
+| unzoned patches | **+0.2106** | +0.1436 | **−31.8%** | +0.482 |
+| real parts (comparator) | **+0.1613** | +0.1120 | **−30.5%** | +0.434 |
+
+**A 1.3 pp difference in the proportional move.** The AR(1) sensitivity is a property of
+**annual floor series generally**, not of unzoned ground. Reported once as a caveat on
+both sides; **the +0.2106 against +0.1613 comparison stands undisturbed**. The real-part
+OLS-within also **reproduces the spec's stated +0.1613 at +0.161271**, so the comparator
+is verified rather than quoted. **OLS-within leads the findings note. AR(1) is a
+sensitivity, never a correction** — §5 holds: the two estimators are not two estimates of
+one number.
+
 **D2 · §1.1's fork failed. Is the size-matched branch satisfied by reporting alone?** The
 branch says run Arm A on all patches *and additionally* report the size-matched subset.
 Done — but **no community reaches ten surviving patches** (Aeolian 3, Inland 2, Riverine
 6), so under v2 §2.3 rule 3 **none is fitted** and the branch yields counts, not a fit.
 That is a defensible terminus and it is where I stopped. If a fit was wanted at any
 smaller n, it is a ruling, not a judgement call I should make.
+
+**RESOLVED — no fit, and Ruling EL.** *A selection rule that survives nothing is a
+limitation, not a null cell.* The three counts must be carried into the findings note as
+a constraint on what Arm B §4.6 can claim: **the between-unit test cannot be
+size-controlled on this data at all** — and §1.1 has just established that size carries a
+real slope on this metric, and one that lives *inside* Inland rather than between
+communities. Written into §6 as a note-level obligation, not left in a table.
 
 ---
 
@@ -114,12 +143,36 @@ The spec's table says the temporal metric's size sensitivity is *"expected to be
 because a mean's expectation does not shift with n. **It is not slight. It is 1.33× the
 spatial metric's in magnitude and points the other way.**
 
+**It is also NOT a composition effect, and that is the decisive comparison.** On the
+spatial floor the pooled −2.01 was mostly community composition: **Inland alone was −0.23**,
+indistinguishable from zero, which is why v2 could say the out-of-sample test was cleanest
+exactly where most of the unzoned ground is. **The temporal metric does the opposite.
+Inland alone is +3.57 — larger than the pooled +2.68.** The size relationship is *inside*
+the community, not between communities, and it is strongest in the one community this
+task's result rests on.
+
 The mechanism reading, offered as such: the spatial floor's negative slope is at least
 partly **mechanical** — a 5th percentile over more cells reaches further into the tail. The
-temporal mean has no such mechanism, so its **+2.68 is not an artefact of the statistic at
-all**; it says bigger units sit in systematically different country. That makes it a
-*harder* problem than the one the spec expected, not a softer one: a mechanical bias could
-be reasoned about, a geographic confound cannot.
+temporal mean has no such mechanism, so its **+3.57 within Inland is not an artefact of the
+statistic at all**; it says bigger units sit in systematically different country. That
+makes it a *harder* problem than the one the spec expected, not a softer one: a mechanical
+bias could be reasoned about, a geographic confound cannot.
+
+**What it does to the Inland result — stated as an expectation to read against, never
+subtracted** (v2 §2.3, spec §5). The unzoned Inland tracts have a median of **1,473 cells**
+against the zoned Inland parts' **8,452** — **0.76 decades smaller**. At +3.57 pp per
+decade, **size alone would put them about 2.7 pp BELOW the paddock line.** They sit
+**0.30 pp** below it. So the observed offset is far smaller than size alone predicts, and
+the generalisation result survives the fork rather than depending on it being ignored.
+The size slope's r is 0.21 — loose — so this is an expectation, not an arithmetic.
+
+**Amendment: §1.1's outcome now reaches both figure faces.** The pre-registered fork fired
+and the captions carried no size statement. Both A1 and A2 now say that size is not
+neutral on this measure and is not corrected for anywhere, give the +3.6 pp per decade
+figure for Inland, and state that these tracts are much smaller than the paddock areas.
+A2 additionally carries the expectation-versus-observation sentence above. A reader
+comparing the two figures needs it, and the size-matched branch producing no fitted
+community makes it more necessary, not less.
 
 **This does not invalidate Arm A** — the fork pre-registered exactly this branch, no
 residual is adjusted for size in either branch, and the offsets below are reported as
@@ -238,8 +291,12 @@ say which estimator produced it (§5).
   · the data dictionary · the findings note · the manifest and checksums. **The findings
   note's write-up order is Arm B first, Arm A second** (§6) and that is not the order they
   were executed in.
-- **No community was fitted in the size-matched branch** (D2) — a reporting terminus, not
-  an omission.
+- **No community was fitted in the size-matched branch** (D2). **Under Ruling EL this is a
+  findings-note obligation, not a table cell:** the between-unit test cannot be
+  size-controlled on this data at all, which bounds what §4.6 may claim.
+- **Ruling EM is a standing obligation on every validity filter in this project**, not
+  just Arm B's. Filters written as null tests elsewhere may admit values computed over too
+  few inputs. Not audited here — recorded in the issues log.
 - **Held under DJ, untouched:** the five-qualifier schema gap (Ruling EI — these figures
   carry the five in `provenance_note` as prose, same as PARTSCATTER) · `metric_id` NULL on
   both registrar paths · the Bala 23 inset · the four locator paths · the
@@ -271,4 +328,12 @@ share a figure or a column pair — Arm A is `veg_p05_temporal_mean` throughout,
 condition claim, no p-values. The ground is called unzoned standard-grazing country
 everywhere.
 
-**Not cited, and not available:** none. All fourteen ruling texts in §8 are held.
+**Issued in response to this run, 10 August, and written to
+`docs/Gayini_issues_log.md`:** **EK** — a sensitivity run on one side of a comparison is
+run on both before either result is reported. **EL** — a selection rule that survives
+nothing is a limitation, not a null cell. **EM** — a validity filter tests the quantity's
+support, not only its presence; a value computed over too few inputs is missing data that
+does not present as missing.
+
+**Not cited, and not available:** none. All fourteen ruling texts in §8 are held, plus
+EK, EL and EM.

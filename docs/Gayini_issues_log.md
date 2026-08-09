@@ -183,6 +183,47 @@ series. Full detail in `docs/change_reports/TaskU_gate*.md`.*
 
 **Cadence:** review `BLOCK` and `EXTERNAL` at each task boundary. Everything else weekly.
 
+**A SENSITIVITY RUN ON ONE SIDE OF A COMPARISON IS RUN ON BOTH** (Ruling EK, 10 Aug
+2026). Where a sensitivity analysis is run on one side of a stated comparison, **it is
+run on the other side before either result is reported.** An estimate that moves under a
+refit is a finding **only once the comparator has been put through the same refit.**
+
+Why it exists: UNZONED v3 refitted the unzoned within estimator with AR(1) errors and the
+point estimate fell **31.8%**, which the spec pre-registered as a finding that stops for
+review. But the comparator — the real parts' +0.1613 — had had no such refit, so the drop
+was **uninterpretable**: it could be a property of annual floor series everywhere, or
+something about unzoned ground, and nothing in hand distinguished them. Running it on
+both sides settled it in one pass: real parts **−30.5%** (φ +0.434) against unzoned
+**−31.8%** (φ +0.482), a difference of **1.3 pp**. The sensitivity is a property of annual
+floor series generally, it is reported once as a caveat on both, and the OLS-within
+comparison stands undisturbed. **An asymmetric sensitivity analysis manufactures a
+finding out of its own asymmetry.**
+
+**A SELECTION RULE THAT SURVIVES NOTHING IS A LIMITATION, NOT A NULL CELL** (Ruling EL,
+10 Aug 2026). Where a pre-registered subset leaves no stratum large enough to fit, the
+outcome is **reported as a constraint on what the analysis can claim**, in the findings
+note, not left as counts in a table.
+
+Worked case: UNZONED v3's size-matched branch left Aeolian 3, Inland 2, Riverine 6 — no
+community at ten. **No fit at a smaller n**; that was asked and the answer is no. But the
+consequence is substantive: **the between-unit test cannot be size-controlled on this
+data at all**, and [[EH]]'s sibling finding in §1.1 had just established that size carries
+a real slope on this metric. A table of three small numbers does not say that; a sentence
+in the note does.
+
+**A VALIDITY FILTER TESTS THE QUANTITY'S SUPPORT, NOT ONLY ITS PRESENCE** (Ruling EM,
+10 Aug 2026). **A value computed over too few inputs is missing data that does not present
+as missing.** Filtering on nulls alone does not catch it.
+
+Worked case: UNZONED v3 Arm B first dropped only NaN patch-years. That kept **U0562's
+1991**, where a spatial 5th percentile had been computed over **four valid cells** of a
+64-cell patch and stored as 90.15 — not null, not malformed, structurally identical to the
+other 34 years of that patch's series, and **not the same quantity**. Gate 1's own rule
+already said a year counts at ≥ 30 valid cells; the filter has to carry that rule, not a
+null test. Caught by the reproduction check against the earlier run, which is the point of
+[[I-42]] — and note the shape: the check did not error, it **caught**, on a value that
+every null test passes.
+
 **A PARALLEL SESSION PERFORMS NO GIT OPERATION** (Ruling EB, 9 Aug 2026). A session
 running concurrently with another on the same repository **performs no git operation**:
 no `add`, no `commit`, no `.gitignore` edit, no un-ignore. It **writes its output to disk

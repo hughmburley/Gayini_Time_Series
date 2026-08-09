@@ -60,6 +60,36 @@ PAL_SHORT <- stats::setNames(unname(PAL[COMM_OF[ORD]]), ORD)
 
 wrap <- function(x, w) paste(strwrap(paste(x, collapse = " "), width = w), collapse = "\n")
 
+# ---- section 1.1's outcome has to reach the FACE ------------------------------------
+# The pre-registered fork fired: this metric is NOT size-insensitive. Inland's own
+# within-community slope is +3.57 pp per decade of cell count - LARGER than the pooled
+# +2.68 - so it is not a composition effect, and Inland is exactly where this figure's
+# result sits. A reader comparing these two figures needs it, and the size-matched
+# branch producing no fitted community makes it MORE necessary, not less.
+#
+# It is stated as an expectation to read against. NOTHING is adjusted for size (spec
+# section 5 and v2 section 2.3).
+sr <- utils::read.csv(file.path(OUTD, "UNZONED_v3_size_robustness.csv"),
+                      stringsAsFactors = FALSE)
+size_inland <- sr$slope_pp_per_decade[sr$scope == "inland" &
+                                        sr$residual_definition == "resid_pooled_line"]
+med_z_inl <- stats::median(zd$n_cells[zd$community_short == "inland"])
+med_u_inl <- stats::median(ud$n_cells[ud$community_short == "inland"])
+dec_smaller <- log10(med_z_inl) - log10(med_u_inl)
+expected_pp <- -size_inland * dec_smaller
+cat(sprintf("\n  [1.1 on the face] Inland size slope %+.2f pp/decade; unzoned Inland median %s cells vs %s; %.2f decades smaller -> size alone expects %+.1f pp\n",
+            size_inland, format(med_u_inl, big.mark = ","),
+            format(med_z_inl, big.mark = ","), dec_smaller, expected_pp))
+
+SIZE_CLAUSE <- sprintf(
+  paste("Size is not neutral on this measure and is not corrected for anywhere here.",
+        "Across the paddock areas, each tenfold increase in the number of cells comes",
+        "with about %.1f percentage points more cover in Inland Floodplain country - a",
+        "loose pattern, but a real one. These tracts are much smaller: half the Inland",
+        "tracts hold under %s cells against %s for the paddock areas."),
+  abs(size_inland), format(round(med_u_inl, -1), big.mark = ","),
+  format(round(med_z_inl, -1), big.mark = ","))
+
 # ---- section 3.4 · descriptive offsets against the zoned smoother --------------------
 # Same loess settings ggplot draws with, so the offset is against the curve on the page.
 fit_of <- function(cs) {
@@ -205,6 +235,7 @@ foot_a1 <- wrap(c(
   "pieces of country and neighbours may share the same conditions, so the shaded band is display only and is, if",
   "anything, too narrow.",
   "r is the correlation across tracts within a vegetation community.",
+  SIZE_CLAUSE,
   "Opacity carries how much cover varies between cells inside a tract. In a solid point the average describes",
   "nearly every cell; in a faint one it describes few of them well. Two tracts of very different size with the",
   "same internal spread are drawn equally solid, so the channel is not a measure of precision.",
@@ -331,6 +362,10 @@ foot_a2 <- wrap(c(
   paste0("Where they fall, as a plain distance from the line rather than a test: ", off_txt, "."),
   "A tract wetter or drier than every paddock area of its community gets no comparison at all rather than a",
   "guess: the line is not extended past the country it was fitted on.",
+  SIZE_CLAUSE,
+  sprintf(paste("On size alone the Inland tracts would be expected to sit about %.1f points BELOW the paddock line;",
+                "they sit %.1f below it. That expectation is stated to be read against, never subtracted."),
+          abs(expected_pp), abs(off$median_offset_pp[off$community_short == "inland"])),
   GAYINI_SEASONAL_BASIS_SENTENCE,
   "The lines are display smoothers — no slope is read from them and no significance test is computed.",
   "Opacity carries how much cover varies between cells inside an area. In a solid point the average describes",
