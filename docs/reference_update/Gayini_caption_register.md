@@ -298,7 +298,14 @@ in the same words on every figure.
 | share of a unit's census cells seen wet within a year | **"Share under water (%)"** | subtitle: share of the paddock's census cells wet that year, with the cell count and coverage share | D1v2 top panel |
 | the same, averaged over years | **"Share of cells wet, mean over years (%)"** | Rulings AZ and CX; never called a between-year flood frequency | D1v2 baseline gauge, `figure_f5_cover_vs_water_64_paddocks`, TEMPORAL-1 scatter x-axis |
 | per-cell between-year flood frequency | **"How often it floods · between-year flood frequency (%)"** | footnote: pixel census, 24.97 m, counted on the 8058 grid | D1v2 response panel |
-| plot-support between-year flood frequency | **"Annual wet freq. (% of years)"** | plot support — deliberately NOT relabelled to the AZ/CX wording, because it is a genuine between-year frequency | D1v2 "Where it sits" boxplot |
+| within-year median total ground cover, over a unit's cells | **"Median ground cover (%)"** | subtitle: measured across every census cell in the paddock, with the cell count and coverage share. The axis carries the quantity alone because the full form collided with the panel above it | D1v2 middle panel |
+| plot-support between-year flood frequency | **"Share of years under water, per plot (%)"** | plot support, named in full. Phrased to echo the top panel's *"Share under water"* for the same idea measured at a different support and over years rather than across cells — deliberately NOT the AZ/CX wording, because this one IS a genuine between-year frequency | D1v2 "Where it sits" boxplot |
+
+**"Median ground cover" and "5th-percentile ground cover" are different quantities, not
+two names for one** (Ruling EE). The middle panel plots the within-year MEDIAN across a
+unit's cells; the response panel plots each cell's 5th percentile over time. The word
+*"Typical"* was previously doing the median's work in the panel title, which named the
+statistic nowhere a reader could check it.
 
 **The two 5th-percentile forms share a stem on purpose.** The underlying quantity is one
 thing measured per cell; TEMPORAL-1 shows its mean over a unit's cells and the dashboards

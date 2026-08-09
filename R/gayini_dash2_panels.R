@@ -84,10 +84,13 @@ gayini_dash2_cover_panel <- function(series, base_size = 10, unit_note = NULL,
     ggplot2::geom_point(colour = cols[["total_veg"]], size = 1.1) +
     gayini_series_date_scale(date_lim, date_breaks) +
     ggplot2::scale_y_continuous(limits = c(0, 100)) +
-    ggplot2::labs(title = "Typical ground cover (green + dead)",
+    ## Ruling EE / EC: the axis names the statistic the producer actually computes -
+    ## veg_p50_spatial, the within-year MEDIAN across the unit's cells, area-weighted
+    ## over its parts. "Typical" was doing that work in the title, so the title loses it.
+    ggplot2::labs(title = "Ground cover (green + dead)",
                   subtitle = paste0("Measured across every census cell in the paddock",
                                     if (!is.null(unit_note)) paste0(" - ", unit_note) else ""),
-                  x = NULL, y = "Cover (%)") +
+                  x = NULL, y = "Median ground cover (%)") +   # EC: population is in the subtitle
     gayini_dashboard_theme(base_size)
 }
 
@@ -100,6 +103,13 @@ gayini_dash2_cover_panel <- function(series, base_size = 10, unit_note = NULL,
 ## applied, because in v2 the gauge is fed the cell-based series and its quantity really
 ## is a share of cells.
 gayini_dash2_box_fix <- function(p) {
+  ## Ruling EE: "Annual wet freq. (% of years)" abbreviates the quantity. Named in full,
+  ## phrased to match the top panel's "Share under water" for the same idea measured at
+  ## PLOT support and between years rather than across cells within a year.
+  for (sc in p$scales$scales) {
+    if ("y" %in% sc$aesthetics) sc$name <- "Share of years under water, per plot (%)"
+  }
+  p$labels$y <- "Share of years under water, per plot (%)"
   ## Spec 3.2 asked for "Share of cells wet, mean over years (%)". The panel plots
   ## flood_frequency_pct = 100 * wet_years / valid_years at PLOT support - a genuine
   ## BETWEEN-YEAR frequency, already correctly labelled. Applying the AZ/CX wording here
@@ -148,14 +158,24 @@ gayini_dash2_resp_fix <- function(p, subset_pct = NA_real_, subset_n = NA_intege
   ## 34.6. The corrected share is written here, and the population difference is stated
   ## rather than left for the reader to infer.
   if (is.finite(subset_pct)) {
+    ## Ruling EE. When the two figures round to the same printed value the sentence
+    ## must not assert a difference the reader cannot see - Dinan 10 read "wet 5% ...
+    ## while the paddock as a whole is wet 5% - both are right", which makes a correct
+    ## sheet look confused. The comparison is made on the PRINTED values, not the
+    ## underlying ones, because it is the printed pair the reader is looking at.
+    same_rounded <- round(subset_mean) == round(unit_mean)
+    tail_txt <- if (same_rounded)
+      sprintf(paste("The community subset and the paddock as a whole are wet about",
+                    "equally often here - both about %.0f%% of years."), round(unit_mean))
+    else
+      sprintf(paste("It is wet %.0f%% of years, while the paddock as a whole is wet",
+                    "%.0f%% - both are right; they describe different ground."),
+              subset_mean, unit_mean)
     p$labels$subtitle <- paste(strwrap(paste0(
       "This panel describes only the ", format(subset_n, big.mark = ","),
       " cells of this paddock's main plant community - ",
       sprintf("%.0f%%", subset_pct), " of the paddock. Grey = those cells; ",
-      "line = trend; diamond = this unit. ",
-      sprintf("It is wet %.0f%% of years, while the paddock as a whole is wet %.0f%% - ",
-              subset_mean, unit_mean),
-      "both are right; they describe different ground."), width = 104),
+      "line = trend; diamond = this unit. ", tail_txt), width = 104),
       collapse = "\n")
   }
 
