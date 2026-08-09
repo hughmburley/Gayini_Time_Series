@@ -175,6 +175,11 @@ Output/rasters/DATA_share_20260808/*
 Output/temporal/*
 !Output/temporal/*.csv
 !Output/temporal/*.md
+# DASH2 run note and its before/after table (Rulings BB / CL citability grounds).
+!Output/runs/
+Output/runs/*
+!Output/runs/*.md
+!Output/runs/*.csv
 Output/database/*.sqlite
 Output/database/*.gpkg
 data_intermediate/

@@ -341,7 +341,13 @@ gayini_resolve_stratum <- function(community, band, ctx) {
 ## stratum geometrically; site is the same skeleton + the gauge-flow row. One
 ## layout, one site variant.
 
-gayini_build_dashboard <- function(resolved, ctx, format = "slide", out_dir, basename) {
+## `v2` (DASH2, additive): NULL keeps v1 behaviour byte-for-byte. When supplied it is
+## the cell-based annual series from gayini_dash2_unit_series(), and the flooding and
+## cover panels are drawn from it so both describe the SAME census cells.
+gayini_build_dashboard <- function(resolved, ctx, format = "slide", out_dir, basename,
+                                   v2 = NULL, v2_note = NULL,
+                                   v2_caption = NULL, v2_run_id = NULL,
+                                   v2_provenance = NA_character_) {
   fmt <- gayini_dashboard_formats()[[format]]
   bs  <- fmt$base_size
 
@@ -370,6 +376,14 @@ gayini_build_dashboard <- function(resolved, ctx, format = "slide", out_dir, bas
   p_veg   <- gayini_panel_total_veg(gc, bs, resolved$gc_note,
                                     date_lim = date_lim, date_breaks = date_breaks,
                                     green_only = TRUE)
+  ## DASH2: replace both data panels with the cell-based pair. Same theme, same date
+  ## scale, same slot in the layout - only the data and the labels change.
+  if (!is.null(v2)) {
+    p_flood <- gayini_dash2_flood_panel(v2, bs, v2_note, date_lim = date_lim,
+                                        date_breaks = date_breaks)
+    p_veg   <- gayini_dash2_cover_panel(v2, bs, v2_note, date_lim = date_lim,
+                                        date_breaks = date_breaks)
+  }
   ## Task L: sites & paddocks get the all-pixel census marker panel (community
   ## cloud + unit marker) when a census context is attached; strata (D3) and any
   ## caller without ctx$census keep the legacy plot-response panel.
@@ -382,8 +396,15 @@ gayini_build_dashboard <- function(resolved, ctx, format = "slide", out_dir, bas
   } else {
     gayini_panel_veg_response(resolved$resp, bs)
   }
-  p_base  <- gayini_panel_baseline_gauge(resolved$flooding, base_size = bs, compact = TRUE)
+  p_base  <- gayini_panel_baseline_gauge(if (is.null(v2)) resolved$flooding else v2,
+                                         base_size = bs, compact = TRUE)
   p_box   <- gayini_panel_where_it_sits(ctx$freq_by_plot, resolved$box$value, resolved$box$community, bs)
+  ## DASH2 label fixes, applied as layers on top so no v1 panel function is edited.
+  if (!is.null(v2)) {
+    p_box  <- gayini_dash2_box_fix(p_box)
+    p_base <- gayini_dash2_gauge_fix(p_base)
+    p_resp <- gayini_dash2_resp_fix(p_resp)
+  }
 
   ## Only the LAST date panel (total veg) keeps its x-axis; strip it from the
   ## upper date panels so the shared year axis reads once but gridlines align.
@@ -393,9 +414,11 @@ gayini_build_dashboard <- function(resolved, ctx, format = "slide", out_dir, bas
   if (!is.null(p_flow)) p_flow <- p_flow + strip_x
   p_flood <- p_flood + strip_x
 
+  header_sub <- if (is.null(v2)) resolved$subtitle else
+    paste0(resolved$subtitle, "  |  ", gayini_dash2_map_note())
   header <- cowplot::ggdraw() +
     cowplot::draw_label(resolved$title, fontface = "bold", size = bs + 5, x = 0.01, hjust = 0, y = 0.68) +
-    cowplot::draw_label(resolved$subtitle, size = bs - 1, colour = "grey35", x = 0.01, hjust = 0, y = 0.24)
+    cowplot::draw_label(header_sub, size = bs - 1, colour = "grey35", x = 0.01, hjust = 0, y = 0.24)
 
   ## ---- LEFT column (shared): map / boxplot / gauge = 11 : 6 : 3 ----
   left <- cowplot::plot_grid(p_map, p_box, p_base, ncol = 1, rel_heights = c(11, 6, 3))
@@ -414,4 +437,15 @@ gayini_build_dashboard <- function(resolved, ctx, format = "slide", out_dir, bas
 
   gayini_save_figure(composed, out_dir, basename, kind = "data",
                      width = fmt$width, height = fmt$height)
+
+  ## DASH2: register in the same call as the write, so a v2 sheet cannot exist
+  ## unregistered. v1 callers pass no v2 and reach none of this.
+  if (!is.null(v2)) {
+    png <- file.path(out_dir, paste0(basename, ".png"))
+    return(invisible(gayini_dash2_register(
+      path = png,
+      title = paste0(resolved$title, " - cell-based panels (DASH2)"),
+      caption = v2_caption, run_id = v2_run_id,
+      provenance_note = v2_provenance)))
+  }
 }
