@@ -324,7 +324,7 @@ careful reader will ask, one item per question, in a fixed order.
 >
 > Cells in the area
 >
-> Variation within the area / darker areas vary more internally
+> How well the point describes its cells / darker areas vary less from cell to cell
 
 ## Footnote
 
@@ -343,19 +343,31 @@ careful reader will ask, one item per question, in a fixed order.
 > understating clustering within a line. r is the correlation across areas within a
 > vegetation community; each area in a fitted line comes from a different paddock, so
 > these are independent units. Opacity carries how much cover varies between cells inside
-> an area: the more varied the area, the more solid the point — so the boldest points are
-> the least internally uniform, not the most certain. This describes how places differ
-> from one another over the record — not what more water would do to any one place.
+> an area. In a solid point the average describes nearly every cell; in a faint one it
+> describes few of them well. This describes how places differ from one another over the
+> record — not what more water would do to any one place.
 
 **"Vegetation community", never "veg community."** The abbreviation is the jargon, and
 the client's own slide two before this one writes it out — the deck has to read
 consistently across the join.
 
-**The opacity channel runs against convention, so it is said in words twice.** Opacity
-normally reads as confidence; here the boldest points are the *least* internally
-consistent. The legend title carries the plain sentence and the footnote carries it
-again. `veg_p05_within_sd` is a **spatial** spread across an area's own cells — not a
-spread over time, not a standard error, and it does not shrink as an area gets larger.
+**The opacity channel was reversed, and the reversal is the record worth keeping**
+(amendment A6, 9 August 2026). It first ran **high spread → opaque**, which put the
+boldest points on the *least* internally consistent areas — against the convention that
+solid reads as reliable. Two sentences on the face were doing the work of holding a
+reader against that convention. It now runs **low spread → opaque**, floored at 0.45 so
+no area disappears, and the channel reads with the convention instead of against it:
+*in a solid point the average describes nearly every cell; in a faint one it describes
+few of them well.*
+
+**Keep the note below — the reversal makes it MORE necessary, not less.**
+`veg_p05_within_sd` is a **spatial** spread across an area's own cells: not a spread over
+time, **not a standard error, and it does not shrink as an area gets larger.** While the
+ramp ran against convention, that misreading was awkward to make. Now that solid reads as
+reliable in the ordinary direction, **precision is exactly what a reader will assume** —
+and it is not what the channel carries. A 588-cell area and a 32,399-cell area with the
+same internal spread are drawn **equally solid**. The note is in the registered caption as
+well as here, so it survives the figure being found without this file.
 
 **r is printed only where a line is drawn.** Aeolian's r is −0.161 across a 1–12% water
 range. It is retained in `PARTSCATTER_community_support.csv` and the run record, and
@@ -397,6 +409,13 @@ wet…"* — which invites the misreading that **cover** rises from 6% to 59%. T
 the water axis, across areas.~~
 
 ~~Legend title *"Plant community"*, and per-community labels carrying `n` alone.~~
+
+~~The opacity direction of the second pass, 9 August 2026: **high spread → opaque**, ramp
+0.45→1.0, legend title *"Variation within the area / darker areas vary more internally"*,
+footnote *"the more varied the area, the more solid the point — so the boldest points are
+the least internally uniform, not the most certain."* Reversed under A6. Kept because the
+two directions look identical in a thumbnail and a figure circulating from that render
+must be traceable to the reading it carried.~~
 
 ---
 

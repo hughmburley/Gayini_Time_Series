@@ -141,9 +141,9 @@ foot <- wrap(c(
   "so the bands are not understating clustering within a line.",
   "r is the correlation across areas within a vegetation community; each area in a fitted line comes from a",
   "different paddock, so these are independent units.",
-  # 6 - the opacity channel
-  "Opacity carries how much cover varies between cells inside an area: the more varied the area, the more solid",
-  "the point — so the boldest points are the least internally uniform, not the most certain.",
+  # 6 - the opacity channel (A6: direction reversed)
+  "Opacity carries how much cover varies between cells inside an area. In a solid point the average describes",
+  "nearly every cell; in a faint one it describes few of them well.",
   # 7 - what this does not say
   "This describes how places differ from one another over the record — not what more water would do to any one place."),
   245)
@@ -164,11 +164,21 @@ p <- ggplot(d, aes(mean_share_cells_wet, veg_p05_temporal_mean)) +
                         labels = function(x) format(x, big.mark = ","),
                         guide = guide_legend(order = 2,
                                              override.aes = list(alpha = 0.85))) +
-  # A1: the ramp is deliberately floored at 0.45 - this is a FOURTH channel on a figure
-  # already carrying colour, size and position, and a near-transparent low end would
-  # lose the least-varied areas altogether.
-  scale_alpha_continuous(range = c(0.45, 1),
-                         name = "Variation within the area\ndarker areas vary more internally",
+  # A6 REVERSES A1's direction: LOW spread -> opaque, HIGH spread -> faint. `range` is
+  # given high-to-low deliberately - rescale() maps the SMALLEST sd to range[1] - so
+  # the least-varied areas are the solid ones. Asserted below, not assumed.
+  #
+  # Still floored at 0.45: this is a FOURTH channel on a figure already carrying colour,
+  # size and position, and a near-transparent end would lose those areas altogether.
+  #
+  # The reversal puts the channel back in step with the convention that solid reads as
+  # reliable, which is what A1 was fighting. That makes the figure easier to read and
+  # the STANDARD-ERROR misreading EASIER TO MAKE, which is why the "not a standard
+  # error, does not shrink with area size" note is strengthened rather than dropped.
+  scale_alpha_continuous(range = c(1, 0.45),
+                         name = paste("How well the point describes its cells",
+                                      "darker areas vary less from cell to cell",
+                                      sep = "\n"),
                          labels = function(x) sprintf("%.0f", x),
                          guide = guide_legend(order = 3,
                                               override.aes = list(size = 4,
@@ -196,6 +206,25 @@ p <- ggplot(d, aes(mean_share_cells_wet, veg_p05_temporal_mean)) +
         legend.text = element_text(size = 9, colour = BODY),
         legend.key.height = unit(0.95, "lines"))
 
+# ---- A6 direction check, and it must be able to FAIL --------------------------------
+# Reads the alpha the BUILT plot actually assigned, not the comment above the scale.
+# A reversed `range` argument is the kind of instruction that can silently fail to take
+# effect while every other signal reports success (I-60).
+pb  <- ggplot2::ggplot_build(p)
+lyr <- Filter(function(z) nrow(z) == nrow(d) && "alpha" %in% names(z), pb$data)
+stopifnot(length(lyr) >= 1L)
+al  <- lyr[[1]]$alpha
+rho <- stats::cor(al, d$veg_p05_within_sd)
+cat(sprintf("  [A6] alpha vs within-area spread: rho %+.4f ; alpha %.3f-%.3f\n",
+            rho, min(al), max(al)))
+if (is.na(rho) || rho > -0.999)
+  stop(sprintf("A6: opacity is NOT reversed against within-area spread (rho %+.4f)", rho))
+if (abs(min(al) - 0.45) > 0.005 || abs(max(al) - 1) > 0.005)
+  stop(sprintf("A6: ramp is not 1.0 down to 0.45 (got %.3f-%.3f)", min(al), max(al)))
+# the least-varied area must be the solid one, and the most-varied the faintest
+stopifnot(which.min(al) == which.max(d$veg_p05_within_sd),
+          which.max(al) == which.min(d$veg_p05_within_sd))
+
 caption <- paste0(
   "Support: pixel. ", nrow(d), " paddock x community parts in ",
   length(unique(d$zone_fid)), " management zones, ", format(sum(d$n_cells), big.mark = ","),
@@ -209,9 +238,13 @@ caption <- paste0(
   "every cell, and verified against the published paddock mean_flood (max 0.005 pp over ",
   "64 paddocks) and against PARTREG's inund_pct series (max 0.000012 pp over 100 parts). ",
   "This is a DISTINCT METRIC from veg_p05_spatial and the two are never co-plotted. ",
-  "OPACITY (A1) is veg_p05_within_sd, the SPATIAL spread of the per-cell percentile ",
-  "across the part's own cells, ramped 0.45-1.0 with high spread more opaque; it is not ",
-  "a standard error and does not shrink with part size. Reconciliation chain: 156 ",
+  "OPACITY (A1, direction REVERSED under A6) is veg_p05_within_sd, the SPATIAL spread of ",
+  "the per-cell percentile across the part's own cells, ramped 1.0 down to 0.45 with LOW ",
+  "spread the MORE opaque: a solid point's mean describes nearly every one of its cells. ",
+  "IT IS NOT A STANDARD ERROR AND DOES NOT SHRINK WITH PART SIZE, and the reversal makes ",
+  "that misreading EASIER rather than harder, because solid now reads as reliable in the ",
+  "conventional direction - a 588-cell part and a 32,399-cell part with the same internal ",
+  "spread are drawn equally solid. Reconciliation chain: 156 ",
   "paddock x community areas -> 118 non-treed -> 100 at or above the 500-cell floor. ",
   "The client slide's 115 is this project's own PARTREG count at a 33-cell floor over ",
   "the SAME three non-treed communities, not eight. One loess per community under ",

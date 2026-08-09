@@ -6,11 +6,14 @@ Spec: `docs/reference_update/Gayini_CC_spec_PARTSCATTER_update.md`. Schema per R
 2000 × 1125 px (13.333 × 7.5 in at 150 dpi), 16:9, drops into a slide without rescaling.
 Registered `figure_partscatter_part_temporal_p05_vs_water`, checksum `599e5df3be46…`.
 
-**Second pass, amendments A1–A5, accepted and rendered once.** No metric changed, no unit
-changed, nothing refitted. Two new *quantities* were computed — both from the same cells
-already in hand, neither touching an axis: `veg_p05_within_sd` (the opacity channel) and
-`r_across_areas` (the legend correlation). First-pass checksum `173fdd2d0945…`, kept here
-so the two renders can be told apart.
+**Amendments A1–A5, then A6.** No metric changed, no unit changed, nothing refitted. Two
+new *quantities* were computed — both from the same cells already in hand, neither
+touching an axis: `veg_p05_within_sd` (the opacity channel) and `r_across_areas` (the
+legend correlation). A6 reversed the opacity ramp; same variable, same values, opposite
+direction.
+
+Render lineage, kept so a circulating figure can be traced to the reading it carried:
+first pass `173fdd2d0945…` · A1–A5 `599e5df3be46…` · **A6 `7f9096ea9845…` (current)**.
 
 ---
 
@@ -18,23 +21,40 @@ so the two renders can be told apart.
 
 | # | asked | done |
 |---|---|---|
-| **A1** | opacity = within-area spread of the per-cell 5th percentile, high spread more opaque, ramp ≈0.45–1.0, legend says it **in words** | `veg_p05_within_sd`, a **spatial** spread across an area's own cells — the same cells y averages over. Ramp exactly 0.45–1.0. Legend title reads *"Variation within the area / darker areas vary more internally"*, and the footnote says it again in a full clause. Observed range **3.40 – 23.23** |
+| **A1** | opacity = within-area spread of the per-cell 5th percentile, high spread more opaque, ramp ≈0.45–1.0, legend says it **in words** | `veg_p05_within_sd`, a **spatial** spread across an area's own cells — the same cells y averages over. Observed range **3.40 – 23.23**. Direction subsequently reversed by A6 |
+| **A6** | reverse the ramp: **low spread → opaque**, still floored at 0.45, breaks in SD units ordered so the low value is dark | `range = c(1, 0.45)`. Legend title *"How well the point describes its cells / darker areas vary less from cell to cell"*; breaks 5 · 10 · 15 · 20, **5 dark at the top**. Footnote clause replaced as issued. Verified in the **built** plot, not the source: rho(alpha, spread) = **−1.0000**, alpha **0.450–1.000**, and the least-varied area is the solid one |
 | **A2** | caption full plot width, edge to edge | wrap widened 168 → 245 chars against `caption.position = "plot"`. The legend column no longer costs it a fifth of the page |
 | **A3** | *"vegetation community"* written out | legend title, subtitle and footnote. No *"veg community"* anywhere on the face |
 | **A4** | caption split into subtitle + ordered footnote, article register | subtitle as issued; footnote in the seven-item order, led by the shortened support clause. Cuts made: *census cells*, *supports are never mixed*, *minor units*, and *no cause is attributed* as a bare phrase |
 | **A5** | per-community **r**, no fit statistic | `n` and `r` in the legend for the two fitted communities; Aeolian reads *"range too narrow to fit"*. The licensing clause is in the footnote. **No R², pooled or per-community** |
 
-**A1 carried the one comprehension risk and it is answered twice.** Opacity conventionally
-reads as confidence, so the boldest points here are the *least* internally consistent —
-the opposite of what a reader expects. The legend title states it and the footnote states
-it again: *"the more varied the area, the more solid the point — so the boldest points are
-the least internally uniform, not the most certain."* The ramp is floored at 0.45 rather
-than near-transparent because this is a **fourth** channel on a figure already carrying
-colour, size and position, and the least-varied areas must not drop off the page.
+**A6 resolves A1's comprehension risk by removing it rather than defending against it.**
+A1 ran the ramp **against** the convention that solid reads as reliable, and paid for it
+with two sentences on the face whose job was to hold the reader against that instinct.
+A6 runs it **with** the convention — low spread opaque — and the clause shrinks to a
+statement of what the reader is already inclined to believe: *"in a solid point the
+average describes nearly every cell; in a faint one it describes few of them well."*
+Floored at 0.45 either way, because this is a **fourth** channel on a figure already
+carrying colour, size and position and no area may drop off the page.
 
-`veg_p05_within_sd` is **not a standard error.** It does not shrink as an area gets
-larger, and it is a spread across space, not across time. Both statements are in the
-registered caption so the channel cannot be re-read later as precision.
+**The reversal makes the standard-error misreading EASIER, and that is the thing to
+watch.** `veg_p05_within_sd` is a spread across **space**, not across time, and it is
+**not a standard error: it does not shrink as an area gets larger.** While the ramp ran
+against convention that misreading was awkward to make. Now that solid reads as reliable
+in the ordinary direction, **precision is exactly what a reader will assume** — and a
+588-cell area and a 32,399-cell area with the same internal spread are drawn **equally
+solid**. The statement is in the registered caption and in the caption register, both
+strengthened rather than carried over, so it survives the figure being found in six
+months without this conversation.
+
+**The direction is verified in the built plot, not in the source comment.** A reversed
+`range` argument is precisely the kind of instruction that can fail to take effect while
+every other signal reports success (I-60), so `ggplot_build()` is read back and three
+assertions run before registration: rho(alpha, spread) must be ≤ −0.999 (**observed
+−1.0000**), the ramp must be 1.0 down to 0.45 (**observed 0.450–1.000**), and the
+argmin/argmax of alpha must pair with the argmax/argmin of spread. All three halt the
+script. The middle one would have caught a `range` left unreversed; the third would have
+caught it reversed in the legend but not the marks.
 
 **A5's suppression is deliberate and recorded.** Aeolian's r is **−0.161** across a
 1–12% water range. It lives in `PARTSCATTER_community_support.csv` and in this report;
