@@ -4,14 +4,58 @@ Spec: `docs/reference_update/Gayini_CC_spec_PARTSCATTER_update.md`. Schema per R
 
 **Delivered:** `Output/figures/temporal/PARTSCATTER_part_temporal_p05_vs_water.png`
 2000 × 1125 px (13.333 × 7.5 in at 150 dpi), 16:9, drops into a slide without rescaling.
-Registered `figure_partscatter_part_temporal_p05_vs_water`, checksum `173fdd2d0945…`.
+Registered `figure_partscatter_part_temporal_p05_vs_water`, checksum `599e5df3be46…`.
+
+**Second pass, amendments A1–A5, accepted and rendered once.** No metric changed, no unit
+changed, nothing refitted. Two new *quantities* were computed — both from the same cells
+already in hand, neither touching an axis: `veg_p05_within_sd` (the opacity channel) and
+`r_across_areas` (the legend correlation). First-pass checksum `173fdd2d0945…`, kept here
+so the two renders can be told apart.
+
+---
+
+## 0 · Amendments A1–A5
+
+| # | asked | done |
+|---|---|---|
+| **A1** | opacity = within-area spread of the per-cell 5th percentile, high spread more opaque, ramp ≈0.45–1.0, legend says it **in words** | `veg_p05_within_sd`, a **spatial** spread across an area's own cells — the same cells y averages over. Ramp exactly 0.45–1.0. Legend title reads *"Variation within the area / darker areas vary more internally"*, and the footnote says it again in a full clause. Observed range **3.40 – 23.23** |
+| **A2** | caption full plot width, edge to edge | wrap widened 168 → 245 chars against `caption.position = "plot"`. The legend column no longer costs it a fifth of the page |
+| **A3** | *"vegetation community"* written out | legend title, subtitle and footnote. No *"veg community"* anywhere on the face |
+| **A4** | caption split into subtitle + ordered footnote, article register | subtitle as issued; footnote in the seven-item order, led by the shortened support clause. Cuts made: *census cells*, *supports are never mixed*, *minor units*, and *no cause is attributed* as a bare phrase |
+| **A5** | per-community **r**, no fit statistic | `n` and `r` in the legend for the two fitted communities; Aeolian reads *"range too narrow to fit"*. The licensing clause is in the footnote. **No R², pooled or per-community** |
+
+**A1 carried the one comprehension risk and it is answered twice.** Opacity conventionally
+reads as confidence, so the boldest points here are the *least* internally consistent —
+the opposite of what a reader expects. The legend title states it and the footnote states
+it again: *"the more varied the area, the more solid the point — so the boldest points are
+the least internally uniform, not the most certain."* The ramp is floored at 0.45 rather
+than near-transparent because this is a **fourth** channel on a figure already carrying
+colour, size and position, and the least-varied areas must not drop off the page.
+
+`veg_p05_within_sd` is **not a standard error.** It does not shrink as an area gets
+larger, and it is a spread across space, not across time. Both statements are in the
+registered caption so the channel cannot be re-read later as precision.
+
+**A5's suppression is deliberate and recorded.** Aeolian's r is **−0.161** across a
+1–12% water range. It lives in `PARTSCATTER_community_support.csv` and in this report;
+it is not on the face. Printed beside +0.70 and +0.71, a Council reader sees dry country
+doing worse with more water — which a correlation of that size across that range cannot
+say. The table carries an `r_suppression_note` column stating exactly that, so the
+decision is legible to whoever opens the file next rather than living only here.
 
 ---
 
 ## 1 · Decisions needed
 
-**None outstanding.** Every fork carried a pre-registered rule and each was executed or
-overridden in place. The two items below are recorded for the design seat, not blocking.
+**One, and it is not blocking: I hold no issued text for Ruling EB.** It was cited as
+standing for QUICKWINS-1 and UNZONED-1, and as the rule the INVENTORY-1 session's
+`c2a2627` ran against. Neither task is this one and nothing in this render depends on it,
+so I proceeded — but §9's rule is that a ruling number without issued text is not a
+ruling, and I did not act on it. **EB's text is wanted before either of those tasks
+starts.** The eleven in §9 plus EH are what this seat holds.
+
+Every fork carried a pre-registered rule and each was executed or overridden in place.
+The two items below are recorded for the design seat, not blocking.
 
 - **The client's "eight vegetation communities" has no product behind it.** The 115 is
   ours — PARTREG's part count at a 33-cell floor — but it covers **three** non-treed
@@ -45,7 +89,13 @@ of truth), never the census **view**. No interpolated surface enters this figure
 
 ## 3 · Overrides
 
-**One, and it changed the output.**
+**One, and it changed the output. It is now Ruling EH** — accepted and promoted by the
+design seat, and written into `docs/Gayini_issues_log.md` because it binds every future
+per-community figure, not only this one:
+
+> A per-community smoother is fitted only where the community's central 10th–90th
+> percentile of the water axis spans a usable range; min-to-max does not qualify a fit.
+> Both measures are retained as columns so any exclusion is auditable.
 
 **The smoother fork's range test.** Spec §3 pre-registers: *if a community's water axis
 spans too narrow a range to support a smoother, draw its points without a fitted line.*
@@ -80,6 +130,14 @@ continues the very EE pass the brief describes as finished, touching only
 `RUN_DASH3_20260809.md` and `R/gayini_dash2_panels.R`. §0's halt is *unresolved*
 repository divergence; nothing here is unresolved. The design seat wrote the brief
 between that commit and this session. **Proceeded, and said so before writing any code.**
+
+**Resolved by the design seat:** the call was correct and the brief was at fault. Expected
+commits are henceforth stated as **a prior to report against, not a halt condition**.
+
+**The INVENTORY-1 session did perform a git operation.** The brief said it would not.
+`c2a2627` landed on `main` mid-task, unpushed at the time. It staged **two explicit
+paths** and absorbed nothing of this task's untracked work, so no harm — but the
+concurrent-session rule exists for exactly the class of accident it came close to.
 
 **Three defects were on the first rendered face and none showed in the exit code.**
 Caught by opening the PNG, per I-40 / I-60:
@@ -132,11 +190,20 @@ between 115 and 100 is the size floor alone. **Nothing was adjusted to reach 115
 
 ### Per community (§7)
 
-| community | parts | paddocks | cells min–max | water range % | 10–90 span | smoother |
-|---|---:|---:|---:|---:|---:|---|
-| Inland Floodplain | 61 | 61 | 588 – 32,399 | 5.9 – 58.9 | 29.05 | **drawn** |
-| Riverine Chenopod | 27 | 27 | 623 – 22,565 | 3.0 – 33.3 | 22.94 | **drawn** |
-| Aeolian Chenopod | 12 | 12 | 615 – 16,554 | 1.0 – 11.9 | **4.39** | **not drawn** |
+| community | parts | paddocks | cells min–max | water range % | 10–90 span | smoother | r | within-area spread |
+|---|---:|---:|---:|---:|---:|---|---:|---:|
+| Inland Floodplain | 61 | 61 | 588 – 32,399 | 5.9 – 58.9 | 29.05 | **drawn** | **+0.701** | 3.40 – 23.23 |
+| Riverine Chenopod | 27 | 27 | 623 – 22,565 | 3.0 – 33.3 | 22.94 | **drawn** | **+0.708** | 4.35 – 19.58 |
+| Aeolian Chenopod | 12 | 12 | 615 – 16,554 | 1.0 – 11.9 | **4.39** | **not drawn** | −0.161 *(not printed)* | 5.33 – 15.08 |
+
+**r is computed on the data, across areas, never taken from the smoother.** What licenses
+it as a number rather than a decoration is the parts-equal-paddocks column: 61/61, 27/27,
+12/12. Every area inside a community comes from a different paddock, so the units the
+correlation runs over are independent. **No R², pooled or per-community** — a fit
+statistic is a coefficient (§3), deviance explained is not comparable across smoothers
+that chose different effective degrees of freedom, and a pooled R² would largely be
+measuring that Inland country is both wetter and greener than Aeolian country: true, and
+not what this figure claims. **PARTSCATTER-2, after Monday.**
 
 **Does the paddock figure's dominance problem move to a new grain? No — it improves, but
 it does not vanish.** At paddock grain 55 of 64 units were Inland-dominant (86%). At part
@@ -160,16 +227,23 @@ through it.
 
 ## 6 · Not done
 
-- **Nothing in the spec is outstanding.** §§2–7 are complete.
+- **Nothing in the spec or the amendments is outstanding.** §§2–7 and A1–A5 are complete.
+  Nothing was shipped-without.
 - **Held under DJ, untouched as instructed:** Bala 23 inset overlapping its map panel
   title · four locator paths needing consolidation · `metric_id` NULL on both registrar
-  paths (this run adds a 279th such row) · the unexercised `gayini_area_map` locator
+  paths (this run adds one more such row) · the unexercised `gayini_area_map` locator
   parameter · EA/EC compliance on the `report_figures` producer.
-- **Not started, correctly:** INVENTORY-1, QUICKWINS-1, UNZONED-1.
-- **`figure_asset` cannot carry the five qualifiers as columns.** It has no
-  `scope_filter` / `pixel_constant` / `denominator` / `period_label` field, so they are
-  written into `provenance_note` verbatim and as columns in the scatter-input CSV. Noted
-  rather than fixed — a schema change is not this task's business two days out.
+- **Also held under DJ — the five-qualifier schema gap.** `figure_asset` has no
+  `scope_filter` / `pixel_constant` / `denominator` / `period_label` column, so four of
+  the five are written into `provenance_note` **as prose**. The rule is therefore
+  satisfied by text rather than by schema, which means **it cannot be queried** — no
+  `SELECT` can find every figure at a given denominator, and drift in one of them cannot
+  be detected by anything but reading. A registry change for next week, not a
+  two-days-out edit.
+- **Not started, correctly:** INVENTORY-1, QUICKWINS-1, UNZONED-1. The latter two need
+  EB's issued text first.
+- **PARTSCATTER-2** (fit statistics done properly, per-community and pooled) is deferred
+  past Monday by decision, not by omission.
 
 ## 7 · Rulings
 
@@ -185,6 +259,10 @@ quantity. **L-01** — stated precisely, including where it does *not* bite. **C
 support throughout, no plot measurement. **§8** — `veg_p05_spatial` never appears and the
 word *"floor"* is absent from the face; the paddock figure is additive-only and stands.
 
-**Not cited, and not available:** no ruling number was used for which this seat holds no
-issued text. §9 carries eleven; all eleven are quoted above or were checked and found
-not to bind.
+**Newly in force: EH**, quoted at §3, issued on this task's override and written to
+`docs/Gayini_issues_log.md` because it binds every future per-community figure.
+
+**Not cited, and not available: EB.** No issued text is held for it. It was named as
+standing for QUICKWINS-1 and UNZONED-1 and as the rule `c2a2627` ran against; neither is
+this task, nothing here depends on it, and it was not acted on. §9 carries eleven, plus
+EH: all twelve are quoted above or were checked and found not to bind.

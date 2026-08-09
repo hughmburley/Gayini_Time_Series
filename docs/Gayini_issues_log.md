@@ -183,6 +183,22 @@ series. Full detail in `docs/change_reports/TaskU_gate*.md`.*
 
 **Cadence:** review `BLOCK` and `EXTERNAL` at each task boundary. Everything else weekly.
 
+**A PER-COMMUNITY SMOOTHER NEEDS A CENTRAL RANGE, NOT A MIN-TO-MAX ONE** (Ruling EH,
+9 Aug 2026). A per-community smoother is fitted **only where that community's central
+10th–90th percentile of the x axis spans a usable range**. **Min-to-max does not qualify
+a fit.** Both measures are retained as columns so any exclusion is auditable. **This
+applies to every per-community figure, not only the one that produced it.**
+
+Why it exists: PARTSCATTER's fork was first written as min-to-max span ≥ 10 pp, and
+Aeolian Chenopod cleared it at 10.87 pp — **on the strength of one area**. Eleven of its
+twelve areas lie between 1.0% and 6.1% wet; the twelfth sits at 11.9% and manufactures
+the whole margin. Inside the bulk r = −0.16 and the tercile means *fall*. A loess there
+is a curve drawn across a gap by a single observation, which is exactly what the fork
+existed to prevent. On the central measure Aeolian is 4.39 pp and gets no line; Riverine
+22.94 and Inland 29.05 keep theirs. **A range statistic that one point can fabricate is
+not a test of range.** Sits beside [[DA]], which forbids *"monotone in every community"* —
+EH is the mechanism that stops a figure asserting it on the face.
+
 **EDITS CONTAINING AN ESCAPE GO THROUGH A FILE, NEVER A SHELL HEREDOC** (Ruling DS,
 9 Aug 2026). Any edit carrying an escape sequence, a newline, or a quoted string spanning
 more than one line is written to a file and applied from that file, and **parse-checked

@@ -287,10 +287,12 @@ ambiguous rather than wrong, so it is left alone under Ruling AZ's scope.
 # Figure · Wetter country holds more cover in its poorest seasons
 
 **File:** `PARTSCATTER_part_temporal_p05_vs_water.png`
-**Status:** `RENDERED` · 9 August 2026
+**Status:** `RENDERED` · 9 August 2026, second pass — amendments A1–A5
 **Producer:** `scripts/14_diag/PARTSCATTER_prepare.py` → `R/diag/PARTSCATTER_figure.R`
 **Audience:** the client, replacing the 64-paddock figure in his Monday deck. In our own
 record the paddock-grain figure stands and is **not** superseded.
+**Register:** article. Subtitle says what you are looking at; the footnote answers what a
+careful reader will ask, one item per question, in a fixed order.
 
 ## Title
 
@@ -302,19 +304,75 @@ record the paddock-grain figure stands and is **not** superseded.
 >
 > y: 5th-percentile ground cover, mean of cells (%)
 
-## Why the count is 100 and not 115
+## Subtitle
 
-> Of the 156 paddock x community areas inside the 64 paddocks, 34 are woodland or forest
-> country, set aside because ground cover under a canopy does not mean what it means in
-> the open, and 4 are minor units outside the three open communities. A further 18 hold
-> fewer than 500 cells — 171 ha, 0.3% of the open ground — and are dropped, because an
-> average over a few hundred cells does not stand beside one taken over thousands.
+> Each point is one paddock cut to a single vegetation community — 100 areas across 64
+> paddocks, sized by the number of cells each holds. In Inland Floodplain country, cover
+> rises across areas ranging from 6% to 59% of cells wet; in Riverine Chenopod, from 3%
+> to 33%. Aeolian Chenopod areas are all dry — eleven of the twelve sit below 7% — so no
+> line is fitted to them.
+
+## Legend keys
+
+> Vegetation community
+>
+> Inland Floodplain — n 61 · r +0.70
+>
+> Riverine Chenopod — n 27 · r +0.71
+>
+> Aeolian Chenopod — n 12 · range too narrow to fit
+>
+> Cells in the area
+>
+> Variation within the area / darker areas vary more internally
+
+## Footnote
+
+> Every number on both axes comes from the satellite grid, with no field measurements
+> mixed in. Of 156 paddock × vegetation community areas, 34 are woodland or forest and
+> are set aside because ground cover beneath a canopy does not mean what it means in the
+> open; 4 sit outside the three open communities; 18 hold fewer than 500 cells (171 ha,
+> 0.3% of the open ground), too few for an average that stands beside one taken over
+> thousands. An earlier version at this grain counted 115 by keeping areas down to 33
+> cells. Cover is measured for each cell across all seasons in the record rather than
+> once a year; the number of measurements behind a cell ranges from 5 to 140. The lines
+> are display smoothers — no slope is read from them and no significance test is
+> computed. The Inland band opens above 50% wet because a single area, Bala 22 at 59%,
+> carries that end of the range. Areas within one paddock are not independent, but no
+> fitted line here holds two areas from the same paddock, so the bands are not
+> understating clustering within a line. r is the correlation across areas within a
+> vegetation community; each area in a fitted line comes from a different paddock, so
+> these are independent units. Opacity carries how much cover varies between cells inside
+> an area: the more varied the area, the more solid the point — so the boldest points are
+> the least internally uniform, not the most certain. This describes how places differ
+> from one another over the record — not what more water would do to any one place.
+
+**"Vegetation community", never "veg community."** The abbreviation is the jargon, and
+the client's own slide two before this one writes it out — the deck has to read
+consistently across the join.
+
+**The opacity channel runs against convention, so it is said in words twice.** Opacity
+normally reads as confidence; here the boldest points are the *least* internally
+consistent. The legend title carries the plain sentence and the footnote carries it
+again. `veg_p05_within_sd` is a **spatial** spread across an area's own cells — not a
+spread over time, not a standard error, and it does not shrink as an area gets larger.
+
+**r is printed only where a line is drawn.** Aeolian's r is −0.161 across a 1–12% water
+range. It is retained in `PARTSCATTER_community_support.csv` and the run record, and
+suppressed on the face: printed beside two positive values, a Council reader sees dry
+country doing worse with more water, which is not something a correlation of that size
+across that range can say. **No R², pooled or per-community** — a fit statistic is a
+coefficient, deviance explained is not comparable across smoothers that chose different
+effective degrees of freedom, and a pooled R² would largely be measuring that Inland
+country is both wetter and greener than Aeolian country. That build is PARTSCATTER-2.
+
+## Why the count is 100 and not 115
 
 **The 115 is this project's own number.** It is PARTREG's part count at a 33-cell floor,
 over the **same three** non-treed communities. The client's slide pairs it with a legend
 of **eight** vegetation communities; that eight comes from a different layer and no
 figure at this grain has ever carried it. Stated so the gap is read from the page rather
-than discovered in the room.
+than discovered in the room. **The count is not adjusted to reach 115.**
 
 ## Sources
 
@@ -323,8 +381,22 @@ than discovered in the room.
 | 156 → 118 → 100 areas; 171 ha dropped | `Output/temporal/PARTSCATTER_reconciliation_chain.csv` |
 | 34 woodland/forest · 4 minor units | `Output/temporal/PARTSCATTER_excluded_communities.csv` |
 | per-community n, water range, smoother drawn | `Output/temporal/PARTSCATTER_community_support.csv` |
+| r +0.70 Inland · +0.71 Riverine · −0.161 Aeolian (unprinted) | `PARTSCATTER_community_support.csv`, `r_across_areas` |
+| opacity ramp, within-area spread 3.4 – 23.2 | `PARTSCATTER_scatter_input.csv`, `veg_p05_within_sd` |
 | Bala 22 at 58.9% wet, sole area above 50% | `Output/temporal/PARTSCATTER_scatter_input.csv` |
 | 115 areas at a 33-cell floor | `PARTREG_S2_three_periods_115_parts.png` caption, this file |
+
+## Superseded — kept, not deleted
+
+~~The first pass's single-block caption, 9 August 2026: one voice doing the work of a
+subtitle and a footnote at once. Accurate, but it made the reader find the answer to
+their own question rather than meeting it.~~
+
+~~Subtitle: *"…Cover rises with water in Inland Floodplain from 6% to 59% of its cells
+wet…"* — which invites the misreading that **cover** rises from 6% to 59%. The range is
+the water axis, across areas.~~
+
+~~Legend title *"Plant community"*, and per-community labels carrying `n` alone.~~
 
 ---
 

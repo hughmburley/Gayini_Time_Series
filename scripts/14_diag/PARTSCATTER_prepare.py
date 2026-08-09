@@ -124,9 +124,14 @@ def main() -> int:
               f"{e.area_ha:>8,.1f} ha")
 
     # ---- part-grain aggregation -----------------------------------------------------
+    # veg_p05_within_sd is the OPACITY channel (amendment A1): the spread of the
+    # per-cell 5th percentile ACROSS THE AREA'S OWN CELLS - the same cells the point's
+    # y is averaged over. It is a SPATIAL spread within one area, not a spread over
+    # time, and it is not a standard error: it does not shrink as an area gets larger.
     g = nt.groupby(["zone_fid", "community"])
     part = g.agg(n_cells=("pixel_id", "size"),
                  veg_p05_temporal_mean=("veg_p05", "mean"),
+                 veg_p05_within_sd=("veg_p05", "std"),
                  veg_p50_temporal_mean=("veg_p50", "mean"),
                  n_cells_missing_p05=("veg_p05", lambda s: int(s.isna().sum())),
                  mean_share_cells_wet=("flood_freq_pct", "mean")).reset_index()
@@ -248,6 +253,15 @@ def main() -> int:
             "y_min": float(gg.veg_p05_temporal_mean.min()),
             "y_max": float(gg.veg_p05_temporal_mean.max()),
             "n_paddocks": int(gg.zone_fid.nunique()),
+            # Amendment A5. r across AREAS within a community, on the data - NOT taken
+            # from the smoother. It is licensed by n_parts == n_paddocks: every area in
+            # a community comes from a different paddock, so these are independent
+            # units. No R2, pooled or per-community (spec section 3); that is
+            # PARTSCATTER-2.
+            "r_across_areas": float(np.corrcoef(x, gg.veg_p05_temporal_mean)[0, 1]),
+            "within_area_sd_min": float(gg.veg_p05_within_sd.min()),
+            "within_area_sd_max": float(gg.veg_p05_within_sd.max()),
+            "within_area_sd_median": float(gg.veg_p05_within_sd.median()),
         })
     supp = pd.DataFrame(rows).sort_values("n_parts", ascending=False)
     # Pre-registered fork, spec section 3: a smoother needs enough parts AND enough
@@ -275,15 +289,27 @@ def main() -> int:
         supp.smoother_drawn, "enough parts and enough water-axis range",
         "too narrow a range of wetness to support a fitted line; points drawn without "
         "one rather than extrapolating a curve across a gap")
+    supp["ruling"] = "EH (9 Aug 2026)"
+    # A5: r is PRINTED only where a line is drawn. Aeolian's r is real and is kept in
+    # this table and in the run record, but printing it beside two positive numbers
+    # would read to a Council audience as dry country doing worse with more water,
+    # which is not what a correlation of that size across a 1-12% range can say.
+    supp["r_printed_on_figure"] = supp.smoother_drawn
+    supp["r_suppression_note"] = np.where(
+        supp.smoother_drawn, "",
+        "r retained here and in the run record but NOT printed on the figure: across "
+        "this community's narrow water range it is noise, and beside two positive "
+        "values it would be read as a negative response to water")
     supp["support_level"] = "pixel"
     supp["period_label"] = PERIOD
     supp.to_csv(OUT / "PARTSCATTER_community_support.csv", index=False, lineterminator="\n")
     print(f"  [wrote] PARTSCATTER_community_support.csv")
     print()
-    print(supp[["community_short", "n_parts", "n_paddocks", "n_cells_min", "n_cells_max",
-                "water_min_pct", "water_max_pct", "water_span_pct",
-                "water_span_p10_p90_pct", "passes_superseded_minmax_rule",
-                "smoother_drawn"]].to_string(index=False))
+    print(supp[["community_short", "n_parts", "n_paddocks", "water_min_pct",
+                "water_max_pct", "water_span_pct", "water_span_p10_p90_pct",
+                "passes_superseded_minmax_rule", "smoother_drawn", "r_across_areas",
+                "r_printed_on_figure", "within_area_sd_min",
+                "within_area_sd_max"]].to_string(index=False))
 
     # ---- L-01 exposure, stated rather than left to be discovered --------------------
     multi = kept[kept.n_parts_in_paddock > 1]
