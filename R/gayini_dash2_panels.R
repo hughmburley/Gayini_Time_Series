@@ -174,8 +174,13 @@ gayini_dash2_resp_fix <- function(p, subset_pct = NA_real_, subset_n = NA_intege
     p$labels$subtitle <- paste(strwrap(paste0(
       "This panel describes only the ", format(subset_n, big.mark = ","),
       " cells of this paddock's main plant community - ",
-      sprintf("%.0f%%", subset_pct), " of the paddock. Grey = those cells; ",
-      "line = trend; diamond = this unit. ", tail_txt), width = 104),
+      sprintf("%.0f%%", subset_pct), " of the paddock. ",
+      ## Ruling EE, fourth string. "those cells" reads as THIS paddock's cells, which
+      ## makes the grey cloud look like the unit rather than the community it is
+      ## being placed against - the diamond then appears to sit inside its own data.
+      ## The cloud is every cell of that community across Gayini.
+      "Grey = all cells of that community across Gayini; line = trend through them; ",
+      "diamond = this unit. ", tail_txt), width = 118),   # matches the footnote measure
       collapse = "\n")
   }
 
