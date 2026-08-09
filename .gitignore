@@ -180,6 +180,13 @@ Output/temporal/*
 Output/runs/*
 !Output/runs/*.md
 !Output/runs/*.csv
+# INVENTORY-1 (spec section 5, on the citability grounds of Rulings BB and CL): the
+# client-facing inventory document only. Named directly because it sits in Output/ itself,
+# not a subfolder, so the single 'Output/*' exclusion at the top is all that governs it and
+# one re-include below that line is sufficient. Placed HERE, at the end of the Output rules,
+# for the reason Ruling CU records - a re-include above the exclusion that governs it is
+# silently inert. Verified with 'git check-ignore -v', never by reading (I-60).
+!Output/INVENTORY_20260809.md
 Output/database/*.sqlite
 Output/database/*.gpkg
 data_intermediate/
