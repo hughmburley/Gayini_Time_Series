@@ -1,0 +1,5 @@
+treatment,on_unzoned_ground,n_plots,support_level,note
+14-day grazing,0,24,plot ~1 ha,C10: plot support. This table is the join between the unzoned analysis and every plot-support result; it is never mixed into a pixel-support figure.
+14-day grazing,1,3,plot ~1 ha,C10: plot support. This table is the join between the unzoned analysis and every plot-support result; it is never mixed into a pixel-support figure.
+No grazing,0,24,plot ~1 ha,C10: plot support. This table is the join between the unzoned analysis and every plot-support result; it is never mixed into a pixel-support figure.
+Standard grazing,1,15,plot ~1 ha,C10: plot support. This table is the join between the unzoned analysis and every plot-support result; it is never mixed into a pixel-support figure.

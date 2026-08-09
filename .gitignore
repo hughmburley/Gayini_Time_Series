@@ -187,6 +187,16 @@ Output/runs/*
 # for the reason Ruling CU records - a re-include above the exclusion that governs it is
 # silently inert. Verified with 'git check-ignore -v', never by reading (I-60).
 !Output/INVENTORY_20260809.md
+# UNZONED v3 (spec section 6, on the citability grounds of Rulings BB and CL): the
+# tables only. The run report cites them and the findings note will assert from them, so
+# they have to be citable; the figures stay untracked like every other PNG. Placed HERE,
+# at the end of the Output rules, for the reason Ruling CU records - a re-include above
+# the directory-exclusion that governs it is silently inert. Verified with
+# 'git check-ignore -v', never by reading (I-60).
+!Output/unzoned/
+Output/unzoned/*
+!Output/unzoned/*.csv
+!Output/unzoned/*.md
 Output/database/*.sqlite
 Output/database/*.gpkg
 data_intermediate/

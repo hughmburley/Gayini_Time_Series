@@ -1,0 +1,4 @@
+rule,n_patches,n_cells,area_ha,note
+PARTSCATTER floor: >= 500 cells,39,184091,11478.33680543389,the floor PARTSCATTER used; the two figures are read side by side and a different floor makes them incomparable
+v2 rule: >=25 yrs of >=30 valid cells,93,191700,11952.768824123268,"Gate 1's support rule - observability over time, not size"
+bare 33-cell threshold,91,191639,11948.965386990918,"v1's threshold, reported for contrast"
