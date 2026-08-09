@@ -71,6 +71,12 @@ targets <- c(FIRST_SIX, setdiff(sort(have_sheet), FIRST_SIX))
 cat(sprintf("  %d paddocks have a v1 sheet; rendering %d (the six first, then the rest)\n",
             length(have_sheet), length(targets)))
 
+## Ruling DZ check 4: the sheet must print the share the gate verified, on the sheet's
+## own non-treed scope. Read from the reconciliation table rather than recomputed here,
+## so a sheet and the run record cannot drift apart.
+recon <- utils::read.csv(file.path(root, "Output/runs/DASH2_DZ_reconciliation.csv"),
+                         stringsAsFactors = FALSE)
+
 rows <- list(); failed <- character(0)
 
 for (pad in targets) {
@@ -135,9 +141,16 @@ for (pad in targets) {
     "(it plots a genuine plot-support between-year frequency) and the response panel's",
     "x-axis is NOT relabelled (it plots counted per-cell flood_freq_pct).")
 
+  rc <- recon[recon$zone_fid == zf, , drop = FALSE]
+  if (nrow(rc) != 1L) stop("no reconciliation row for ", pad)
+
   gayini_build_dashboard(resolved, ctx, format = "slide", out_dir = OUT_DIR,
                          basename = base, v2 = v2, v2_note = note,
-                         v2_caption = cap, v2_run_id = RUN_ID, v2_provenance = prov)
+                         v2_caption = cap, v2_run_id = RUN_ID, v2_provenance = prov,
+                         v2_subset_pct = rc$pct_if_denominator_is_non_treed,
+                         v2_subset_n = rc$n_subset, v2_unit_n = rc$n_paddock_non_treed,
+                         v2_unit_mean = rc$top_panel_mean_pct,
+                         v2_subset_mean = rc$subset_flood_freq_pct)
 
   png <- file.path(OUT_DIR, paste0(base, ".png"))
   if (!file.exists(png)) { failed <- c(failed, pad); next }

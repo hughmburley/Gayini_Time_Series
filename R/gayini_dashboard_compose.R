@@ -347,7 +347,10 @@ gayini_resolve_stratum <- function(community, band, ctx) {
 gayini_build_dashboard <- function(resolved, ctx, format = "slide", out_dir, basename,
                                    v2 = NULL, v2_note = NULL,
                                    v2_caption = NULL, v2_run_id = NULL,
-                                   v2_provenance = NA_character_) {
+                                   v2_provenance = NA_character_,
+                                   v2_subset_pct = NA_real_, v2_subset_n = NA_integer_,
+                                   v2_unit_n = NA_integer_, v2_unit_mean = NA_real_,
+                                   v2_subset_mean = NA_real_) {
   fmt <- gayini_dashboard_formats()[[format]]
   bs  <- fmt$base_size
 
@@ -367,7 +370,8 @@ gayini_build_dashboard <- function(resolved, ctx, format = "slide", out_dir, bas
 
   ## ---- Panels ----
   ## Total vegetation is green-only on ALL three dashboards now (drop bare ground).
-  p_map   <- gayini_panel_map(resolved$spec, ctx, base_size = bs - 1)
+  p_map   <- gayini_panel_map(resolved$spec, ctx, base_size = bs - 1,
+                              inset_x = if (is.null(v2)) 0.015 else 0.175)
   p_flow  <- if (resolved$is_site)
     gayini_panel_gauge_flow(resolved$gaugeflow, ctx$gauge_label, bs,
                             date_lim = date_lim, date_breaks = date_breaks) else NULL
@@ -403,7 +407,9 @@ gayini_build_dashboard <- function(resolved, ctx, format = "slide", out_dir, bas
   if (!is.null(v2)) {
     p_box  <- gayini_dash2_box_fix(p_box)
     p_base <- gayini_dash2_gauge_fix(p_base)
-    p_resp <- gayini_dash2_resp_fix(p_resp)
+    p_box  <- gayini_dash2_drop_marker(p_box)          # Ruling DW
+    p_resp <- gayini_dash2_resp_fix(p_resp, v2_subset_pct, v2_subset_n, v2_unit_n,
+                                    v2_unit_mean, v2_subset_mean)
   }
 
   ## Only the LAST date panel (total veg) keeps its x-axis; strip it from the
@@ -414,8 +420,9 @@ gayini_build_dashboard <- function(resolved, ctx, format = "slide", out_dir, bas
   if (!is.null(p_flow)) p_flow <- p_flow + strip_x
   p_flood <- p_flood + strip_x
 
-  header_sub <- if (is.null(v2)) resolved$subtitle else
-    paste0(resolved$subtitle, "  |  ", gayini_dash2_map_note())
+  ## Ruling DX: the tercile sentence is NOT on the header any more - it moved to the
+  ## footnote block on the response panel, in plain words.
+  header_sub <- resolved$subtitle
   header <- cowplot::ggdraw() +
     cowplot::draw_label(resolved$title, fontface = "bold", size = bs + 5, x = 0.01, hjust = 0, y = 0.68) +
     cowplot::draw_label(header_sub, size = bs - 1, colour = "grey35", x = 0.01, hjust = 0, y = 0.24)

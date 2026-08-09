@@ -116,26 +116,84 @@ gayini_dash2_map_note <- function()
   paste("Checkerboard bands: per-community terciles cut on the interpolated surface -",
         "the only route to balanced strata; 4.9% of cells move under the counted one.")
 
-gayini_dash2_resp_fix <- function(p) {
-  ## Spec 3a. The x-axis is NOT touched: it draws per-cell flood_freq_pct counted on the
-  ## 8058 grid, which is a genuine between-year frequency and is correctly labelled.
+gayini_dash2_resp_fix <- function(p, subset_pct = NA_real_, subset_n = NA_integer_,
+                                  unit_n = NA_integer_, unit_mean = NA_real_,
+                                  subset_mean = NA_real_) {
+  ## Ruling DZ check 3 / spec 3.3: the x-axis is NOT touched. It draws per-cell
+  ## flood_freq_pct counted on the 8058 grid - a genuine between-year frequency.
   ##
-  ## The y NAME is set by scale_y_continuous(), and labs(y=) LOSES to a scale name - the
-  ## first attempt did exactly that and the axis still read "Vegetation floor - veg_p05".
-  ## The scale is mutated in place instead, which keeps its limits and expansion; ggproto
-  ## objects are reference semantics, so this edits the panel's own scale.
+  ## The y NAME is set by scale_y_continuous(), and labs(y=) LOSES to a scale name.
+  ## The scale is mutated in place, which keeps its expansion; ggproto is reference
+  ## semantics, so this edits the panel's own scale without touching the closed file.
+  ## RULING DV: one common y-scale across every sheet in the set, so panels can be read
+  ## against each other. 0-100 is the natural common range for a cover percentage.
   for (sc in p$scales$scales) {
-    if ("y" %in% sc$aesthetics) sc$name <- "Cover in the poorest seasons (%)"
+    if ("y" %in% sc$aesthetics) {
+      sc$name <- "Cover in the poorest seasons (%)"
+      sc$limits <- c(0, 100)
+    }
   }
-  ## Spec 3a: state the SEASONAL basis. Appended to the panel's own caption rather than
-  ## replacing it - the existing lines carry the sparse-tail and autocorrelation notes.
-  ## wrapped: an unwrapped line ran off the right edge of the sheet
+
+  ## RULING DU + the Ruling DZ check-4 correction. The panel's own subtitle printed the
+  ## subset share against ALL classes, while the sheet's scope is non-treed - which is
+  ## why three sheets read 56 / 54 / 33 where the non-treed denominator gives 61 / 65 /
+  ## 34.6. The corrected share is written here, and the population difference is stated
+  ## rather than left for the reader to infer.
+  if (is.finite(subset_pct)) {
+    p$labels$subtitle <- paste(strwrap(paste0(
+      "This panel describes only the ", format(subset_n, big.mark = ","),
+      " cells of this paddock's main plant community - ",
+      sprintf("%.0f%%", subset_pct), " of the paddock. Grey = those cells; ",
+      "line = trend; diamond = this unit. ",
+      sprintf("It is wet %.0f%% of years, while the paddock as a whole is wet %.0f%% - ",
+              subset_mean, unit_mean),
+      "both are right; they describe different ground."), width = 104),
+      collapse = "\n")
+  }
+
+  ## Ruling DT: no sentence about correspondence or a pending correction on a
+  ## client-facing face. The basis statement stays; the email sentence goes to the run
+  ## record. Ruling DX: the tercile sentence moves here, into the footnote block, with
+  ## "interpolated surface" and "balanced strata" off the face.
   p$labels$caption <- paste0(
     p$labels$caption, "\n",
     paste(strwrap(paste(
-      "Cover here is a per-cell TEMPORAL percentile over 140 SEASONAL composites",
-      "(per-cell n 5 to 140), not the 35-value annual basis. A correction on this point",
-      "is going to the client separately."), width = 118), collapse = "\n"))
+      "Cover here is a per-cell reading taken over 140 seasonal composites, not over 35",
+      "annual values. Wetness bands on the map are cut separately for each plant",
+      "community, and a small share of cells falls either side of a band edge if the",
+      "alternative water surface is used."), width = 118), collapse = "\n"))
+  p
+}
+
+
+## Ruling DW: drop the unit marker from the "Where it sits" boxplot ----
+##
+## The marker is gayini_unit_flood_frequency() - the WHOLE POLYGON on the native 28355
+## stack - while the top panel and the gauge are now the paddock's census cells on 8058.
+## They do not reconcile: Dinan 10 reads 10.1% against a top panel of 5.1%, Bala 29ca
+## 10.3% against 8.5%. Redefining the marker to the cell-based value would reconcile it
+## arithmetically, but the boxplot cloud is PLOT support (66 monitoring plots), so that
+## would put a pixel number on a plot cloud - reintroducing on this sheet the very
+## support mix DASH2 exists to remove. Under DW's pre-registered fork the marker is
+## REMOVED and the boxplots stand as community context.
+gayini_dash2_drop_marker <- function(p) {
+  before <- length(p$layers)
+  keep <- vapply(p$layers, function(L) {
+    cls <- class(L$geom)[1]
+    if (cls == "GeomPoint" && is.data.frame(L$data) && nrow(L$data) == 1L) return(FALSE)
+    lab <- L$aes_params$label
+    if (cls == "GeomText" && !is.null(lab) &&
+        any(grepl("this unit", as.character(lab), fixed = TRUE))) return(FALSE)
+    TRUE
+  }, logical(1))
+  p$layers <- p$layers[keep]
+  if (before - length(p$layers) != 2L)
+    stop("Ruling DW: expected to drop exactly 2 marker layers, dropped ",
+         before - length(p$layers))
+  p$labels$subtitle <- paste(strwrap(paste(
+    "Community context from the monitoring plots. This paddock is not marked: its own",
+    "value is a census-cell figure and these boxes are plot measurements."),
+    width = 62), collapse = "\n")
   p
 }
 

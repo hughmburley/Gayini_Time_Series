@@ -61,7 +61,10 @@ gayini_series_date_scale <- function(date_lim = NULL, date_breaks = NULL) {
 ## paddock -> checkerboard (veg_regime_class); site -> flood-frequency + radius
 ## ring; stratum -> checkerboard with THIS class highlighted, others muted.
 
-gayini_panel_map <- function(spec, ctx, base_size = 9) {
+## Ruling DY: `inset_x` is additive. The default 0.015 is the v1 position and every
+## v1 call keeps it; DASH2 passes a larger value so the locator cannot sit over the
+## latitude labels, which it did on Bala 26ca.
+gayini_panel_map <- function(spec, ctx, base_size = 9, inset_x = 0.015) {
 
   cols <- gayini_dashboard_cols()
 
@@ -71,7 +74,7 @@ gayini_panel_map <- function(spec, ctx, base_size = 9) {
   add_locator <- function(core_plot, unit_area, mark = NULL) {
     loc <- gayini_locator_inset(unit_area, ctx$boundary, ctx$management, mark = mark)
     cowplot::ggdraw(core_plot) +
-      cowplot::draw_plot(loc, x = 0.015, y = 0.66, width = 0.26, height = 0.30)
+      cowplot::draw_plot(loc, x = inset_x, y = 0.66, width = 0.26, height = 0.30)
   }
 
   if (spec$type == "site") {
