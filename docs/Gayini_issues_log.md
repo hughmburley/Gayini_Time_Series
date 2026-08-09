@@ -183,6 +183,45 @@ series. Full detail in `docs/change_reports/TaskU_gate*.md`.*
 
 **Cadence:** review `BLOCK` and `EXTERNAL` at each task boundary. Everything else weekly.
 
+**A PARALLEL SESSION PERFORMS NO GIT OPERATION** (Ruling EB, 9 Aug 2026). A session
+running concurrently with another on the same repository **performs no git operation**:
+no `add`, no `commit`, no `.gitignore` edit, no un-ignore. It **writes its output to disk
+and stops there.** Version-controlling those artefacts falls to the session that holds the
+repository, **once it is the only one holding it**. This applies to any parallel session,
+whichever task it is running.
+
+**EB binds a session only while another is live.** A session alone on the repository
+commits normally. So a task is never "blocked on EB" — it is waiting to be the only
+session running, which is a different and much shorter wait.
+
+Why it exists: `c2a2627` (INVENTORY-1) landed on `main` mid-PARTSCATTER, from a session
+briefed as read-only. It staged two explicit paths and absorbed nothing, so nothing was
+lost — the third near-miss of the same class, and the reason the rule is written now
+rather than after something is. Sits with the standing staging rule (**never `git add -A`
+or `git add .`**) and with `git worktree add` as the escape hatch when two sessions must
+genuinely write at once.
+
+**EB was referenced three times before it was written.** That is [[I-43]] — *a ruling is
+only a ruling if it can be quoted from a design-seat message* — and it was caught by the
+executing seat refusing to act on a ruling number it held no text for. The refusal is the
+control working, not friction.
+
+**THE FIVE QUALIFIERS ARE A SCHEMA OBLIGATION, NOT A PROSE ONE** (Ruling EI, 9 Aug 2026).
+`figure_asset` **gains columns** for support level, scope filter, pixel constant,
+denominator and period label, **with backfill from existing `provenance_note` text where
+it can be parsed and NULL where it cannot**, so the gap is **visible rather than implied**.
+**Registration writes the columns.**
+
+Why it exists: four of the five have no column, so they are written into `provenance_note`
+as prose. **No `SELECT` can find every figure at a given denominator.** The rule exists so
+a headline number's scope is *checkable*; satisfied by prose it is not checkable — it is a
+promise that a human read the note. Drift in one qualifier is then detectable by nothing
+but reading.
+
+**Held under [[DJ]] for next week — the current figures are NOT re-registered.** Not a
+Monday item. **First in the post-deadline queue**: it is the foundation the provenance
+discipline rests on, and it is currently made of text.
+
 **A PER-COMMUNITY SMOOTHER NEEDS A CENTRAL RANGE, NOT A MIN-TO-MAX ONE** (Ruling EH,
 9 Aug 2026). A per-community smoother is fitted **only where that community's central
 10th–90th percentile of the x axis spans a usable range**. **Min-to-max does not qualify

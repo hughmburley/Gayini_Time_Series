@@ -47,12 +47,21 @@ decision is legible to whoever opens the file next rather than living only here.
 
 ## 1 · Decisions needed
 
-**One, and it is not blocking: I hold no issued text for Ruling EB.** It was cited as
-standing for QUICKWINS-1 and UNZONED-1, and as the rule the INVENTORY-1 session's
-`c2a2627` ran against. Neither task is this one and nothing in this render depends on it,
-so I proceeded — but §9's rule is that a ruling number without issued text is not a
-ruling, and I did not act on it. **EB's text is wanted before either of those tasks
-starts.** The eleven in §9 plus EH are what this seat holds.
+**None outstanding. The one item raised here is now closed.**
+
+**~~I hold no issued text for Ruling EB.~~ RESOLVED — EB issued, 9 Aug 2026.** It had been
+cited as standing for QUICKWINS-1 and UNZONED-1, and as the rule the INVENTORY-1 session's
+`c2a2627` ran against. Neither task was this one and nothing in this render depended on it,
+so I proceeded without acting on it, under §9's rule that a ruling number without issued
+text is not a ruling. The design seat confirms it was **referenced three times and never
+written** — I-43, and the refusal to act on it is the control working rather than friction.
+EB's text is now in `docs/Gayini_issues_log.md`.
+
+**The queue consequence corrects what this report previously said.** EB binds a session
+only **while another is live**. QUICKWINS-1 and UNZONED-1 are therefore **not waiting on
+EB** — they are waiting to be the **only session running**, and a session alone on the
+repository commits normally. The earlier statement that they "need EB's issued text first"
+was wrong and is superseded here rather than deleted.
 
 Every fork carried a pre-registered rule and each was executed or overridden in place.
 The two items below are recorded for the design seat, not blocking.
@@ -233,15 +242,19 @@ through it.
   title · four locator paths needing consolidation · `metric_id` NULL on both registrar
   paths (this run adds one more such row) · the unexercised `gayini_area_map` locator
   parameter · EA/EC compliance on the `report_figures` producer.
-- **Also held under DJ — the five-qualifier schema gap.** `figure_asset` has no
+- **The five-qualifier schema gap is now Ruling EI**, held under DJ. `figure_asset` has no
   `scope_filter` / `pixel_constant` / `denominator` / `period_label` column, so four of
   the five are written into `provenance_note` **as prose**. The rule is therefore
   satisfied by text rather than by schema, which means **it cannot be queried** — no
   `SELECT` can find every figure at a given denominator, and drift in one of them cannot
-  be detected by anything but reading. A registry change for next week, not a
-  two-days-out edit.
-- **Not started, correctly:** INVENTORY-1, QUICKWINS-1, UNZONED-1. The latter two need
-  EB's issued text first.
+  be detected by anything but reading. **Satisfied by prose, the qualifier rule is a
+  promise that a human read the note.** EI adds the five columns, backfilling from
+  `provenance_note` where it parses and **NULL where it does not, so the gap is visible
+  rather than implied**. **Current figures are not re-registered**, this one included.
+  **First in the post-deadline queue** — it is the foundation the provenance discipline
+  rests on, and it is currently made of text.
+- **Not started, correctly:** INVENTORY-1, QUICKWINS-1, UNZONED-1. Under EB they wait on
+  being the **only session on the repository**, not on any ruling text.
 - **PARTSCATTER-2** (fit statistics done properly, per-community and pooled) is deferred
   past Monday by decision, not by omission.
 
@@ -262,7 +275,14 @@ word *"floor"* is absent from the face; the paddock figure is additive-only and 
 **Newly in force: EH**, quoted at §3, issued on this task's override and written to
 `docs/Gayini_issues_log.md` because it binds every future per-community figure.
 
-**Not cited, and not available: EB.** No issued text is held for it. It was named as
-standing for QUICKWINS-1 and UNZONED-1 and as the rule `c2a2627` ran against; neither is
-this task, nothing here depends on it, and it was not acted on. §9 carries eleven, plus
-EH: all twelve are quoted above or were checked and found not to bind.
+**Issued in response to this run: EB and EI**, both now quotable and both in
+`docs/Gayini_issues_log.md`. **EB** — a session running concurrently with another performs
+no git operation, and binds only while another session is live. **EI** — the five
+qualifiers are a schema obligation, not a prose one; held under DJ, current figures not
+re-registered.
+
+**~~Not cited, and not available: EB.~~** Superseded: EB was named as standing for
+QUICKWINS-1 and UNZONED-1 and as the rule `c2a2627` ran against, and no issued text was
+held for it at the time. It was **not acted on**, which was correct, and it has since been
+issued. §9 carries eleven, plus EH, EB and EI: all fourteen are quoted above, recorded in
+the issues log, or were checked and found not to bind.
