@@ -183,6 +183,27 @@ series. Full detail in `docs/change_reports/TaskU_gate*.md`.*
 
 **Cadence:** review `BLOCK` and `EXTERNAL` at each task boundary. Everything else weekly.
 
+**PREFER THE FIX THAT REMOVES THE FAILURE MODE TO THE FIX THAT CORRECTS THE INSTANCE**
+(standing preference, design seat, 10 Aug 2026). Where a defect can be closed either by
+correcting the wrong value or by **restructuring so the wrong value cannot be formed**,
+take the second. It costs more once and nothing thereafter.
+
+**Three instances, all in one week, which is why it is written down:**
+
+| | the instance fix | the structural fix taken |
+|---|---|---|
+| **DASH3** | correct the printed non-treed share on each sheet | the sheets **read the share from the reconciliation table** — *"drift is impossible rather than checked"* |
+| **EP** | fix the protected-documents list in CLAUDE.md | the protected set is **derived from `dim_headline_number`** — a set derived from the thing it protects cannot drift from it |
+| **MAP-1 / M5** | rewrite the sentence whose count and area had different denominators (D2) | **four rows, each carrying its own count AND its own area** — there is no sentence left in which a count and an area can borrow each other's denominator |
+
+The tell is the same in all three: after the fix, **the defect has nowhere to live**. The
+corrected sentence, the corrected list and the corrected value would each have been true
+on the day and free to drift the next.
+
+**Not a licence to rebuild.** The structural fix is preferred where it is available and
+proportionate; where it is not, correct the instance and say so. Two of the three above
+were smaller than the correction they replaced.
+
 **A STATEMENT OF EXTENT NAMES BOTH DENOMINATORS, OR NEITHER** (Ruling EQ, 10 Aug 2026).
 **Any client-facing statement of extent names the analysed area and the property area
 together, or names neither.** *"Across Gayini"* without a denominator **is not available.**
@@ -194,9 +215,15 @@ ha — 22% of the property — turned out to carry no vegetation-community label
 no analysis anywhere in this project.** The boundary encloses 85,910.8 ha; the 156 zoned
 areas and 625 unzoned tracts cover 67,247.3 ha between them. **This has been true since
 the first census and was invisible until something was drawn**, because a scatter has no
-blank space to show it. It is the `denominator_ha` distinction — mapped 67,349.332 against
-true farm 85,910.8 — which the registry has carried as a column all along while prose said
-*"across Gayini"*.
+blank space to show it.
+
+**The sharper statement, and the reason EQ belongs with EP: the schema was right and the
+prose drifted from it.** `denominator_ha` has carried the distinction as a column all
+along — mapped 67,349.332 against true farm 85,910.8 — while sentences said *"across
+Gayini"* and named neither. EQ does not add a fact; it **stops prose contradicting a
+column the registry already holds**. That is the same failure EP found in number rule 3,
+and the same one [[EI]] describes from the other direction, where a rule satisfied by prose
+cannot be queried at all.
 
 **A MAP WITH NO BACKGROUND IS A MAP THAT ARRIVES BLACK** (10 Aug 2026, filed with [[I-60]]).
 `theme_void()` **sets no background**, so `ggsave()` writes a PNG with a **transparent**
