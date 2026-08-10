@@ -183,6 +183,30 @@ series. Full detail in `docs/change_reports/TaskU_gate*.md`.*
 
 **Cadence:** review `BLOCK` and `EXTERNAL` at each task boundary. Everything else weekly.
 
+**A STATEMENT OF EXTENT NAMES BOTH DENOMINATORS, OR NEITHER** (Ruling EQ, 10 Aug 2026).
+**Any client-facing statement of extent names the analysed area and the property area
+together, or names neither.** *"Across Gayini"* without a denominator **is not available.**
+This governs the **report stream and the article**; it does not require re-rendering the
+MAP-1 figures, which already carry it.
+
+Why it exists: MAP-1 drew the property and the analysed units on one page, and **18,663
+ha — 22% of the property — turned out to carry no vegetation-community label and to enter
+no analysis anywhere in this project.** The boundary encloses 85,910.8 ha; the 156 zoned
+areas and 625 unzoned tracts cover 67,247.3 ha between them. **This has been true since
+the first census and was invisible until something was drawn**, because a scatter has no
+blank space to show it. It is the `denominator_ha` distinction — mapped 67,349.332 against
+true farm 85,910.8 — which the registry has carried as a column all along while prose said
+*"across Gayini"*.
+
+**A MAP WITH NO BACKGROUND IS A MAP THAT ARRIVES BLACK** (10 Aug 2026, filed with [[I-60]]).
+`theme_void()` **sets no background**, so `ggsave()` writes a PNG with a **transparent**
+one. Dropped into a slide or a document it renders **black**, or shows whatever sits behind
+it. **No exit code says so and the file opens correctly in most image viewers.** Found on
+the first MAP-1 render, which would otherwise have reached the Council looking broken.
+**Every map producer sets `plot.background`, `panel.background`, `legend.background` and
+`legend.key` explicitly.** Same family as I-60: the instruction succeeded, the artefact was
+wrong, and only opening it in the destination context would have told you.
+
 **PROVENANCE PROTECTION IS DEFINED BY THE REGISTRY, NOT BY A DIRECTORY** (Ruling EP,
 10 Aug 2026). **Any file named in any `decided_by` value in `dim_headline_number` is
 protected from the archive sweep wherever it sits.** The sweep **resolves that set by
