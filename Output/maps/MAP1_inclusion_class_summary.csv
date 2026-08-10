@@ -1,0 +1,5 @@
+inclusion_class,n_areas,n_cells,area_ha,pct_of_all_area,verified_against
+other,4,4738,295.42106775532625,0.5351906489610209,"census cells, the source the scatters aggregate"
+plotted,100,792862,49436.07822343257,89.55937701910783,"census cells, the source the scatters aggregate"
+under_floor,18,2740,170.8429138137598,0.30950240146753843,"census cells, the source the scatters aggregate"
+woodland,34,84952,5296.8785453673445,9.595929930463623,"census cells, the source the scatters aggregate"

@@ -197,6 +197,13 @@ Output/runs/*
 Output/unzoned/*
 !Output/unzoned/*.csv
 !Output/unzoned/*.md
+# MAP-1 (spec section 8, on the citability grounds of Rulings BB and CL): the inclusion
+# class table only. The run report cites it. Figures and the geopackage stay untracked
+# like every other PNG and spatial output. Verified with 'git check-ignore -v' (I-60).
+!Output/maps/
+Output/maps/*
+!Output/maps/*.csv
+!Output/maps/*.md
 Output/database/*.sqlite
 Output/database/*.gpkg
 data_intermediate/
