@@ -44,7 +44,15 @@ Result numbers are the project's most reliable source of drift, because a spec i
 
 1. **A spec cites a `number_id`, not a value.** Every result number that reaches a deliverable lives in **`dim_headline_number`** (59 rows). A spec that needs one writes `see ref_grazed_floor_riverine (dim_headline_number)`. Parameters and acceptance criteria are exempt — see the classes below.
 2. **Any document quoting a result value carries an as-of date and the `number_id`.** Without both it is a prediction, and the document says so in its header. `Gayini_locating_results_in_country_note.md` is the model.
-3. **A document named in `dim_headline_number.decided_by` is never archived.** Those files are the provenance chain for every pinned number; they live in `docs/decisions/` and the archive sweep does not touch them. Currently: `T8_gateA_pin_decisions.md`, `T8_T9_T10_gateA_decisions.md`.
+3. **A file named in `dim_headline_number.decided_by` is never archived — and the protected set is resolved from the registry, not from a directory (Ruling EP, 10 Aug 2026).** Those files are the provenance chain for every pinned number, and they are protected **wherever they sit**. Before archiving, moving or deleting anything, run the guard, which fails loudly and names the `number_id`s that protect each file:
+
+   ```
+   python scripts/utils/gayini_provenance_guard.py check <paths...>   # guard a sweep
+   python scripts/utils/gayini_provenance_guard.py list               # the set; exit 1 if any named file is missing
+   python scripts/utils/gayini_provenance_guard.py fixture-test       # proves it catches AND that it doesn't catch everything
+   ```
+
+   **Do not maintain a list of protected documents here.** The previous version of this rule named `docs/decisions/` — **a directory that does not exist and never has** — and named two documents. Measured 10 Aug against 143 registry rows: **14 files are protected**, one of the two named (`T8_T9_T10_gateA_decisions.md`) is named by **zero** rows, and the other 13 were on no list. **A protected path that does not exist protects nothing; a protected set derived from the thing it protects cannot drift from it.**
 
 Three classes of number, only one of which is the problem:
 
@@ -265,7 +273,7 @@ Current shape (verified 29 Jul 2026): **86 tables, 30 views**, `raster_asset` 16
 - **The ~4,300 ha refugia figure** — withdrawn (D8). Do not reintroduce it from any older doc or deck.
 - **The five-period gap split** — no producing script exists anywhere in the repo (I-29). Superseded by the T10 Gate B annual gap series and marked so in `dim_headline_number`. **Not to be revived.**
 - **Archive convention:** archived scripts go to `scripts/archive/` — but see the smoke-test conflict below.
-- **Archived docs live in `docs/archive/`** with a three-line header naming what superseded them and what they are retained for. **`docs/decisions/` is never archived** (number rule 3).
+- **Archived docs live in `docs/archive/`** with a three-line header naming what superseded them and what they are retained for. **Run `gayini_provenance_guard.py check` before any sweep** — files named in `dim_headline_number.decided_by` are protected wherever they sit (Ruling EP, number rule 3). There is no protected *directory*.
 
 ## Known tooling conflicts
 
@@ -308,7 +316,7 @@ Build what the data supports and name the gap in the caption. **Do not gate on a
 - `docs/Gayini_Results_database_overview.md` — DB structure and how to consume it. **Regenerate — it states 66/20 against a live 86/30.**
 - `docs/Gayini_Results_DB_contract_snapshot_*.xlsx` — full text rendering of the DB. Survives project knowledge; regenerate at each Gate C, **and delete predecessors on write** (I-17: multiple dated copies of one artefact is discrepancy class #1).
 - `docs/Gayini_limitations_register_*.xlsx` — scientific limitations (current: v10; T2/T6/T12 additions staged and pending merge to v11).
-- `docs/decisions/` — pin and gate decisions. **Never archived** (number rule 3).
+- **Pin and gate decision documents — `T8_gateA_pin_decisions.md`, `Gayini_T10_v2_spec.md`, `Gayini_REG1_REG2_spec.md` and 11 others, all in `docs/reference_update/`, `docs/change_reports/` and `docs/LiDAR/`.** They are **never archived**, and the authoritative list is the registry, not this line: `gayini_provenance_guard.py list` (Ruling EP, number rule 3).
 - `docs/T3_always_green_threshold.md` (v3) · `docs/T4_spine_evidence_workbook.md` (deferred) · `docs/T5_guardrails_and_checks.md` (v2) · `docs/Gayini_reference_state_specs_T7_T11.md` · `docs/Gayini_T10_v2_spec.md` + `_amendment_A1_gateC.md` — current task specs. Each carries an amendment log; read it, because earlier versions were wrong.
 - `docs/archive/` — superseded specs and completed task cards. **Never a source for a number.**
 

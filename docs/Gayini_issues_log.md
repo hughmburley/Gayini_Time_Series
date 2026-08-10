@@ -183,6 +183,32 @@ series. Full detail in `docs/change_reports/TaskU_gate*.md`.*
 
 **Cadence:** review `BLOCK` and `EXTERNAL` at each task boundary. Everything else weekly.
 
+**PROVENANCE PROTECTION IS DEFINED BY THE REGISTRY, NOT BY A DIRECTORY** (Ruling EP,
+10 Aug 2026). **Any file named in any `decided_by` value in `dim_headline_number` is
+protected from the archive sweep wherever it sits.** The sweep **resolves that set by
+querying the registry** and **fails loudly** if it would touch a member, rather than
+relying on a directory whitelist. **A protected path that does not exist protects nothing;
+a protected set derived from the thing it protects cannot drift from it.**
+
+Implemented: `scripts/utils/gayini_provenance_guard.py` — `check <paths>` guards a
+proposed sweep and names the `number_id`s protecting each hit; `list` prints the set and
+**exits 1 if any named file has gone missing**; `fixture-test` proves it works. **Do not
+create `docs/decisions/` and do not move the named documents** — moving files to satisfy a
+rule breaks every path reference to them and solves the wrong problem.
+
+Why it exists, measured: CLAUDE.md number rule 3 protected **`docs/decisions/`, a
+directory that does not exist and has no git history**, and named two documents. Against
+143 registry rows the guard resolves **14 protected files**. One of the two named
+(`T8_T9_T10_gateA_decisions.md`) is named by **zero** rows and was never protected by
+anything but that sentence; the other **13 were on no list at all**. **The hand-maintained
+list was wrong in both directions at once** — that is the drift EP removes by construction.
+
+**The fixture test carries a negative control, and that is the point.** A positive fixture
+alone would be passed by a guard that refuses everything. So: a protected file must be
+**REFUSED**, an ordinary file must be **ALLOWED**, and every name in the registry must
+resolve. All three, or the test fails. Same discipline as [[I-42]] — a check that errors is
+not a check that catches — with 143 numbers behind it.
+
 **A COEFFICIENT APPLIES ONLY OVER THE RANGE IT WAS ESTIMATED ON** (Ruling EN, 10 Aug
 2026). **This binds size, water, and any other axis.** Where a unit falls outside that
 range, **the expectation is ABSENT, not extrapolated.**
