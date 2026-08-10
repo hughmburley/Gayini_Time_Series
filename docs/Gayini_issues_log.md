@@ -183,6 +183,34 @@ series. Full detail in `docs/change_reports/TaskU_gate*.md`.*
 
 **Cadence:** review `BLOCK` and `EXTERNAL` at each task boundary. Everything else weekly.
 
+**A COEFFICIENT APPLIES ONLY OVER THE RANGE IT WAS ESTIMATED ON** (Ruling EN, 10 Aug
+2026). **This binds size, water, and any other axis.** Where a unit falls outside that
+range, **the expectation is ABSENT, not extrapolated.**
+
+Why it exists: UNZONED v3's size correction was reasoned from community size slopes
+estimated on the **real parts**. Inland's slope is −0.23 pp/decade — near zero, which made
+it look like the community whose result needed no size control. But real Inland parts
+**start at 588 cells**, and **28 of the 54 supported unzoned Inland patches sit below
+that**. Applying a near-zero slope there extrapolates it outside its support. Restricted
+to the 26 in-range patches the residual is **+3.39**, not the unrestricted **+5.11**, and
+Inland's residual falls **+8.51 → +4.44 → +4.27 → +3.11** across size quartiles before
+plateauing. The registered number is the in-range one.
+
+**Arm A already applied this rule to the water axis** — a patch wetter than every zoned
+part of its community gets no comparison, and the loess NA is honoured rather than filled.
+EN states it generally so it is not rediscovered per axis and per task. The two criteria
+can rank strata **oppositely**: on slope magnitude Inland was the safe community, on range
+of support it was the only one extrapolating.
+
+**A MANIFEST DOES NOT LIST ITSELF** (Ruling EO, 10 Aug 2026). Its own integrity is
+established **externally, by the commit that contains it.**
+
+Why it exists: a self-listed manifest row carries a **stale checksum by construction** —
+writing the row changes the file. It is worse than no row, because **it looks like
+coverage**. Found in UNZONED v3's own manifest and fixed there. Same family as the 1 July
+QA row that returns a verdict from a stored snapshot rather than from the data: a record
+that cannot notice being wrong.
+
 **A SENSITIVITY RUN ON ONE SIDE OF A COMPARISON IS RUN ON BOTH** (Ruling EK, 10 Aug
 2026). Where a sensitivity analysis is run on one side of a stated comparison, **it is
 run on the other side before either result is reported.** An estimate that moves under a

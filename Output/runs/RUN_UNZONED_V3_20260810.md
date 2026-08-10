@@ -19,6 +19,18 @@ Never a reference, a control, or unmanaged, in any column, file, caption or sent
 issued; D2 → no fit, and Ruling EL issued. Recorded below as raised, with the resolution
 attached, rather than rewritten.**
 
+**D3, raised 10 August after registering the headline number, not blocking:
+`docs/decisions/` does not exist, and number rule 3 points at it.** CLAUDE.md states that
+documents named in `dim_headline_number.decided_by` *"live in `docs/decisions/` and the
+archive sweep does not touch them"*. **That directory is not in the working tree and has
+no git history.** The two documents it names — `T8_gateA_pin_decisions.md` and
+`T8_T9_T10_gateA_decisions.md` — sit in `docs/reference_update/`, which **is** swept. So
+the rule protecting the provenance chain for all 143 pinned numbers currently protects a
+path that does not exist. **Reported, not fixed:** CLAUDE.md is authoritative and this is a
+disagreement for the design seat, not something I should choose. *(In practice `decided_by`
+is a free-text provenance string naming the governing spec and ruling, not a path, and the
+new row follows that established convention.)*
+
 **D1 · §4.4's point estimate moved materially, so which estimate leads §4.6 and the
 findings note?** The spec expects the AR(1) refit to *widen the interval and hold the
 point estimate*. It did neither.
@@ -389,8 +401,16 @@ everywhere.
 `docs/Gayini_issues_log.md`:** **EK** — a sensitivity run on one side of a comparison is
 run on both before either result is reported. **EL** — a selection rule that survives
 nothing is a limitation, not a null cell. **EM** — a validity filter tests the quantity's
-support, not only its presence; a value computed over too few inputs is missing data that
-does not present as missing.
+support, not only its presence. **EN** — a coefficient applies only over the range it was
+estimated on; outside it the expectation is absent, not extrapolated. **EO** — a manifest
+does not list itself.
+
+**Registered under EN:** `dim_headline_number.unzoned_inland_floor_offset_inrange`,
+pinned **+3.39**, spread **+3.11 to +5.11**, 143 rows. `INSERT OR REPLACE`, and
+**idempotence tested by convergence, not stability** — the input was mutated, the row moved
+to +99.00, the input was restored and the row moved back to +3.39, with the source file
+byte-identical afterwards. A registrar that only stayed stable could not tell converged
+from frozen.
 
 **Not cited, and not available:** none. All fourteen ruling texts in §8 are held, plus
 EK, EL and EM.

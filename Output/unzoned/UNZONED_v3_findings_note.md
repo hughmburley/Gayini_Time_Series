@@ -140,8 +140,18 @@ and least safe on range of support.
 **It halves, and then plateaus — it does not vanish.** Restricted to the 26 patches inside
 the real-part size range, Inland's residual is **+3.39**, against a size expectation of
 +0.27. **So the Inland result survives in weakened form: about +3.4 pp rather than +5.1 pp,
-and not explained by size on any available estimate.** The headline figure to quote is
-**+3.39**, not +5.11.
+and not explained by size on any available estimate.**
+
+**+3.39 is the registered number** — `dim_headline_number.unzoned_inland_floor_offset_inrange`,
+spread **+3.11 to +5.11**, where `spread_min` is the largest size quartile and `spread_max`
+is the unrestricted all-patches figure. The spread is the honest report: a number with a
+wide spread is not wrong, it is under-specified, and this one's width is exactly the
+range-of-support question.
+
+**This is Ruling EN generalised from Arm A.** A coefficient applies only over the range it
+was estimated on; outside it the expectation is absent, not extrapolated. Arm A already
+refused to extend the water-axis smoother past the country it was fitted on. The same rule
+on the size axis is what moves the headline from +5.11 to +3.39.
 
 ### 1.7 · The corroboration test does not replicate
 
@@ -230,26 +240,56 @@ missed. **Nothing is adjusted for size anywhere in either arm.**
 
 ---
 
-## 3 · What the two arms together support
+## 3 · The headline: the response generalises, the level does not
 
-**They agree that the relationship generalises, and they are confounded in opposite
-directions in the community carrying both results.** Inland's size sensitivity is **−0.23**
-on the spatial floor and **+3.57** on the temporal metric. Two metrics whose size confounds
-point opposite ways, on two different unit constructions, reaching the same conclusion:
-**the cover-and-water relationship holds on ground that entered no fit.**
+**This is the claim to carry forward, and it is sharper than "the relationship holds".**
 
-**That is a triangulation argument, not a repetition.** A confound that could manufacture
-the result on one metric would have to work in reverse to manufacture it on the other.
+### 3.1 · The response triangulates — three independent looks agree
 
-**Precisely what triangulates is the RELATIONSHIP, not the LEVEL.**
+| look | unzoned | comparator | verdict |
+|---|---:|---:|---|
+| **within-patch** response over time | +0.2106 | +0.1613 | same sign, same order; comparator on the interval's lower bound |
+| **between-unit** slope across places | +0.4869 [+0.2763, +0.6245] | +0.5473 [+0.3599, +0.7504] | **intervals overlap** |
+| **Arm A** internal correlation, Inland | +0.719 | +0.701 | within 0.02 |
 
-- **The response triangulates.** Within-patch +0.2106 against +0.1613; between-unit +0.4869
-  against +0.5473 with overlapping intervals; Arm A's Inland r +0.719 against +0.701.
-- **The level does not, and that is its own finding.** On the temporal metric unzoned Inland
-  sits **on** the paddock relationship (−0.30 pp). On the spatial floor it sits **above** the
-  registered line (**+3.39** in-range). The same ground, the same community, two metrics,
-  two different answers about level. Reported as observed; **no cause is attributed**, and
-  it is exactly the ambiguity §2.2 declines to resolve.
+Three estimators, two metrics, two unit constructions. **They agree on how cover responds
+to water.**
+
+**And they are confounded in opposite directions in the community carrying both results.**
+Inland's size sensitivity is **−0.23** on the spatial floor and **+3.57** on the temporal
+metric. **A confound that could manufacture this result on one metric would have to work in
+reverse to manufacture it on the other.** That is a triangulation argument, not a
+repetition.
+
+### 3.2 · The level does not triangulate, and that is a finding, not a blemish
+
+**The same ground, the same community, two metrics, two answers:**
+
+| metric | where unzoned Inland sits |
+|---|---|
+| `veg_p05_temporal_mean` (Arm A) | **on** the paddock relationship — −0.30 pp |
+| `veg_p05_spatial` (Arm B §4.6) | **above** the registered line — **+3.39** in-range |
+
+**The level is metric-dependent, and we cannot currently say which metric is right.** That
+is the honest statement. It is not a caveat on the response result; it is a separate,
+narrower claim about a different quantity.
+
+**For the article's spine — "one relationship, four ways of being wrong that don't explain
+it away" — this says precisely which relationship: the response, not the level.**
+
+No cause is attributed to the level difference, and §2.2's two readings of the Arm A
+offset remain undecidable on this data.
+
+### 3.3 · The first thing in this project that did not replicate out of sample
+
+PARTREG's counter-finding — all three community slopes below the pooled slope — **does not
+hold here** (§1.7). Two of three; Riverine sits above.
+
+**This belongs beside the successes, not in a limitations paragraph.** It is evidence the
+out-of-sample test has teeth: **a held-out test that confirms everything is usually a test
+that is not testing.** Three predictions held or partly held, one failed outright, one
+inverted a design-seat expectation, and one prior finding did not replicate. That
+distribution is what a real test looks like.
 
 ---
 
