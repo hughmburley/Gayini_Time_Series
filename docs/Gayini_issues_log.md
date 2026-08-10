@@ -183,6 +183,52 @@ series. Full detail in `docs/change_reports/TaskU_gate*.md`.*
 
 **Cadence:** review `BLOCK` and `EXTERNAL` at each task boundary. Everything else weekly.
 
+**STABILITY IS NOT ADEQUACY** (Ruling ES, 10 Aug 2026). A stability check and an adequacy
+check **answer different questions and neither substitutes for the other.** Stability asks
+whether the estimate moves under resampling; adequacy asks whether the estimated form fits
+the data at all. **A specification requiring only stability has not required the estimate
+to be well founded.** Where a model is fitted to produce a number, **report a measure of fit
+alongside the number, and carry it into every caveat derived from it.**
+
+Worked case: SPAT-1 §4.2 specified a ten-seed subsample stability check on the variogram
+range. It **passed on all three communities** (max/min 1.09–1.47). It could not see that a
+spherical model is the wrong shape for a field that rises and falls: Aeolian's empirical
+variogram peaks at 7.9 km and **falls 39.5%** with pseudo-R² **+0.26**, Riverine falls 22.5%
+at +0.55, and only Inland plateaus at +0.78. Without an adequacy column the run would have
+shipped **three ranges, one well founded and two summarising a shape the data does not
+have, all looking equally solid and all carrying a passed stability check.**
+
+**[[I-42]] arriving from a new direction:** a check that *passes* is not a check that
+verified the thing you cared about.
+
+**A PRE-REGISTERED BRANCH STATES CRITERION AND CONSEQUENCE SEPARATELY** (Ruling ET, 10 Aug
+2026). A pre-registered branch **states its criterion and its consequence as separate
+claims, and reports against each independently.** Welding them means **a criterion that
+fires imports a consequence that was never measured.** Where the two diverge, that
+divergence is **a finding about the pre-registration, not a result.**
+
+Worked case: SPAT-1 §4.4's third branch read *"if the range exceeds ~2 km, the unit-grain
+intervals are also too narrow, n_eff at part grain may be in the tens."* The criterion fired
+— Riverine 2,983 m, Inland 3,217 m. The consequence was only mildly borne out: n_eff at
+part grain is **74.9 of 100**, which is literally "in the tens" and means a **16% widening,
+not a collapse**. At pixel grain the same measurement implies a factor of **65**. Criterion
+and consequence were different claims and only one had been measured.
+
+**A LADDER FITTED IN THE WRONG FORM MEASURES ITS OWN BIAS** (Ruling EU, 10 Aug 2026). Where
+a relationship departs from the fitted form, **a scale ladder fitted in that form measures
+aggregation-induced curvature bias together with any scale effect, and the two are not
+separable from the ladder alone.** A ladder must **either be fitted in a form the
+relationship follows at every rung, or restricted to a range over which the departure is
+negligible — and it states which.**
+
+Why: averaging x within a block and averaging y within a block are not the same operation
+when y is a nonlinear function of x (Jensen), and the discrepancy **grows with block size**.
+So **a ladder that climbs is exactly what a curved relationship produces even if nothing
+ecological changes with scale.** SPAT-1 Stage 0 measured that departure — median GAM–OLS gap
+1.51 pp on Inland, maximum 17–22 pp, **9.9% of cells over 5 pp** — so a straight-line ladder
+alone could not have told a modifiable areal unit effect from its own curvature bias.
+**Level against grain is unaffected: curvature bias moves slopes, not means.**
+
 **PREFER THE STRUCTURAL FIX TO THE CORRECTED INSTANCE** (Ruling ER, 10 Aug 2026):
 
 > Where a defect has a structural fix that removes the failure mode, prefer it to

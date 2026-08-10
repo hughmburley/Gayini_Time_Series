@@ -1,0 +1,13 @@
+rung,block_m,community,n_units,mean_level,mean_x,area_ha,metric,support_level,period_label,min_cells_filter
+rung 0 (pixel census),24.970268,aeolian,77544,46.04582329730857,6.080639928576256,4834.979163786201,veg_p05_temporal_mean,"pixel, aggregated to block x vegetation community",1988-2022 (35 water years),500
+rung 0 (pixel census),24.970268,riverine,193658,44.040491017377946,12.906965546245083,12074.852920928866,veg_p05_temporal_mean,"pixel, aggregated to block x vegetation community",1988-2022 (35 water years),500
+rung 0 (pixel census),24.970268,inland,717627,61.02725936699739,27.989434930309432,44745.06850782008,veg_p05_temporal_mean,"pixel, aggregated to block x vegetation community",1988-2022 (35 water years),500
+1000 m,1000.0,aeolian,67,45.897029876708984,6.429993152618408,3998.2229946691727,veg_p05_temporal_mean,"pixel, aggregated to block x vegetation community",1988-2022 (35 water years),500
+1000 m,1000.0,riverine,145,43.68452072143555,12.78314208984375,9641.588427650773,veg_p05_temporal_mean,"pixel, aggregated to block x vegetation community",1988-2022 (35 water years),500
+1000 m,1000.0,inland,534,60.89089584350586,27.86258316040039,42163.65702066552,veg_p05_temporal_mean,"pixel, aggregated to block x vegetation community",1988-2022 (35 water years),500
+2000 m,2000.0,aeolian,40,45.591758728027344,5.840367794036865,4651.5412614358065,veg_p05_temporal_mean,"pixel, aggregated to block x vegetation community",1988-2022 (35 water years),500
+2000 m,2000.0,riverine,85,45.0640754699707,13.445592880249023,11446.599928378706,veg_p05_temporal_mean,"pixel, aggregated to block x vegetation community",1988-2022 (35 water years),500
+2000 m,2000.0,inland,198,60.071773529052734,27.349300384521484,44180.35162080868,veg_p05_temporal_mean,"pixel, aggregated to block x vegetation community",1988-2022 (35 water years),500
+4000 m,4000.0,aeolian,20,46.06928253173828,5.402717113494873,4801.621149592638,veg_p05_temporal_mean,"pixel, aggregated to block x vegetation community",1988-2022 (35 water years),500
+4000 m,4000.0,riverine,39,44.14250564575195,12.001644134521484,11799.072553119284,veg_p05_temporal_mean,"pixel, aggregated to block x vegetation community",1988-2022 (35 water years),500
+4000 m,4000.0,inland,70,58.53767395019531,26.624420166015625,44728.295973580694,veg_p05_temporal_mean,"pixel, aggregated to block x vegetation community",1988-2022 (35 water years),500
