@@ -183,10 +183,17 @@ series. Full detail in `docs/change_reports/TaskU_gate*.md`.*
 
 **Cadence:** review `BLOCK` and `EXTERNAL` at each task boundary. Everything else weekly.
 
-**PREFER THE FIX THAT REMOVES THE FAILURE MODE TO THE FIX THAT CORRECTS THE INSTANCE**
-(standing preference, design seat, 10 Aug 2026). Where a defect can be closed either by
-correcting the wrong value or by **restructuring so the wrong value cannot be formed**,
-take the second. It costs more once and nothing thereafter.
+**PREFER THE STRUCTURAL FIX TO THE CORRECTED INSTANCE** (Ruling ER, 10 Aug 2026):
+
+> Where a defect has a structural fix that removes the failure mode, prefer it to
+> correcting the instance, **when it is available and proportionate to the defect.** A
+> corrected value is true on the day and free to drift; a value derived from its source
+> cannot drift from it. The test is whether, after the fix, **the defect still has
+> somewhere to live.** This is a preference, **not a licence to rebuild.**
+
+**The qualification is inside the ruling, not beside it.** Without *available and
+proportionate*, ER becomes an argument for refactoring anything with a corrected value in
+its history — which would be worse than the defects it is meant to prevent.
 
 **Three instances, all in one week, which is why it is written down:**
 
@@ -200,9 +207,12 @@ The tell is the same in all three: after the fix, **the defect has nowhere to li
 corrected sentence, the corrected list and the corrected value would each have been true
 on the day and free to drift the next.
 
-**Not a licence to rebuild.** The structural fix is preferred where it is available and
-proportionate; where it is not, correct the instance and say so. Two of the three above
-were smaller than the correction they replaced.
+**The argument, not just the principle: two of the three were SMALLER than the correction
+they replaced.** Reading a share from a table is less work than auditing it on 23 sheets;
+deriving a protected set from the registry is less work than maintaining a list against
+143 rows. Only M5's four rows cost more than the sentence they replaced, and they cost it
+once. Where the structural fix is genuinely larger and out of proportion, correct the
+instance and say so — that is the qualification doing its work.
 
 **A STATEMENT OF EXTENT NAMES BOTH DENOMINATORS, OR NEITHER** (Ruling EQ, 10 Aug 2026).
 **Any client-facing statement of extent names the analysed area and the property area

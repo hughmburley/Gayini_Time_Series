@@ -204,6 +204,15 @@ Output/unzoned/*
 Output/maps/*
 !Output/maps/*.csv
 !Output/maps/*.md
+# SPAT-1 (spec section 8, on the citability grounds of Rulings BB and CL): the tables
+# only. The effective-n table is cited by every interval statement from here and is
+# coupled to dim_headline_number by number_id, so it has to be citable. Figures, the
+# residual parquet and the GAM input stay untracked. Verified with
+# 'git check-ignore -v' (I-60).
+!Output/spatial/
+Output/spatial/*
+!Output/spatial/*.csv
+!Output/spatial/*.md
 Output/database/*.sqlite
 Output/database/*.gpkg
 data_intermediate/
