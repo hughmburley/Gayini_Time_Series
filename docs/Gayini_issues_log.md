@@ -215,6 +215,11 @@ in the note does.
 10 Aug 2026). **A value computed over too few inputs is missing data that does not present
 as missing.** Filtering on nulls alone does not catch it.
 
+**QUEUED TASK, ahead of the analytical queue.** Enumerate **every validity filter in the
+pipeline**, state for each what it tests — **presence, or support** — and flag the ones that
+test only presence. Post-deadline, but before analytical work resumes: **a filter that
+admits a four-cell percentile is upstream of everything.**
+
 Worked case: UNZONED v3 Arm B first dropped only NaN patch-years. That kept **U0562's
 1991**, where a spatial 5th percentile had been computed over **four valid cells** of a
 64-cell patch and stored as 90.15 — not null, not malformed, structurally identical to the

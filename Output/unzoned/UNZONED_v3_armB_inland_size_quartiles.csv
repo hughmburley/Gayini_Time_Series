@@ -1,0 +1,5 @@
+size_quartile,n_patches,median_cells,mean_residual,community,note
+Q1 smallest,14,60.5,8.512385221930364,inland,"Inland's residual against the registered line, by size quartile. The real-part size slope of -0.23 pp/decade could not detect this because it was estimated only on parts of 588 cells and up."
+Q2,13,294.0,4.444156412135607,inland,"Inland's residual against the registered line, by size quartile. The real-part size slope of -0.23 pp/decade could not detect this because it was estimated only on parts of 588 cells and up."
+Q3,13,954.0,4.268095262939142,inland,"Inland's residual against the registered line, by size quartile. The real-part size slope of -0.23 pp/decade could not detect this because it was estimated only on parts of 588 cells and up."
+Q4 largest,14,3098.5,3.1078859406103367,inland,"Inland's residual against the registered line, by size quartile. The real-part size slope of -0.23 pp/decade could not detect this because it was estimated only on parts of 588 cells and up."

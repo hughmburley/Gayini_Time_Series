@@ -2,8 +2,9 @@
 
 Spec: `docs/reference_update/Gayini_CC_spec_UNZONED_v3.md`. Schema per Ruling DP.
 
-**Arm A complete and reported.** **Arm B §§4.1–4.5 complete and AT ITS STOP.** §4.6 not
-started — it sits behind that STOP by §7.
+**COMPLETE.** Arm A, Arm B §§4.1–4.5, the STOP resolved by the design seat, Ruling EK's
+both-sides refit, **§4.6**, and the §6 assembly. Findings note:
+`Output/unzoned/UNZONED_v3_findings_note.md` (Arm B first, Arm A second).
 
 Ground: **unzoned standard-grazing country** — set stocking, a designed treatment arm.
 Never a reference, a control, or unmanaged, in any column, file, caption or sentence here.
@@ -282,15 +283,71 @@ say which estimator produced it (§5).
 
 ---
 
+### Arm B · §4.6, the between-unit prediction
+
+Both registered lines **applied, never refitted**, and both **reproduce from their stored
+sources** — 115-part 52.697196 / 0.547274 from `PARTREG_part_regression_coefficients.csv`,
+64-paddock 52.652934 / 0.547838 from `dim_headline_number`. They agree to 0.03 pp on every
+patch.
+
+| community | n | mean residual | *size alone predicts* | reading |
+|---|---:|---:|---:|---|
+| Aeolian | 15 | +7.36 | *+9.93* | at or below the size expectation — claims nothing beyond it |
+| Riverine | 24 | +0.12 | *+4.08* | below its size expectation — on the line |
+| Inland | 54 | **+5.11** | *+0.27* | far exceeds what size predicts |
+| pooled | 93 | +4.19 | — | mixes three communities whose size slopes differ 30-fold |
+
+**The pre-registered call goes against the artefact reading.** v2 §2.3 fixed it in advance:
+a pooled offset near +2.4 **with Inland near zero** is the size artefact; an Inland offset
+materially away from zero is not. Observed pooled +4.19 with **Inland +5.11**.
+
+**But EL's per-community bound needed one correction, and it moved the number.** The design
+seat's framing — Aeolian and Riverine bounded by steep size slopes, Inland interpretable
+because its slope is ≈0 — is right about the slope and incomplete about its **support**.
+Those slopes were estimated on the **real parts**, and real Inland parts start at **588
+cells**, while **28 of 54 supported unzoned Inland patches (52%) sit below that**. Applying
+Inland's ≈zero slope there extrapolates it outside its measured range — the same refusal
+Arm A makes on the water axis. Aeolian and Riverine are the reverse: their real parts run
+to 33 and 43 cells, so all but one of their patches are inside the measured range. **The
+two criteria rank the communities oppositely.**
+
+**Tested rather than argued.** Inland's residual declines monotonically with size —
+**+8.51 → +4.44 → +4.27 → +3.11** across size quartiles — a size component the −0.23 slope
+could not detect because it was never estimated below 588 cells. **It halves and then
+plateaus; it does not vanish.** In-range (26 patches) Inland is **+3.39** against a size
+expectation of +0.27. **The headline figure is +3.39, not +5.11**, and it is still not
+explained by size on any available estimate.
+
+**v2 §4.2–4.4.** Unzoned between-unit fit (a description, never a replacement): slope
+**+0.4869**, intercept 57.6838, r +0.690, residual SD 4.13, bootstrap **[+0.2763, +0.6245]**
+clustered on the patch. Against the real parts' +0.5473 [+0.3599, +0.7504] — **the intervals
+overlap, and no difference is read into an overlap.** The corroboration test **does not
+replicate**: 2 of 3 community slopes below pooled, Riverine sits above. Reported; nothing
+proposed.
+
+### §6 assembly
+
+`UNZONED_patch_summary.csv` (625 rows, both floor metrics named distinctly, within-patch
+slope, descriptive offset, residuals against both registered lines, all four support
+flags) · `UNZONED_regression_coefficients.csv` (13 fits, **every row naming WITHIN or
+BETWEEN**, stackable with PARTREG) · `UNZONED_patches_epsg8058.gpkg` (625 polygons, **area
+closes to 12,048.1 ha against the cell count**) · `UNZONED_v3_data_dictionary.md` ·
+`UNZONED_v3_findings_note.md` · `UNZONED_v3_manifest.csv` (30 artefacts, first-50-MB
+SHA-256). **The community-slope coefficients are in the manifest** — the PARTREG pack
+omitted exactly those and §6 says it must not repeat.
+
+**One defect found and fixed in my own manifest:** it listed itself, so its own row carried
+the *previous* version's checksum — worse than no row at all in a checksum file. The
+manifest now excludes itself. The `.gpkg` is not version-controlled, consistent with every
+other spatial output in the repo.
+
 ## 6 · Not done
 
-- **§4.6 — the between-unit prediction.** Behind the STOP by §7. Not started.
-- **§6 assembly items pending §4.6, because each needs its outputs:**
-  `UNZONED_patch_summary.csv` (needs the residuals against both registered spatial lines)
-  · `UNZONED_regression_coefficients.csv` in the PARTREG schema · `UNZONED_patches_epsg8058.gpkg`
-  · the data dictionary · the findings note · the manifest and checksums. **The findings
-  note's write-up order is Arm B first, Arm A second** (§6) and that is not the order they
-  were executed in.
+- **Nothing in the spec is outstanding.** Both arms, §4.6 and every §6 item are delivered.
+- **Queued, not done — the Ruling EM audit.** Enumerate every validity filter in the
+  pipeline, state for each whether it tests **presence** or **support**, and flag the ones
+  testing only presence. Post-deadline but **ahead of the analytical queue**: a filter that
+  admits a four-cell percentile is upstream of everything.
 - **No community was fitted in the size-matched branch** (D2). **Under Ruling EL this is a
   findings-note obligation, not a table cell:** the between-unit test cannot be
   size-controlled on this data at all, which bounds what §4.6 may claim.

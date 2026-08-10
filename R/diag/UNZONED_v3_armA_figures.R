@@ -134,6 +134,17 @@ off$support_level <- "pixel"
 off$period_label <- "1988-2022 (35 water years)"
 utils::write.csv(off, file.path(OUTD, "UNZONED_v3_armA_descriptive_offsets.csv"),
                  row.names = FALSE)
+
+# per-patch offsets, for the section 6 patch summary. NA where the patch falls outside
+# its community's zoned water range - the NA is carried, never filled.
+pp <- ud[, c("patch_id", "community_short", "n_cells", "mean_share_cells_wet",
+             "veg_p05_temporal_mean", "zoned_predicted")]
+pp$descriptive_offset_pp <- pp$veg_p05_temporal_mean - pp$zoned_predicted
+pp$offset_note <- ifelse(is.na(pp$descriptive_offset_pp),
+                         "outside the zoned water range for this community - no comparison, not extrapolated",
+                         "DESCRIPTIVE OFFSET from the zoned display smoother; not a residual, not a test")
+utils::write.csv(pp, file.path(OUTD, "UNZONED_v3_armA_per_patch_offsets.csv"),
+                 row.names = FALSE)
 cat("\n== section 3.4 descriptive offsets ==\n")
 print(off[, c("community_short", "n_patches", "n_outside_zoned_water_range",
               "n_with_offset", "unzoned_water_min", "unzoned_water_max",
@@ -364,7 +375,9 @@ foot_a2 <- wrap(c(
   "guess: the line is not extended past the country it was fitted on.",
   SIZE_CLAUSE,
   sprintf(paste("On size alone the Inland tracts would be expected to sit about %.1f points BELOW the paddock line;",
-                "they sit %.1f below it. That expectation is stated to be read against, never subtracted."),
+                "they sit %.1f below it. That expectation is stated to be read against, never subtracted. It can be read",
+                "two ways - that the relationship simply holds here, or that this country carries a higher floor than",
+                "paddock country of the same size - and the size pattern is far too loose to tell them apart."),
           abs(expected_pp), abs(off$median_offset_pp[off$community_short == "inland"])),
   GAYINI_SEASONAL_BASIS_SENTENCE,
   "The lines are display smoothers — no slope is read from them and no significance test is computed.",
