@@ -183,6 +183,49 @@ series. Full detail in `docs/change_reports/TaskU_gate*.md`.*
 
 **Cadence:** review `BLOCK` and `EXTERNAL` at each task boundary. Everything else weekly.
 
+**A LADDER AND A VARIOGRAM ON THE SAME FIELD ARE NOT TWO WITNESSES** (Ruling EV, 11 Aug
+2026). Where a scale ladder and a variogram are computed on the same field, **report their
+agreement explicitly.** A slope that varies with grain **where the residual field is
+non-stationary is not independent evidence of a scale effect** — it is **the same structure
+measured a second way.**
+
+Worked case, and the ordering holds across both stages of SPAT-1:
+
+| community | variogram adequacy (pseudo-R²) | ladder spread |
+|---|---:|---|
+| Inland Floodplain | **+0.78** — plateaus | **0.09** — flat, scale-invariant |
+| Riverine Chenopod | **+0.55** — turns over at 4.9 km | **0.05** OLS, but the *shape* moves 0.34 |
+| Aeolian Chenopod | **+0.26** — turns over at 7.9 km | **0.46** — collapses through zero |
+
+**The community whose residual field is least stationary is the community whose ladder moves
+most.** Read the other way round, the community with a well-described variogram is the one
+whose relationship is scale-invariant. Aeolian's ladder collapse is **not** a second,
+independent finding on top of its non-stationarity; the two are one observation reported at
+two grains, and a note that presented them as mutually corroborating would be double-counting
+its own evidence.
+
+**A SESSION VERIFIES CONCURRENCY AGAINST ITS OWN LAST SHA** (Ruling EW, 11 Aug 2026). A
+session verifies its own concurrency by comparing `HEAD` against **the SHA it last wrote
+itself**, not against `origin/main`. **In a shared worktree a co-committing session moves
+both together**, so `git rev-list origin/main...HEAD` returns `0 0` and **the check is blind
+by construction.**
+
+Worked case: `a6f069c` (TRACE-1 Gate A) landed between SPAT-1's Stage A and Stage B commits.
+The pre-commit check returned `0 0` and saw nothing, because the other session's commit had
+already become this session's `HEAD`. Neither commit absorbed the other's files — both staged
+explicit named paths — so nothing was lost, and that is the second time two sessions have
+committed into one worktree without incident. **The check that would have caught it is
+`HEAD == <my last SHA>`.**
+
+**PARALLEL SESSIONS DO NOT SHARE A WORKTREE** (Ruling EB, amended 11 Aug 2026). EB's original
+text stands — a session running concurrently with another performs no git operation — and is
+extended: **parallel sessions do not share a worktree at all. Separate clone or separate
+checkout.**
+
+**In practice: run one session only.** That makes the question moot and is cheaper than
+either fix. EW is the check for when it is not moot; EB's amendment is why it should not
+arise.
+
 **STABILITY IS NOT ADEQUACY** (Ruling ES, 10 Aug 2026). A stability check and an adequacy
 check **answer different questions and neither substitutes for the other.** Stability asks
 whether the estimate moves under resampling; adequacy asks whether the estimated form fits
