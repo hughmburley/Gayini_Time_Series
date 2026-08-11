@@ -1,0 +1,114 @@
+spec_id,path,date_issued,line_count,section_count,gate_count,names_stop,stop_mentions,names_ruling_set,ruling_count,cited_files,cited_files_absent,absent_examples,sections_present,section_hits
+ANNUAL1,docs/reference_update/Gayini_CC_spec_ANNUAL1.md,2026-08-07,184,8,0,0,0,1,4,5,5,ANNUAL1_findings.md; ANNUAL1_part_year_residuals.csv; ANNUAL1_prereg.md,,0
+Biodiversity_Task_deck_restyle_spec,docs/Biodiversity_Task_deck_restyle_spec.md,,95,7,3,0,0,0,0,3,2,Gayini_vegetation_crosswalk_biodiversity_to_main_groups.csv; OUTPUT/Gayini/database/Gayini_Biodiversity.sqlite,,0
+CC_spec_DOC1_document_verification_v2,docs/reports/CC_spec_DOC1_document_verification_v2.md,2026-08-04,193,11,6,1,4,0,0,8,0,,,0
+CC_spec_DOC2_section_review,docs/reports/CC_spec_DOC2_section_review.md,,149,8,5,1,5,0,0,5,0,,,0
+CC_spec_REPCONS_report_consistency,docs/reports/CC_spec_REPCONS_report_consistency.md,,104,8,4,1,3,0,0,3,1,Output/audit/REPCONS_consistency.md,,0
+CC_specs_from_biodiversity_session_20260730,docs/reference_update/Gayini_CC_specs_from_biodiversity_session_20260730.md,2026-07-30,265,9,5,1,5,0,0,8,5,Gayini_Biodiversity.sqlite; Gayini_LOOCB_findings_and_caveats.md; condition_vs_inundation.csv,,0
+DASH2,docs/reference_update/Gayini_CC_spec_DASH2.md,2026-08-09,150,8,0,0,0,1,5,6,0,,rulings_in_force|standing_conditions,2
+DATA1,docs/reference_update/Gayini_CC_spec_DATA1.md,2026-08-08,179,7,1,0,0,0,0,13,1,code/REBUILD.md,,0
+DELIVER1,docs/reference_update/Gayini_CC_spec_DELIVER1.md,2026-08-09,134,4,1,0,0,1,2,10,0,,rulings_in_force|standing_conditions,2
+DIAG1,docs/reference_update/Gayini_CC_spec_DIAG1.md,2026-08-06,273,10,3,1,6,0,0,10,1,Output/diag/DIAG1_bootstrap_stability.csv,standing_conditions,1
+DIAG1_v2,docs/reference_update/Gayini_CC_spec_DIAG1_v2.md,2026-08-07,279,10,0,0,0,1,4,15,0,,standing_conditions,1
+EXEMPLAR1,docs/reference_update/Gayini_CC_spec_EXEMPLAR1.md,2026-08-08,186,8,4,1,1,1,3,3,0,,rulings_in_force,1
+FIG2,docs/reference_update/Gayini_CC_spec_FIG2.md,2026-08-07,179,6,3,1,3,0,0,3,0,,,0
+FIGFIND1,docs/reference_update/Gayini_CC_spec_FIGFIND1.md,2026-08-08,103,7,0,0,0,1,2,2,0,,,0
+GLM1,docs/reference_update/Gayini_CC_spec_GLM1.md,2026-08-07,158,7,0,0,0,1,3,4,3,GLM1_model_comparison.csv; GLM1_response_scale_effects.csv; Output/glm/GLM1_findings.md,,0
+HANDOFF1,docs/Audit/Gayini_CC_spec_HANDOFF1.md,2026-08-11,255,12,2,1,1,1,1,3,2,HANDOFF1_manifest.csv; HANDOFF1_report.md,checks_on_checks|rulings_in_force|standing_conditions|what_this_is_not,4
+INVENTORY1,docs/reference_update/Gayini_CC_spec_INVENTORY1.md,2026-08-09,112,6,0,0,0,0,0,2,0,,rulings_in_force|standing_conditions,2
+LID1_shippability_audit_spec,docs/reference_update/Gayini_LID1_shippability_audit_spec.md,2026-08-04,187,6,6,1,2,0,0,2,0,,,0
+MAP1,docs/reference_update/Gayini_CC_spec_MAP1.md,2026-08-10,212,10,1,0,0,1,3,3,0,,standing_conditions,1
+METHODS_REG,docs/reference_update/Gayini_CC_spec_METHODS_REG.md,2026-08-07,247,12,1,1,1,1,1,2,2,Output/metadata/Gayini_methods_appendix_regression.md; Output/metadata/METHODS_REG_precis.md,standing_conditions,1
+METHODS_REG_v2,docs/reference_update/Gayini_CC_spec_METHODS_REG_v2.md,2026-08-07,313,12,1,1,1,1,2,4,2,Output/metadata/Gayini_methods_appendix_regression.md; Output/metadata/METHODS_REG_precis.md,standing_conditions,1
+PACK1_RPTSCOPE_spec_20260802,docs/reference_update/Gayini_PACK1_RPTSCOPE_spec_20260802.md,2026-08-02,321,9,11,1,5,0,0,14,1,Output/tables/T14_level_metric_sensitivity.csv,,0
+PARTREG,docs/reference_update/Gayini_CC_spec_PARTREG.md,2026-08-06,180,8,0,1,4,0,0,4,3,part_regression_coefficients.csv; part_summary_by_period.csv; part_year_floor_inund.csv,standing_conditions|what_this_is_not,2
+PARTSCATTER_update,docs/reference_update/Gayini_CC_spec_PARTSCATTER_update.md,2026-08-09,188,10,0,0,0,1,2,1,0,,standing_conditions,1
+QUICKWINS1,docs/reference_update/Gayini_CC_spec_QUICKWINS1.md,2026-08-09,86,5,0,0,0,1,1,5,0,,rulings_in_force|standing_conditions,2
+REG1_REG2_spec,docs/reference_update/Gayini_REG1_REG2_spec.md,2026-07-29,203,13,4,1,10,0,0,5,0,,,0
+REPORT2,docs/reference_update/Gayini_CC_spec_REPORT2.md,2026-08-07,217,8,3,1,2,0,0,6,2,Gayini_report_stream_handoff_20260804.md; make_figs2.py,standing_conditions,1
+RETRO1,docs/Audit/Gayini_CC_spec_RETRO1.md,2026-08-10,267,11,2,1,4,1,1,4,2,RETRO1_candidate_learnings.csv; RETRO1_report.md,acceptance_criteria|checks_on_checks|rulings_in_force|spine_anchor|standing_conditions|what_this_is_not,6
+SCHEM1,docs/reference_update/Gayini_CC_spec_SCHEM1.md,2026-08-06,111,5,0,0,0,0,0,1,0,,,0
+SPAT1,docs/spatial/Gayini_CC_spec_SPAT1.md,2026-08-10,356,10,0,1,3,1,6,8,3,_directional.csv; _levels.csv; _models.csv,standing_conditions,1
+T10_gateB_annual_gap_series,docs/change_reports/T10_gateB_annual_gap_series.md,2026-07-28,67,8,3,1,2,0,0,5,0,,,0
+T10_gateC_residuals,docs/change_reports/T10_gateC_residuals.md,2026-07-28,91,8,3,1,2,0,0,5,0,,,0
+T10_gateD_register,docs/change_reports/T10_gateD_register.md,2026-07-28,88,10,3,1,2,0,0,3,0,,,0
+T10_v2_spec,docs/reference_update/Gayini_T10_v2_spec.md,2026-07-28,215,8,4,1,2,0,0,4,0,,acceptance_criteria|spine_anchor,2
+T11_v2_gateC,docs/change_reports/T11_v2_gateC.md,2026-07-31,155,8,4,1,2,0,0,3,0,,,0
+T11_v2_spec,docs/reference_update/Gayini_T11_v2_spec.md,2026-07-31,137,7,4,1,1,0,0,1,0,,spine_anchor,1
+T12_closeout,docs/change_reports/T12_closeout.md,2026-07-28,65,8,3,1,1,0,0,3,0,,,0
+T12_dea_landcover_l3_extraction,docs/reference_update/T12_dea_landcover_l3_extraction.md,2026-07-28,637,10,7,1,4,0,0,11,1,Output/census/gayini_pixel_dea_landcover_l3.parquet,acceptance_criteria|spine_anchor,2
+T12_gate0_recon,docs/change_reports/T12_gate0_recon.md,2026-07-28,162,10,4,1,3,0,0,10,0,,acceptance_criteria,1
+T12_gateA,docs/change_reports/T12_gateA.md,2026-07-28,106,7,4,1,2,0,0,3,0,,,0
+T12_gateB,docs/change_reports/T12_gateB.md,2026-07-28,65,5,3,1,4,0,0,3,0,,,0
+T12_gateC,docs/change_reports/T12_gateC.md,2026-07-28,78,8,2,1,2,0,0,6,0,,,0
+T12_gateD,docs/change_reports/T12_gateD.md,2026-07-28,95,5,2,1,1,0,0,1,0,,,0
+T12_supply_and_gateA0,docs/change_reports/T12_supply_and_gateA0.md,2026-07-28,72,6,4,1,3,0,0,10,0,,,0
+T12_v4_caveat_correction,docs/change_reports/T12_v4_caveat_correction.md,2026-07-28,23,2,3,0,0,0,0,1,0,,,0
+T13_gateA_part_flood,docs/change_reports/T13_gateA_part_flood.md,2026-07-29,42,5,2,1,2,0,0,3,0,,,0
+T13_gateB_measures,docs/change_reports/T13_gateB_measures.md,2026-07-29,84,7,5,1,1,0,0,6,0,,,0
+T13_gateC_classification,docs/change_reports/T13_gateC_classification.md,2026-07-30,313,8,4,1,2,0,0,15,3,_bala29ca_raw_vs_adjusted.csv; _robustness.csv; _sweep.csv,,0
+T13_gateD_map,docs/change_reports/T13_gateD_map.md,2026-07-30,337,10,3,1,1,0,0,9,0,,,0
+T13_gateE_register_and_bundle,docs/change_reports/T13_gateE_register_and_bundle.md,2026-07-31,225,8,5,1,1,0,0,8,0,,,0
+T13_spec,docs/reference_update/Gayini_T13_spec.md,2026-07-29,161,9,5,1,3,0,0,5,0,,what_this_is_not,1
+T1_gate0_inventory,docs/change_reports/T1_gate0_inventory.md,2026-07-25,76,4,6,1,2,0,0,13,2,Gayini_Results_DB_contract_snapshot_20260725.xlsx; Results.gpkg,,0
+T1_gateA_recon,docs/change_reports/T1_gateA_recon.md,2026-07-25,72,3,5,1,3,0,0,5,0,,acceptance_criteria,1
+T1_gateB1,docs/change_reports/T1_gateB1.md,2026-07-26,65,6,3,1,2,0,0,10,0,,,0
+T1_gateB_dim_management_zone,docs/change_reports/T1_gateB_dim_management_zone.md,2026-07-25,70,4,4,1,2,0,0,6,0,,,0
+T1_gateC,docs/change_reports/T1_gateC.md,2026-07-26,53,7,2,1,2,0,0,10,1,docs/Gayini_Results_DB_contract_snapshot_20260726.xlsx,,0
+T1_gateD,docs/change_reports/T1_gateD.md,2026-07-27,65,9,2,1,2,0,0,5,0,,,0
+T1_zone_stratum_census_join,docs/T1_zone_stratum_census_join.md,2026-07-25,297,8,7,1,10,0,0,11,1,docs/change_reports/T1_change_report.md,acceptance_criteria|spine_anchor,2
+T2_zone_annual_veg,docs/change_reports/T2_zone_annual_veg.md,2026-07-27,177,10,6,0,0,0,0,18,0,,acceptance_criteria,1
+T2_zone_annual_veg_extraction,docs/T2_zone_annual_veg_extraction.md,2026-07-27,209,8,7,1,5,0,0,6,0,,acceptance_criteria|spine_anchor,2
+T3_always_green_threshold,docs/T3_always_green_threshold.md,2026-07-27,260,7,9,1,8,0,0,4,0,,acceptance_criteria|spine_anchor,2
+T3_gateA1_A2_B_20260803,docs/change_reports/T3_gateA1_A2_B_20260803.md,2026-07-27,193,7,8,1,2,0,0,8,0,,,0
+T3_gateA_recon_20260803,docs/change_reports/T3_gateA_recon_20260803.md,2026-07-27,128,9,5,1,2,0,0,5,0,,,0
+T3_gateCDE_20260803,docs/change_reports/T3_gateCDE_20260803.md,2026-08-03,189,9,7,0,0,0,0,10,1,..._gateCDE_vectors_and_figures.R,acceptance_criteria,1
+T4_spine_evidence_workbook,docs/T4_spine_evidence_workbook.md,2026-07-25,119,5,4,1,4,0,0,3,2,Gayini_all_pixel_census_summary.xlsx; Gayini_spine_evidence_workbook.xlsx,acceptance_criteria|spine_anchor,2
+T5_change_report,docs/change_reports/T5_change_report.md,2026-07-26,55,6,4,1,2,0,0,15,2,docs/Gayini_Results_DB_contract_snapshot_20260726.xlsx; register_taskM_gateC/D_assets.py,,0
+T5_guardrails_and_checks,docs/T5_guardrails_and_checks.md,2026-07-27,211,7,8,1,3,0,0,10,0,,acceptance_criteria,1
+T6_third_grazing_arm,docs/change_reports/T6_third_grazing_arm.md,2026-07-27,96,6,4,1,1,0,0,11,0,,,0
+T8_T9_T10_gateA_decisions,docs/reference_update/T8_T9_T10_gateA_decisions.md,2026-07-28,149,6,3,0,0,0,0,3,0,,,0
+T8_T9_T10_gateA_recon,docs/change_reports/T8_T9_T10_gateA_recon.md,2026-07-28,119,5,4,1,4,0,0,16,2,annual_wet_any/valid_any_1988_2023_8058.tif; results_catalogue.xlsx,,0
+T8_gateA_inventory_and_T9_addendum,docs/change_reports/T8_gateA_inventory_and_T9_addendum.md,2026-07-28,75,4,3,1,3,0,0,5,0,,,0
+T8_gateA_pin_decisions,docs/reference_update/T8_gateA_pin_decisions.md,2026-07-28,119,6,3,0,0,0,0,3,0,,,0
+T8_gateBD_dim_headline_number,docs/change_reports/T8_gateBD_dim_headline_number.md,2026-07-28,93,7,3,1,1,0,0,9,0,,,0
+T8_gateB_prewrite_sixth_pin_STOP,docs/change_reports/T8_gateB_prewrite_sixth_pin_STOP.md,2026-07-28,68,5,2,1,4,0,0,3,1,management_zones_8058.gpkg,,0
+T8_pixel_area_constant_audit,docs/change_reports/T8_pixel_area_constant_audit.md,2026-07-28,42,6,1,0,0,0,0,8,1,_lint_fixture_magic.py,,0
+TEMPORAL1,docs/reference_update/Gayini_CC_spec_TEMPORAL1.md,2026-08-07,232,9,5,1,4,1,3,10,5,TEMPORAL1_gate1_water_reconciliation.csv; TEMPORAL1_metric_comparison.csv; TEMPORAL1_part_metrics.csv,,0
+TEMPORAL1_completion,docs/reference_update/Gayini_CC_spec_TEMPORAL1_completion.md,2026-08-08,129,7,1,0,0,1,5,10,3,total_veg_p05_annual_8058.tif; total_veg_p50_annual_8058.tif; veg_percentiles_8058/total_veg_p05..p50_8058.tif,rulings_in_force|standing_conditions,2
+TRACE1,docs/Audit/Gayini_CC_spec_TRACE1.md,2026-08-10,185,8,1,1,2,1,2,3,0,,checks_on_checks|rulings_in_force|spine_anchor|standing_conditions|what_this_is_not,5
+Tier1_TaskA_reproject_8058_and_sampling_design_map,docs/Tier1_TaskA_reproject_8058_and_sampling_design_map.md,,76,7,0,0,0,0,0,4,0,,acceptance_criteria,1
+Tier1_TaskB_descriptive_figures_F2_F4,docs/Tier1_TaskB_descriptive_figures_F2_F4.md,,86,7,0,0,0,0,0,3,0,,acceptance_criteria,1
+Tier1_TaskC2_F5_legibility_views,docs/Tier1_TaskC2_F5_legibility_views.md,,49,5,0,0,0,0,0,6,0,,acceptance_criteria,1
+Tier1_TaskC3_F5_figure_split,docs/Tier1_TaskC3_F5_figure_split.md,,53,5,0,0,0,0,0,1,0,,acceptance_criteria,1
+Tier1_TaskC_stratified_sampling_frame_F5,docs/Tier1_TaskC_stratified_sampling_frame_F5.md,,81,7,0,0,0,0,0,6,0,,acceptance_criteria,1
+Tier1_TaskD_trend_test_F6,docs/Tier1_TaskD_trend_test_F6.md,,79,7,0,0,0,0,0,2,0,,acceptance_criteria,1
+Tier1_TaskE_groundcover_response_F7,docs/Tier1_TaskE_groundcover_response_F7.md,,114,10,0,0,0,0,0,11,0,,acceptance_criteria,1
+Tier1_TaskG_dashboard_layout_revision,docs/Tier1_TaskG_dashboard_layout_revision.md,,66,7,0,0,0,0,0,2,1,12_build_dashboards_trial.R,acceptance_criteria,1
+Tier1_TaskG_figures_and_dashboards_refresh,docs/Tier1_TaskG_figures_and_dashboards_refresh.md,,73,8,0,0,0,0,0,8,1,scripts/07_figures_dashboards/12_build_dashboards_trial.R,acceptance_criteria,1
+Tier1_TaskJ_prepost_placebo_ladder,docs/Tier1_TaskJ_prepost_placebo_ladder.md,2026-07-16,240,10,5,1,4,0,0,7,2,Gayini_limitations_register_20260716_v2.xlsx; gayini_murrumbidgee_gauges.sqlite,,0
+Tier2_TaskH_all_pixel_census,docs/Tier2_TaskH_all_pixel_census.md,2026-07-20,103,7,2,1,2,0,0,10,1,annual_wet_any/valid_any_1988_2023.tif,acceptance_criteria,1
+Tier2_TaskH_all_pixel_census_v2,docs/Tier2_TaskH_all_pixel_census_v2.md,2026-07-20,316,10,1,1,1,0,0,17,0,,acceptance_criteria,1
+Tier2_TaskH_all_pixel_census_v3,docs/Tier2_TaskH_all_pixel_census_v3.md,2026-07-20,273,10,1,0,0,0,0,16,0,,acceptance_criteria,1
+Tier2_TaskH_all_pixel_census_v4,docs/Tier2_TaskH_all_pixel_census_v4.md,,316,10,1,1,3,0,0,10,0,,acceptance_criteria,1
+Tier2_TaskH_gateE_figure_build,docs/Tier2_TaskH_gateE_figure_build.md,,78,3,1,1,1,0,0,4,0,,,0
+Tier2_TaskH_ondisk_audit,docs/Tier2_TaskH_ondisk_audit.md,2026-07-20,151,10,4,1,10,0,0,15,2,census_community_total_veg_means.csv; census_refugia_majority_green.csv,,0
+Tier2_TaskH_ondisk_census_groundcover_review,docs/Tier2_TaskH_ondisk_census_groundcover_review.md,,229,9,5,1,12,0,0,35,1,..._seasonal_bias_test.csv,,0
+Tier2_TaskI_deck_stocktake_and_review_bundle,docs/Tier2_TaskI_deck_stocktake_and_review_bundle.md,2026-07-16,152,8,1,1,4,0,0,5,0,,,0
+Tier2_TaskK_gate0_output_census,docs/Tier2_TaskK_gate0_output_census.md,2026-07-17,208,9,2,0,0,0,0,12,0,,,0
+Tier2_TaskK_gateA_archive_dead_generations,docs/Tier2_TaskK_gateA_archive_dead_generations.md,2026-07-19,105,9,2,0,0,0,0,9,4,Output/diagnostics/taskK_gate0_census_20260719.csv; docs/change_reports/taskK_gate0_20260719.md; docs/change_reports/taskK_gateA_20260719.md,,0
+Tier2_TaskK_workstation_git_sync_check,docs/Tier2_TaskK_workstation_git_sync_check.md,,134,10,0,1,1,0,0,5,0,,,0
+Tier2_TaskL_dashboard_report_rollout,docs/Tier2_TaskL_dashboard_report_rollout.md,,149,7,7,1,10,0,0,10,1,..._DRAFT.md,,0
+Tier2_TaskM_deck_evidence_audit,docs/Tier2_TaskM_deck_evidence_audit.md,,432,9,5,1,3,0,0,24,0,,,0
+Tier2_TaskM_deck_evidence_audit_v2,docs/Tier2_TaskM_deck_evidence_audit_v2.md,,632,10,5,1,3,0,0,29,0,,,0
+Tier2_TaskM_gateB_classification,docs/Tier2_TaskM_gateB_classification.md,2026-07-24,223,6,3,0,0,0,0,4,0,,,0
+Tier2_TaskM_gateB_classification_v2,docs/Tier2_TaskM_gateB_classification_v2.md,2026-07-24,367,7,3,0,0,0,0,10,0,,,0
+UNZONED,docs/reference_update/Gayini_CC_spec_UNZONED.md,2026-08-06,167,7,0,1,1,0,0,4,0,,,0
+UNZONED1,docs/reference_update/Gayini_CC_spec_UNZONED1.md,2026-08-09,99,6,0,0,0,1,3,1,0,,rulings_in_force|standing_conditions,2
+UNZONED_v2,docs/reference_update/Gayini_CC_spec_UNZONED_v2.md,2026-08-06,322,8,2,1,3,0,0,10,0,,,0
+UNZONED_v2_amendment_A1,docs/reference_update/Gayini_CC_spec_UNZONED_v2_amendment_A1.md,2026-08-07,113,5,1,1,1,0,0,2,0,,,0
+UNZONED_v3,docs/reference_update/Gayini_CC_spec_UNZONED_v3.md,2026-08-10,375,9,1,1,1,1,5,8,0,,standing_conditions,1
+XCHECK1,docs/reference_update/Gayini_CC_spec_XCHECK1.md,2026-08-07,283,9,0,0,0,1,2,9,0,,,0
+reference_state_specs_T7_T11,docs/reference_update/Gayini_reference_state_specs_T7_T11.md,2026-07-28,407,19,4,1,14,0,0,6,0,,acceptance_criteria|spine_anchor,2
+report_template_spec,docs/reports/Gayini_paddock_report_pack_update/Gayini_report_template_spec.md,,63,1,0,1,1,0,0,0,0,,,0
+report_template_spec,docs/reports/Gayini_paddock_report_pack_update/Gayini_reports_for_CC_20260804/docs/reports/Gayini_report_template_spec.md,,63,1,0,1,1,0,0,0,0,,,0
