@@ -1,0 +1,882 @@
+path,verdict,reached_by,depth,cited_by,taskK_essential,size_bytes,reason
+.gitignore,ARCHIVE,,,Output/audit/TRACE1_report.md|docs/Audit/Gayini_CC_spec_HANDOFF2.md|docs/Biodiversity_workstation_onboarding_and_audit.md,,7962,cited by 19 tracked document(s) but no pipeline reaches it
+CLAUDE.md,ARCHIVE,,,Output/audit/AUD1_gateA_inventory.md|Output/audit/AUD1_pack_gap_report.md|Output/audit/DOC1_gateB_value_claims.md,,43843,cited by 89 tracked document(s) but no pipeline reaches it
+DESCRIPTION,ARCHIVE,,,Output/audit/DOC2_gate0_verify_sweep.md|Output/audit/DOC2_review.md|README.md,,463,cited by 4 tracked document(s) but no pipeline reaches it
+Gayini.Rproj,ARCHIVE,,,docs/reference_update/Gayini_repo_root_and_github_audit_20260729.md|github_push_audit_plan.md,,218,cited by 2 tracked document(s) but no pipeline reaches it
+LICENSE,ARCHIVE,,,docs/reference_update/Gayini_repo_root_and_github_audit_20260729.md,,115,cited by 1 tracked document(s) but no pipeline reaches it
+NAMESPACE,ARCHIVE,,,README.md|docs/reference_update/Gayini_repo_root_and_github_audit_20260729.md,,111,cited by 2 tracked document(s) but no pipeline reaches it
+Output/INVENTORY_20260809.md,ORPHAN,,,,,21937,nothing references it and no tracked document names it
+Output/audit/AUD1_gateA_disk.csv,ARCHIVE,,,Output/audit/AUD1_gateA_inventory.md|Output/audit/AUD1_pack_gap_report.md|Output/audit/STATUS1_focus_report.md,,718382,cited by 3 tracked document(s) but no pipeline reaches it
+Output/audit/AUD1_gateA_inventory.md,ARCHIVE,,,Output/audit/AUD1_pack_gap_report.md,,12858,cited by 1 tracked document(s) but no pipeline reaches it
+Output/audit/AUD1_gateA_registry.csv,ARCHIVE,,,Output/audit/AUD1_gateA_inventory.md|Output/audit/AUD1_pack_gap_report.md,,160855,cited by 2 tracked document(s) but no pipeline reaches it
+Output/audit/AUD1_manifest_delta_REM1.csv,ARCHIVE,,,docs/Gayini_issues_log.md|docs/change_reports/PACK1_RPTSCOPE_gate0_recon.md|docs/change_reports/REM1_pack_item_remediation.md,,5964,cited by 5 tracked document(s) but no pipeline reaches it
+Output/audit/AUD1_pack_gap_report.md,ARCHIVE,,,docs/reports/AUD1_output_audit_and_pack_reconciliation.md|docs/reports/AUD1_v2_output_audit_and_manifest.md,,22428,cited by 2 tracked document(s) but no pipeline reaches it
+Output/audit/AUD1_pack_manifest_draft.csv,ARCHIVE,,,Output/audit/AUD1_pack_gap_report.md|Output/audit/STATUS1_focus_report.md|docs/change_reports/REM1_pack_item_remediation.md,,137241,cited by 7 tracked document(s) but no pipeline reaches it
+Output/audit/AUD1_reconciliation.csv,ARCHIVE,,,Output/audit/AUD1_pack_gap_report.md|docs/reports/AUD1_output_audit_and_pack_reconciliation.md|docs/reports/AUD1_v2_output_audit_and_manifest.md,,1104209,cited by 3 tracked document(s) but no pipeline reaches it
+Output/audit/DOC1_claim_check.csv,ARCHIVE,,,Output/audit/DOC1_verification_report.md|Output/audit/DOC2_gateC_consistency.md|Output/audit/DOC2_review.md,,63231,cited by 6 tracked document(s) but no pipeline reaches it
+Output/audit/DOC1_followon_lidar_section_review.md,ORPHAN,,,,,14596,nothing references it and no tracked document names it
+Output/audit/DOC1_gateA_verify_answers.md,ARCHIVE,,,Output/audit/DOC1_verification_report.md|docs/reference_update/CC_handover_DOC1_gates_BCDE.md|docs/reports/CC_spec_DOC1_document_verification_v2.md,,11553,cited by 3 tracked document(s) but no pipeline reaches it
+Output/audit/DOC1_gateB_value_claims.md,ARCHIVE,,,Output/audit/DOC1_verification_report.md|docs/Gayini_issues_log.md|docs/reference_update/CC_handover_DOC1_gates_BCDE.md,,16100,cited by 4 tracked document(s) but no pipeline reaches it
+Output/audit/DOC1_gateC_figures_methods.md,ARCHIVE,,,Output/audit/DOC1_verification_report.md,,21075,cited by 1 tracked document(s) but no pipeline reaches it
+Output/audit/DOC1_gateD_substitution.md,ARCHIVE,,,Output/audit/DOC1_verification_report.md,,6879,cited by 1 tracked document(s) but no pipeline reaches it
+Output/audit/DOC1_verification_report.md,ARCHIVE,,,docs/reports/CC_spec_DOC1_document_verification_v2.md,,22030,cited by 1 tracked document(s) but no pipeline reaches it
+Output/audit/DOC2_gate0_verify_sweep.md,ARCHIVE,,,Output/audit/DOC2_review.md,,9050,cited by 1 tracked document(s) but no pipeline reaches it
+Output/audit/DOC2_gateB_reference_state.md,ARCHIVE,,,Output/audit/DOC2_review.md,,11598,cited by 1 tracked document(s) but no pipeline reaches it
+Output/audit/DOC2_gateC_consistency.md,ARCHIVE,,,Output/audit/DOC2_review.md,,9923,cited by 1 tracked document(s) but no pipeline reaches it
+Output/audit/DOC2_review.md,ORPHAN,,,,,23254,nothing references it and no tracked document names it
+Output/audit/DOC2_section_scores.md,ARCHIVE,,,Output/audit/DOC2_review.md,,12733,cited by 1 tracked document(s) but no pipeline reaches it
+Output/audit/DOC3_findings.md,ORPHAN,,,,,20058,nothing references it and no tracked document names it
+Output/audit/DOC3_refstate_figure_verification.md,ARCHIVE,,,docs/Gayini_issues_log.md,,7699,cited by 1 tracked document(s) but no pipeline reaches it
+Output/audit/DOC3_rulingU_blast_radius.md,ORPHAN,,,,,6167,nothing references it and no tracked document names it
+Output/audit/FIG25_lineage_and_package_plan.md,ORPHAN,,,,,10180,nothing references it and no tracked document names it
+Output/audit/FIG3_partA_producer_review.md,ORPHAN,,,,,17133,nothing references it and no tracked document names it
+Output/audit/FIGSEQ_findings.md,ORPHAN,,,,,9492,nothing references it and no tracked document names it
+Output/audit/RETRO1_candidate_learnings.csv,ARCHIVE,,,Output/audit/RETRO1_report.md|docs/Audit/Gayini_CC_spec_RETRO1.md,,6350,cited by 2 tracked document(s) but no pipeline reaches it
+Output/audit/RETRO1_gates_and_controls.csv,ARCHIVE,,,docs/Audit/Gayini_CC_spec_RETRO1.md,,67192,cited by 1 tracked document(s) but no pipeline reaches it
+Output/audit/RETRO1_report.md,ARCHIVE,,,docs/Audit/Gayini_CC_spec_RETRO1.md,,17288,cited by 1 tracked document(s) but no pipeline reaches it
+Output/audit/RETRO1_rulings_timeline.csv,ARCHIVE,,,docs/Audit/Gayini_CC_spec_RETRO1.md,,16840,cited by 1 tracked document(s) but no pipeline reaches it
+Output/audit/RETRO1_spec_inventory.csv,ARCHIVE,,,docs/Audit/Gayini_CC_spec_RETRO1.md,,15165,cited by 1 tracked document(s) but no pipeline reaches it
+Output/audit/S11_VERIFY_findings.md,ORPHAN,,,,,7909,nothing references it and no tracked document names it
+Output/audit/SCHEM1_verification_findings.md,ARCHIVE,,,,,11511,referenced by 2 tracked file(s) but no pipeline reaches it
+Output/audit/STATUS1_focus_report.md,ORPHAN,,,,,9194,nothing references it and no tracked document names it
+Output/audit/TRACE1_number_producers.csv,ARCHIVE,,,Output/audit/TRACE1_report.md|docs/Audit/Gayini_CC_spec_TRACE1.md,,51011,cited by 2 tracked document(s) but no pipeline reaches it
+Output/audit/TRACE1_report.md,ARCHIVE,,,docs/Audit/Gayini_CC_spec_TRACE1.md,,14192,cited by 1 tracked document(s) but no pipeline reaches it
+Output/audit/XCHECK1_findings.md,ARCHIVE,,,,,14482,referenced by 1 tracked file(s) but no pipeline reaches it
+Output/diag/BE_dashboard_scope_check.csv,ARCHIVE,,,Output/diag/EXEMPLAR1_report.md,,1825,cited by 1 tracked document(s) but no pipeline reaches it
+Output/diag/BR_surface_divergence.csv,ARCHIVE,,,,,7835,referenced by 1 tracked file(s) but no pipeline reaches it
+Output/diag/DIAG1_between_pointwise.csv,ARCHIVE,,,Output/diag/DIAG1_diagnostics.md|Output/diag/SPAT1_findings.md,,191862,cited by 2 tracked document(s) but no pipeline reaches it
+Output/diag/DIAG1_carried_from_WITHIN1.csv,ARCHIVE,,,Output/diag/DIAG1_diagnostics.md,,5464,cited by 1 tracked document(s) but no pipeline reaches it
+Output/diag/DIAG1_diagnostics.md,ARCHIVE,,,docs/reference_update/Gayini_CC_spec_DIAG1.md|docs/reference_update/Gayini_CC_spec_DIAG1_v2.md,,21988,cited by 2 tracked document(s) but no pipeline reaches it
+Output/diag/DIAG1_fixture_2_1.txt,ARCHIVE,,,Output/diag/DIAG1_diagnostics.md,,763,cited by 1 tracked document(s) but no pipeline reaches it
+Output/diag/DIAG1_form_comparison.csv,ARCHIVE,,,Output/diag/DIAG1_diagnostics.md|docs/reference_update/Gayini_CC_spec_DIAG1.md|docs/reference_update/Gayini_CC_spec_DIAG1_v2.md,,472213,cited by 3 tracked document(s) but no pipeline reaches it
+Output/diag/DIAG1_heteroscedasticity.csv,ARCHIVE,,,Output/diag/DIAG1_diagnostics.md,,18033,cited by 1 tracked document(s) but no pipeline reaches it
+Output/diag/DIAG1_influence.csv,ARCHIVE,,,Output/diag/DIAG1_diagnostics.md|docs/reference_update/Gayini_CC_spec_DIAG1.md|docs/reference_update/Gayini_CC_spec_DIAG1_v2.md,,273503,cited by 3 tracked document(s) but no pipeline reaches it
+Output/diag/DIAG1_inputs.csv,ARCHIVE,,,Output/diag/DIAG1_diagnostics.md,,1278,cited by 1 tracked document(s) but no pipeline reaches it
+Output/diag/DIAG1_lag_fits.csv,ARCHIVE,,,Output/diag/DIAG1_diagnostics.md|docs/reference_update/Gayini_CC_spec_DIAG1_v2.md,,5933,cited by 2 tracked document(s) but no pipeline reaches it
+Output/diag/DIAG1_local_z.csv,ARCHIVE,,,Output/diag/DIAG1_diagnostics.md|docs/reference_update/Gayini_CC_spec_DIAG1.md|docs/reference_update/Gayini_CC_spec_DIAG1_v2.md,,69613,cited by 3 tracked document(s) but no pipeline reaches it
+Output/diag/DIAG1_manifest.csv,ARCHIVE,,,Output/diag/DIAG1_diagnostics.md|docs/reference_update/Gayini_CC_spec_DIAG1.md|docs/reference_update/Gayini_CC_spec_DIAG1_v2.md,,7632,cited by 3 tracked document(s) but no pipeline reaches it
+Output/diag/DIAG1_mean_vs_median_summary.csv,ARCHIVE,,,Output/diag/DIAG1_diagnostics.md,,2079,cited by 1 tracked document(s) but no pipeline reaches it
+Output/diag/DIAG1_part_series_summary.csv,ARCHIVE,,,Output/diag/DIAG1_diagnostics.md,,73783,cited by 1 tracked document(s) but no pipeline reaches it
+Output/diag/DIAG1_reproduction_checks_stageA.csv,ARCHIVE,,,Output/diag/DIAG1_diagnostics.md,,6375,cited by 1 tracked document(s) but no pipeline reaches it
+Output/diag/DIAG1_reproduction_checks_stageC.csv,ARCHIVE,,,,,429,referenced by 3 tracked file(s) but no pipeline reaches it
+Output/diag/DIAG1_reproduction_checks_stageE.csv,ARCHIVE,,,,,425,referenced by 3 tracked file(s) but no pipeline reaches it
+Output/diag/DIAG1_unzoned_between_not_applicable.csv,ARCHIVE,,,Output/diag/DIAG1_diagnostics.md,,607,cited by 1 tracked document(s) but no pipeline reaches it
+Output/diag/DIAG1_within_diagnostics.csv,ARCHIVE,,,Output/diag/DIAG1_diagnostics.md|docs/reference_update/Gayini_CC_spec_DIAG1_v2.md,,113952,cited by 2 tracked document(s) but no pipeline reaches it
+Output/diag/DIAG1_within_pointwise.csv,ARCHIVE,,,Output/diag/DIAG1_diagnostics.md,,4446925,cited by 1 tracked document(s) but no pipeline reaches it
+Output/diag/DL_tercile_recut_consequence.csv,ARCHIVE,,,,,2782,referenced by 1 tracked file(s) but no pipeline reaches it
+Output/diag/EX1_gate3_checks.csv,ARCHIVE,,,Output/diag/EXEMPLAR1_report.md,,2182,cited by 1 tracked document(s) but no pipeline reaches it
+Output/diag/EX1_gate3_community_by_floodbin.csv,ARCHIVE,,,Output/diag/EXEMPLAR1_report.md,,29298,cited by 1 tracked document(s) but no pipeline reaches it
+Output/diag/EXEMPLAR1_report.md,ARCHIVE,,,,,10116,referenced by 3 tracked file(s) but no pipeline reaches it
+Output/diag/GATE3_water_surface_by_figure.csv,ARCHIVE,,,,,7950,referenced by 1 tracked file(s) but no pipeline reaches it
+Output/diag/SPAT1_checks.csv,ARCHIVE,,,Output/diag/SPAT1_findings.md,,586,cited by 1 tracked document(s) but no pipeline reaches it
+Output/diag/SPAT1_correlogram.csv,ARCHIVE,,,Output/diag/SPAT1_findings.md,,9686,cited by 1 tracked document(s) but no pipeline reaches it
+Output/diag/SPAT1_findings.md,ARCHIVE,,,,,11438,referenced by 1 tracked file(s) but no pipeline reaches it
+Output/diag/SPAT1_inputs.csv,ARCHIVE,,,Output/diag/SPAT1_findings.md,,773,cited by 1 tracked document(s) but no pipeline reaches it
+Output/diag/SPAT1_morans_i.csv,ARCHIVE,,,Output/diag/SPAT1_findings.md,,22503,cited by 1 tracked document(s) but no pipeline reaches it
+Output/diag/SPAT1_scale_reference.csv,ARCHIVE,,,Output/diag/SPAT1_findings.md,,3162,cited by 1 tracked document(s) but no pipeline reaches it
+Output/diag/analysis/DIAG1_between_parts.csv,ARCHIVE,,,,,179546,referenced by 9 tracked file(s) but no pipeline reaches it
+Output/diag/analysis/DIAG1_part_year.csv,ARCHIVE,,,,,1203939,referenced by 6 tracked file(s) but no pipeline reaches it
+Output/diag/analysis/DIAG1_patch_year.csv,ARCHIVE,,,,,1317598,referenced by 5 tracked file(s) but no pipeline reaches it
+Output/diag/analysis/SPAT1_pairs.csv,ARCHIVE,,,Output/diag/SPAT1_findings.md,,1693581,cited by 1 tracked document(s) but no pipeline reaches it
+Output/diag/analysis/SPAT1_part_centroids.csv,ARCHIVE,,,Output/diag/SPAT1_findings.md,,41980,cited by 1 tracked document(s) but no pipeline reaches it
+Output/diagnostics/ondisk_review_20260720/refugia_area_check.csv,ARCHIVE,,,docs/Gayini_established_data_facts.md|docs/Tier2_TaskH_ondisk_census_groundcover_review.md|docs/Tier2_TaskM_gateB_classification.md,,201,cited by 7 tracked document(s) but no pipeline reaches it
+Output/diagnostics/tier2H_h2_green_fraction_at_floor.csv,ARCHIVE,,,Output/audit/DOC1_gateB_value_claims.md|docs/Gayini_established_data_facts.md|docs/Tier2_TaskH_ondisk_census_groundcover_review.md,no,207,cited by 5 tracked document(s) but no pipeline reaches it
+Output/figures/F3_annual_gap_series.png,ARCHIVE,,,Output/audit/FIG3_partA_producer_review.md|Output/pack/00_START_HERE.md|docs/change_reports/adrian_pack_T1_F3_F5.md,,262645,cited by 3 tracked document(s) but no pipeline reaches it
+Output/figures/F5_cover_vs_water_64_paddocks.png,ARCHIVE,,,Output/audit/AUD1_pack_gap_report.md|Output/audit/FIG25_lineage_and_package_plan.md|Output/audit/FIG3_partA_producer_review.md,,165133,cited by 11 tracked document(s) but no pipeline reaches it
+Output/figures/M5_dual_grain_floor_and_flood.png,ARCHIVE,,,Output/audit/AUD1_pack_gap_report.md|Output/audit/FIG25_lineage_and_package_plan.md|Output/audit/FIG3_partA_producer_review.md,,1015424,cited by 9 tracked document(s) but no pipeline reaches it
+Output/figures/M5b_paddock_residual_from_expectation.png,ARCHIVE,,,Output/audit/AUD1_pack_gap_report.md|Output/audit/FIG25_lineage_and_package_plan.md|Output/audit/FIG3_partA_producer_review.md,,322235,cited by 10 tracked document(s) but no pipeline reaches it
+Output/figures/T13_D1_part_state_map_and_scatter.png,ARCHIVE,,,Output/audit/FIG25_lineage_and_package_plan.md|Output/audit/FIG3_partA_producer_review.md|Output/pack/00_START_HERE.md,,502268,cited by 8 tracked document(s) but no pipeline reaches it
+Output/figures/T13_D2_part_state_map_sensitivity.png,ARCHIVE,,,Output/audit/AUD1_gateA_inventory.md|Output/audit/AUD1_pack_gap_report.md|Output/audit/DOC2_gateB_reference_state.md,,613784,cited by 13 tracked document(s) but no pipeline reaches it
+Output/figures/T1_conserved_paddock_comparison.png,ARCHIVE,,,Output/audit/AUD1_pack_gap_report.md|Output/audit/FIG3_partA_producer_review.md|Output/pack/00_START_HERE.md,,127619,cited by 8 tracked document(s) but no pipeline reaches it
+Output/glm/GLM1_prereg.md,ARCHIVE,,,docs/reference_update/Gayini_CC_spec_GLM1.md,,6687,cited by 1 tracked document(s) but no pipeline reaches it
+Output/maps/MAP1_inclusion_class_summary.csv,ARCHIVE,,,Output/runs/RUN_MAP1_20260810.md,,492,cited by 1 tracked document(s) but no pipeline reaches it
+Output/pack/00_START_HERE.md,ARCHIVE,,,Output/audit/STATUS1_focus_report.md|docs/Gayini_issues_log.md|docs/change_reports/FIG1_T1_pack_order_and_rulings_TUV.md,,3056,cited by 7 tracked document(s) but no pipeline reaches it
+Output/pack/Gayini_what_we_dont_know.md,ARCHIVE,,,Output/pack/00_START_HERE.md|docs/Gayini_issues_log.md|docs/change_reports/PACK1_P3_captions.md,,10901,cited by 7 tracked document(s) but no pipeline reaches it
+Output/pack/PACK1_assembly_manifest.csv,ARCHIVE,,,docs/Gayini_issues_log.md|docs/change_reports/PACK1_P4_assembly.md|docs/change_reports/PACK1_P4_build_and_readthrough.md,,5760,cited by 4 tracked document(s) but no pipeline reaches it
+Output/pack/PACK1_final_number_check.csv,ARCHIVE,,,docs/Gayini_issues_log.md,,28599,cited by 1 tracked document(s) but no pipeline reaches it
+Output/pack/PACK1_input_delta_FROZEN.csv,ARCHIVE,,,Output/audit/STATUS1_focus_report.md|docs/change_reports/PACK1_P1_item_list.md|docs/change_reports/RPTSCOPE_R1_report_set_and_claim_audit.md,,5964,cited by 3 tracked document(s) but no pipeline reaches it
+Output/pack/PACK1_input_manifest_FROZEN.csv,ARCHIVE,,,Output/audit/STATUS1_focus_report.md|docs/change_reports/PACK1_P1_item_list.md|docs/change_reports/PACK1_P4_assembly.md,,137241,cited by 4 tracked document(s) but no pipeline reaches it
+Output/pack/PACK1_item_list.csv,ARCHIVE,,,Output/pack/00_START_HERE.md|docs/Gayini_issues_log.md|docs/change_reports/FIG1_T1_pack_order_and_rulings_TUV.md,,11366,cited by 13 tracked document(s) but no pipeline reaches it
+Output/pack/PACK1_manifest_RESOLVED.csv,ARCHIVE,,,docs/change_reports/PACK1_P4_assembly.md,,163573,cited by 1 tracked document(s) but no pipeline reaches it
+Output/rasters/DATA_share_20260808/README.md,ARCHIVE,,,Output/audit/DOC1_gateB_value_claims.md|README.md|docs/Audit/Gayini_CC_spec_HANDOFF2.md,,14358,cited by 12 tracked document(s) but no pipeline reaches it
+Output/runs/DASH2_DZ_reconciliation.csv,ARCHIVE,,,Output/runs/RUN_DASH2_20260809.md|Output/runs/RUN_DASH3_20260809.md,,11922,cited by 2 tracked document(s) but no pipeline reaches it
+Output/runs/DASH2_before_after.csv,ARCHIVE,,,Output/runs/RUN_DASH2_20260809.md,,10947,cited by 1 tracked document(s) but no pipeline reaches it
+Output/runs/RUN_DASH2_20260809.md,ARCHIVE,,,docs/reference_update/Gayini_CC_spec_DASH2.md,,7041,cited by 1 tracked document(s) but no pipeline reaches it
+Output/runs/RUN_DASH3_20260809.md,ARCHIVE,,,Output/runs/RUN_PARTSCATTER_20260809.md,,11744,cited by 1 tracked document(s) but no pipeline reaches it
+Output/runs/RUN_EP_20260810.md,ORPHAN,,,,,6527,nothing references it and no tracked document names it
+Output/runs/RUN_MAP1_20260810.md,ORPHAN,,,,,11666,nothing references it and no tracked document names it
+Output/runs/RUN_PARTSCATTER_20260809.md,ARCHIVE,,,,,20940,referenced by 1 tracked file(s) but no pipeline reaches it
+Output/runs/RUN_SPAT1_20260810.md,ARCHIVE,,,Output/spatial/SPAT1_findings_note.md,,11718,cited by 1 tracked document(s) but no pipeline reaches it
+Output/runs/RUN_UNZONED_V3_20260810.md,ARCHIVE,,,Output/unzoned/UNZONED_v3_findings_note.md,,26565,cited by 1 tracked document(s) but no pipeline reaches it
+Output/spatial/SPAT1_anisotropy_summary.csv,ARCHIVE,,,Output/spatial/SPAT1_data_dictionary.md,,1034,cited by 1 tracked document(s) but no pipeline reaches it
+Output/spatial/SPAT1_block_bootstrap_slope.csv,ARCHIVE,,,Output/spatial/SPAT1_data_dictionary.md,,4795,cited by 1 tracked document(s) but no pipeline reaches it
+Output/spatial/SPAT1_data_dictionary.md,ORPHAN,,,,,6513,nothing references it and no tracked document names it
+Output/spatial/SPAT1_effective_n.csv,ARCHIVE,,,Output/runs/RUN_SPAT1_20260810.md|Output/spatial/SPAT1_data_dictionary.md|Output/spatial/SPAT1_findings_note.md,,11539,cited by 3 tracked document(s) but no pipeline reaches it
+Output/spatial/SPAT1_eu_wellfitted_range.csv,ARCHIVE,,,Output/spatial/SPAT1_data_dictionary.md,,161,cited by 1 tracked document(s) but no pipeline reaches it
+Output/spatial/SPAT1_findings_note.md,ARCHIVE,,,,,11316,referenced by 1 tracked file(s) but no pipeline reaches it
+Output/spatial/SPAT1_ladder_block_units.csv,ARCHIVE,,,Output/spatial/SPAT1_data_dictionary.md,,107692,cited by 1 tracked document(s) but no pipeline reaches it
+Output/spatial/SPAT1_ladder_counts.csv,ARCHIVE,,,Output/spatial/SPAT1_data_dictionary.md,,1706,cited by 1 tracked document(s) but no pipeline reaches it
+Output/spatial/SPAT1_ladder_gam.csv,ARCHIVE,,,Output/spatial/SPAT1_data_dictionary.md,,5925,cited by 1 tracked document(s) but no pipeline reaches it
+Output/spatial/SPAT1_ladder_levels.csv,ARCHIVE,,,Output/spatial/SPAT1_data_dictionary.md,,2399,cited by 1 tracked document(s) but no pipeline reaches it
+Output/spatial/SPAT1_ladder_slopes.csv,ARCHIVE,,,Output/spatial/SPAT1_data_dictionary.md,,12830,cited by 1 tracked document(s) but no pipeline reaches it
+Output/spatial/SPAT1_n_eff_two_routes.csv,ARCHIVE,,,Output/spatial/SPAT1_data_dictionary.md,,1086,cited by 1 tracked document(s) but no pipeline reaches it
+Output/spatial/SPAT1_stage0_coefficients.csv,ARCHIVE,,,Output/spatial/SPAT1_data_dictionary.md,,4394,cited by 1 tracked document(s) but no pipeline reaches it
+Output/spatial/SPAT1_stage0_gam_coefficients.csv,ARCHIVE,,,Output/spatial/SPAT1_data_dictionary.md,,1644,cited by 1 tracked document(s) but no pipeline reaches it
+Output/spatial/SPAT1_stage0_gam_curves.csv,ARCHIVE,,,,,16086,referenced by 2 tracked file(s) but no pipeline reaches it
+Output/spatial/SPAT1_stage0_vs_display_smoother.csv,ARCHIVE,,,Output/spatial/SPAT1_data_dictionary.md,,1602,cited by 1 tracked document(s) but no pipeline reaches it
+Output/spatial/SPAT1_variogram_directional.csv,ARCHIVE,,,,,7301,referenced by 1 tracked file(s) but no pipeline reaches it
+Output/spatial/SPAT1_variogram_empirical.csv,ARCHIVE,,,Output/spatial/SPAT1_data_dictionary.md,,723790,cited by 1 tracked document(s) but no pipeline reaches it
+Output/spatial/SPAT1_variogram_fit_quality.csv,ARCHIVE,,,Output/runs/RUN_SPAT1_20260810.md|Output/spatial/SPAT1_data_dictionary.md,,2626,cited by 2 tracked document(s) but no pipeline reaches it
+Output/spatial/SPAT1_variogram_models.csv,ARCHIVE,,,Output/runs/RUN_SPAT1_20260810.md|Output/spatial/SPAT1_data_dictionary.md,,25036,cited by 2 tracked document(s) but no pipeline reaches it
+Output/spatial/SPAT1_variogram_seed_stability.csv,ARCHIVE,,,Output/spatial/SPAT1_data_dictionary.md,,1626,cited by 1 tracked document(s) but no pipeline reaches it
+Output/tables/EXEMPLAR1_units.csv,ARCHIVE,,,Output/diag/EXEMPLAR1_report.md,,3396,cited by 1 tracked document(s) but no pipeline reaches it
+Output/tables/RPTSCOPE_R2_pin_list.csv,ARCHIVE,,,docs/change_reports/RPTSCOPE_R2_pin_withdrawal.md|docs/change_reports/RPTSCOPE_R2_pinlist_STOP.md,,7728,cited by 2 tracked document(s) but no pipeline reaches it
+Output/tables/RPTSCOPE_claim_audit.csv,ARCHIVE,,,docs/change_reports/RPTSCOPE_R1_report_set_and_claim_audit.md|docs/change_reports/RPTSCOPE_R1b_claim_audit_complete.md|docs/change_reports/RPTSCOPE_R2_pin_withdrawal.md,,10060,cited by 4 tracked document(s) but no pipeline reaches it
+Output/tables/RPTSCOPE_number_contract.csv,ARCHIVE,,,docs/change_reports/PACK1_P1_item_list.md|docs/change_reports/PACK1_RPTSCOPE_gate0_recon.md|docs/reference_update/Gayini_PACK1_RPTSCOPE_spec_20260802.md,,4492,cited by 3 tracked document(s) but no pipeline reaches it
+Output/tables/RPTSCOPE_report_set.csv,ARCHIVE,,,docs/change_reports/PACK1_P3_captions.md|docs/change_reports/PACK1_RPTSCOPE_gate0_recon.md|docs/change_reports/RPTSCOPE_R1_report_set_and_claim_audit.md,,2880,cited by 5 tracked document(s) but no pipeline reaches it
+Output/tables/RPTSCOPE_reproduction_status.csv,ARCHIVE,,,docs/Gayini_issues_log.md|docs/change_reports/PACK1_P1_item_list.md|docs/change_reports/PACK1_P3_captions.md,,12303,cited by 7 tracked document(s) but no pipeline reaches it
+Output/tables/T1_conserved_paddock_comparison.csv,ARCHIVE,,,Output/audit/AUD1_pack_gap_report.md|Output/pack/00_START_HERE.md|docs/change_reports/PACK1_P1_item_list_amendment.md,,760,cited by 9 tracked document(s) but no pipeline reaches it
+Output/tables/d2_batch_figure_asset_dryrun_20260720.csv,ARCHIVE,,,,,14242,referenced by 5 tracked file(s) but no pipeline reaches it
+Output/tables/d2_batch_paddock_coverage_20260720.csv,ARCHIVE,,,docs/change_reports/d2_site_dashboard_batch_20260720.md,,875,cited by 1 tracked document(s) but no pipeline reaches it
+Output/tables/d2_batch_plot_paddock_20260720.csv,ARCHIVE,,,docs/Tier2_TaskL_dashboard_report_rollout.md,,4606,cited by 1 tracked document(s) but no pipeline reaches it
+Output/tables/d2_batch_roster_20260720.csv,ARCHIVE,,,,,7179,referenced by 4 tracked file(s) but no pipeline reaches it
+Output/tables/marker_reconciliation.csv,ARCHIVE,,,docs/Gayini_taskL_merge_checklist.md,,243,cited by 1 tracked document(s) but no pipeline reaches it
+Output/tables/paddock_dominant_community.csv,ARCHIVE,,,docs/Gayini_taskL_merge_checklist.md,,1281,cited by 1 tracked document(s) but no pipeline reaches it
+Output/tables/taskM_gateC_file_classification.csv,ARCHIVE,,,docs/change_reports/taskM_gateC_report.md,,386538,cited by 1 tracked document(s) but no pipeline reaches it
+Output/tables/taskM_gateC_raster_meta.csv,ARCHIVE,,,docs/change_reports/taskM_gateC_report.md,,3566,cited by 1 tracked document(s) but no pipeline reaches it
+Output/tables/taskM_gateC_registration_dryrun.csv,ARCHIVE,,,docs/change_reports/taskM_gateC_report.md,,15875,cited by 1 tracked document(s) but no pipeline reaches it
+Output/tables/taskM_gateD_p05_ge80_contiguity.csv,ARCHIVE,,,docs/Tier2_TaskM_deck_evidence_audit.md|docs/Tier2_TaskM_deck_evidence_audit_v2.md|docs/change_reports/taskM_gateD_report.md,,7909,cited by 3 tracked document(s) but no pipeline reaches it
+Output/tables/taskM_gateD_registration_dryrun.csv,ARCHIVE,,,,,1173,referenced by 3 tracked file(s) but no pipeline reaches it
+Output/tables/taskM_gateD_veg_p05_distribution.csv,ARCHIVE,,,docs/Tier2_TaskM_deck_evidence_audit.md|docs/Tier2_TaskM_deck_evidence_audit_v2.md|docs/change_reports/taskM_gateD_report.md,,8499,cited by 3 tracked document(s) but no pipeline reaches it
+Output/tables/taskM_green_at_floor_area.csv,ARCHIVE,,,CLAUDE.md|Output/audit/DOC1_gateB_value_claims.md|Output/audit/DOC1_gateC_figures_methods.md,,4210,cited by 19 tracked document(s) but no pipeline reaches it
+Output/tables/task_J_gate2_2018_assertions.csv,ARCHIVE,,,docs/Tier2_TaskM_deck_evidence_audit.md|docs/Tier2_TaskM_deck_evidence_audit_v2.md|docs/change_reports/taskM_gateA_report.md,,1819,cited by 4 tracked document(s) but no pipeline reaches it
+Output/tables/task_J_gate2_2018_by_community.csv,ARCHIVE,,,docs/Tier2_TaskM_deck_evidence_audit.md|docs/Tier2_TaskM_deck_evidence_audit_v2.md|docs/change_reports/taskM_gateA_report.md,,335,cited by 4 tracked document(s) but no pipeline reaches it
+Output/tables/task_J_gate2_2018_summary.csv,ARCHIVE,,,docs/Tier2_TaskM_deck_evidence_audit.md|docs/Tier2_TaskM_deck_evidence_audit_v2.md|docs/change_reports/taskM_gateA_report.md,,283,cited by 4 tracked document(s) but no pipeline reaches it
+Output/tables/task_J_gate3_J_T1.csv,ARCHIVE,,,docs/Tier2_TaskM_deck_evidence_audit.md|docs/Tier2_TaskM_deck_evidence_audit_v2.md|docs/change_reports/taskM_gateA_report.md,,3244,cited by 4 tracked document(s) but no pipeline reaches it
+Output/tables/task_J_gate3_assertions.csv,ARCHIVE,,,docs/Tier2_TaskM_deck_evidence_audit.md|docs/Tier2_TaskM_deck_evidence_audit_v2.md|docs/change_reports/taskM_gateA_report.md,,6626,cited by 4 tracked document(s) but no pipeline reaches it
+Output/tables/task_J_gate3_shape_vs_reference.csv,ARCHIVE,,,docs/Tier2_TaskM_deck_evidence_audit.md|docs/Tier2_TaskM_deck_evidence_audit_v2.md|docs/change_reports/taskM_gateA_report.md,,877,cited by 4 tracked document(s) but no pipeline reaches it
+Output/tables/task_J_gate4_heteroscedasticity.csv,ARCHIVE,,,docs/Tier2_TaskM_deck_evidence_audit.md|docs/Tier2_TaskM_deck_evidence_audit_v2.md|docs/change_reports/taskM_gateA_report.md,,501,cited by 4 tracked document(s) but no pipeline reaches it
+Output/tables/task_J_gate4_law_summary.csv,ARCHIVE,,,docs/Tier2_TaskM_deck_evidence_audit.md|docs/Tier2_TaskM_deck_evidence_audit_v2.md|docs/change_reports/taskM_gateA_report.md,,418,cited by 4 tracked document(s) but no pipeline reaches it
+Output/tables/task_J_gate4_raster_assertions.csv,ARCHIVE,,,docs/Tier2_TaskM_deck_evidence_audit.md|docs/Tier2_TaskM_deck_evidence_audit_v2.md|docs/change_reports/taskM_gateA_report.md,,3614,cited by 4 tracked document(s) but no pipeline reaches it
+Output/tables/task_J_gate4_residual_ranking.csv,ARCHIVE,,,docs/Tier2_TaskM_deck_evidence_audit.md|docs/Tier2_TaskM_deck_evidence_audit_v2.md|docs/change_reports/taskM_gateA_report.md,,1387,cited by 4 tracked document(s) but no pipeline reaches it
+Output/tables/tier2H_h32_sample_power_1000draws.csv,ARCHIVE,,,docs/Gayini_census_audit_kickoff.md|docs/change_reports/T8_pixel_area_constant_audit.md,no,33194,cited by 2 tracked document(s) but no pipeline reaches it
+Output/tables/tier2H_h32_sample_power_summary.csv,ARCHIVE,,,docs/Tier2_TaskH_ondisk_census_groundcover_review.md,no,727,cited by 1 tracked document(s) but no pipeline reaches it
+Output/temporal/PARTSCATTER_community_support.csv,ARCHIVE,,,Output/runs/RUN_PARTSCATTER_20260809.md|docs/reference_update/Gayini_caption_register.md,,2370,cited by 2 tracked document(s) but no pipeline reaches it
+Output/temporal/PARTSCATTER_dropped_parts.csv,ARCHIVE,,,Output/runs/RUN_PARTSCATTER_20260809.md,,3123,cited by 1 tracked document(s) but no pipeline reaches it
+Output/temporal/PARTSCATTER_excluded_communities.csv,ARCHIVE,,,Output/runs/RUN_PARTSCATTER_20260809.md|docs/reference_update/Gayini_caption_register.md,,300,cited by 2 tracked document(s) but no pipeline reaches it
+Output/temporal/PARTSCATTER_reconciliation_chain.csv,ARCHIVE,,,Output/runs/RUN_PARTSCATTER_20260809.md|docs/reference_update/Gayini_caption_register.md,,2044,cited by 2 tracked document(s) but no pipeline reaches it
+Output/temporal/PARTSCATTER_scatter_input.csv,ARCHIVE,,,Output/runs/RUN_PARTSCATTER_20260809.md|docs/reference_update/Gayini_caption_register.md,,113822,cited by 2 tracked document(s) but no pipeline reaches it
+Output/temporal/TEMPORAL1_community_by_floodbin.csv,ARCHIVE,,,Output/temporal/TEMPORAL1_report.md|docs/reference_update/Gayini_CC_spec_DELIVER1.md,,16856,cited by 2 tracked document(s) but no pipeline reaches it
+Output/temporal/TEMPORAL1_facts.csv,ARCHIVE,,,,,927,referenced by 1 tracked file(s) but no pipeline reaches it
+Output/temporal/TEMPORAL1_reconciliation.csv,ARCHIVE,,,Output/temporal/TEMPORAL1_report.md,,44764,cited by 1 tracked document(s) but no pipeline reaches it
+Output/temporal/TEMPORAL1_report.md,ARCHIVE,,,,,16880,referenced by 2 tracked file(s) but no pipeline reaches it
+Output/temporal/TEMPORAL1_scatter_input.csv,ARCHIVE,,,,,60902,referenced by 2 tracked file(s) but no pipeline reaches it
+Output/temporal/TEMPORAL1_unit_level.csv,ARCHIVE,,,Output/temporal/TEMPORAL1_report.md,,60902,cited by 1 tracked document(s) but no pipeline reaches it
+Output/temporal/TEMPORAL1_wet_end_sensitivity.csv,ARCHIVE,,,Output/temporal/TEMPORAL1_report.md,,2730,cited by 1 tracked document(s) but no pipeline reaches it
+Output/unzoned/UNZONED_patch_summary.csv,ARCHIVE,,,Output/runs/RUN_UNZONED_V3_20260810.md|Output/unzoned/UNZONED_v3_data_dictionary.md,,703241,cited by 2 tracked document(s) but no pipeline reaches it
+Output/unzoned/UNZONED_regression_coefficients.csv,ARCHIVE,,,Output/runs/RUN_UNZONED_V3_20260810.md|Output/unzoned/UNZONED_v3_data_dictionary.md,,10972,cited by 2 tracked document(s) but no pipeline reaches it
+Output/unzoned/UNZONED_v3_EK_ar1_both_sides.csv,ARCHIVE,,,Output/unzoned/UNZONED_v3_data_dictionary.md,,1465,cited by 1 tracked document(s) but no pipeline reaches it
+Output/unzoned/UNZONED_v3_armA_all_patches.csv,ARCHIVE,,,Output/runs/RUN_UNZONED_V3_20260810.md,,636473,cited by 1 tracked document(s) but no pipeline reaches it
+Output/unzoned/UNZONED_v3_armA_community_support.csv,ARCHIVE,,,Output/runs/RUN_UNZONED_V3_20260810.md|Output/unzoned/UNZONED_v3_data_dictionary.md,,1690,cited by 2 tracked document(s) but no pipeline reaches it
+Output/unzoned/UNZONED_v3_armA_descriptive_offsets.csv,ARCHIVE,,,Output/runs/RUN_UNZONED_V3_20260810.md|Output/unzoned/UNZONED_v3_data_dictionary.md,,1846,cited by 2 tracked document(s) but no pipeline reaches it
+Output/unzoned/UNZONED_v3_armA_per_patch_offsets.csv,ARCHIVE,,,,,6208,referenced by 3 tracked file(s) but no pipeline reaches it
+Output/unzoned/UNZONED_v3_armA_scatter_input.csv,ARCHIVE,,,Output/runs/RUN_UNZONED_V3_20260810.md|Output/unzoned/UNZONED_v3_data_dictionary.md,,40301,cited by 2 tracked document(s) but no pipeline reaches it
+Output/unzoned/UNZONED_v3_armA_selection_counts.csv,ARCHIVE,,,Output/runs/RUN_UNZONED_V3_20260810.md|Output/unzoned/UNZONED_v3_data_dictionary.md,,427,cited by 2 tracked document(s) but no pipeline reaches it
+Output/unzoned/UNZONED_v3_armA_size_matched.csv,ARCHIVE,,,Output/runs/RUN_UNZONED_V3_20260810.md,,162,cited by 1 tracked document(s) but no pipeline reaches it
+Output/unzoned/UNZONED_v3_armB_ar1_fit.csv,ARCHIVE,,,Output/runs/RUN_UNZONED_V3_20260810.md,,1165,cited by 1 tracked document(s) but no pipeline reaches it
+Output/unzoned/UNZONED_v3_armB_between_fits.csv,ARCHIVE,,,,,5731,referenced by 3 tracked file(s) but no pipeline reaches it
+Output/unzoned/UNZONED_v3_armB_between_residuals.csv,ARCHIVE,,,Output/unzoned/UNZONED_v3_data_dictionary.md,,8574,cited by 1 tracked document(s) but no pipeline reaches it
+Output/unzoned/UNZONED_v3_armB_community_comparison.csv,ARCHIVE,,,Output/runs/RUN_UNZONED_V3_20260810.md|Output/unzoned/UNZONED_v3_data_dictionary.md,,389,cited by 2 tracked document(s) but no pipeline reaches it
+Output/unzoned/UNZONED_v3_armB_corroboration.csv,ARCHIVE,,,,,1279,referenced by 2 tracked file(s) but no pipeline reaches it
+Output/unzoned/UNZONED_v3_armB_inland_size_quartiles.csv,ARCHIVE,,,,,1004,referenced by 3 tracked file(s) but no pipeline reaches it
+Output/unzoned/UNZONED_v3_armB_patch_year.csv,ARCHIVE,,,Output/runs/RUN_UNZONED_V3_20260810.md|Output/unzoned/UNZONED_v3_data_dictionary.md,,380140,cited by 2 tracked document(s) but no pipeline reaches it
+Output/unzoned/UNZONED_v3_armB_per_patch_slopes.csv,ARCHIVE,,,Output/runs/RUN_UNZONED_V3_20260810.md|Output/unzoned/UNZONED_v3_data_dictionary.md,,18054,cited by 2 tracked document(s) but no pipeline reaches it
+Output/unzoned/UNZONED_v3_armB_predictions.csv,ARCHIVE,,,,,2430,referenced by 2 tracked file(s) but no pipeline reaches it
+Output/unzoned/UNZONED_v3_armB_serial_correlation.csv,ARCHIVE,,,Output/runs/RUN_UNZONED_V3_20260810.md,,280,cited by 1 tracked document(s) but no pipeline reaches it
+Output/unzoned/UNZONED_v3_armB_size_range_support.csv,ARCHIVE,,,Output/unzoned/UNZONED_v3_data_dictionary.md,,1585,cited by 1 tracked document(s) but no pipeline reaches it
+Output/unzoned/UNZONED_v3_armB_slope_distribution.csv,ARCHIVE,,,Output/runs/RUN_UNZONED_V3_20260810.md,,898,cited by 1 tracked document(s) but no pipeline reaches it
+Output/unzoned/UNZONED_v3_armB_within_fits.csv,ARCHIVE,,,Output/runs/RUN_UNZONED_V3_20260810.md|Output/unzoned/UNZONED_v3_data_dictionary.md,,2849,cited by 2 tracked document(s) but no pipeline reaches it
+Output/unzoned/UNZONED_v3_data_dictionary.md,ARCHIVE,,,Output/runs/RUN_UNZONED_V3_20260810.md,,7860,cited by 1 tracked document(s) but no pipeline reaches it
+Output/unzoned/UNZONED_v3_findings_note.md,ARCHIVE,,,Output/runs/RUN_UNZONED_V3_20260810.md,,18326,cited by 1 tracked document(s) but no pipeline reaches it
+Output/unzoned/UNZONED_v3_manifest.csv,ARCHIVE,,,Output/runs/RUN_UNZONED_V3_20260810.md|Output/unzoned/UNZONED_v3_data_dictionary.md|Output/unzoned/UNZONED_v3_findings_note.md,,14990,cited by 3 tracked document(s) but no pipeline reaches it
+Output/unzoned/UNZONED_v3_plot_overlay_summary.csv,ARCHIVE,,,Output/runs/RUN_UNZONED_V3_20260810.md|Output/unzoned/UNZONED_v3_data_dictionary.md,,772,cited by 2 tracked document(s) but no pipeline reaches it
+Output/unzoned/UNZONED_v3_size_robustness.csv,ARCHIVE,,,Output/runs/RUN_UNZONED_V3_20260810.md|Output/unzoned/UNZONED_v3_data_dictionary.md,,5451,cited by 2 tracked document(s) but no pipeline reaches it
+R/daily_inundation_extraction_functions.R,ARCHIVE,,,docs/function_file_inventory.md,,20363,cited by 1 tracked document(s) but no pipeline reaches it
+R/diag/DIAG1_common.R,ARCHIVE,,,Output/diag/DIAG1_diagnostics.md,,7356,cited by 1 tracked document(s) but no pipeline reaches it
+R/diag/DIAG1_stageA.R,ARCHIVE,,,Output/diag/DIAG1_diagnostics.md,,23113,cited by 1 tracked document(s) but no pipeline reaches it
+R/diag/DIAG1_stageC.R,ARCHIVE,,,Output/diag/DIAG1_diagnostics.md,,12926,cited by 1 tracked document(s) but no pipeline reaches it
+R/diag/DIAG1_stageE.R,ARCHIVE,,,Output/diag/DIAG1_diagnostics.md,,11814,cited by 1 tracked document(s) but no pipeline reaches it
+R/diag/EX1_gate3_check.R,ARCHIVE,,,Output/diag/EXEMPLAR1_report.md,,8573,cited by 1 tracked document(s) but no pipeline reaches it
+R/diag/GLM1_models.R,ORPHAN,,,,,9354,nothing references it and no tracked document names it
+R/diag/MAP1_figure_M5.R,ORPHAN,,,,,12793,nothing references it and no tracked document names it
+R/diag/MAP1_figures.R,ARCHIVE,,,Output/runs/RUN_MAP1_20260810.md,,19508,cited by 1 tracked document(s) but no pipeline reaches it
+R/diag/MAP1_figures_M3_M4.R,ARCHIVE,,,Output/runs/RUN_MAP1_20260810.md,,13779,cited by 1 tracked document(s) but no pipeline reaches it
+R/diag/PARTSCATTER_figure.R,ARCHIVE,,,Output/runs/RUN_PARTSCATTER_20260809.md|docs/reference_update/Gayini_caption_register.md,,18083,cited by 2 tracked document(s) but no pipeline reaches it
+R/diag/SPAT1_moran.R,ARCHIVE,,,Output/diag/SPAT1_findings.md,,16707,cited by 1 tracked document(s) but no pipeline reaches it
+R/diag/SPAT1_stage0_gam.R,ORPHAN,,,,,3964,nothing references it and no tracked document names it
+R/diag/SPAT1_stageA_figures.R,ORPHAN,,,,,13008,nothing references it and no tracked document names it
+R/diag/SPAT1_stageB_figure.R,ORPHAN,,,,,8867,nothing references it and no tracked document names it
+R/diag/SPAT1_stageB_gam_ladder.R,ORPHAN,,,,,5902,nothing references it and no tracked document names it
+R/diag/TEMPORAL1_figure.R,ARCHIVE,,,,,7077,referenced by 3 tracked file(s) but no pipeline reaches it
+R/diag/UNZONED_v3_EK_realparts_ar1.R,ORPHAN,,,,,5613,nothing references it and no tracked document names it
+R/diag/UNZONED_v3_armA_figures.R,UNRESOLVED,,,Output/runs/RUN_UNZONED_V3_20260810.md,,27859,may carry culturally sensitive material; design seat rules
+R/diag/UNZONED_v3_armB_ar1.R,ARCHIVE,,,Output/runs/RUN_UNZONED_V3_20260810.md,,4783,cited by 1 tracked document(s) but no pipeline reaches it
+R/diag/UNZONED_v3_size_robustness.R,ARCHIVE,,,Output/runs/RUN_UNZONED_V3_20260810.md,,7345,cited by 1 tracked document(s) but no pipeline reaches it
+R/fractional_cover_extraction_functions.R,ARCHIVE,,,docs/function_file_inventory.md,,24837,cited by 1 tracked document(s) but no pipeline reaches it
+R/gayini_analysis_base_functions.R,ARCHIVE,,,docs/CHANGELOG_rs_consolidation.md|docs/codebase_audit_rs_inundation.md|docs/codex_context.md,,14345,cited by 6 tracked document(s) but no pipeline reaches it
+R/gayini_area_map.R,ARCHIVE,,,Output/runs/RUN_DASH2_20260809.md|Output/runs/RUN_DASH3_20260809.md|docs/Gayini_taskL_merge_checklist.md,,12768,cited by 8 tracked document(s) but no pipeline reaches it
+R/gayini_assert_rendered.R,ARCHIVE,,,Output/audit/AUD1_pack_gap_report.md|Output/audit/FIG3_partA_producer_review.md|docs/Gayini_issues_log.md,,3255,cited by 6 tracked document(s) but no pipeline reaches it
+R/gayini_dash2_panels.R,ARCHIVE,,,Output/runs/RUN_DASH2_20260809.md|Output/runs/RUN_PARTSCATTER_20260809.md,,15461,cited by 2 tracked document(s) but no pipeline reaches it
+R/gayini_dashboard_compose.R,ARCHIVE,,,Output/audit/DOC3_findings.md|Output/audit/DOC3_rulingU_blast_radius.md|Output/diag/EXEMPLAR1_report.md,,26126,cited by 19 tracked document(s) but no pipeline reaches it
+R/gayini_dashboard_figures.R,ARCHIVE,,,docs/Tier1_TaskG_figures_and_dashboards_refresh.md|docs/repo_audit_pre_subsampling_stocktake.md,,13187,cited by 2 tracked document(s) but no pipeline reaches it
+R/gayini_dashboard_panels.R,ARCHIVE,,,Output/audit/DOC1_gateC_figures_methods.md|Output/audit/DOC1_verification_report.md|Output/audit/DOC3_findings.md,,22547,cited by 22 tracked document(s) but no pipeline reaches it
+R/gayini_db_validation.R,ARCHIVE,,,docs/archive/Tier1_TaskF_spatial_resampling_spec_v2.md|docs/change_reports/tier2H_all_pixel_census_20260715.md|docs/tier1f_foundation_and_rebalance_change_report.md,,7284,cited by 3 tracked document(s) but no pipeline reaches it
+R/gayini_descriptive_figures.R,ARCHIVE,,,docs/Tier2_TaskH_ondisk_census_groundcover_review.md|docs/Tier2_TaskI_deck_stocktake_and_review_bundle.md|docs/Tier2_TaskK_gate0_output_census.md,,24931,cited by 6 tracked document(s) but no pipeline reaches it
+R/gayini_f5_legibility_figures.R,ARCHIVE,,,Output/audit/DOC1_gateA_verify_answers.md|docs/change_reports/T1_gate0_inventory.md|docs/change_reports/tier1c2_f5_legibility.md,,11298,cited by 4 tracked document(s) but no pipeline reaches it
+R/gayini_figure_manifest.R,ARCHIVE,,,docs/TaskH_D2_and_figure_reregistration.md|docs/Tier2_TaskK_gate0_output_census.md|docs/change_reports/T1_gate0_inventory.md,,10329,cited by 4 tracked document(s) but no pipeline reaches it
+R/gayini_figure_register.R,ARCHIVE,,,Output/audit/DOC3_findings.md|Output/audit/FIG3_partA_producer_review.md|docs/Gayini_issues_log.md,,3868,cited by 4 tracked document(s) but no pipeline reaches it
+R/gayini_fit.R,ARCHIVE,,,Output/diag/DIAG1_diagnostics.md|docs/reference_update/Gayini_CC_spec_DASH2.md|docs/reference_update/Gayini_CC_spec_DIAG1_v2.md,,6265,cited by 3 tracked document(s) but no pipeline reaches it
+R/gayini_gradient_helpers.R,MIGRATE,EP3_census_parquet,1,docs/Gayini_taskL_merge_checklist.md|docs/TaskH_D2_and_figure_reregistration.md|docs/Tier1_TaskC_stratified_sampling_frame_F5.md,,6986,
+R/gayini_ground_cover_response_figures.R,ARCHIVE,,,docs/Tier1_TaskG_figures_and_dashboards_refresh.md|docs/change_reports/tier1G_figures_dashboards_2026-07-14.md|docs/change_reports/tier1e_f7_groundcover_response.md,,22449,cited by 3 tracked document(s) but no pipeline reaches it
+R/gayini_ground_cover_response_functions.R,ARCHIVE,,,Output/audit/DOC1_gateA_verify_answers.md|docs/change_reports/tier1G_figures_dashboards_2026-07-14.md|docs/change_reports/tier1e_f7_groundcover_response.md,,21602,cited by 3 tracked document(s) but no pipeline reaches it
+R/gayini_helpers.R,MIGRATE,EP1_percentile_stack|EP3_census_parquet,1,docs/CHANGELOG_output_visible_cleanup_20260623.md|docs/codebase_audit_rs_inundation.md|docs/folder_structure_audit_20260623.md,,4467,
+R/gayini_interpretation_filters.R,ARCHIVE,,,docs/current_run_order.md,,2185,cited by 1 tracked document(s) but no pipeline reaches it
+R/gayini_inundation_wet_rule.R,MIGRATE,EP2_flood_frequency,2,docs/Tier2_TaskH_all_pixel_census.md|docs/Tier2_TaskH_all_pixel_census_v2.md|docs/Tier2_TaskH_all_pixel_census_v3.md,,3590,
+R/gayini_map_inundation_figures.R,ARCHIVE,,,docs/repo_audit_pre_subsampling_stocktake.md,,12035,cited by 1 tracked document(s) but no pipeline reaches it
+R/gayini_mer_helpers.R,ARCHIVE,,,docs/current_run_order.md|docs/repo_audit_pre_subsampling_stocktake.md,,1790,cited by 2 tracked document(s) but no pipeline reaches it
+R/gayini_mer_inundation_functions.R,ARCHIVE,,,docs/CHANGELOG_MER_inundation_20260623.md|docs/MER_inundation_method_note_20260623.md|docs/current_run_order.md,,77596,cited by 4 tracked document(s) but no pipeline reaches it
+R/gayini_mer_raster_functions.R,ARCHIVE,,,docs/change_reports/T1_gate0_inventory.md|docs/repo_audit_pre_subsampling_stocktake.md,,61062,cited by 2 tracked document(s) but no pipeline reaches it
+R/gayini_monte_carlo_sampling.R,ARCHIVE,,,docs/Tier2_TaskH_all_pixel_census_v2.md|docs/archive/Tier1_TaskF_spatial_resampling_spec_v2.md|docs/change_reports/tier2H_gate1_recon_20260715.md,,4100,cited by 4 tracked document(s) but no pipeline reaches it
+R/gayini_output_helpers.R,MIGRATE,EP1_percentile_stack|EP3_census_parquet,1,docs/current_run_order.md,,1983,
+R/gayini_output_paths.R,MIGRATE,EP1_percentile_stack|EP2_flood_frequency|EP3_census_parquet,1,docs/Tier2_TaskK_gate0_output_census.md|docs/tier0_annual_stack_task.md,,9686,
+R/gayini_params.R,ARCHIVE,,,CLAUDE.md|Output/audit/FIG3_partA_producer_review.md|Output/audit/SCHEM1_verification_findings.md,,3292,cited by 7 tracked document(s) but no pipeline reaches it
+R/gayini_pixel_census_functions.R,ARCHIVE,,,docs/change_reports/T1_gate0_inventory.md|docs/change_reports/T5_change_report.md|docs/change_reports/T8_pixel_area_constant_audit.md,,13550,cited by 4 tracked document(s) but no pipeline reaches it
+R/gayini_plot_context_figures.R,ARCHIVE,,,docs/repo_audit_pre_subsampling_stocktake.md,,13231,cited by 1 tracked document(s) but no pipeline reaches it
+R/gayini_plot_ground_cover_figures.R,ARCHIVE,,,docs/repo_audit_pre_subsampling_stocktake.md,,9662,cited by 1 tracked document(s) but no pipeline reaches it
+R/gayini_plot_hydrology_figures.R,ARCHIVE,,,docs/repo_audit_pre_subsampling_stocktake.md,,7256,cited by 1 tracked document(s) but no pipeline reaches it
+R/gayini_plotting_helpers.R,ARCHIVE,,,docs/current_run_order.md,,8556,cited by 1 tracked document(s) but no pipeline reaches it
+R/gayini_review_figure_functions.R,ARCHIVE,,,docs/function_file_inventory.md|docs/repo_audit_pre_subsampling_stocktake.md,,6423,cited by 2 tracked document(s) but no pipeline reaches it
+R/gayini_sampling_allocation.R,ARCHIVE,,,docs/Tier2_TaskH_all_pixel_census_v2.md|docs/archive/Tier1_TaskF_spatial_resampling_spec_v2.md|docs/change_reports/tier2H_gate1_recon_20260715.md,,3328,cited by 4 tracked document(s) but no pipeline reaches it
+R/gayini_sampling_design_map.R,ARCHIVE,,,docs/Tier2_TaskK_gate0_output_census.md|docs/change_reports/tier1a_reproject_sampling_map.md,,14356,cited by 2 tracked document(s) but no pipeline reaches it
+R/gayini_spatial_8058_functions.R,ARCHIVE,,,docs/change_reports/tier1a_reproject_sampling_map.md,,12636,cited by 1 tracked document(s) but no pipeline reaches it
+R/gayini_stratified_sampling_figures.R,ARCHIVE,,,Output/audit/DOC3_findings.md|docs/Tier1_TaskG_figures_and_dashboards_refresh.md|docs/change_reports/tier1G_figures_dashboards_2026-07-14.md,,26157,cited by 6 tracked document(s) but no pipeline reaches it
+R/gayini_stratified_sampling_functions.R,ARCHIVE,,,docs/Gayini_established_data_facts.md|docs/Tier2_TaskH_all_pixel_census_v2.md|docs/Tier2_TaskH_all_pixel_census_v3.md,,15332,cited by 9 tracked document(s) but no pipeline reaches it
+R/gayini_temp_cleanup_functions.R,ARCHIVE,,,docs/function_file_inventory.md,,3281,cited by 1 tracked document(s) but no pipeline reaches it
+R/gayini_time_helpers.R,ARCHIVE,,,docs/current_run_order.md|docs/repo_audit_pre_subsampling_stocktake.md,,1445,cited by 2 tracked document(s) but no pipeline reaches it
+R/gayini_trend_test_figures.R,ARCHIVE,,,docs/change_reports/tier1d_trend_test.md,,17220,cited by 1 tracked document(s) but no pipeline reaches it
+R/gayini_trend_test_functions.R,ARCHIVE,,,Output/audit/DOC1_gateA_verify_answers.md|docs/change_reports/T1_gate0_inventory.md|docs/change_reports/tier1d_trend_test.md,,15691,cited by 3 tracked document(s) but no pipeline reaches it
+R/gayini_veg_regime_functions.R,MIGRATE,EP3_census_parquet,1,docs/Gayini_taskL_merge_checklist.md|docs/change_reports/tier1G_figures_dashboards_2026-07-14.md|docs/change_reports/tier1_dashboards_trial.md,,11458,
+R/gayini_veg_water_census_panels.R,ARCHIVE,,,Output/audit/DOC1_gateA_verify_answers.md|Output/audit/DOC1_gateC_figures_methods.md|Output/audit/DOC3_findings.md,,17780,cited by 13 tracked document(s) but no pipeline reaches it
+R/hydrology_import_functions.R,ARCHIVE,,,docs/CHANGELOG_MER_inundation_20260623.md,,8615,cited by 1 tracked document(s) but no pipeline reaches it
+R/inundation_extraction_functions.R,ARCHIVE,,,docs/function_file_inventory.md,,19521,cited by 1 tracked document(s) but no pipeline reaches it
+R/inundation_pre_post_plotting_functions.R,ARCHIVE,,,docs/codebase_audit_rs_inundation.md|docs/folder_structure_audit_20260623.md|docs/function_file_inventory.md,,3453,cited by 3 tracked document(s) but no pipeline reaches it
+R/inundation_pre_post_raster_functions.R,ARCHIVE,,,docs/function_file_inventory.md|docs/repo_audit_pre_subsampling_stocktake.md|docs/tier0_4_wet_rule_confirm_change_report.md,,46893,cited by 6 tracked document(s) but no pipeline reaches it
+R/modis_ground_cover_functions.R,ARCHIVE,,,docs/CHANGELOG_output_visible_cleanup_20260623.md|docs/canonical_outputs_steps_04_07.md|docs/change_reports/T8_pixel_area_constant_audit.md,,96155,cited by 3 tracked document(s) but no pipeline reaches it
+R/raster_catalog_functions.R,MIGRATE,EP2_flood_frequency,2,docs/function_file_inventory.md|docs/tier0_annual_stack_task.md|docs/tier0_change_report.md,,20385,
+R/raster_subset_functions.R,ARCHIVE,,,docs/function_file_inventory.md,,10797,cited by 1 tracked document(s) but no pipeline reaches it
+R/rs_gauge_join_functions.R,ARCHIVE,,,docs/CHANGELOG_MER_inundation_20260623.md|docs/repo_audit_pre_subsampling_stocktake.md,,12199,cited by 2 tracked document(s) but no pipeline reaches it
+R/step7_figure_helpers.R,ARCHIVE,,,docs/CHANGELOG_rs_consolidation.md|docs/codebase_audit_rs_inundation.md|docs/folder_structure_audit_20260623.md,,15753,cited by 5 tracked document(s) but no pipeline reaches it
+R/vector_prep_functions.R,MIGRATE,EP1_percentile_stack,1,docs/Tier2_TaskK_gate0_output_census.md|docs/change_reports/T1_gateB_dim_management_zone.md|docs/change_reports/T8_pixel_area_constant_audit.md,,21299,
+README.md,MIGRATE,,,Output/audit/DOC1_gateB_value_claims.md|docs/Audit/Gayini_CC_spec_HANDOFF2.md|docs/Gayini_issues_log.md,,1739,required by spec section 5 (documents)
+config/README.md,ARCHIVE,,,Output/audit/DOC1_gateB_value_claims.md|README.md|docs/Audit/Gayini_CC_spec_HANDOFF2.md,,71,cited by 12 tracked document(s) but no pipeline reaches it
+config/class_legends/fractional_cover_bands.csv,ARCHIVE,,,docs/Tier2_TaskH_all_pixel_census.md|docs/change_reports/tier2H_gate1_recon_20260715.md,,500,cited by 2 tracked document(s) but no pipeline reaches it
+config/class_legends/inundation_classes.csv,ARCHIVE,,,,,512,referenced by 1 tracked file(s) but no pipeline reaches it
+config/class_legends/modis_fractional_cover_bands.csv,ARCHIVE,,,,,644,referenced by 1 tracked file(s) but no pipeline reaches it
+config/extraction_settings.csv,ARCHIVE,,,github_push_audit_plan.md,,1117,cited by 1 tracked document(s) but no pipeline reaches it
+demo_spine.R,ARCHIVE,,,docs/Gayini_Results_database_overview.md|docs/archive/Tier1_TaskF_spatial_resampling_spec_v2.md|docs/change_reports/tier2H_all_pixel_census_20260715.md,,2676,cited by 6 tracked document(s) but no pipeline reaches it
+docs/Audit/Gayini_CC_spec_HANDOFF1.md,ARCHIVE,,,,,11704,referenced by 2 tracked file(s) but no pipeline reaches it
+docs/Audit/Gayini_CC_spec_HANDOFF2.md,ORPHAN,,,,,12504,nothing references it and no tracked document names it
+docs/Audit/Gayini_CC_spec_RETRO1.md,ARCHIVE,,,,,11639,referenced by 2 tracked file(s) but no pipeline reaches it
+docs/Audit/Gayini_CC_spec_TRACE1.md,ARCHIVE,,,,,8135,referenced by 2 tracked file(s) but no pipeline reaches it
+docs/Audit/Gayini_RETRO1_gateB_learnings.md,MIGRATE,,,docs/Audit/Gayini_CC_spec_HANDOFF2.md,,12528,required by spec section 5 (documents)
+docs/Audit/Gayini_key_takeaways_handover_DRAFT.md,MIGRATE,,,,,15759,required by spec section 5 (documents)
+docs/Biodiversity_Task_deck_restyle_spec.md,ARCHIVE,,,docs/Biodiversity_workstation_onboarding_and_audit.md,,4974,cited by 1 tracked document(s) but no pipeline reaches it
+docs/Biodiversity_workstation_onboarding_and_audit.md,ARCHIVE,,,,,10108,referenced by 1 tracked file(s) but no pipeline reaches it
+docs/CC_output_structure_inventory.md,ARCHIVE,,,,,2594,referenced by 1 tracked file(s) but no pipeline reaches it
+docs/CHANGELOG_MER_inundation_20260623.md,ARCHIVE,,,,,4782,referenced by 1 tracked file(s) but no pipeline reaches it
+docs/CHANGELOG_folder_cleanup_20260623.md,ARCHIVE,,,,,2015,referenced by 1 tracked file(s) but no pipeline reaches it
+docs/CHANGELOG_output_visible_cleanup_20260623.md,ARCHIVE,,,,,2464,referenced by 1 tracked file(s) but no pipeline reaches it
+docs/CHANGELOG_rs_consolidation.md,ARCHIVE,,,,,2567,referenced by 1 tracked file(s) but no pipeline reaches it
+docs/CHANGELOG_rs_final_pruning.md,ARCHIVE,,,docs/CHANGELOG_rs_consolidation.md|docs/codebase_audit_rs_inundation.md,,969,cited by 2 tracked document(s) but no pipeline reaches it
+docs/CHANGELOG_rs_workflow_simplification.md,ARCHIVE,,,,,2265,referenced by 1 tracked file(s) but no pipeline reaches it
+docs/CLAUDE_TASK_checkerboard_and_dashboards.md,ARCHIVE,,,,,6342,referenced by 1 tracked file(s) but no pipeline reaches it
+docs/CLAUDE_TASK_dashboards.md,ARCHIVE,,,,,4975,referenced by 1 tracked file(s) but no pipeline reaches it
+docs/CLAUDE_TASK_pixel_census_and_rasters.md,ARCHIVE,,,,,6864,referenced by 1 tracked file(s) but no pipeline reaches it
+docs/CLAUDE_md_addendum.md,ARCHIVE,,,,,6459,referenced by 1 tracked file(s) but no pipeline reaches it
+docs/Gayini_Results_database_overview.md,ARCHIVE,,,CLAUDE.md|docs/Gayini_project_lineage_and_learnings.md|docs/Kickoff_CC_T1_zone_stratum.md,,7061,cited by 5 tracked document(s) but no pipeline reaches it
+docs/Gayini_census_audit_kickoff.md,ARCHIVE,,,docs/Tier2_TaskM_deck_evidence_audit_v2.md|docs/change_reports/taskM_gateA_report.md,,7198,cited by 2 tracked document(s) but no pipeline reaches it
+docs/Gayini_deck_rewrites_all_pixel_cut_REVIEW.md,ARCHIVE,,,docs/Tier2_TaskM_gateB_classification.md|docs/Tier2_TaskM_gateB_classification_v2.md,,19024,cited by 2 tracked document(s) but no pipeline reaches it
+docs/Gayini_established_data_facts.md,MIGRATE,,,CLAUDE.md|docs/Gayini_census_audit_kickoff.md|docs/Gayini_deck_rewrites_all_pixel_cut_REVIEW.md,,33069,required by spec section 5 (documents)
+docs/Gayini_issues_log.md,MIGRATE,,,CLAUDE.md|Output/runs/RUN_EP_20260810.md|Output/runs/RUN_MAP1_20260810.md,,117666,required by spec section 5 (documents)
+docs/Gayini_limitations_register_additions_T12.md,ARCHIVE,,,docs/change_reports/PACK1_P2_and_rulings_FGH.md|docs/change_reports/PACK1_rulings_I_and_J.md|docs/change_reports/T12_closeout.md,,4806,cited by 3 tracked document(s) but no pipeline reaches it
+docs/Gayini_limitations_register_additions_T2.md,ARCHIVE,,,docs/change_reports/T2_zone_annual_veg.md,,3358,cited by 1 tracked document(s) but no pipeline reaches it
+docs/Gayini_limitations_register_additions_T6.md,ARCHIVE,,,docs/change_reports/T6_third_grazing_arm.md,,3804,cited by 1 tracked document(s) but no pipeline reaches it
+docs/Gayini_number_provenance_audit.md,MIGRATE,,,CLAUDE.md|docs/CLAUDE_md_addendum.md|docs/Gayini_project_lineage_and_learnings.md,,6411,required by spec section 5 (documents)
+docs/Gayini_output_structure.md,ARCHIVE,,,CLAUDE.md|Output/audit/AUD1_gateA_inventory.md|Output/audit/AUD1_pack_gap_report.md,,10214,cited by 15 tracked document(s) but no pipeline reaches it
+docs/Gayini_path_to_Aug10.md,ARCHIVE,,,docs/Gayini_issues_log.md|docs/Kickoff_dashboards_refresh_chat.md,,3575,cited by 2 tracked document(s) but no pipeline reaches it
+docs/Gayini_pixel_census_data_contract.md,MIGRATE,,,CLAUDE.md|docs/Gayini_census_audit_kickoff.md|docs/Gayini_established_data_facts.md,,9327,required by spec section 5 (documents)
+docs/Gayini_presentation_design_system.md,ARCHIVE,,,docs/Biodiversity_Task_deck_restyle_spec.md|docs/Biodiversity_workstation_onboarding_and_audit.md|docs/Kickoff_dashboards_refresh_chat.md,,8245,cited by 5 tracked document(s) but no pipeline reaches it
+docs/Gayini_project_conversation_history.md,ARCHIVE,,,docs/Gayini_project_lineage_and_learnings.md,,17214,cited by 1 tracked document(s) but no pipeline reaches it
+docs/Gayini_project_goals_and_logic.md,ARCHIVE,,,docs/Tier2_TaskH_ondisk_audit.md|docs/Tier2_TaskH_ondisk_census_groundcover_review.md|docs/Tier2_TaskK_gateA_archive_dead_generations.md,,15719,cited by 4 tracked document(s) but no pipeline reaches it
+docs/Gayini_project_lineage_and_learnings.md,MIGRATE,,,CLAUDE.md|docs/Gayini_established_data_facts.md|docs/Tier2_TaskL_dashboard_report_rollout.md,,11073,required by spec section 5 (documents)
+docs/Gayini_reference_state_finding.md,ARCHIVE,,,docs/reference_update/RS_export_layers_for_biodiversity.md,,7194,cited by 1 tracked document(s) but no pipeline reaches it
+docs/Gayini_sequential_task_list_20260715.md,ARCHIVE,,,docs/Tier2_TaskH_all_pixel_census.md|docs/Tier2_TaskH_all_pixel_census_v2.md|docs/Tier2_TaskH_all_pixel_census_v3.md,,11506,cited by 7 tracked document(s) but no pipeline reaches it
+docs/Gayini_site_report_GA_019_prototype.md,ARCHIVE,,,docs/Kickoff_dashboards_refresh_chat.md|docs/Tier2_D2_site_dashboard_batch_build.md|docs/change_reports/T8_pixel_area_constant_audit.md,,6053,cited by 3 tracked document(s) but no pipeline reaches it
+docs/Gayini_taskL_figure_observations.md,ARCHIVE,,,docs/Gayini_taskL_merge_checklist.md|docs/Gayini_taskL_session_learnings.md|docs/change_reports/taskL_gate3_1_alpha_20260723.md,,4087,cited by 4 tracked document(s) but no pipeline reaches it
+docs/Gayini_taskL_merge_checklist.md,ARCHIVE,,,,,7831,referenced by 1 tracked file(s) but no pipeline reaches it
+docs/Gayini_taskL_session_learnings.md,ARCHIVE,,,docs/change_reports/taskM_gateA_report.md,,11555,cited by 1 tracked document(s) but no pipeline reaches it
+docs/Gayini_workstation_cutover_runbook.md,ARCHIVE,,,,,11605,referenced by 1 tracked file(s) but no pipeline reaches it
+docs/Kickoff_CC_T1_zone_stratum.md,ARCHIVE,,,,,10645,referenced by 1 tracked file(s) but no pipeline reaches it
+docs/Kickoff_dashboards_refresh_chat.md,ARCHIVE,,,,,3152,referenced by 1 tracked file(s) but no pipeline reaches it
+docs/LiDAR/Gayini_LiDAR_TaskU_summary.md,ARCHIVE,,,docs/change_reports/LID1_gateL1_verification.md|docs/reference_update/Gayini_LID1_shippability_audit_spec.md,,24461,cited by 2 tracked document(s) but no pipeline reaches it
+docs/LiDAR/TaskU_findings_note.md,ARCHIVE,,,docs/LiDAR/Gayini_LiDAR_TaskU_summary.md|docs/change_reports/LID1_gateL1_verification.md|docs/change_reports/LID1_rulings_W_to_AB_and_gateL2.md,,9346,cited by 4 tracked document(s) but no pipeline reaches it
+docs/LiDAR/TaskU_gateU2_response_to_CC.md,ARCHIVE,,,docs/change_reports/LID1_gateL1_crosscheck.md,,7320,cited by 1 tracked document(s) but no pipeline reaches it
+docs/LiDAR/TaskU_lidar_structural_lens_v1.2.md,ARCHIVE,,,Output/audit/AUD1_gateA_inventory.md|docs/LiDAR/Gayini_LiDAR_TaskU_summary.md|docs/LiDAR/TaskU_findings_note.md,,33033,cited by 12 tracked document(s) but no pipeline reaches it
+docs/MER_inundation_method_note_20260623.md,ARCHIVE,,,Output/rasters/DATA_share_20260808/README.md,,6309,cited by 1 tracked document(s) but no pipeline reaches it
+docs/README_Gayini_LOOCB_json_inputs.md,ARCHIVE,,,github_push_audit_plan.md,,2218,cited by 1 tracked document(s) but no pipeline reaches it
+docs/Refs/Gayini_remote_sensing_reference_workbook_20260713.xlsm,ARCHIVE,,,,,77500,referenced by 1 tracked file(s) but no pipeline reaches it
+docs/T1_zone_stratum_census_join.md,ARCHIVE,,,docs/Gayini_project_lineage_and_learnings.md|docs/Kickoff_CC_T1_zone_stratum.md|docs/change_reports/T1_gate0_inventory.md,,22642,cited by 8 tracked document(s) but no pipeline reaches it
+docs/T2_zone_annual_veg_extraction.md,ARCHIVE,,,docs/Gayini_project_lineage_and_learnings.md|docs/change_reports/PACK1_P3_captions.md|docs/change_reports/PACK1_P4_build_and_readthrough.md,,16843,cited by 6 tracked document(s) but no pipeline reaches it
+docs/T3_always_green_threshold.md,ARCHIVE,,,CLAUDE.md|docs/Gayini_project_lineage_and_learnings.md|docs/change_reports/T3_gateA1_A2_B_20260803.md,,21010,cited by 5 tracked document(s) but no pipeline reaches it
+docs/T4_spine_evidence_workbook.md,ARCHIVE,,,CLAUDE.md|docs/Gayini_project_lineage_and_learnings.md,,6967,cited by 2 tracked document(s) but no pipeline reaches it
+docs/T5_guardrails_and_checks.md,ARCHIVE,,,CLAUDE.md|docs/Gayini_project_lineage_and_learnings.md|docs/change_reports/T5_change_report.md,,13236,cited by 3 tracked document(s) but no pipeline reaches it
+docs/TaskH_D1_commit_v4.md,ARCHIVE,,,,,3420,referenced by 1 tracked file(s) but no pipeline reaches it
+docs/TaskH_D2_and_figure_reregistration.md,ARCHIVE,,,,,7491,referenced by 1 tracked file(s) but no pipeline reaches it
+docs/TaskJ_plot_support_reference_20260716.csv,ARCHIVE,,,docs/Tier1_TaskJ_prepost_placebo_ladder.md,,2257,cited by 1 tracked document(s) but no pipeline reaches it
+docs/Task_J_handoff_to_next_chat.md,ARCHIVE,,,,,6694,referenced by 1 tracked file(s) but no pipeline reaches it
+docs/Tier0_complete_handoff_to_Tier1.md,ARCHIVE,,,,,9526,referenced by 1 tracked file(s) but no pipeline reaches it
+docs/Tier1J_cuts_locator_slide_taskspec.md,ARCHIVE,,,,,6916,referenced by 1 tracked file(s) but no pipeline reaches it
+docs/Tier1J_raster_registration_taskspec.md,ARCHIVE,,,,,8927,referenced by 1 tracked file(s) but no pipeline reaches it
+docs/Tier1_TaskA_reproject_8058_and_sampling_design_map.md,ARCHIVE,,,docs/change_reports/tier1a_reproject_sampling_map.md,,6037,cited by 1 tracked document(s) but no pipeline reaches it
+docs/Tier1_TaskB_descriptive_figures_F2_F4.md,ARCHIVE,,,docs/change_reports/tier1b_descriptive_figures.md,,5789,cited by 1 tracked document(s) but no pipeline reaches it
+docs/Tier1_TaskC2_F5_legibility_views.md,ARCHIVE,,,,,3445,referenced by 2 tracked file(s) but no pipeline reaches it
+docs/Tier1_TaskC3_F5_figure_split.md,ARCHIVE,,,,,3104,referenced by 2 tracked file(s) but no pipeline reaches it
+docs/Tier1_TaskC_stratified_sampling_frame_F5.md,ARCHIVE,,,,,6700,referenced by 2 tracked file(s) but no pipeline reaches it
+docs/Tier1_TaskD_trend_test_F6.md,ARCHIVE,,,,,5970,referenced by 2 tracked file(s) but no pipeline reaches it
+docs/Tier1_TaskE_groundcover_response_F7.md,ARCHIVE,,,,,13054,referenced by 2 tracked file(s) but no pipeline reaches it
+docs/Tier1_TaskG_dashboard_layout_revision.md,ARCHIVE,,,docs/change_reports/tier1G_figures_dashboards_2026-07-14.md,,5298,cited by 1 tracked document(s) but no pipeline reaches it
+docs/Tier1_TaskG_figures_and_dashboards_refresh.md,ARCHIVE,,,,,7168,referenced by 2 tracked file(s) but no pipeline reaches it
+docs/Tier1_TaskJ_prepost_placebo_ladder.md,ARCHIVE,,,,,20241,referenced by 3 tracked file(s) but no pipeline reaches it
+docs/Tier2_D2_site_dashboard_batch_build.md,ARCHIVE,,,,,20923,referenced by 1 tracked file(s) but no pipeline reaches it
+docs/Tier2_TaskH_all_pixel_census.md,ARCHIVE,,,docs/Gayini_census_audit_kickoff.md|docs/Tier2_TaskH_all_pixel_census_v2.md,,11809,cited by 2 tracked document(s) but no pipeline reaches it
+docs/Tier2_TaskH_all_pixel_census_v2.md,ARCHIVE,,,docs/Tier2_TaskH_all_pixel_census_v3.md|docs/archive/Gayini_subsampling_approach.md|docs/archive/Tier1_TaskF_spatial_resampling_spec_v2.md,,26260,cited by 3 tracked document(s) but no pipeline reaches it
+docs/Tier2_TaskH_all_pixel_census_v3.md,ARCHIVE,,,,,24222,referenced by 3 tracked file(s) but no pipeline reaches it
+docs/Tier2_TaskH_all_pixel_census_v4.md,ARCHIVE,,,docs/TaskH_D1_commit_v4.md|docs/TaskH_D2_and_figure_reregistration.md|docs/Tier2_TaskH_all_pixel_census.md,,25399,cited by 11 tracked document(s) but no pipeline reaches it
+docs/Tier2_TaskH_gateE_figure_build.md,ARCHIVE,,,docs/Tier2_TaskL_dashboard_report_rollout.md|docs/change_reports/taskM_gateA_report.md|docs/change_reports/tier2H_gateE_palette_audit.md,,9247,cited by 3 tracked document(s) but no pipeline reaches it
+docs/Tier2_TaskH_ondisk_audit.md,ARCHIVE,,,docs/Tier2_TaskM_deck_evidence_audit_v2.md|docs/change_reports/taskM_gateA_report.md,,10842,cited by 2 tracked document(s) but no pipeline reaches it
+docs/Tier2_TaskH_ondisk_census_groundcover_review.md,ARCHIVE,,,docs/Tier2_TaskH_gateE_figure_build.md|docs/Tier2_TaskM_deck_evidence_audit_v2.md|docs/change_reports/taskM_gateA_report.md,,35959,cited by 3 tracked document(s) but no pipeline reaches it
+docs/Tier2_TaskI_deck_stocktake_and_review_bundle.md,ARCHIVE,,,docs/Tier2_TaskH_ondisk_census_groundcover_review.md|docs/Tier2_TaskM_deck_evidence_audit_v2.md|docs/change_reports/taskM_gateA_report.md,,12055,cited by 3 tracked document(s) but no pipeline reaches it
+docs/Tier2_TaskK_gate0_output_census.md,ARCHIVE,,,docs/Tier2_TaskK_gateA_archive_dead_generations.md,,15015,cited by 1 tracked document(s) but no pipeline reaches it
+docs/Tier2_TaskK_gateA_archive_dead_generations.md,ARCHIVE,,,,,8694,referenced by 3 tracked file(s) but no pipeline reaches it
+docs/Tier2_TaskK_workstation_git_sync_check.md,ARCHIVE,,,,,8785,referenced by 2 tracked file(s) but no pipeline reaches it
+docs/Tier2_TaskL_dashboard_report_rollout.md,ARCHIVE,,,docs/Gayini_taskL_merge_checklist.md|docs/change_reports/taskL_gate3_1_20260723.md|docs/change_reports/taskL_gate3_20260722.md,,27543,cited by 3 tracked document(s) but no pipeline reaches it
+docs/Tier2_TaskM_deck_evidence_audit.md,ARCHIVE,,,,,19097,referenced by 4 tracked file(s) but no pipeline reaches it
+docs/Tier2_TaskM_deck_evidence_audit_v2.md,ARCHIVE,,,docs/change_reports/taskM_gateA_report.md|docs/change_reports/taskM_gateC_report.md|docs/change_reports/taskM_gateD_report.md,,31352,cited by 3 tracked document(s) but no pipeline reaches it
+docs/Tier2_TaskM_gateB_classification.md,ARCHIVE,,,docs/change_reports/taskM_gateC_report.md,,10600,cited by 1 tracked document(s) but no pipeline reaches it
+docs/Tier2_TaskM_gateB_classification_v2.md,ARCHIVE,,,docs/change_reports/taskM_gateD_report.md,,18759,cited by 1 tracked document(s) but no pipeline reaches it
+docs/archive/Gayini_subsampling_approach.md,ARCHIVE,,,docs/Gayini_project_lineage_and_learnings.md|docs/Tier2_TaskH_all_pixel_census_v2.md|docs/Tier2_TaskH_all_pixel_census_v3.md,,11487,cited by 7 tracked document(s) but no pipeline reaches it
+docs/archive/LiDAR/TaskU_lidar_structural_lens_v1.1.md,ARCHIVE,,,docs/change_reports/TaskU_gateU0_report.md,,23673,cited by 1 tracked document(s) but no pipeline reaches it
+docs/archive/LiDAR/TaskU_lidar_structural_lens_v1.md,ARCHIVE,,,,,18456,referenced by 1 tracked file(s) but no pipeline reaches it
+docs/archive/README_superseded.md,ORPHAN,,,,,1087,nothing references it and no tracked document names it
+docs/archive/Tier1_TaskF_spatial_resampling_spec_v2.md,ARCHIVE,,,docs/Tier2_TaskH_all_pixel_census.md|docs/Tier2_TaskH_all_pixel_census_v2.md|docs/Tier2_TaskH_all_pixel_census_v3.md,,14904,cited by 7 tracked document(s) but no pipeline reaches it
+docs/archive_manifest_output_visible_cleanup_20260623.csv,ARCHIVE,,,docs/CHANGELOG_output_visible_cleanup_20260623.md|docs/folder_structure_audit_addendum_output_visible_cleanup_20260623.md,,2808,cited by 2 tracked document(s) but no pipeline reaches it
+docs/archive_manifest_repo_cleanup_20260623.csv,ARCHIVE,,,docs/CHANGELOG_folder_cleanup_20260623.md|docs/folder_structure_audit_20260623.md,,2512,cited by 2 tracked document(s) but no pipeline reaches it
+docs/canonical_output_register_20260623.csv,ARCHIVE,,,docs/CHANGELOG_folder_cleanup_20260623.md|docs/folder_structure_audit_20260623.md,,6649,cited by 2 tracked document(s) but no pipeline reaches it
+docs/canonical_outputs_steps_04_07.md,ARCHIVE,,,docs/code_cleanup_handoff_report.md|github_push_audit_plan.md,,6701,cited by 2 tracked document(s) but no pipeline reaches it
+docs/census_summaries/census_community_flood_freq_means.csv,ARCHIVE,,,docs/Gayini_deck_rewrites_all_pixel_cut_REVIEW.md|docs/Tier2_D2_site_dashboard_batch_build.md|docs/Tier2_TaskM_deck_evidence_audit.md,,374,cited by 7 tracked document(s) but no pipeline reaches it
+docs/census_summaries/census_flood_zone_by_community.csv,ARCHIVE,,,docs/Tier2_TaskH_ondisk_audit.md|docs/Tier2_TaskM_deck_evidence_audit.md|docs/Tier2_TaskM_deck_evidence_audit_v2.md,,1621,cited by 5 tracked document(s) but no pipeline reaches it
+docs/census_summaries/census_green_at_floor_farm_distribution.csv,ARCHIVE,,,docs/Tier2_TaskM_gateB_classification_v2.md|docs/change_reports/taskH_ondisk_audit_2026-07-20.md|docs/change_reports/taskM_gateC_report.md,,211,cited by 4 tracked document(s) but no pipeline reaches it
+docs/census_summaries/census_percentile_by_community.csv,ARCHIVE,,,docs/Tier2_TaskH_ondisk_audit.md|docs/Tier2_TaskM_deck_evidence_audit.md|docs/Tier2_TaskM_deck_evidence_audit_v2.md,,2049,cited by 5 tracked document(s) but no pipeline reaches it
+docs/change_reports/FIG1_T1_pack_order_and_rulings_TUV.md,ORPHAN,,,,,6870,nothing references it and no tracked document names it
+docs/change_reports/LID1_gateL1_crosscheck.md,ORPHAN,,,,,11640,nothing references it and no tracked document names it
+docs/change_reports/LID1_gateL1_verification.md,ARCHIVE,,,Output/audit/DOC1_followon_lidar_section_review.md|docs/change_reports/LID1_gateL1_crosscheck.md,,11560,cited by 2 tracked document(s) but no pipeline reaches it
+docs/change_reports/LID1_gateL3_L4_recommendations.md,ARCHIVE,,,Output/audit/DOC1_followon_lidar_section_review.md,,19565,cited by 1 tracked document(s) but no pipeline reaches it
+docs/change_reports/LID1_rulings_W_to_AB_and_gateL2.md,ARCHIVE,,,,,7805,referenced by 1 tracked file(s) but no pipeline reaches it
+docs/change_reports/PACK1_P1_item_list.md,ARCHIVE,,,docs/change_reports/PACK1_P3_captions.md,,7489,cited by 1 tracked document(s) but no pipeline reaches it
+docs/change_reports/PACK1_P1_item_list_amendment.md,ORPHAN,,,,,3563,nothing references it and no tracked document names it
+docs/change_reports/PACK1_P2_and_rulings_FGH.md,ORPHAN,,,,,5107,nothing references it and no tracked document names it
+docs/change_reports/PACK1_P3_captions.md,ARCHIVE,,,,,12502,referenced by 2 tracked file(s) but no pipeline reaches it
+docs/change_reports/PACK1_P4_assembly.md,ARCHIVE,,,docs/Gayini_issues_log.md|docs/change_reports/PACK1_P4_build_and_readthrough.md|docs/change_reports/PACK1_restore_and_reassemble.md,,6168,cited by 3 tracked document(s) but no pipeline reaches it
+docs/change_reports/PACK1_P4_build_and_readthrough.md,ARCHIVE,,,,,14304,referenced by 1 tracked file(s) but no pipeline reaches it
+docs/change_reports/PACK1_RPTSCOPE_gate0_recon.md,ARCHIVE,,,,,13917,referenced by 1 tracked file(s) but no pipeline reaches it
+docs/change_reports/PACK1_addendum_ADA_to_ADD.md,ORPHAN,,,,,3772,nothing references it and no tracked document names it
+docs/change_reports/PACK1_restore_and_reassemble.md,ARCHIVE,,,,,5177,referenced by 1 tracked file(s) but no pipeline reaches it
+docs/change_reports/PACK1_rulings_I_and_J.md,ORPHAN,,,,,4483,nothing references it and no tracked document names it
+docs/change_reports/REG1_gateA_recon.md,ARCHIVE,,,,,2253,referenced by 3 tracked file(s) but no pipeline reaches it
+docs/change_reports/REG1_gateBCD_register_promote.md,ARCHIVE,,,,,4662,referenced by 3 tracked file(s) but no pipeline reaches it
+docs/change_reports/REG1_intercept_spread_correction.md,ARCHIVE,,,,,1661,referenced by 1 tracked file(s) but no pipeline reaches it
+docs/change_reports/REG2_gateAB_composition.md,ARCHIVE,,,,,5054,referenced by 3 tracked file(s) but no pipeline reaches it
+docs/change_reports/REG2_gateC_register.md,ARCHIVE,,,,,4734,referenced by 3 tracked file(s) but no pipeline reaches it
+docs/change_reports/REM1_pack_item_remediation.md,ORPHAN,,,,,18674,nothing references it and no tracked document names it
+docs/change_reports/RPTSCOPE_R1_report_set_and_claim_audit.md,ORPHAN,,,,,9192,nothing references it and no tracked document names it
+docs/change_reports/RPTSCOPE_R1b_claim_audit_complete.md,ORPHAN,,,,,6918,nothing references it and no tracked document names it
+docs/change_reports/RPTSCOPE_R2_pin_withdrawal.md,ORPHAN,,,,,5550,nothing references it and no tracked document names it
+docs/change_reports/RPTSCOPE_R2_pinlist_STOP.md,ARCHIVE,,,Output/runs/RUN_EP_20260810.md,,10664,cited by 1 tracked document(s) but no pipeline reaches it
+docs/change_reports/RPTSCOPE_R2_prep_STOP.md,ORPHAN,,,,,7002,nothing references it and no tracked document names it
+docs/change_reports/RPTSCOPE_R2_write.md,ARCHIVE,,,,,5883,referenced by 2 tracked file(s) but no pipeline reaches it
+docs/change_reports/T10_gateB_annual_gap_series.md,ARCHIVE,,,,,4772,referenced by 5 tracked file(s) but no pipeline reaches it
+docs/change_reports/T10_gateC_residuals.md,ARCHIVE,,,,,8068,referenced by 5 tracked file(s) but no pipeline reaches it
+docs/change_reports/T10_gateD_register.md,ARCHIVE,,,docs/change_reports/T10_gateC_residuals.md,,8603,cited by 1 tracked document(s) but no pipeline reaches it
+docs/change_reports/T11_v2_gateC.md,ARCHIVE,,,,,8902,referenced by 3 tracked file(s) but no pipeline reaches it
+docs/change_reports/T12_closeout.md,ARCHIVE,,,,,5329,referenced by 5 tracked file(s) but no pipeline reaches it
+docs/change_reports/T12_gate0_recon.md,ARCHIVE,,,Output/audit/DOC2_gate0_verify_sweep.md,,13109,cited by 1 tracked document(s) but no pipeline reaches it
+docs/change_reports/T12_gateA.md,ARCHIVE,,,,,6627,referenced by 5 tracked file(s) but no pipeline reaches it
+docs/change_reports/T12_gateB.md,ARCHIVE,,,,,6103,referenced by 5 tracked file(s) but no pipeline reaches it
+docs/change_reports/T12_gateC.md,ARCHIVE,,,,,7254,referenced by 5 tracked file(s) but no pipeline reaches it
+docs/change_reports/T12_gateD.md,ARCHIVE,,,docs/Gayini_limitations_register_additions_T12.md|docs/change_reports/T12_closeout.md,,7871,cited by 2 tracked document(s) but no pipeline reaches it
+docs/change_reports/T12_supply_and_gateA0.md,ARCHIVE,,,Output/audit/DOC2_gate0_verify_sweep.md,,7173,cited by 1 tracked document(s) but no pipeline reaches it
+docs/change_reports/T12_v4_caveat_correction.md,ARCHIVE,,,,,2266,referenced by 5 tracked file(s) but no pipeline reaches it
+docs/change_reports/T13_gateA_part_flood.md,ARCHIVE,,,,,3070,referenced by 4 tracked file(s) but no pipeline reaches it
+docs/change_reports/T13_gateB_measures.md,ARCHIVE,,,,,6442,referenced by 4 tracked file(s) but no pipeline reaches it
+docs/change_reports/T13_gateC_classification.md,ARCHIVE,,,docs/change_reports/PACK1_P1_item_list_amendment.md|docs/change_reports/T13_gateB_measures.md|docs/change_reports/T13_gateD_map.md,,17661,cited by 3 tracked document(s) but no pipeline reaches it
+docs/change_reports/T13_gateD_map.md,ARCHIVE,,,,,20284,referenced by 4 tracked file(s) but no pipeline reaches it
+docs/change_reports/T13_gateE_register_and_bundle.md,ARCHIVE,,,,,12970,referenced by 4 tracked file(s) but no pipeline reaches it
+docs/change_reports/T1_gate0_inventory.md,ARCHIVE,,,docs/Kickoff_CC_T1_zone_stratum.md|docs/T1_zone_stratum_census_join.md,,10155,cited by 2 tracked document(s) but no pipeline reaches it
+docs/change_reports/T1_gateA_recon.md,ARCHIVE,,,docs/change_reports/T1_gate0_inventory.md,,7636,cited by 1 tracked document(s) but no pipeline reaches it
+docs/change_reports/T1_gateB1.md,ARCHIVE,,,,,6185,referenced by 3 tracked file(s) but no pipeline reaches it
+docs/change_reports/T1_gateB_dim_management_zone.md,ARCHIVE,,,docs/Gayini_project_lineage_and_learnings.md,,7478,cited by 1 tracked document(s) but no pipeline reaches it
+docs/change_reports/T1_gateC.md,ARCHIVE,,,,,5550,referenced by 3 tracked file(s) but no pipeline reaches it
+docs/change_reports/T1_gateD.md,ARCHIVE,,,,,7305,referenced by 4 tracked file(s) but no pipeline reaches it
+docs/change_reports/T2_zone_annual_veg.md,ARCHIVE,,,,,11826,referenced by 5 tracked file(s) but no pipeline reaches it
+docs/change_reports/T3_gateA1_A2_B_20260803.md,ARCHIVE,,,docs/change_reports/T3_gateCDE_20260803.md,,15552,cited by 1 tracked document(s) but no pipeline reaches it
+docs/change_reports/T3_gateA_recon_20260803.md,ARCHIVE,,,docs/change_reports/T3_gateA1_A2_B_20260803.md|docs/change_reports/T3_gateCDE_20260803.md,,11833,cited by 2 tracked document(s) but no pipeline reaches it
+docs/change_reports/T3_gateCDE_20260803.md,ARCHIVE,,,docs/change_reports/PACK1_P3_captions.md,,13557,cited by 1 tracked document(s) but no pipeline reaches it
+docs/change_reports/T5_change_report.md,ARCHIVE,,,docs/T5_guardrails_and_checks.md,,5658,cited by 1 tracked document(s) but no pipeline reaches it
+docs/change_reports/T6_third_grazing_arm.md,ARCHIVE,,,,,5834,referenced by 5 tracked file(s) but no pipeline reaches it
+docs/change_reports/T8_T9_T10_gateA_recon.md,ARCHIVE,,,docs/reference_update/T8_T9_T10_gateA_decisions.md,,9756,cited by 1 tracked document(s) but no pipeline reaches it
+docs/change_reports/T8_gateA_inventory_and_T9_addendum.md,ARCHIVE,,,,,9315,referenced by 5 tracked file(s) but no pipeline reaches it
+docs/change_reports/T8_gateBD_dim_headline_number.md,ARCHIVE,,,,,7824,referenced by 5 tracked file(s) but no pipeline reaches it
+docs/change_reports/T8_gateB_prewrite_sixth_pin_STOP.md,ARCHIVE,,,,,5191,referenced by 5 tracked file(s) but no pipeline reaches it
+docs/change_reports/T8_pixel_area_constant_audit.md,ARCHIVE,,,docs/Gayini_issues_log.md,,4744,cited by 1 tracked document(s) but no pipeline reaches it
+docs/change_reports/TaskU_gateU0_report.md,ARCHIVE,,,docs/LiDAR/TaskU_lidar_structural_lens_v1.2.md,,16701,cited by 1 tracked document(s) but no pipeline reaches it
+docs/change_reports/TaskU_gateU1_report.md,ARCHIVE,,,Output/audit/DOC1_followon_lidar_section_review.md|docs/change_reports/LID1_gateL1_crosscheck.md|docs/change_reports/LID1_gateL1_verification.md,,17749,cited by 5 tracked document(s) but no pipeline reaches it
+docs/change_reports/TaskU_gateU2_report.md,ARCHIVE,,,docs/LiDAR/TaskU_gateU2_response_to_CC.md,,9405,cited by 1 tracked document(s) but no pipeline reaches it
+docs/change_reports/TaskU_gateU3_report.md,ARCHIVE,,,Output/audit/DOC1_followon_lidar_section_review.md|docs/change_reports/LID1_gateL1_crosscheck.md|docs/change_reports/LID1_gateL1_verification.md,,16591,cited by 3 tracked document(s) but no pipeline reaches it
+docs/change_reports/TaskU_gateU4a_and_U3_7_report.md,ARCHIVE,,,docs/LiDAR/Gayini_LiDAR_TaskU_summary.md|docs/change_reports/LID1_gateL1_crosscheck.md|docs/change_reports/LID1_gateL1_verification.md,,14117,cited by 4 tracked document(s) but no pipeline reaches it
+docs/change_reports/adrian_pack_T1_F3_F5.md,ARCHIVE,,,,,7636,referenced by 1 tracked file(s) but no pipeline reaches it
+docs/change_reports/d2_site_dashboard_batch_20260720.md,ARCHIVE,,,,,6793,referenced by 1 tracked file(s) but no pipeline reaches it
+docs/change_reports/floor_flood_precision_correction.md,ARCHIVE,,,Output/audit/AUD1_gateA_inventory.md|Output/audit/AUD1_pack_gap_report.md|docs/change_reports/T11_v2_gateC.md,,6608,cited by 4 tracked document(s) but no pipeline reaches it
+docs/change_reports/taskH_ondisk_audit_2026-07-20.md,ARCHIVE,,,docs/change_reports/taskM_gateA_report.md,,12808,cited by 1 tracked document(s) but no pipeline reaches it
+docs/change_reports/taskI_deck_stocktake_20260717.md,ARCHIVE,,,docs/Gayini_census_audit_kickoff.md|docs/Gayini_deck_rewrites_all_pixel_cut_REVIEW.md|docs/Kickoff_dashboards_refresh_chat.md,,13678,cited by 5 tracked document(s) but no pipeline reaches it
+docs/change_reports/taskL_gate3_1_20260723.md,ARCHIVE,,,,,5366,referenced by 1 tracked file(s) but no pipeline reaches it
+docs/change_reports/taskL_gate3_1_alpha_20260723.md,ARCHIVE,,,,,4008,referenced by 1 tracked file(s) but no pipeline reaches it
+docs/change_reports/taskL_gate3_1_wigglefix_20260723.md,ARCHIVE,,,,,3386,referenced by 1 tracked file(s) but no pipeline reaches it
+docs/change_reports/taskL_gate3_20260722.md,ARCHIVE,,,,,7541,referenced by 1 tracked file(s) but no pipeline reaches it
+docs/change_reports/taskM_gateA_floor_claims_inventory.csv,ARCHIVE,,,docs/Tier2_TaskM_deck_evidence_audit_v2.md|docs/change_reports/taskM_gateA_report.md|docs/change_reports/taskM_gateC_report.md,,27521,cited by 3 tracked document(s) but no pipeline reaches it
+docs/change_reports/taskM_gateA_output_inventory.csv,ARCHIVE,,,docs/Tier2_TaskM_deck_evidence_audit.md|docs/Tier2_TaskM_deck_evidence_audit_v2.md|docs/Tier2_TaskM_gateB_classification.md,,238871,cited by 5 tracked document(s) but no pipeline reaches it
+docs/change_reports/taskM_gateA_report.md,ARCHIVE,,,docs/Tier2_TaskM_deck_evidence_audit.md|docs/Tier2_TaskM_deck_evidence_audit_v2.md|docs/Tier2_TaskM_gateB_classification.md,,28923,cited by 4 tracked document(s) but no pipeline reaches it
+docs/change_reports/taskM_gateA_stale_input_risk.csv,ARCHIVE,,,docs/change_reports/taskM_gateA_report.md,,64671,cited by 1 tracked document(s) but no pipeline reaches it
+docs/change_reports/taskM_gateC_report.md,ARCHIVE,,,Output/audit/DOC2_gate0_verify_sweep.md|docs/Tier2_TaskM_deck_evidence_audit.md|docs/Tier2_TaskM_deck_evidence_audit_v2.md,,20889,cited by 3 tracked document(s) but no pipeline reaches it
+docs/change_reports/taskM_gateD_p05_ge80_contiguity.csv,ARCHIVE,,,docs/Tier2_TaskM_deck_evidence_audit.md|docs/Tier2_TaskM_deck_evidence_audit_v2.md|docs/change_reports/taskM_gateD_report.md,,7909,cited by 3 tracked document(s) but no pipeline reaches it
+docs/change_reports/taskM_gateD_report.md,ARCHIVE,,,Output/audit/DOC2_gate0_verify_sweep.md|docs/change_reports/T3_gateA1_A2_B_20260803.md,,14310,cited by 2 tracked document(s) but no pipeline reaches it
+docs/change_reports/taskM_gateD_veg_p05_distribution.csv,ARCHIVE,,,docs/Tier2_TaskM_deck_evidence_audit.md|docs/Tier2_TaskM_deck_evidence_audit_v2.md|docs/change_reports/taskM_gateD_report.md,,8499,cited by 3 tracked document(s) but no pipeline reaches it
+docs/change_reports/task_J_gate1_recon_20260717.md,ARCHIVE,,,,,6096,referenced by 1 tracked file(s) but no pipeline reaches it
+docs/change_reports/task_J_gate2_single_date_2018_20260717.md,ARCHIVE,,,,,5321,referenced by 1 tracked file(s) but no pipeline reaches it
+docs/change_reports/task_J_gate3_placebo_ladder_20260718.md,ARCHIVE,,,,,6102,referenced by 1 tracked file(s) but no pipeline reaches it
+docs/change_reports/task_J_gate4_law_and_figures_20260718.md,ARCHIVE,,,,,7597,referenced by 2 tracked file(s) but no pipeline reaches it
+docs/change_reports/task_J_gate5_register_and_close_20260718.md,ARCHIVE,,,,,6553,referenced by 1 tracked file(s) but no pipeline reaches it
+docs/change_reports/tier1G_figures_dashboards_2026-07-14.md,ARCHIVE,,,,,11961,referenced by 4 tracked file(s) but no pipeline reaches it
+docs/change_reports/tier1_dashboards_trial.md,ARCHIVE,,,,,4560,referenced by 4 tracked file(s) but no pipeline reaches it
+docs/change_reports/tier1_pixel_census.md,ARCHIVE,,,,,5204,referenced by 6 tracked file(s) but no pipeline reaches it
+docs/change_reports/tier1_veg_regime_checkerboard.md,ARCHIVE,,,,,5015,referenced by 6 tracked file(s) but no pipeline reaches it
+docs/change_reports/tier1a_reproject_sampling_map.md,ARCHIVE,,,docs/Tier1_TaskA_reproject_8058_and_sampling_design_map.md,,8505,cited by 1 tracked document(s) but no pipeline reaches it
+docs/change_reports/tier1b_descriptive_figures.md,ARCHIVE,,,docs/Tier1_TaskB_descriptive_figures_F2_F4.md,,6987,cited by 1 tracked document(s) but no pipeline reaches it
+docs/change_reports/tier1c2_f5_legibility.md,ARCHIVE,,,docs/Tier1_TaskC2_F5_legibility_views.md,,4023,cited by 1 tracked document(s) but no pipeline reaches it
+docs/change_reports/tier1c3_f5_figures.md,ARCHIVE,,,,,3674,referenced by 6 tracked file(s) but no pipeline reaches it
+docs/change_reports/tier1c_stratified_sampling.md,ARCHIVE,,,docs/Tier1_TaskC_stratified_sampling_frame_F5.md,,6007,cited by 1 tracked document(s) but no pipeline reaches it
+docs/change_reports/tier1d_trend_test.md,ARCHIVE,,,,,6800,referenced by 6 tracked file(s) but no pipeline reaches it
+docs/change_reports/tier1e_f7_groundcover_response.md,ARCHIVE,,,,,5146,referenced by 6 tracked file(s) but no pipeline reaches it
+docs/change_reports/tier2H_all_pixel_census_20260715.md,ARCHIVE,,,docs/Tier2_TaskI_deck_stocktake_and_review_bundle.md,,40584,cited by 1 tracked document(s) but no pipeline reaches it
+docs/change_reports/tier2H_gate1_recon_20260715.md,ARCHIVE,,,docs/Tier2_TaskH_all_pixel_census_v2.md|docs/Tier2_TaskH_all_pixel_census_v3.md|docs/Tier2_TaskH_all_pixel_census_v4.md,,8606,cited by 3 tracked document(s) but no pipeline reaches it
+docs/change_reports/tier2H_gateE_palette_audit.md,ARCHIVE,,,docs/Tier2_TaskH_gateE_figure_build.md|docs/change_reports/T13_gateD_map.md,,2346,cited by 2 tracked document(s) but no pipeline reaches it
+docs/code_cleanup_handoff_report.md,ARCHIVE,,,,,5200,referenced by 1 tracked file(s) but no pipeline reaches it
+docs/codebase_audit_rs_inundation.md,ARCHIVE,,,docs/CHANGELOG_rs_consolidation.md,,8701,cited by 1 tracked document(s) but no pipeline reaches it
+docs/codex_context.md,ARCHIVE,,,docs/Gayini_project_lineage_and_learnings.md|github_push_audit_plan.md,,14861,cited by 2 tracked document(s) but no pipeline reaches it
+docs/config/gayini_loocb_geojson_config_template.csv,ARCHIVE,,,docs/README_Gayini_LOOCB_json_inputs.md,,917,cited by 1 tracked document(s) but no pipeline reaches it
+docs/current_run_order.md,ARCHIVE,,,README.md|docs/CHANGELOG_rs_workflow_simplification.md|docs/Gayini_project_lineage_and_learnings.md,,8552,cited by 9 tracked document(s) but no pipeline reaches it
+docs/docs/Gayini_remote_sensing_reference_workbook_expanded_20260708.xlsm,ARCHIVE,,,,,75305,referenced by 1 tracked file(s) but no pipeline reaches it
+docs/docs/example_input_structure_summary.csv,ARCHIVE,,,,,5890,referenced by 1 tracked file(s) but no pipeline reaches it
+docs/folder_cleanup_manifest_20260623.csv,ARCHIVE,,,docs/CHANGELOG_folder_cleanup_20260623.md,,24927,cited by 1 tracked document(s) but no pipeline reaches it
+docs/folder_structure_audit_20260623.md,ARCHIVE,,,docs/CHANGELOG_folder_cleanup_20260623.md,,25094,cited by 1 tracked document(s) but no pipeline reaches it
+docs/folder_structure_audit_addendum_output_visible_cleanup_20260623.md,ARCHIVE,,,docs/folder_structure_audit_20260623.md,,2580,cited by 1 tracked document(s) but no pipeline reaches it
+docs/function_file_inventory.md,ARCHIVE,,,docs/code_cleanup_handoff_report.md|github_push_audit_plan.md,,4180,cited by 2 tracked document(s) but no pipeline reaches it
+docs/gayini_figure_driven_project_ladder.png,ARCHIVE,,,,,445763,referenced by 1 tracked file(s) but no pipeline reaches it
+docs/output_cleanup_candidates_summary.csv,ARCHIVE,,,docs/Gayini_project_lineage_and_learnings.md|docs/output_cleanup_policy.md,,326,cited by 2 tracked document(s) but no pipeline reaches it
+docs/output_cleanup_execution_summary.md,ARCHIVE,,,,,1363,referenced by 1 tracked file(s) but no pipeline reaches it
+docs/output_cleanup_policy.md,ARCHIVE,,,docs/Gayini_project_lineage_and_learnings.md,,1579,cited by 1 tracked document(s) but no pipeline reaches it
+docs/output_handoff_set.csv,ARCHIVE,,,docs/output_cleanup_policy.md,,85251,cited by 1 tracked document(s) but no pipeline reaches it
+docs/pr_handoff_note_20260628.md,ARCHIVE,,,,,2092,referenced by 1 tracked file(s) but no pipeline reaches it
+docs/reference_update/CC_handover_DOC1_gates_BCDE.md,ARCHIVE,,,docs/change_reports/LID1_gateL3_L4_recommendations.md,,5707,cited by 1 tracked document(s) but no pipeline reaches it
+docs/reference_update/Gayini_CC_spec_DASH2.md,ARCHIVE,,,,,8031,referenced by 1 tracked file(s) but no pipeline reaches it
+docs/reference_update/Gayini_CC_spec_DATA1.md,ARCHIVE,,,,,9334,referenced by 2 tracked file(s) but no pipeline reaches it
+docs/reference_update/Gayini_CC_spec_DELIVER1.md,ARCHIVE,,,,,7358,referenced by 2 tracked file(s) but no pipeline reaches it
+docs/reference_update/Gayini_CC_spec_DIAG1.md,ARCHIVE,,,docs/reference_update/Gayini_CC_spec_DIAG1_v2.md,,13788,cited by 1 tracked document(s) but no pipeline reaches it
+docs/reference_update/Gayini_CC_spec_DIAG1_v2.md,ARCHIVE,,,Output/audit/RETRO1_report.md|Output/diag/DIAG1_diagnostics.md,,13871,cited by 2 tracked document(s) but no pipeline reaches it
+docs/reference_update/Gayini_CC_spec_EXEMPLAR1.md,ARCHIVE,,,Output/diag/EXEMPLAR1_report.md,,9252,cited by 1 tracked document(s) but no pipeline reaches it
+docs/reference_update/Gayini_CC_spec_GLM1.md,ARCHIVE,,,Output/glm/GLM1_prereg.md,,8372,cited by 1 tracked document(s) but no pipeline reaches it
+docs/reference_update/Gayini_CC_spec_SCHEM1.md,ARCHIVE,,,Output/audit/SCHEM1_verification_findings.md|docs/reference_update/Gayini_PARTREG_findings.md,,5715,cited by 2 tracked document(s) but no pipeline reaches it
+docs/reference_update/Gayini_CC_specs_from_biodiversity_session_20260730.md,ARCHIVE,,,,,16012,referenced by 2 tracked file(s) but no pipeline reaches it
+docs/reference_update/Gayini_L01_note_for_report_stream.md,ARCHIVE,,,,,6514,referenced by 1 tracked file(s) but no pipeline reaches it
+docs/reference_update/Gayini_LID1_shippability_audit_spec.md,ARCHIVE,,,,,10301,referenced by 2 tracked file(s) but no pipeline reaches it
+docs/reference_update/Gayini_LiDAR_implications_for_reference_state.md,ARCHIVE,,,docs/change_reports/LID1_gateL1_verification.md|docs/change_reports/LID1_rulings_W_to_AB_and_gateL2.md|docs/reference_update/Gayini_R6_metric_review_20260802.md,,7703,cited by 3 tracked document(s) but no pipeline reaches it
+docs/reference_update/Gayini_LiDAR_section_handoff_to_methods.md,ARCHIVE,,,Output/audit/DOC1_followon_lidar_section_review.md|docs/change_reports/LID1_gateL3_L4_recommendations.md,,11784,cited by 2 tracked document(s) but no pipeline reaches it
+docs/reference_update/Gayini_PACK1_RPTSCOPE_spec_20260802.md,ARCHIVE,,,docs/change_reports/PACK1_RPTSCOPE_gate0_recon.md|docs/change_reports/RPTSCOPE_R1_report_set_and_claim_audit.md,,17644,cited by 2 tracked document(s) but no pipeline reaches it
+docs/reference_update/Gayini_PARTREG_findings.md,ARCHIVE,,,docs/reports/Gayini_V12_change_list.md,,10866,cited by 1 tracked document(s) but no pipeline reaches it
+docs/reference_update/Gayini_R6_bala_floor_flood_placement.md,ARCHIVE,,,docs/LiDAR/TaskU_findings_note.md|docs/change_reports/TaskU_gateU4a_and_U3_7_report.md|docs/reference_update/Gayini_LiDAR_implications_for_reference_state.md,,8174,cited by 4 tracked document(s) but no pipeline reaches it
+docs/reference_update/Gayini_R6_metric_review_20260802.md,ARCHIVE,,,docs/Gayini_issues_log.md|docs/LiDAR/TaskU_findings_note.md|docs/change_reports/LID1_gateL1_verification.md,,6884,cited by 4 tracked document(s) but no pipeline reaches it
+docs/reference_update/Gayini_REG1_REG2_spec.md,ARCHIVE,,,CLAUDE.md|Output/runs/RUN_EP_20260810.md|docs/change_reports/REG1_gateA_recon.md,,9206,cited by 7 tracked document(s) but no pipeline reaches it
+docs/reference_update/Gayini_RS_note_to_report_stream_20260731.md,ARCHIVE,,,,,3992,referenced by 1 tracked file(s) but no pipeline reaches it
+docs/reference_update/Gayini_RS_reply_to_report_stream_20260729.md,ARCHIVE,,,,,11025,referenced by 1 tracked file(s) but no pipeline reaches it
+docs/reference_update/Gayini_T10_v2_amendment_A1_gateC.md,ARCHIVE,,,docs/change_reports/T10_gateC_residuals.md,,6334,cited by 1 tracked document(s) but no pipeline reaches it
+docs/reference_update/Gayini_T10_v2_spec.md,ARCHIVE,,,CLAUDE.md|Output/runs/RUN_EP_20260810.md|docs/change_reports/T10_gateB_annual_gap_series.md,,10781,cited by 4 tracked document(s) but no pipeline reaches it
+docs/reference_update/Gayini_T11_v2_spec.md,ARCHIVE,,,docs/change_reports/T11_v2_gateC.md,,7014,cited by 1 tracked document(s) but no pipeline reaches it
+docs/reference_update/Gayini_T13_spec.md,ARCHIVE,,,CLAUDE.md|docs/change_reports/T13_gateA_part_flood.md|docs/change_reports/T13_gateB_measures.md,,9098,cited by 6 tracked document(s) but no pipeline reaches it
+docs/reference_update/Gayini_caption_register.md,ARCHIVE,,,Output/runs/RUN_PARTSCATTER_20260809.md,,27082,cited by 1 tracked document(s) but no pipeline reaches it
+docs/reference_update/Gayini_deliverables_register.md,ARCHIVE,,,Output/audit/AUD1_pack_gap_report.md|docs/change_reports/PACK1_P3_captions.md|docs/change_reports/PACK1_RPTSCOPE_gate0_recon.md,,16194,cited by 7 tracked document(s) but no pipeline reaches it
+docs/reference_update/Gayini_learning_L01_unit_of_analysis.md,ARCHIVE,,,CLAUDE.md|docs/change_reports/PACK1_P3_captions.md|docs/change_reports/T10_gateD_register.md,,3706,cited by 6 tracked document(s) but no pipeline reaches it
+docs/reference_update/Gayini_locating_results_in_country_note.md,ARCHIVE,,,CLAUDE.md|Output/audit/S11_VERIFY_findings.md|docs/reference_update/Gayini_T13_spec.md,,11177,cited by 4 tracked document(s) but no pipeline reaches it
+docs/reference_update/Gayini_pack_captions_final_20260805.md,ARCHIVE,,,,,9010,referenced by 1 tracked file(s) but no pipeline reaches it
+docs/reference_update/Gayini_path_to_Aug10_tracker.xlsx,ARCHIVE,,,docs/reference_update/Gayini_PACK1_RPTSCOPE_spec_20260802.md|docs/reference_update/Gayini_REG1_REG2_spec.md|docs/reference_update/Gayini_T13_spec.md,,19208,cited by 4 tracked document(s) but no pipeline reaches it
+docs/reference_update/Gayini_questions_for_Adrian_20260729.md,ARCHIVE,,,Output/audit/AUD1_gateA_inventory.md|Output/audit/AUD1_pack_gap_report.md,,11486,cited by 2 tracked document(s) but no pipeline reaches it
+docs/reference_update/Gayini_reference_state_methods.md,ARCHIVE,,,CLAUDE.md|Output/audit/AUD1_gateA_inventory.md|Output/audit/AUD1_pack_gap_report.md,,22944,cited by 15 tracked document(s) but no pipeline reaches it
+docs/reference_update/Gayini_reference_state_results_catalogue.xlsx,ARCHIVE,,,docs/change_reports/T8_T9_T10_gateA_recon.md|docs/change_reports/T8_gateA_inventory_and_T9_addendum.md|docs/change_reports/adrian_pack_T1_F3_F5.md,,27633,cited by 5 tracked document(s) but no pipeline reaches it
+docs/reference_update/Gayini_reference_state_review_v3.pdf,ARCHIVE,,,,,2345741,referenced by 1 tracked file(s) but no pipeline reaches it
+docs/reference_update/Gayini_reference_state_review_v3.pptx,ARCHIVE,,,docs/reference_update/T8_T9_T10_gateA_decisions.md,,1893627,cited by 1 tracked document(s) but no pipeline reaches it
+docs/reference_update/Gayini_reference_state_specs_T7_T11.md,ARCHIVE,,,CLAUDE.md|docs/Gayini_issues_log.md|docs/change_reports/T12_gate0_recon.md,,18836,cited by 10 tracked document(s) but no pipeline reaches it
+docs/reference_update/Gayini_repo_root_and_github_audit_20260729.md,ARCHIVE,,,,,14200,referenced by 1 tracked file(s) but no pipeline reaches it
+docs/reference_update/Gayini_what_we_dont_know_DRAFT.md,ORPHAN,,,,,10323,nothing references it and no tracked document names it
+docs/reference_update/RS_export_layers_for_biodiversity.md,ARCHIVE,,,docs/reference_update/Gayini_CC_specs_from_biodiversity_session_20260730.md,,7069,cited by 1 tracked document(s) but no pipeline reaches it
+docs/reference_update/T12_dea_landcover_l3_extraction.md,ARCHIVE,,,docs/change_reports/T12_gateA.md|docs/change_reports/T12_gateB.md|docs/change_reports/T12_supply_and_gateA0.md,,34818,cited by 3 tracked document(s) but no pipeline reaches it
+docs/reference_update/T7_pilot_dea_zone_year_2013_2025.csv,ARCHIVE,,,docs/change_reports/T12_gateB.md|docs/reference_update/T12_dea_landcover_l3_extraction.md,,40623,cited by 2 tracked document(s) but no pipeline reaches it
+docs/reference_update/T8_T9_T10_gateA_decisions.md,ARCHIVE,,,CLAUDE.md|Output/runs/RUN_EP_20260810.md|Output/runs/RUN_UNZONED_V3_20260810.md,,7422,cited by 10 tracked document(s) but no pipeline reaches it
+docs/reference_update/T8_gateA_pin_decisions.md,ARCHIVE,,,CLAUDE.md|Output/runs/RUN_EP_20260810.md|Output/runs/RUN_UNZONED_V3_20260810.md,,5996,cited by 8 tracked document(s) but no pipeline reaches it
+docs/removed_active_duplicate_scripts_20260628.csv,ARCHIVE,,,,,262,referenced by 1 tracked file(s) but no pipeline reaches it
+docs/removed_archive_obs_manifest_20260628.csv,ARCHIVE,,,docs/current_run_order.md|docs/pr_handoff_note_20260628.md,,9821,cited by 2 tracked document(s) but no pipeline reaches it
+docs/removed_local_packaging_scripts_20260628.csv,ARCHIVE,,,docs/current_run_order.md,,318,cited by 1 tracked document(s) but no pipeline reaches it
+docs/removed_r_obs_manifest_20260628.csv,ARCHIVE,,,docs/pr_handoff_note_20260628.md,,1543,cited by 1 tracked document(s) but no pipeline reaches it
+docs/repo_audit_pre_subsampling_stocktake.md,ARCHIVE,,,docs/change_reports/tier2H_all_pixel_census_20260715.md,,21691,cited by 1 tracked document(s) but no pipeline reaches it
+docs/reports/AUD1_output_audit_and_pack_reconciliation.md,ARCHIVE,,,,,9733,referenced by 1 tracked file(s) but no pipeline reaches it
+docs/reports/AUD1_v2_output_audit_and_manifest.md,ARCHIVE,,,Output/audit/AUD1_gateA_inventory.md|Output/audit/AUD1_pack_gap_report.md,,12854,cited by 2 tracked document(s) but no pipeline reaches it
+docs/reports/CC_spec_DOC1_document_verification_v2.md,ARCHIVE,,,Output/audit/DOC1_verification_report.md|docs/Gayini_issues_log.md,,13219,cited by 2 tracked document(s) but no pipeline reaches it
+docs/reports/DOC1_figure_manifest_v6.csv,ARCHIVE,,,Output/audit/DOC1_gateC_figures_methods.md|Output/audit/DOC1_verification_report.md,,5366,cited by 2 tracked document(s) but no pipeline reaches it
+docs/reports/Gayini_V12_change_list.md,ORPHAN,,,,,10850,nothing references it and no tracked document names it
+docs/reports/Gayini_report_batch_CC_handoff.md,ARCHIVE,,,,,12212,referenced by 1 tracked file(s) but no pipeline reaches it
+docs/reports/PACK1_assemble_delivery_pack.md,ARCHIVE,,,,,9227,referenced by 1 tracked file(s) but no pipeline reaches it
+docs/review_bundles/T10_residuals_spec.json,ARCHIVE,,,,,4788,referenced by 1 tracked file(s) but no pipeline reaches it
+docs/review_bundles/T12_dea_landcover_spec.json,ARCHIVE,,,,,6521,referenced by 1 tracked file(s) but no pipeline reaches it
+docs/review_bundles/T2_zone_annual_veg_spec.json,ARCHIVE,,,docs/Gayini_issues_log.md|docs/change_reports/T2_zone_annual_veg.md,,4559,cited by 2 tracked document(s) but no pipeline reaches it
+docs/review_bundles/T6_third_grazing_arm_spec.json,ARCHIVE,,,,,3444,referenced by 1 tracked file(s) but no pipeline reaches it
+docs/review_bundles/T8_headline_number_spec.json,ARCHIVE,,,,,3859,referenced by 1 tracked file(s) but no pipeline reaches it
+docs/review_bundles/reg1_reg2_report_plumbing_spec.json,ARCHIVE,,,,,4524,referenced by 1 tracked file(s) but no pipeline reaches it
+docs/rs_gauge_context_database_import_note_20260623.md,ARCHIVE,,,,,2861,referenced by 1 tracked file(s) but no pipeline reaches it
+docs/rs_inundation_canonical_outputs.csv,ARCHIVE,,,docs/CHANGELOG_rs_consolidation.md|docs/codebase_audit_rs_inundation.md,,6738,cited by 2 tracked document(s) but no pipeline reaches it
+docs/rs_inundation_script_rename_map.csv,ARCHIVE,,,docs/CHANGELOG_rs_workflow_simplification.md,,3586,cited by 1 tracked document(s) but no pipeline reaches it
+docs/rs_inundation_workflow_manifest.csv,ARCHIVE,,,docs/CHANGELOG_rs_consolidation.md|docs/CHANGELOG_rs_workflow_simplification.md,,10045,cited by 2 tracked document(s) but no pipeline reaches it
+docs/run_order/01_full_rebuild_workflow.csv,ARCHIVE,,,docs/archive/README_superseded.md|docs/current_run_order.md|docs/repo_audit_pre_subsampling_stocktake.md,,2978,cited by 3 tracked document(s) but no pipeline reaches it
+docs/run_order/02_lightweight_review_refresh.csv,ARCHIVE,,,docs/archive/README_superseded.md,,2092,cited by 1 tracked document(s) but no pipeline reaches it
+docs/run_order/03_mer_workflow.csv,ARCHIVE,,,docs/archive/README_superseded.md,,1770,cited by 1 tracked document(s) but no pipeline reaches it
+docs/run_order/04_qa_workflow.csv,ARCHIVE,,,docs/archive/README_superseded.md|docs/current_run_order.md,,639,cited by 2 tracked document(s) but no pipeline reaches it
+docs/run_order/05_downstream_optional.csv,ARCHIVE,,,docs/archive/README_superseded.md,,383,cited by 1 tracked document(s) but no pipeline reaches it
+docs/script_rename_map_stage4.csv,ARCHIVE,,,scripts/README.md,,9710,cited by 1 tracked document(s) but no pipeline reaches it
+docs/scripts/prepare_gayini_loocb_geojsons.R,ARCHIVE,,,docs/README_Gayini_LOOCB_json_inputs.md,,8540,cited by 1 tracked document(s) but no pipeline reaches it
+docs/scripts/validate_loocb_geojson_inputs.R,ARCHIVE,,,docs/README_Gayini_LOOCB_json_inputs.md,,2685,cited by 1 tracked document(s) but no pipeline reaches it
+docs/scripts_manifest.csv,ARCHIVE,,,README.md|docs/current_run_order.md|scripts/README.md,,29432,cited by 3 tracked document(s) but no pipeline reaches it
+docs/stratified_sampling_near_plots_by_veg_and_inundation.png,ARCHIVE,,,,,255173,referenced by 1 tracked file(s) but no pipeline reaches it
+docs/tasks/canonical_output_register_20260623.csv,ARCHIVE,,,docs/CHANGELOG_folder_cleanup_20260623.md|docs/folder_structure_audit_20260623.md,,6649,cited by 2 tracked document(s) but no pipeline reaches it
+docs/tasks/gayini_figure_driven_project_ladder.png,ARCHIVE,,,,,445763,referenced by 1 tracked file(s) but no pipeline reaches it
+docs/tasks/output_cleanup_candidates_summary.csv,ARCHIVE,,,docs/Gayini_project_lineage_and_learnings.md|docs/output_cleanup_policy.md,,326,cited by 2 tracked document(s) but no pipeline reaches it
+docs/tasks/output_handoff_set.csv,ARCHIVE,,,docs/output_cleanup_policy.md,,85251,cited by 1 tracked document(s) but no pipeline reaches it
+docs/tasks/removed_active_duplicate_scripts_20260628.csv,ARCHIVE,,,,,262,referenced by 1 tracked file(s) but no pipeline reaches it
+docs/tasks/removed_archive_obs_manifest_20260628.csv,ARCHIVE,,,docs/current_run_order.md|docs/pr_handoff_note_20260628.md,,9821,cited by 2 tracked document(s) but no pipeline reaches it
+docs/tasks/removed_local_packaging_scripts_20260628.csv,ARCHIVE,,,docs/current_run_order.md,,318,cited by 1 tracked document(s) but no pipeline reaches it
+docs/tasks/removed_r_obs_manifest_20260628.csv,ARCHIVE,,,docs/pr_handoff_note_20260628.md,,1543,cited by 1 tracked document(s) but no pipeline reaches it
+docs/tasks/rs_inundation_canonical_outputs.csv,ARCHIVE,,,docs/CHANGELOG_rs_consolidation.md|docs/codebase_audit_rs_inundation.md,,6738,cited by 2 tracked document(s) but no pipeline reaches it
+docs/tasks/rs_inundation_workflow_manifest.csv,ARCHIVE,,,docs/CHANGELOG_rs_consolidation.md|docs/CHANGELOG_rs_workflow_simplification.md,,10045,cited by 2 tracked document(s) but no pipeline reaches it
+docs/tasks/script_rename_map_stage4.csv,ARCHIVE,,,scripts/README.md,,9710,cited by 1 tracked document(s) but no pipeline reaches it
+docs/tasks/scripts_manifest.csv,ARCHIVE,,,README.md|docs/current_run_order.md|scripts/README.md,,29432,cited by 3 tracked document(s) but no pipeline reaches it
+docs/tasks/stratified_sampling_near_plots_by_veg_and_inundation.png,ARCHIVE,,,,,255173,referenced by 1 tracked file(s) but no pipeline reaches it
+docs/tier0_4_wet_rule_confirm_change_report.md,ARCHIVE,,,,,6065,referenced by 1 tracked file(s) but no pipeline reaches it
+docs/tier0_4_wet_rule_confirm_task.md,ARCHIVE,,,docs/tier0_legend_decision_record.md,,9790,cited by 1 tracked document(s) but no pipeline reaches it
+docs/tier0_annual_stack_task.md,ARCHIVE,,,,,14522,referenced by 4 tracked file(s) but no pipeline reaches it
+docs/tier0_change_report.md,ARCHIVE,,,,,5301,referenced by 1 tracked file(s) but no pipeline reaches it
+docs/tier0_legend_decision_record.md,ARCHIVE,,,docs/Gayini_project_lineage_and_learnings.md|docs/Tier0_complete_handoff_to_Tier1.md|docs/tier0_4_wet_rule_confirm_change_report.md,,3852,cited by 3 tracked document(s) but no pipeline reaches it
+docs/tier1f_foundation_and_rebalance_change_report.md,ARCHIVE,,,docs/change_reports/tier2H_gate1_recon_20260715.md,,5980,cited by 1 tracked document(s) but no pipeline reaches it
+docs/tier2H_gate1_VERIFIED_20260715.md,ARCHIVE,,,docs/Tier2_TaskH_ondisk_audit.md|docs/change_reports/taskH_ondisk_audit_2026-07-20.md|docs/change_reports/tier2H_all_pixel_census_20260715.md,,13362,cited by 4 tracked document(s) but no pipeline reaches it
+github_push_audit_plan.md,ARCHIVE,,,docs/reference_update/Gayini_repo_root_and_github_audit_20260729.md,,16217,cited by 1 tracked document(s) but no pipeline reaches it
+run_db_validation.R,ARCHIVE,,,docs/archive/Tier1_TaskF_spatial_resampling_spec_v2.md|docs/reference_update/Gayini_repo_root_and_github_audit_20260729.md|docs/tier1f_foundation_and_rebalance_change_report.md,,2356,cited by 3 tracked document(s) but no pipeline reaches it
+run_spine_smoke_test.R,ARCHIVE,,,CLAUDE.md|README.md|docs/Gayini_issues_log.md,,10021,cited by 16 tracked document(s) but no pipeline reaches it
+scripts/00_setup/01_setup_project.R,ARCHIVE,,,docs/current_run_order.md,,7964,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/01_prepare_inputs/01_prepare_vectors.R,ARCHIVE,,,docs/codebase_audit_rs_inundation.md|docs/current_run_order.md,,4337,cited by 2 tracked document(s) but no pipeline reaches it
+scripts/01_prepare_inputs/02_catalog_rasters.R,ARCHIVE,,,docs/codebase_audit_rs_inundation.md|docs/current_run_order.md,,5511,cited by 2 tracked document(s) but no pipeline reaches it
+scripts/01_prepare_inputs/03_populate_raster_metadata.R,ARCHIVE,,,docs/change_reports/tier1_pixel_census.md|docs/change_reports/tier1_veg_regime_checkerboard.md|docs/repo_audit_pre_subsampling_stocktake.md,,13876,cited by 8 tracked document(s) but no pipeline reaches it
+scripts/01_prepare_inputs/04_reproject_to_epsg8058_and_sampling_map.R,ARCHIVE,,,docs/change_reports/tier1a_reproject_sampling_map.md,,9645,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/01_prepare_inputs/05_populate_metric_support.R,ARCHIVE,,,docs/change_reports/tier2H_all_pixel_census_20260715.md,,5761,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/02_extract_heavy/01_extract_ground_cover_full.R,ARCHIVE,,,docs/canonical_outputs_steps_04_07.md|docs/current_run_order.md,,5292,cited by 2 tracked document(s) but no pipeline reaches it
+scripts/02_extract_heavy/02_extract_annual_inundation_full.R,ARCHIVE,,,docs/canonical_outputs_steps_04_07.md|docs/current_run_order.md,,1317,cited by 2 tracked document(s) but no pipeline reaches it
+scripts/02_extract_heavy/03_extract_daily_inundation_full.R,ARCHIVE,,,docs/canonical_outputs_steps_04_07.md|docs/current_run_order.md,,1302,cited by 2 tracked document(s) but no pipeline reaches it
+scripts/02_extract_heavy/internal/01_extract_landsat_inundation_full_impl.R,ARCHIVE,,,,,21317,referenced by 7 tracked file(s) but no pipeline reaches it
+scripts/02_extract_heavy/internal/02_extract_daily_inundation_full_impl.R,ARCHIVE,,,,,21291,referenced by 7 tracked file(s) but no pipeline reaches it
+scripts/02_extract_heavy/internal/03_extract_fractional_cover_full_impl.R,ARCHIVE,,,docs/Tier2_TaskH_all_pixel_census.md|docs/change_reports/tier2H_gate1_recon_20260715.md,,20232,cited by 2 tracked document(s) but no pipeline reaches it
+scripts/03_inundation_products/01_build_prepost_inundation_products.R,ARCHIVE,,,docs/archive/README_superseded.md|docs/canonical_outputs_steps_04_07.md|docs/current_run_order.md,,1241,cited by 4 tracked document(s) but no pipeline reaches it
+scripts/03_inundation_products/02_extract_prepost_inundation_to_plots.R,ARCHIVE,,,docs/canonical_outputs_steps_04_07.md|docs/current_run_order.md|docs/repo_audit_pre_subsampling_stocktake.md,,1213,cited by 3 tracked document(s) but no pipeline reaches it
+scripts/03_inundation_products/03_curate_rs_hydrology_analysis_base.R,ARCHIVE,,,docs/Tier2_TaskH_ondisk_census_groundcover_review.md|docs/canonical_outputs_steps_04_07.md|docs/codex_context.md,,1790,cited by 5 tracked document(s) but no pipeline reaches it
+scripts/03_inundation_products/04_build_background_inundation_rasters.R,ORPHAN,,,,,1038,nothing references it and no tracked document names it
+scripts/03_inundation_products/05_build_unified_annual_stack.R,MIGRATE,EP2_flood_frequency,0,docs/change_reports/tier1_pixel_census.md|docs/repo_audit_pre_subsampling_stocktake.md|docs/tier0_annual_stack_task.md,,1423,
+scripts/03_inundation_products/06_build_stratified_sampling_frame_f5.R,ARCHIVE,,,Output/rasters/DATA_share_20260808/README.md|docs/Gayini_established_data_facts.md|docs/Tier2_TaskH_all_pixel_census_v2.md,,14224,cited by 6 tracked document(s) but no pipeline reaches it
+scripts/03_inundation_products/07_run_trend_test_f6.R,ARCHIVE,,,docs/change_reports/taskM_gateA_report.md|docs/change_reports/tier1d_trend_test.md,,12219,cited by 2 tracked document(s) but no pipeline reaches it
+scripts/03_inundation_products/08_run_groundcover_response_f7.R,ARCHIVE,,,docs/change_reports/taskM_gateA_report.md|docs/change_reports/tier1G_figures_dashboards_2026-07-14.md|docs/change_reports/tier1e_f7_groundcover_response.md,,15648,cited by 3 tracked document(s) but no pipeline reaches it
+scripts/03_inundation_products/09_build_pixel_census_view.R,ARCHIVE,,,docs/Gayini_established_data_facts.md|docs/T1_zone_stratum_census_join.md|docs/Tier2_TaskH_all_pixel_census.md,,17741,cited by 12 tracked document(s) but no pipeline reaches it
+scripts/03_inundation_products/10_build_veg_regime_checkerboard.R,ARCHIVE,,,docs/Gayini_established_data_facts.md|docs/T1_zone_stratum_census_join.md|docs/Tier2_TaskH_all_pixel_census_v2.md,,16878,cited by 10 tracked document(s) but no pipeline reaches it
+scripts/03_inundation_products/11_reproject_annual_stack_8058_nn.R,ARCHIVE,,,Output/audit/SCHEM1_verification_findings.md|docs/Tier2_TaskH_all_pixel_census_v3.md|docs/Tier2_TaskH_all_pixel_census_v4.md,,20403,cited by 6 tracked document(s) but no pipeline reaches it
+scripts/03_inundation_products/12_run_census_trend_test.R,ARCHIVE,,,Output/audit/DOC3_findings.md|docs/Gayini_census_audit_kickoff.md|docs/Tier2_TaskH_gateE_figure_build.md,,18303,cited by 5 tracked document(s) but no pipeline reaches it
+scripts/03_inundation_products/13_run_sampling_rebalance_smoke.R,ARCHIVE,,,docs/archive/Tier1_TaskF_spatial_resampling_spec_v2.md|docs/tier1f_foundation_and_rebalance_change_report.md,,6851,cited by 2 tracked document(s) but no pipeline reaches it
+scripts/03_inundation_products/14_build_flood_zone_raster.R,ARCHIVE,,,docs/Tier2_TaskH_ondisk_census_groundcover_review.md|docs/change_reports/tier2H_all_pixel_census_20260715.md,,13880,cited by 2 tracked document(s) but no pipeline reaches it
+scripts/03_inundation_products/15_build_pixel_census_parquet.R,MIGRATE,EP3_census_parquet,0,docs/Tier2_TaskH_ondisk_census_groundcover_review.md|docs/change_reports/T1_gate0_inventory.md|docs/change_reports/T5_change_report.md,,15598,
+scripts/03_inundation_products/16_task_J_gate2_single_date_2018.R,ARCHIVE,,,docs/change_reports/task_J_gate2_single_date_2018_20260717.md,,11082,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/03_inundation_products/17_task_J_gate3_placebo_ladder.R,ARCHIVE,,,docs/change_reports/task_J_gate3_placebo_ladder_20260718.md,,15873,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/03_inundation_products/18_task_J_gate4_law.R,ARCHIVE,,,docs/change_reports/task_J_gate4_law_and_figures_20260718.md,,8177,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/03_inundation_products/19_task_J_gate4_figures.R,ARCHIVE,,,docs/change_reports/task_J_gate4_law_and_figures_20260718.md,,12790,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/03_inundation_products/20_run_census_veg_wet_response.R,ARCHIVE,,,Output/audit/DOC1_gateA_verify_answers.md|Output/audit/DOC1_gateB_value_claims.md|Output/audit/DOC1_gateC_figures_methods.md,,19514,cited by 5 tracked document(s) but no pipeline reaches it
+scripts/03_inundation_products/21_build_s26_response_matrix_figure.R,ARCHIVE,,,Output/audit/DOC1_gateA_verify_answers.md|Output/audit/DOC1_gateD_substitution.md,,14240,cited by 2 tracked document(s) but no pipeline reaches it
+scripts/03_inundation_products/22_build_s24_response_singles_figure.R,ORPHAN,,,,,9985,nothing references it and no tracked document names it
+scripts/03_inundation_products/23_build_s25_lag_profile_figure.R,ORPHAN,,,,,7646,nothing references it and no tracked document names it
+scripts/03_inundation_products/24_build_figA_floor_gradient_density.R,ARCHIVE,,,Output/audit/DOC1_gateA_verify_answers.md|Output/audit/DOC1_gateC_figures_methods.md|Output/audit/DOC1_verification_report.md,,10889,cited by 5 tracked document(s) but no pipeline reaches it
+scripts/03_inundation_products/25_build_s21_flood_trend_census_figure.R,ARCHIVE,,,,,11592,referenced by 2 tracked file(s) but no pipeline reaches it
+scripts/03_inundation_products/26_build_veg_water_scatter_deck.R,ARCHIVE,,,docs/Tier2_TaskM_deck_evidence_audit_v2.md|docs/change_reports/T8_T9_T10_gateA_recon.md,,10252,cited by 2 tracked document(s) but no pipeline reaches it
+scripts/03_inundation_products/27_build_veg_water_quantile_bands_deck.R,ARCHIVE,,,docs/Tier2_TaskM_deck_evidence_audit_v2.md|docs/change_reports/T8_T9_T10_gateA_recon.md,,9983,cited by 2 tracked document(s) but no pipeline reaches it
+scripts/03_inundation_products/28_build_veg_water_percentile_fan.R,ARCHIVE,,,Output/audit/DOC1_gateA_verify_answers.md|Output/audit/DOC1_gateC_figures_methods.md,,11009,cited by 2 tracked document(s) but no pipeline reaches it
+scripts/03_inundation_products/29_build_s12_stratum_coverage_figure.R,ARCHIVE,,,CLAUDE.md,,7951,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/03_inundation_products/30_fix_d2_census_view_farm_basis.R,ARCHIVE,,,CLAUDE.md|docs/Tier2_TaskM_deck_evidence_audit.md|docs/Tier2_TaskM_deck_evidence_audit_v2.md,,4391,cited by 3 tracked document(s) but no pipeline reaches it
+scripts/03_inundation_products/31_register_gateE_assets.R,ARCHIVE,,,docs/change_reports/T1_gate0_inventory.md|docs/change_reports/T5_change_report.md,,9252,cited by 2 tracked document(s) but no pipeline reaches it
+scripts/03_inundation_products/BQ_build_counted_flood_frequency.py,MIGRATE,EP2b_counted_surface,0,,,10287,
+scripts/03_inundation_products/BR_surface_divergence.py,ORPHAN,,,,,6755,nothing references it and no tracked document names it
+scripts/03_inundation_products/DL_tercile_recut_consequence.py,ORPHAN,,,,,6861,nothing references it and no tracked document names it
+scripts/03_inundation_products/GATE3_surface_provenance.py,ORPHAN,,,,,7566,nothing references it and no tracked document names it
+scripts/03_inundation_products/internal/01_build_pre_post_inundation_frequency_rasters_impl.R,ARCHIVE,,,docs/repo_audit_pre_subsampling_stocktake.md,,16168,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/03_inundation_products/internal/02_reextract_prepost_inundation_to_plots_only_impl.R,ARCHIVE,,,docs/repo_audit_pre_subsampling_stocktake.md,,8445,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/03_inundation_products/internal/03_curate_rs_analysis_base_impl.R,ARCHIVE,,,docs/repo_audit_pre_subsampling_stocktake.md,,26248,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/03_inundation_products/internal/04_build_background_inundation_rasters_impl.R,ARCHIVE,,,,,56364,referenced by 1 tracked file(s) but no pipeline reaches it
+scripts/03_inundation_products/internal/04_join_rs_and_gauge_timeseries_impl.R,ARCHIVE,,,,,8332,referenced by 1 tracked file(s) but no pipeline reaches it
+scripts/03_inundation_products/internal/05_build_unified_annual_stack_impl.R,MIGRATE,EP2_flood_frequency,1,Output/audit/SCHEM1_verification_findings.md|docs/tier0_4_wet_rule_confirm_change_report.md|docs/tier0_4_wet_rule_confirm_task.md,,15028,
+scripts/03_inundation_products/internal/task_J_prepost_placebo_impl.R,ARCHIVE,,,docs/change_reports/task_J_gate2_single_date_2018_20260717.md|docs/change_reports/task_J_gate3_placebo_ladder_20260718.md|docs/change_reports/task_J_gate5_register_and_close_20260718.md,,13960,cited by 3 tracked document(s) but no pipeline reaches it
+scripts/04_gauges/01_import_murrumbidgee_gauge_context.R,ARCHIVE,,,docs/current_run_order.md,,11340,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/04_gauges/internal/01_import_murrumbidgee_gauge_data_impl.R,ARCHIVE,,,,,4690,referenced by 1 tracked file(s) but no pipeline reaches it
+scripts/05_ground_cover/01_prepare_ground_cover_response_and_review_tables.R,ARCHIVE,,,docs/current_run_order.md|docs/repo_audit_pre_subsampling_stocktake.md,,1220,cited by 2 tracked document(s) but no pipeline reaches it
+scripts/05_ground_cover/02_build_total_veg_percentile_rasters.R,MIGRATE,EP1_percentile_stack,0,Output/audit/DOC3_findings.md|Output/audit/SCHEM1_verification_findings.md|Output/temporal/TEMPORAL1_report.md,,44051,
+scripts/05_ground_cover/03_h2_seasonal_gate_and_diagnostics.R,ARCHIVE,,,Output/audit/DOC3_findings.md|docs/Gayini_established_data_facts.md|docs/Gayini_issues_log.md,,25582,cited by 10 tracked document(s) but no pipeline reaches it
+scripts/05_ground_cover/04_build_annual_total_veg_stack_8058.R,ARCHIVE,,,Output/audit/SCHEM1_verification_findings.md|docs/reference_update/Gayini_CC_spec_DATA1.md,,18523,cited by 2 tracked document(s) but no pipeline reaches it
+scripts/05_ground_cover/04_taskM_green_at_floor_area.R,ARCHIVE,,,Output/audit/DOC3_findings.md|docs/Gayini_established_data_facts.md|docs/Gayini_issues_log.md,,10014,cited by 6 tracked document(s) but no pipeline reaches it
+scripts/05_ground_cover/05_taskM_gateD_native30m_p05_extract.R,ARCHIVE,,,docs/change_reports/taskM_gateD_report.md,,3784,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/05_ground_cover/06_taskM_gateD_p05_ge80_contiguity.R,ARCHIVE,,,docs/Gayini_issues_log.md|docs/change_reports/T8_pixel_area_constant_audit.md|docs/change_reports/taskM_gateD_report.md,,6938,cited by 3 tracked document(s) but no pipeline reaches it
+scripts/05_ground_cover/T3_gateB1_threshold_sweep.py,ARCHIVE,,,docs/change_reports/T3_gateA1_A2_B_20260803.md,,9435,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/05_ground_cover/T3_gateB2_green_share_surface.R,ARCHIVE,,,Output/audit/DOC3_findings.md|docs/change_reports/T3_gateA1_A2_B_20260803.md,,14683,cited by 2 tracked document(s) but no pipeline reaches it
+scripts/05_ground_cover/T3_gateCDE_vectors_and_figures.R,ARCHIVE,,,docs/change_reports/FIG1_T1_pack_order_and_rulings_TUV.md,,21654,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/05_ground_cover/T3_gateC_persist.py,ARCHIVE,,,docs/change_reports/T3_gateCDE_20260803.md,,13686,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/05_ground_cover/T3_gateE_persistence_package.py,ARCHIVE,,,docs/change_reports/T3_gateCDE_20260803.md,,12506,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/05_ground_cover/internal/01_ground_cover_prepost_response_impl.R,ARCHIVE,,,docs/repo_audit_pre_subsampling_stocktake.md,,22529,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/05_ground_cover/test_T3_gateC_idempotence.py,ARCHIVE,,,docs/change_reports/T3_gateCDE_20260803.md,,4531,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/06_mer/01_extract_mer_inundation_metrics.R,ARCHIVE,,,docs/current_run_order.md,,1226,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/06_mer/02_consolidate_mer_metric_review.R,ARCHIVE,,,,,34243,referenced by 6 tracked file(s) but no pipeline reaches it
+scripts/06_mer/03_build_mer_standalone_package_tables.R,ARCHIVE,,,,,29240,referenced by 5 tracked file(s) but no pipeline reaches it
+scripts/06_mer/04_create_mer_methods_note.py,ARCHIVE,,,docs/repo_audit_pre_subsampling_stocktake.md,,13668,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/06_mer/05_census_mer_raster_inputs.R,ARCHIVE,,,,,1839,referenced by 7 tracked file(s) but no pipeline reaches it
+scripts/06_mer/06_build_mer_annual_max_raster_smoke_test.R,ARCHIVE,,,,,11123,referenced by 5 tracked file(s) but no pipeline reaches it
+scripts/06_mer/07_build_mer_annual_max_rasters.R,ARCHIVE,,,docs/archive/README_superseded.md,,15160,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/06_mer/08_summarise_compare_mer_rasters.R,ARCHIVE,,,,,31798,referenced by 5 tracked file(s) but no pipeline reaches it
+scripts/07_figures_dashboards/00_run_task15_figure_refresh.R,ARCHIVE,,,docs/repo_audit_pre_subsampling_stocktake.md,,9624,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/07_figures_dashboards/01_make_review_figures_and_dashboards.R,ARCHIVE,,,docs/current_run_order.md|docs/repo_audit_pre_subsampling_stocktake.md,,1502,cited by 2 tracked document(s) but no pipeline reaches it
+scripts/07_figures_dashboards/02_make_review_extraction_method_maps.R,ARCHIVE,,,docs/current_run_order.md,,1220,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/07_figures_dashboards/03_prepare_plot_context_flags.R,ARCHIVE,,,docs/repo_audit_pre_subsampling_stocktake.md,,25493,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/07_figures_dashboards/04_integrate_gauge_context_review_figures.R,ARCHIVE,,,docs/repo_audit_pre_subsampling_stocktake.md,,33848,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/07_figures_dashboards/05_prepare_background_flood_pattern_matched_years.R,ARCHIVE,,,,,36042,referenced by 6 tracked file(s) but no pipeline reaches it
+scripts/07_figures_dashboards/06_refresh_main_deck_figures.R,ARCHIVE,,,docs/Tier2_TaskM_deck_evidence_audit_v2.md|docs/change_reports/T1_gate0_inventory.md|docs/change_reports/T8_T9_T10_gateA_recon.md,,53451,cited by 4 tracked document(s) but no pipeline reaches it
+scripts/07_figures_dashboards/10_build_descriptive_figures_f2_f4.R,ARCHIVE,,,docs/change_reports/tier1b_descriptive_figures.md,,9301,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/07_figures_dashboards/11_build_f5_legibility_views.R,ARCHIVE,,,docs/change_reports/tier1_veg_regime_checkerboard.md|docs/change_reports/tier1c2_f5_legibility.md|docs/change_reports/tier1c3_f5_figures.md,,12885,cited by 3 tracked document(s) but no pipeline reaches it
+scripts/07_figures_dashboards/12_build_dashboards.R,ARCHIVE,,,docs/Gayini_taskL_merge_checklist.md|docs/Tier1_TaskG_dashboard_layout_revision.md|docs/Tier2_D2_site_dashboard_batch_build.md,,11946,cited by 8 tracked document(s) but no pipeline reaches it
+scripts/07_figures_dashboards/internal/01_make_adrian_review_png_assets_impl.R,ARCHIVE,,,docs/repo_audit_pre_subsampling_stocktake.md,,49938,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/07_figures_dashboards/internal/02_plot_rs_gauge_context_impl.R,ARCHIVE,,,docs/repo_audit_pre_subsampling_stocktake.md,,11221,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/07_figures_dashboards/internal/03_make_review_extraction_method_maps_impl.R,ARCHIVE,,,,,32948,referenced by 1 tracked file(s) but no pipeline reaches it
+scripts/07_figures_dashboards/taskM_gateD_M1_percentile_maps.R,ARCHIVE,,,Output/audit/DOC1_verification_report.md|docs/change_reports/taskM_gateD_report.md,,4904,cited by 2 tracked document(s) but no pipeline reaches it
+scripts/07_figures_dashboards/taskM_gateD_M2_method.R,ARCHIVE,,,docs/change_reports/T5_change_report.md|docs/change_reports/taskM_gateD_report.md,,7810,cited by 2 tracked document(s) but no pipeline reaches it
+scripts/08_review_packages/01_prepare_review_package_spine.R,ARCHIVE,,,,,35876,referenced by 5 tracked file(s) but no pipeline reaches it
+scripts/08_review_packages/02_make_ppt_missing_assets.R,ARCHIVE,,,,,40008,referenced by 5 tracked file(s) but no pipeline reaches it
+scripts/09_qa/01_check_prepost_inundation_products.R,ARCHIVE,,,docs/canonical_outputs_steps_04_07.md|docs/current_run_order.md|docs/repo_audit_pre_subsampling_stocktake.md,,1203,cited by 3 tracked document(s) but no pipeline reaches it
+scripts/09_qa/02_check_curated_rs_hydrology_outputs.R,ARCHIVE,,,docs/current_run_order.md,,1113,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/09_qa/03_cleanup_R_terra_temp.ps1,ARCHIVE,,,,,4855,referenced by 5 tracked file(s) but no pipeline reaches it
+scripts/09_qa/internal/01_check_prepost_inundation_raster_outputs_impl.R,ARCHIVE,,,,,19547,referenced by 1 tracked file(s) but no pipeline reaches it
+scripts/09_qa/internal/02_check_curated_outputs_impl.R,ARCHIVE,,,docs/repo_audit_pre_subsampling_stocktake.md,,16411,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/11_database/01_build_results_database.py,ARCHIVE,,,docs/Tier2_TaskK_gate0_output_census.md|docs/change_reports/T1_gate0_inventory.md|docs/change_reports/T5_change_report.md,,158913,cited by 9 tracked document(s) but no pipeline reaches it
+scripts/11_database/FIG2_register_weighted_r2.py,ARCHIVE,,,,,4263,referenced by 1 tracked file(s) but no pipeline reaches it
+scripts/11_database/PACKv13_T0_register.py,ARCHIVE,,,,,6667,referenced by 1 tracked file(s) but no pipeline reaches it
+scripts/11_database/PACKv13_register_flood_frac_pct.py,ORPHAN,,,,,3906,nothing references it and no tracked document names it
+scripts/11_database/PACKv14_register_figures.py,ORPHAN,,,,,5341,nothing references it and no tracked document names it
+scripts/11_database/PARTREG_stage1_register.py,ARCHIVE,,,,,13081,referenced by 3 tracked file(s) but no pipeline reaches it
+scripts/11_database/PARTREG_stage2_register.py,ARCHIVE,,,,,13543,referenced by 1 tracked file(s) but no pipeline reaches it
+scripts/11_database/T1_gateB1_schema_migrations.py,ARCHIVE,,,docs/change_reports/T1_gateB1.md,,7849,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/11_database/T1_gateC_pre_spatial_checksums.py,ARCHIVE,,,docs/change_reports/T1_gateC.md,,3113,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/11_database/T2_gateC_load.py,ARCHIVE,,,docs/change_reports/T2_zone_annual_veg.md,,6349,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/11_database/T2_gateF_gap_decomposition.py,ARCHIVE,,,docs/change_reports/T2_zone_annual_veg.md,,7858,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/11_database/T6_gateC_load.py,ARCHIVE,,,docs/change_reports/T6_third_grazing_arm.md,,4582,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/11_database/T6_gateD_decomposition.py,ARCHIVE,,,docs/change_reports/T6_third_grazing_arm.md,,5172,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/11_database/amend_BC_quartile_sd_caveats.py,ARCHIVE,,,,,5202,referenced by 1 tracked file(s) but no pipeline reaches it
+scripts/11_database/build_REG1_gateB_register.py,ARCHIVE,,,Output/audit/DOC1_gateA_verify_answers.md|Output/audit/DOC1_gateB_value_claims.md|docs/change_reports/REG1_gateBCD_register_promote.md,,6180,cited by 3 tracked document(s) but no pipeline reaches it
+scripts/11_database/build_REG1_gateC_promote.py,ARCHIVE,,,Output/audit/FIG25_lineage_and_package_plan.md|docs/change_reports/REG1_gateBCD_register_promote.md,,4018,cited by 2 tracked document(s) but no pipeline reaches it
+scripts/11_database/build_REG2_gateA_view.py,ARCHIVE,,,docs/change_reports/REG2_gateAB_composition.md,,3986,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/11_database/build_REG2_gateC_register.py,ARCHIVE,,,,,5111,referenced by 4 tracked file(s) but no pipeline reaches it
+scripts/11_database/build_RPTSCOPE_reproduction_status.py,ARCHIVE,,,docs/Gayini_issues_log.md|docs/change_reports/RPTSCOPE_R1_report_set_and_claim_audit.md,,4367,cited by 2 tracked document(s) but no pipeline reaches it
+scripts/11_database/build_T10_gateD_register.py,ARCHIVE,,,,,14692,referenced by 4 tracked file(s) but no pipeline reaches it
+scripts/11_database/build_T12_gateD_assessment.py,ARCHIVE,,,docs/change_reports/T12_gateD.md|docs/change_reports/T8_T9_T10_gateA_recon.md,,9973,cited by 2 tracked document(s) but no pipeline reaches it
+scripts/11_database/build_T1_gateB_dim_management_zone.py,ARCHIVE,,,docs/change_reports/T1_gateB_dim_management_zone.md,,16931,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/11_database/build_T1_gateC_zone_stratum.py,ARCHIVE,,,docs/change_reports/T1_gateC.md,,10061,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/11_database/build_T1_gateD_contrast.py,ARCHIVE,,,docs/change_reports/T1_gateD.md,,7803,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/11_database/build_T8_gateB_dim_headline_number.py,ARCHIVE,,,Output/audit/TRACE1_report.md|Output/runs/RUN_EP_20260810.md|docs/change_reports/FIG1_T1_pack_order_and_rulings_TUV.md,,18111,cited by 4 tracked document(s) but no pipeline reaches it
+scripts/11_database/register_REM1_table_asset.py,ORPHAN,,,,,5502,nothing references it and no tracked document names it
+scripts/11_database/register_REM1_three_arm_community_pins.py,ARCHIVE,,,docs/Gayini_issues_log.md|docs/change_reports/REM1_pack_item_remediation.md|docs/change_reports/TaskU_gateU4a_and_U3_7_report.md,,6685,cited by 3 tracked document(s) but no pipeline reaches it
+scripts/11_database/register_SCHEM1_figure.py,ORPHAN,,,,,6955,nothing references it and no tracked document names it
+scripts/11_database/register_T12_gateA0_vectors.py,ARCHIVE,,,docs/change_reports/T12_supply_and_gateA0.md,,10714,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/11_database/register_T12_gateA_rasters.py,ARCHIVE,,,docs/change_reports/T12_gateA.md,,11870,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/11_database/register_T13_gateE.py,ARCHIVE,,,docs/change_reports/T13_gateE_register_and_bundle.md,,10819,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/11_database/register_T1_gateA0_zone_layer.py,ARCHIVE,,,docs/change_reports/T12_supply_and_gateA0.md|docs/change_reports/T1_gateA_recon.md|docs/change_reports/T5_change_report.md,,8142,cited by 3 tracked document(s) but no pipeline reaches it
+scripts/11_database/register_UNZONED_v3_headline_number.py,ARCHIVE,,,,,7745,referenced by 1 tracked file(s) but no pipeline reaches it
+scripts/11_database/register_d2_site_dashboards.py,ARCHIVE,,,docs/change_reports/T1_gate0_inventory.md|docs/change_reports/T5_change_report.md|docs/change_reports/d2_site_dashboard_batch_20260720.md,,6352,cited by 3 tracked document(s) but no pipeline reaches it
+scripts/11_database/register_taskM_gateC_assets.py,ARCHIVE,,,CLAUDE.md|docs/CLAUDE_md_addendum.md|docs/T1_zone_stratum_census_join.md,,27661,cited by 6 tracked document(s) but no pipeline reaches it
+scripts/11_database/register_taskM_gateD_assets.py,ARCHIVE,,,docs/change_reports/taskM_gateD_report.md,,10411,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/11_database/repin_floor_flood_constants_precision.py,ARCHIVE,,,docs/change_reports/floor_flood_precision_correction.md,,6358,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/11_database/taskM_gateC_file_classification.py,ARCHIVE,,,docs/change_reports/taskM_gateC_report.md,,7623,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/11_database/taskM_gateC_raster_metadata.R,ARCHIVE,,,docs/change_reports/taskM_gateC_report.md,,3012,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/11_database/taskM_gateD_p05_distribution.py,ARCHIVE,,,docs/Gayini_issues_log.md|docs/T1_zone_stratum_census_join.md|docs/change_reports/T1_gate0_inventory.md,,7663,cited by 5 tracked document(s) but no pipeline reaches it
+scripts/11_database/test_T8_headline_reproduction.py,ARCHIVE,,,CLAUDE.md|Output/audit/AUD1_pack_gap_report.md|Output/audit/DOC1_followon_lidar_section_review.md,,20457,cited by 22 tracked document(s) but no pipeline reaches it
+scripts/11_database/write_RPTSCOPE_E_canaries.py,ARCHIVE,,,,,8961,referenced by 2 tracked file(s) but no pipeline reaches it
+scripts/11_database/write_RPTSCOPE_R2.py,ARCHIVE,,,docs/change_reports/FIG1_T1_pack_order_and_rulings_TUV.md|docs/change_reports/RPTSCOPE_R2_write.md,,9779,cited by 2 tracked document(s) but no pipeline reaches it
+scripts/12_zone_stratum/BE_dashboard_scope_check.R,ARCHIVE,,,Output/diag/EXEMPLAR1_report.md,,8400,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/12_zone_stratum/DASH2_build.R,ORPHAN,,,,,10302,nothing references it and no tracked document names it
+scripts/12_zone_stratum/DASH2_reconcile.py,ORPHAN,,,,,6837,nothing references it and no tracked document names it
+scripts/12_zone_stratum/EXEMPLAR1_build.R,ARCHIVE,,,Output/diag/EXEMPLAR1_report.md,,13336,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/12_zone_stratum/FIG2_bootstrap_distribution.py,ARCHIVE,,,Output/diag/DIAG1_diagnostics.md,,13219,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/12_zone_stratum/MAP1_build_part_polygons.py,ARCHIVE,,,Output/runs/RUN_MAP1_20260810.md,,8171,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/12_zone_stratum/PACKv13_T0_caption_numbers.R,ARCHIVE,,,Output/runs/RUN_EP_20260810.md,,5764,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/12_zone_stratum/PARTREG_stage1_figure.py,ARCHIVE,,,,,8465,referenced by 1 tracked file(s) but no pipeline reaches it
+scripts/12_zone_stratum/PARTREG_stage1_full_period.py,ARCHIVE,,,,,17668,referenced by 2 tracked file(s) but no pipeline reaches it
+scripts/12_zone_stratum/PARTREG_stage2_figure.py,ARCHIVE,,,,,9621,referenced by 1 tracked file(s) but no pipeline reaches it
+scripts/12_zone_stratum/PARTREG_stage2_maps_and_export.py,ARCHIVE,,,,,19869,referenced by 2 tracked file(s) but no pipeline reaches it
+scripts/12_zone_stratum/PARTREG_stage2_periods.py,ARCHIVE,,,,,14393,referenced by 1 tracked file(s) but no pipeline reaches it
+scripts/12_zone_stratum/T10_gateB_annual_gap_series.py,ARCHIVE,,,docs/change_reports/T10_gateB_annual_gap_series.md,,5910,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/12_zone_stratum/T10_gateC_percommunity_table.py,ARCHIVE,,,,,3419,referenced by 3 tracked file(s) but no pipeline reaches it
+scripts/12_zone_stratum/T10_gateC_residuals.py,ARCHIVE,,,Output/audit/FIG25_lineage_and_package_plan.md|docs/change_reports/T10_gateC_residuals.md,,9806,cited by 2 tracked document(s) but no pipeline reaches it
+scripts/12_zone_stratum/T1_gateA_recon.R,ARCHIVE,,,docs/change_reports/T1_gateA_recon.md,,10741,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/12_zone_stratum/T1_gateB1_figures.R,ARCHIVE,,,Output/audit/FIG3_partA_producer_review.md|docs/change_reports/T1_gateB1.md|docs/change_reports/T5_change_report.md,,7692,cited by 3 tracked document(s) but no pipeline reaches it
+scripts/12_zone_stratum/T1_gateB1_guard_fixture_test.R,ARCHIVE,,,docs/change_reports/T1_gateB1.md,,1339,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/12_zone_stratum/T1_gateB1_read_field_lists.R,ARCHIVE,,,docs/change_reports/T1_gateB1.md,,3437,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/12_zone_stratum/T1_gateC_assign.R,ARCHIVE,,,docs/change_reports/T1_gateC.md,,2194,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/12_zone_stratum/T1_gateC_figures.R,ARCHIVE,,,docs/change_reports/T1_gateC.md,,4602,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/12_zone_stratum/T1_gateD_figure.R,ARCHIVE,,,Output/audit/DOC3_findings.md|Output/audit/XCHECK1_findings.md|docs/change_reports/T1_gateD.md,,3443,cited by 3 tracked document(s) but no pipeline reaches it
+scripts/12_zone_stratum/T2_gateA_figure.R,ARCHIVE,,,docs/change_reports/T2_zone_annual_veg.md,,3906,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/12_zone_stratum/T2_gateB2_duration.R,ARCHIVE,,,docs/change_reports/T2_zone_annual_veg.md,,4553,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/12_zone_stratum/T2_gateB_extract.R,ARCHIVE,,,Output/audit/FIG25_lineage_and_package_plan.md|Output/audit/SCHEM1_verification_findings.md|docs/change_reports/T13_gateA_part_flood.md,,7876,cited by 9 tracked document(s) but no pipeline reaches it
+scripts/12_zone_stratum/T2_gateB_prep.py,ARCHIVE,,,docs/change_reports/T2_zone_annual_veg.md|docs/reference_update/Gayini_reference_state_methods.md,,2210,cited by 2 tracked document(s) but no pipeline reaches it
+scripts/12_zone_stratum/T2_gateE_figures.R,ARCHIVE,,,Output/audit/DOC3_findings.md|Output/audit/FIG3_partA_producer_review.md|docs/Gayini_issues_log.md,,12776,cited by 9 tracked document(s) but no pipeline reaches it
+scripts/12_zone_stratum/T2_gateF_figure.R,ARCHIVE,,,Output/audit/FIG3_partA_producer_review.md|docs/reference_update/Gayini_reference_state_methods.md,,4680,cited by 2 tracked document(s) but no pipeline reaches it
+scripts/12_zone_stratum/T2_gateG_figure.R,ARCHIVE,,,Output/audit/FIG3_partA_producer_review.md|docs/reference_update/Gayini_reference_state_methods.md,,5365,cited by 2 tracked document(s) but no pipeline reaches it
+scripts/12_zone_stratum/T2_plot_paddock_join.R,ARCHIVE,,,docs/change_reports/T2_zone_annual_veg.md|docs/change_reports/T8_gateA_inventory_and_T9_addendum.md|docs/reference_update/Gayini_reference_state_methods.md,,4395,cited by 3 tracked document(s) but no pipeline reaches it
+scripts/12_zone_stratum/T6_gateB_components.R,ARCHIVE,,,docs/change_reports/T6_third_grazing_arm.md|docs/reference_update/Gayini_reference_state_methods.md,,5767,cited by 2 tracked document(s) but no pipeline reaches it
+scripts/12_zone_stratum/T6_gateB_extract.R,ARCHIVE,,,docs/change_reports/T6_third_grazing_arm.md|docs/change_reports/T8_gateBD_dim_headline_number.md|docs/reference_update/Gayini_reference_state_methods.md,,7634,cited by 4 tracked document(s) but no pipeline reaches it
+scripts/12_zone_stratum/T6_gateB_prep.py,ARCHIVE,,,docs/change_reports/T6_third_grazing_arm.md|docs/reference_update/Gayini_reference_state_methods.md,,2803,cited by 2 tracked document(s) but no pipeline reaches it
+scripts/12_zone_stratum/T6_gateE_figures.R,ARCHIVE,,,Output/audit/DOC1_gateC_figures_methods.md|Output/audit/DOC1_verification_report.md|Output/audit/DOC3_findings.md,,17318,cited by 10 tracked document(s) but no pipeline reaches it
+scripts/12_zone_stratum/UNZONED_gate1_plot_overlay.py,ORPHAN,,,,,3655,nothing references it and no tracked document names it
+scripts/12_zone_stratum/UNZONED_gate1_units.py,ORPHAN,,,,,15688,nothing references it and no tracked document names it
+scripts/12_zone_stratum/UNZONED_scatter_pair.py,ORPHAN,,,,,14849,nothing references it and no tracked document names it
+scripts/12_zone_stratum/UNZONED_stageA1_boundary.py,ARCHIVE,,,,,3034,referenced by 1 tracked file(s) but no pipeline reaches it
+scripts/12_zone_stratum/UNZONED_stageA1_within.R,ARCHIVE,,,,,9425,referenced by 1 tracked file(s) but no pipeline reaches it
+scripts/12_zone_stratum/UNZONED_v3_armA_prepare.py,ARCHIVE,,,Output/runs/RUN_UNZONED_V3_20260810.md,,17074,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/12_zone_stratum/UNZONED_v3_armB_between.py,ORPHAN,,,,,19044,nothing references it and no tracked document names it
+scripts/12_zone_stratum/UNZONED_v3_armB_predictions.py,ARCHIVE,,,,,6788,referenced by 1 tracked file(s) but no pipeline reaches it
+scripts/12_zone_stratum/UNZONED_v3_armB_within.py,ARCHIVE,,,Output/runs/RUN_UNZONED_V3_20260810.md,,13318,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/12_zone_stratum/UNZONED_v3_assemble.py,ORPHAN,,,,,13414,nothing references it and no tracked document names it
+scripts/12_zone_stratum/WITHIN1_reproduce.R,ARCHIVE,,,,,13207,referenced by 2 tracked file(s) but no pipeline reaches it
+scripts/12_zone_stratum/build_PACK1_item_list.py,ORPHAN,,,,,5882,nothing references it and no tracked document names it
+scripts/12_zone_stratum/build_RPTSCOPE_R1.py,ARCHIVE,,,docs/change_reports/RPTSCOPE_R1_report_set_and_claim_audit.md|docs/change_reports/RPTSCOPE_R2_pin_withdrawal.md,,10823,cited by 2 tracked document(s) but no pipeline reaches it
+scripts/12_zone_stratum/build_RPTSCOPE_R1b_claim_audit_extend.py,ARCHIVE,,,docs/change_reports/RPTSCOPE_R1b_claim_audit_complete.md,,10263,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/12_zone_stratum/build_RPTSCOPE_R2_pinlist.py,ARCHIVE,,,docs/change_reports/RPTSCOPE_R2_pin_withdrawal.md|docs/change_reports/RPTSCOPE_R2_pinlist_STOP.md,,12466,cited by 2 tracked document(s) but no pipeline reaches it
+scripts/12_zone_stratum/build_RPTSCOPE_R2_prep.py,ARCHIVE,,,docs/change_reports/RPTSCOPE_R2_prep_STOP.md,,4283,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/12_zone_stratum/build_T11_v2_dual_grain.R,ARCHIVE,,,Output/audit/DOC3_findings.md|Output/audit/FIG25_lineage_and_package_plan.md|Output/audit/FIG3_partA_producer_review.md,,19491,cited by 8 tracked document(s) but no pipeline reaches it
+scripts/12_zone_stratum/build_T13_gateA_part_flood.py,ARCHIVE,,,,,4515,referenced by 2 tracked file(s) but no pipeline reaches it
+scripts/12_zone_stratum/build_T13_gateB_measures.py,ARCHIVE,,,Output/audit/DOC1_gateA_verify_answers.md|Output/audit/DOC1_gateC_figures_methods.md|docs/change_reports/T13_gateB_measures.md,,6496,cited by 3 tracked document(s) but no pipeline reaches it
+scripts/12_zone_stratum/build_T13_gateC_classification.py,ARCHIVE,,,docs/change_reports/T13_gateC_classification.md,,16529,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/12_zone_stratum/build_T13_gateD_figures.R,ARCHIVE,,,Output/audit/FIG25_lineage_and_package_plan.md|Output/audit/FIG3_partA_producer_review.md|docs/change_reports/FIG1_T1_pack_order_and_rulings_TUV.md,,18273,cited by 4 tracked document(s) but no pipeline reaches it
+scripts/12_zone_stratum/build_T13_gateD_part_polygons.R,ARCHIVE,,,docs/Gayini_issues_log.md|docs/change_reports/T13_gateD_map.md,,4999,cited by 2 tracked document(s) but no pipeline reaches it
+scripts/12_zone_stratum/build_T13_gateD_render_geom.R,ARCHIVE,,,docs/Gayini_issues_log.md|docs/change_reports/T13_gateD_map.md,,3310,cited by 2 tracked document(s) but no pipeline reaches it
+scripts/12_zone_stratum/build_adrian_pack_T1_F3_F5.R,ARCHIVE,,,Output/audit/FIG25_lineage_and_package_plan.md|Output/audit/FIG3_partA_producer_review.md|Output/audit/XCHECK1_findings.md,,22414,cited by 5 tracked document(s) but no pipeline reaches it
+scripts/12_zone_stratum/regen_RPTSCOPE_claim_audit.py,ARCHIVE,,,Output/audit/TRACE1_report.md,,4947,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/13_dea_landcover/T12_close_figures.R,UNRESOLVED,,,docs/change_reports/T8_T9_T10_gateA_recon.md,,4472,may carry culturally sensitive material; design seat rules
+scripts/13_dea_landcover/T12_gate0_supply_integrity_check.R,ARCHIVE,,,docs/change_reports/T12_supply_and_gateA0.md,,2398,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/13_dea_landcover/T12_gateA0_verify_vectors.R,ARCHIVE,,,docs/change_reports/T12_supply_and_gateA0.md,,2036,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/13_dea_landcover/T12_gateB_extract.R,ARCHIVE,,,docs/change_reports/T12_gateB.md,,11342,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/13_dea_landcover/T12_gateC_diagnostics.R,ARCHIVE,,,Output/audit/DOC3_findings.md|docs/change_reports/T12_gateC.md,,14453,cited by 2 tracked document(s) but no pipeline reaches it
+scripts/13_dea_landcover/T12_supply_repull_1988_1999.py,ARCHIVE,,,docs/change_reports/T12_gateA.md|docs/change_reports/T12_supply_and_gateA0.md,,3031,cited by 2 tracked document(s) but no pipeline reaches it
+scripts/13_dea_landcover/T12_v4_correct_source_product_caveat.py,ARCHIVE,,,docs/change_reports/T12_v4_caveat_correction.md,,2675,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/13_dea_landcover/register_T12_close_figures.py,UNRESOLVED,,,,,3953,may carry culturally sensitive material; design seat rules
+scripts/13_dea_landcover/register_T12_gateC_figures.py,ARCHIVE,,,docs/change_reports/T12_gateC.md,,5231,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/13_dea_landcover/requirements.txt,ARCHIVE,,,Output/audit/DOC2_gate0_verify_sweep.md|docs/change_reports/T12_supply_and_gateA0.md|github_push_audit_plan.md,,764,cited by 3 tracked document(s) but no pipeline reaches it
+scripts/13_pack/DATA1_build_share_folder.py,ORPHAN,,,,,13868,nothing references it and no tracked document names it
+scripts/13_pack/PACK1_assemble.py,ARCHIVE,,,docs/change_reports/PACK1_P4_build_and_readthrough.md|docs/change_reports/PACK1_restore_and_reassemble.md,,6139,cited by 2 tracked document(s) but no pipeline reaches it
+scripts/13_pack/PACK1_build_workbook.py,ARCHIVE,,,Output/audit/TRACE1_report.md|Output/audit/XCHECK1_findings.md|docs/Gayini_issues_log.md,,37136,cited by 6 tracked document(s) but no pipeline reaches it
+scripts/13_pack/PACK1_order_items.py,ORPHAN,,,,,2794,nothing references it and no tracked document names it
+scripts/13_pack/PACK1_zip.py,ARCHIVE,,,docs/change_reports/PACK1_P4_build_and_readthrough.md|docs/reports/Gayini_V12_change_list.md,,5683,cited by 2 tracked document(s) but no pipeline reaches it
+scripts/13_pack/PACKv13_T2_figures.py,ORPHAN,,,,,7074,nothing references it and no tracked document names it
+scripts/13_pack/PACKv13_T4_assemble.py,ORPHAN,,,,,7436,nothing references it and no tracked document names it
+scripts/13_pack/PACKv13_zip.py,ORPHAN,,,,,2654,nothing references it and no tracked document names it
+scripts/13_pack/PACKv14_assemble.py,ORPHAN,,,,,9090,nothing references it and no tracked document names it
+scripts/13_pack/PACKv14_zip.py,ORPHAN,,,,,2654,nothing references it and no tracked document names it
+scripts/13_pack/PARTREG_build_pack.py,ORPHAN,,,,,5996,nothing references it and no tracked document names it
+scripts/13_pack/caption_register.py,ORPHAN,,,,,4314,nothing references it and no tracked document names it
+scripts/13_pack/write_residual_qml.py,ORPHAN,,,,,2757,nothing references it and no tracked document names it
+scripts/14_diag/DIAG1_figures.py,ARCHIVE,,,Output/diag/DIAG1_diagnostics.md,,28528,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/14_diag/DIAG1_manifest.py,ARCHIVE,,,Output/diag/DIAG1_diagnostics.md,,3852,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/14_diag/DIAG1_prepare.py,ARCHIVE,,,Output/diag/DIAG1_diagnostics.md,,6774,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/14_diag/EX1_gate3_extract.py,ARCHIVE,,,Output/diag/EXEMPLAR1_report.md,,4825,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/14_diag/PARTSCATTER_prepare.py,ARCHIVE,,,Output/runs/RUN_PARTSCATTER_20260809.md|docs/reference_update/Gayini_caption_register.md,,18261,cited by 2 tracked document(s) but no pipeline reaches it
+scripts/14_diag/SPAT1_figures.py,ARCHIVE,,,Output/diag/SPAT1_findings.md,,11647,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/14_diag/SPAT1_prepare.py,ARCHIVE,,,Output/diag/SPAT1_findings.md,,7162,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/14_diag/SPAT1_stage0_fit.py,ORPHAN,,,,,8569,nothing references it and no tracked document names it
+scripts/14_diag/SPAT1_stageA_block_bootstrap.py,ORPHAN,,,,,9906,nothing references it and no tracked document names it
+scripts/14_diag/SPAT1_stageA_effective_n.py,ARCHIVE,,,Output/audit/TRACE1_report.md,,17721,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/14_diag/SPAT1_stageA_variogram.py,ORPHAN,,,,,13282,nothing references it and no tracked document names it
+scripts/14_diag/SPAT1_stageB_ladder.py,ORPHAN,,,,,11265,nothing references it and no tracked document names it
+scripts/14_diag/TEMPORAL1_prepare.py,ARCHIVE,,,,,16627,referenced by 3 tracked file(s) but no pipeline reaches it
+scripts/14_doc_audit/DOC1_extract_claims.py,ARCHIVE,,,docs/reference_update/CC_handover_DOC1_gates_BCDE.md|docs/reports/CC_spec_DOC1_document_verification_v2.md,,7903,cited by 2 tracked document(s) but no pipeline reaches it
+scripts/14_doc_audit/SCHEM1_methods_schematic.py,ARCHIVE,,,,,19919,referenced by 1 tracked file(s) but no pipeline reaches it
+scripts/14_lidar/LID1_AG_fix_legend_semantics.py,ORPHAN,,,,,5291,nothing references it and no tracked document names it
+scripts/14_lidar/LID1_gateL2_shippability.py,ARCHIVE,,,docs/change_reports/LID1_rulings_W_to_AB_and_gateL2.md,,15300,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/14_lidar/R6_bala_floor_flood_placement.py,ARCHIVE,,,docs/LiDAR/Gayini_LiDAR_TaskU_summary.md|docs/change_reports/LID1_rulings_W_to_AB_and_gateL2.md|docs/reference_update/Gayini_R6_bala_floor_flood_placement.md,,10996,cited by 3 tracked document(s) but no pipeline reaches it
+scripts/14_lidar/U0_1_partner_decision.py,ARCHIVE,,,docs/change_reports/TaskU_gateU0_report.md,,13064,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/14_lidar/U0_inventory.py,ARCHIVE,,,docs/change_reports/TaskU_gateU0_report.md,,14103,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/14_lidar/U1_common_frame.py,ARCHIVE,,,docs/LiDAR/Gayini_LiDAR_TaskU_summary.md|docs/change_reports/TaskU_gateU1_report.md|docs/change_reports/TaskU_gateU4a_and_U3_7_report.md,,24189,cited by 3 tracked document(s) but no pipeline reaches it
+scripts/14_lidar/U1_register.py,ARCHIVE,,,Output/audit/TRACE1_report.md|docs/change_reports/FIG1_T1_pack_order_and_rulings_TUV.md|docs/change_reports/TaskU_gateU1_report.md,,17621,cited by 3 tracked document(s) but no pipeline reaches it
+scripts/14_lidar/U1b_dem_warp.py,ARCHIVE,,,docs/LiDAR/Gayini_LiDAR_TaskU_summary.md|docs/change_reports/TaskU_gateU1_report.md,,6899,cited by 2 tracked document(s) but no pipeline reaches it
+scripts/14_lidar/U2_epoch_context.py,ARCHIVE,,,docs/change_reports/TaskU_gateU2_report.md,,12902,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/14_lidar/U2_epoch_context_figure.R,ARCHIVE,,,docs/change_reports/TaskU_gateU2_report.md,,6051,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/14_lidar/U3_7_offset_uniformity.py,ARCHIVE,,,docs/change_reports/TaskU_gateU4a_and_U3_7_report.md,,11157,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/14_lidar/U3_sensor_step_change.py,ARCHIVE,,,docs/change_reports/TaskU_gateU3_report.md,,24914,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/14_lidar/U3_stable_ground_figure.R,ARCHIVE,,,docs/change_reports/TaskU_gateU3_report.md,,6907,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/14_lidar/U4a_bala_structure.py,ARCHIVE,,,docs/change_reports/TaskU_gateU4a_and_U3_7_report.md,,9118,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/14_lidar/U_1c_bala_dem_visual.R,ARCHIVE,,,docs/change_reports/TaskU_gateU4a_and_U3_7_report.md,,3733,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/14_lidar/U_1c_bala_dem_zoom.R,ARCHIVE,,,docs/change_reports/TaskU_gateU4a_and_U3_7_report.md,,3140,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/README.md,ARCHIVE,,,Output/audit/DOC1_gateB_value_claims.md|README.md|docs/Audit/Gayini_CC_spec_HANDOFF2.md,,1814,cited by 11 tracked document(s) but no pipeline reaches it
+scripts/_deprecated/01_lag_diagnostics_inundation_gc.R,ARCHIVE,,,CLAUDE.md|docs/Tier1_TaskE_groundcover_response_F7.md|docs/Tier2_TaskH_all_pixel_census_v2.md,,37110,cited by 11 tracked document(s) but no pipeline reaches it
+scripts/lib/gayini_params.py,ARCHIVE,,,CLAUDE.md|docs/CLAUDE_md_addendum.md|docs/T5_guardrails_and_checks.md,,3058,cited by 4 tracked document(s) but no pipeline reaches it
+scripts/utils/build_db_contract_snapshot.py,ARCHIVE,,,docs/T5_guardrails_and_checks.md|docs/change_reports/RPTSCOPE_R2_pin_withdrawal.md|docs/change_reports/T5_change_report.md,,7591,cited by 3 tracked document(s) but no pipeline reaches it
+scripts/utils/build_review_bundle.py,ARCHIVE,,,docs/Gayini_issues_log.md|docs/change_reports/T2_zone_annual_veg.md|docs/reports/PACK1_assemble_delivery_pack.md,,9112,cited by 3 tracked document(s) but no pipeline reaches it
+scripts/utils/gayini_provenance_guard.py,ARCHIVE,,,CLAUDE.md|Output/runs/RUN_EP_20260810.md|docs/Gayini_issues_log.md,,9605,cited by 3 tracked document(s) but no pipeline reaches it
+scripts/utils/lint_baseline.json,ARCHIVE,,,Output/audit/RETRO1_report.md|docs/T5_guardrails_and_checks.md|docs/change_reports/T5_change_report.md,,2397,cited by 3 tracked document(s) but no pipeline reaches it
+scripts/utils/lint_guardrails.py,ARCHIVE,,,CLAUDE.md|Output/runs/RUN_EP_20260810.md|docs/Gayini_issues_log.md,,10955,cited by 11 tracked document(s) but no pipeline reaches it
+tests/testthat.R,ARCHIVE,,,,,51,referenced by 1 tracked file(s) but no pipeline reaches it
+tests/testthat/test-interpretation-filters.R,ORPHAN,,,,,1215,nothing references it and no tracked document names it
+tests/testthat/test-mer-labels.R,ORPHAN,,,,,895,nothing references it and no tracked document names it
+tests/testthat/test-time-helpers.R,ORPHAN,,,,,633,nothing references it and no tracked document names it
+tools/apply_output_archive_for_adrian_review.ps1,ORPHAN,,,,,13579,nothing references it and no tracked document names it
+tools/archive_legacy_code.ps1,ARCHIVE,,,docs/code_cleanup_handoff_report.md|docs/codex_context.md,,3732,cited by 2 tracked document(s) but no pipeline reaches it
+tools/audit_output_folder.ps1,ARCHIVE,,,,,22421,referenced by 1 tracked file(s) but no pipeline reaches it
+tools/audit_repo_acceptance.ps1,ARCHIVE,,,docs/pr_handoff_note_20260628.md,,16407,cited by 1 tracked document(s) but no pipeline reaches it
+tools/cleanup_output_folder_dry_run.ps1,ORPHAN,,,,,7503,nothing references it and no tracked document names it
+tools/organise_gayini_output_folders_v2.ps1,ORPHAN,,,,,24813,nothing references it and no tracked document names it
+tools/plan_output_archive_for_adrian_review.ps1,ORPHAN,,,,,18073,nothing references it and no tracked document names it
