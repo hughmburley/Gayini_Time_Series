@@ -219,7 +219,7 @@ R/diag/SPAT1_stageB_figure.R,ORPHAN,,,,,8867,nothing references it and no tracke
 R/diag/SPAT1_stageB_gam_ladder.R,ORPHAN,,,,,5902,nothing references it and no tracked document names it
 R/diag/TEMPORAL1_figure.R,ARCHIVE,,,,,7077,referenced by 3 tracked file(s) but no pipeline reaches it
 R/diag/UNZONED_v3_EK_realparts_ar1.R,ORPHAN,,,,,5613,nothing references it and no tracked document names it
-R/diag/UNZONED_v3_armA_figures.R,UNRESOLVED,,,Output/runs/RUN_UNZONED_V3_20260810.md,,27859,may carry culturally sensitive material; design seat rules
+R/diag/UNZONED_v3_armA_figures.R,ARCHIVE,,,Output/runs/RUN_UNZONED_V3_20260810.md,,27859,"design-seat ruling 12 Aug - ARCHIVE. Not in the closure, so nothing needs it; carries substantive Country references and the cost of keeping it out is zero"
 R/diag/UNZONED_v3_armB_ar1.R,ARCHIVE,,,Output/runs/RUN_UNZONED_V3_20260810.md,,4783,cited by 1 tracked document(s) but no pipeline reaches it
 R/diag/UNZONED_v3_size_robustness.R,ARCHIVE,,,Output/runs/RUN_UNZONED_V3_20260810.md,,7345,cited by 1 tracked document(s) but no pipeline reaches it
 R/fractional_cover_extraction_functions.R,ARCHIVE,,,docs/function_file_inventory.md,,24837,cited by 1 tracked document(s) but no pipeline reaches it
@@ -714,9 +714,9 @@ scripts/11_database/PARTREG_stage1_register.py,ARCHIVE,,,,,13081,referenced by 3
 scripts/11_database/PARTREG_stage2_register.py,ARCHIVE,,,,,13543,referenced by 1 tracked file(s) but no pipeline reaches it
 scripts/11_database/T1_gateB1_schema_migrations.py,ARCHIVE,,,docs/change_reports/T1_gateB1.md,,7849,cited by 1 tracked document(s) but no pipeline reaches it
 scripts/11_database/T1_gateC_pre_spatial_checksums.py,ARCHIVE,,,docs/change_reports/T1_gateC.md,,3113,cited by 1 tracked document(s) but no pipeline reaches it
-scripts/11_database/T2_gateC_load.py,ARCHIVE,,,docs/change_reports/T2_zone_annual_veg.md,,6349,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/11_database/T2_gateC_load.py,MIGRATE,,,docs/change_reports/T2_zone_annual_veg.md,,6349,"Ruling GB - examples/ - zone x water-year grain; 133 lines, 3 imports, the strongest support_level recording of the set. Copied unchanged; not a component"
 scripts/11_database/T2_gateF_gap_decomposition.py,ARCHIVE,,,docs/change_reports/T2_zone_annual_veg.md,,7858,cited by 1 tracked document(s) but no pipeline reaches it
-scripts/11_database/T6_gateC_load.py,ARCHIVE,,,docs/change_reports/T6_third_grazing_arm.md,,4582,cited by 1 tracked document(s) but no pipeline reaches it
+scripts/11_database/T6_gateC_load.py,MIGRATE,,,docs/change_reports/T6_third_grazing_arm.md,,4582,"Ruling GB - examples/ - stratum grain (community x wetness band); 92 lines, the shortest complete instance. Copied unchanged; not a component"
 scripts/11_database/T6_gateD_decomposition.py,ARCHIVE,,,docs/change_reports/T6_third_grazing_arm.md,,5172,cited by 1 tracked document(s) but no pipeline reaches it
 scripts/11_database/amend_BC_quartile_sd_caveats.py,ARCHIVE,,,,,5202,referenced by 1 tracked file(s) but no pipeline reaches it
 scripts/11_database/build_REG1_gateB_register.py,ARCHIVE,,,Output/audit/DOC1_gateA_verify_answers.md|Output/audit/DOC1_gateB_value_claims.md|docs/change_reports/REG1_gateBCD_register_promote.md,,6180,cited by 3 tracked document(s) but no pipeline reaches it
@@ -756,7 +756,7 @@ scripts/12_zone_stratum/FIG2_bootstrap_distribution.py,ARCHIVE,,,Output/diag/DIA
 scripts/12_zone_stratum/MAP1_build_part_polygons.py,ARCHIVE,,,Output/runs/RUN_MAP1_20260810.md,,8171,cited by 1 tracked document(s) but no pipeline reaches it
 scripts/12_zone_stratum/PACKv13_T0_caption_numbers.R,ARCHIVE,,,Output/runs/RUN_EP_20260810.md,,5764,cited by 1 tracked document(s) but no pipeline reaches it
 scripts/12_zone_stratum/PARTREG_stage1_figure.py,ARCHIVE,,,,,8465,referenced by 1 tracked file(s) but no pipeline reaches it
-scripts/12_zone_stratum/PARTREG_stage1_full_period.py,ARCHIVE,,,,,17668,referenced by 2 tracked file(s) but no pipeline reaches it
+scripts/12_zone_stratum/PARTREG_stage1_full_period.py,MIGRATE,,,,,17668,"Ruling GB - examples/ - part grain (paddock x community); the only candidate whose header states the pattern - a summarising job, not an extraction one - and names its input tables and grain. Copied unchanged; not a component"
 scripts/12_zone_stratum/PARTREG_stage2_figure.py,ARCHIVE,,,,,9621,referenced by 1 tracked file(s) but no pipeline reaches it
 scripts/12_zone_stratum/PARTREG_stage2_maps_and_export.py,ARCHIVE,,,,,19869,referenced by 2 tracked file(s) but no pipeline reaches it
 scripts/12_zone_stratum/PARTREG_stage2_periods.py,ARCHIVE,,,,,14393,referenced by 1 tracked file(s) but no pipeline reaches it
@@ -807,14 +807,14 @@ scripts/12_zone_stratum/build_T13_gateD_part_polygons.R,ARCHIVE,,,docs/Gayini_is
 scripts/12_zone_stratum/build_T13_gateD_render_geom.R,ARCHIVE,,,docs/Gayini_issues_log.md|docs/change_reports/T13_gateD_map.md,,3310,cited by 2 tracked document(s) but no pipeline reaches it
 scripts/12_zone_stratum/build_adrian_pack_T1_F3_F5.R,ARCHIVE,,,Output/audit/FIG25_lineage_and_package_plan.md|Output/audit/FIG3_partA_producer_review.md|Output/audit/XCHECK1_findings.md,,22414,cited by 5 tracked document(s) but no pipeline reaches it
 scripts/12_zone_stratum/regen_RPTSCOPE_claim_audit.py,ARCHIVE,,,Output/audit/TRACE1_report.md,,4947,cited by 1 tracked document(s) but no pipeline reaches it
-scripts/13_dea_landcover/T12_close_figures.R,UNRESOLVED,,,docs/change_reports/T8_T9_T10_gateA_recon.md,,4472,may carry culturally sensitive material; design seat rules
+scripts/13_dea_landcover/T12_close_figures.R,ARCHIVE,,,docs/change_reports/T8_T9_T10_gateA_recon.md,,4472,"design-seat ruling 12 Aug - ARCHIVE. Not in the closure, so nothing needs it; carries substantive Country references and the cost of keeping it out is zero"
 scripts/13_dea_landcover/T12_gate0_supply_integrity_check.R,ARCHIVE,,,docs/change_reports/T12_supply_and_gateA0.md,,2398,cited by 1 tracked document(s) but no pipeline reaches it
 scripts/13_dea_landcover/T12_gateA0_verify_vectors.R,ARCHIVE,,,docs/change_reports/T12_supply_and_gateA0.md,,2036,cited by 1 tracked document(s) but no pipeline reaches it
 scripts/13_dea_landcover/T12_gateB_extract.R,ARCHIVE,,,docs/change_reports/T12_gateB.md,,11342,cited by 1 tracked document(s) but no pipeline reaches it
 scripts/13_dea_landcover/T12_gateC_diagnostics.R,ARCHIVE,,,Output/audit/DOC3_findings.md|docs/change_reports/T12_gateC.md,,14453,cited by 2 tracked document(s) but no pipeline reaches it
 scripts/13_dea_landcover/T12_supply_repull_1988_1999.py,ARCHIVE,,,docs/change_reports/T12_gateA.md|docs/change_reports/T12_supply_and_gateA0.md,,3031,cited by 2 tracked document(s) but no pipeline reaches it
 scripts/13_dea_landcover/T12_v4_correct_source_product_caveat.py,ARCHIVE,,,docs/change_reports/T12_v4_caveat_correction.md,,2675,cited by 1 tracked document(s) but no pipeline reaches it
-scripts/13_dea_landcover/register_T12_close_figures.py,UNRESOLVED,,,,,3953,may carry culturally sensitive material; design seat rules
+scripts/13_dea_landcover/register_T12_close_figures.py,ARCHIVE,,,,,3953,"design-seat ruling 12 Aug - ARCHIVE. Not in the closure, so nothing needs it; carries substantive Country references and the cost of keeping it out is zero"
 scripts/13_dea_landcover/register_T12_gateC_figures.py,ARCHIVE,,,docs/change_reports/T12_gateC.md,,5231,cited by 1 tracked document(s) but no pipeline reaches it
 scripts/13_dea_landcover/requirements.txt,ARCHIVE,,,Output/audit/DOC2_gate0_verify_sweep.md|docs/change_reports/T12_supply_and_gateA0.md|github_push_audit_plan.md,,764,cited by 3 tracked document(s) but no pipeline reaches it
 scripts/13_pack/DATA1_build_share_folder.py,ORPHAN,,,,,13868,nothing references it and no tracked document names it

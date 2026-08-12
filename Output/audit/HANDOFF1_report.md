@@ -54,12 +54,14 @@ define the numbers do not import it.
 
 ## 2 · Verdicts
 
+*Amended 12 August under Rulings GA and GB and the UNRESOLVED disposition — see §11.*
+
 | verdict | files | note |
 |---|---:|---|
-| `MIGRATE` | **21** | 13 closure + 8 documents required by §5 · **365 KB** |
+| `MIGRATE` | **24** | 13 closure + 8 documents (§5) + 3 worked loaders (Ruling GB) · **393 KB** |
 | `ARCHIVE` | **782** | real work, referenced by something, no pipeline reaches it |
 | `ORPHAN` | **75** | nothing references it and no document names it |
-| `UNRESOLVED` | **3** | design seat rules |
+| `UNRESOLVED` | **0** | the three were ruled `ARCHIVE`; see §11 |
 | `IP_HOLD` | **0** | see §5 |
 
 **881 of 881 tracked files classified. 13 examined by traversal, 881 by reference index.**
@@ -220,6 +222,67 @@ It did not create the handoff repository, move, copy, rename or delete a file, r
 register any number or render any figure. It did not harden reproducibility and it generalised
 nothing.
 
-**It does not decide the three `UNRESOLVED` rows.**
-
 **STOP at the end of Gate A.**
+
+---
+
+## 11 · Design-seat rulings applied, 12 August
+
+### Ruling GA — the four polygon sets travel, with every sidecar
+
+**All four are complete quartets and total 461 KB**, sourced from `Input/shapefiles/` (gitignored in
+the archive, so copied from disk, not from git):
+
+| layer | files | declared CRS |
+|---|---|---|
+| `CA0561_ManagementZones` | `.shp .shx .dbf .prj` | `GDA_1994_MGA_Zone_55` — projected |
+| `gayini_hectare_plots` | `.shp .shx .dbf .prj` | `GDA2020_MGA_Zone_54` — projected |
+| `Gayini_Vegetation-classes-use` | `.shp .shx .dbf .prj` | `GCS_GDA_1994` — **geographic** |
+| `gayini_boundary` | `.shp .shx .dbf .prj` | `GCS_GDA_1994` — **geographic** |
+
+**Every layer declares a CRS, and no two of the four agree.** Two are unprojected latitude/longitude,
+and the two projected ones sit in *different* MGA zones — 54 and 55. This is the exact hazard GA is
+written against, arriving one step earlier than expected: not a missing `.prj`, but four present ones
+that disagree. **A student who copies these and assumes a single analysis CRS gets wrong answers
+silently.** The four-CRS discipline in `CLAUDE.md` is load-bearing and must travel with them.
+
+**No `.cpg` exists for any of the four.** Character encoding is therefore assumed rather than
+declared — minor, but it is the same class of defect and worth one line in the handover.
+
+The census Parquet stays out, per the ruling.
+
+### Ruling GB — three pipelines, and three worked loaders as examples
+
+The report already states that EP4 does not exist; the count of three is now the headline rather than
+a footnote. Three loaders are nominated for `examples/`, **copied unchanged, not generalised, and not
+described as a component.** Chosen on measured traits — three *different* polygon grains, each
+recording `support_level`, each readable alone:
+
+| file | grain | why this one |
+|---|---|---|
+| `scripts/11_database/T2_gateC_load.py` | zone × water year | 133 lines, 3 imports, the strongest `support_level` recording of the candidates; its header states the `INSERT OR REPLACE`, never `OR IGNORE` reasoning |
+| `scripts/11_database/T6_gateC_load.py` | stratum (community × wetness band) | 92 lines — the shortest complete instance, and it states convergence-by-re-run explicitly |
+| `scripts/12_zone_stratum/PARTREG_stage1_full_period.py` | part (paddock × community) | 356 lines, and the only candidate whose header states the *pattern* — "a summarising job, not an extraction one" — while naming its input tables and grain |
+
+**Two candidates were rejected on evidence.** `T10_gateB_annual_gap_series.py` records no support
+level at all (`support_level` count 0), so it would teach the wrong habit given the support
+discipline. `PARTREG_stage2_periods.py` is 279 lines of period-splitting logic that is not the zonal
+pattern.
+
+The third nomination is the long one. It was preferred over the shorter
+`PARTREG_stage1_register.py` because that file is the *registration* half; the pattern a student
+needs to see is the summarising half.
+
+### The three `UNRESOLVED` rows — all `ARCHIVE`
+
+`R/diag/UNZONED_v3_armA_figures.R` · `scripts/13_dea_landcover/T12_close_figures.R` ·
+`scripts/13_dea_landcover/register_T12_close_figures.py`. None is in the closure, so nothing needs
+them, and all three carry substantive Country references. Where the cost of keeping something out is
+zero, it stays out.
+
+### Two notes folded into Gate C
+
+- **Do not pick EP1 for the Gate C build** until its two missing `Output/csv/` inputs are confirmed.
+  EP2 and EP3 are safer and both upstream.
+- **The manifest is known to be incomplete.** 65 dynamic path expressions cannot be resolved
+  statically, so the build is the only thing that can close the gap — not a nice-to-have.
