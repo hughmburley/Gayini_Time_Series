@@ -286,3 +286,67 @@ zero, it stays out.
   EP2 and EP3 are safer and both upstream.
 - **The manifest is known to be incomplete.** 65 dynamic path expressions cannot be resolved
   statically, so the build is the only thing that can close the gap — not a nice-to-have.
+
+---
+
+## 12 · Has the CRS heterogeneity already bitten? — answered, not expected
+
+Both checks were proposed for Gate C on the reasoning that they are cheap and that *"I'd expect it's
+clean"* is what R3 says not to accept. Both are static, so they were run now.
+
+### The scale of the hazard, stated
+
+Two projected layers in **different MGA zones** — 54 and 55 — is a several-hundred-kilometre offset
+if anything ever assumes a shared CRS instead of reading the `.prj`. Underneath that sits a **datum
+split**: two layers GDA94, two GDA2020, about **1.8 m** apart in Australia. Sub-pixel against the
+24.97 m census cell, but a 1 ha plot is 100 m on a side, so it is roughly **2% of a plot edge** —
+small, and worth stating rather than discovering.
+
+### Check 1 — no pipeline co-reads these layers without reprojecting
+
+| | |
+|---|---:|
+| tracked code files reading at least one raw layer | 40 |
+| … reading **two or more** raw layers | **14** |
+| … of those, with no reprojection or CRS marker | **2** |
+| tracked code files reading two or more of the **EPSG:8058 re-exports** | 18 |
+| … of those, with no reprojection or CRS marker | **0** |
+
+**Both negatives resolve, and neither is a live defect.**
+
+`scripts/01_prepare_inputs/01_prepare_vectors.R` has no marker because it **delegates entirely** —
+it sources `R/vector_prep_functions.R`, which carries the reprojection and is in the closure
+(`MIGRATE`, depth 1). A false positive of a text-only test.
+
+`R/step7_figure_helpers.R` is the genuine instance. It reads `gayini_hectare_plots.shp`,
+`gayini_boundary.shp` and `CA0561_ManagementZones.shp` through `sf::st_read`, returns all three in
+one list, and applies no `st_transform` anywhere in the file — **three CRS handed back in one
+object.** It is `ARCHIVE`: no pipeline reaches it, and it belongs to the retired `07g_prepost_panels`
+work, which is archive-only under the retired pre/post framing.
+
+**So the answer is the one expected, now established: the heterogeneity is untidy and harmless.** The
+canonical path is uniformly explicit — every one of the 18 files that reads two or more 8058
+re-exports carries a CRS marker. **This is a handover note, not an error in existing outputs.**
+
+**Limitation, stated.** This is static text matching. The two negatives were verified by hand; the
+twelve positives were confirmed only by marker count, not by reading each reprojection. A file that
+reprojects through a helper my pattern did not name would look clean either way.
+
+### Check 2 — the missing `.cpg` cannot corrupt anything
+
+Read the four `.dbf` record blocks directly and counted bytes ≥ 0x80:
+
+| layer | records | fields | bytes ≥ 0x80 |
+|---|---:|---:|---|
+| `CA0561_ManagementZones` | 64 | 6 | **none** |
+| `Gayini_Vegetation-classes-use` | 20 | 20 | **none** |
+| `gayini_boundary` | 1 | 4 | **none** |
+| `gayini_hectare_plots` | 66 | 3 | **none** |
+
+**Every attribute value in all four layers is pure ASCII.** Paddock names, community names and
+treatment labels round-trip under any encoding the reader assumes, because there is nothing outside
+ASCII to misread. The risk the absent `.cpg` creates is real in general and **nil here**, measured
+rather than assumed.
+
+The assumed encoding should still be stated in `data/README.md` when the shapefiles travel — the next
+person to edit an attribute table cannot know this was checked.
