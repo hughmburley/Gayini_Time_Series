@@ -71,9 +71,16 @@ either as "the" slope is an error.
 - **Inundation shows no directional trend** over the record, in 9 of 9 non-treed strata. Variation is
   episodic and climate-paced, not a trend. Any framing built on "flooding has declined here" is not
   supported by this dataset.
-- **The floor is almost entirely dead material** — about 97% non-photosynthetic at p05, measured
-  paired (see §4). Roughly 4,300 ha has a majority-green floor; that ground is a small and
-  interesting minority.
+- **The floor is almost entirely dead material** — **at the median**, about 97% non-photosynthetic
+  at p05, measured paired rather than by subtraction. The median green fraction of the floor is
+  3.03% and the **mean is 11.77%**, on the native 30 m EPSG:3577 grid, n = 959,833 cells: the
+  distribution is heavily skewed, so quote the median as a median or quote neither (**see §4.4**).
+  **Green share and the total-cover floor are two
+  different quantities on two different grids and are the most confused pair of numbers in this
+  project.** Green share of remaining cover is computed on the native 30 m source grid; it is *not*
+  the temporal cover floor and it is not a threshold on it. Any figure for "area with a green floor"
+  should be treated as withdrawn unless you have re-derived it yourself and stated which grid and
+  which quantity you used.
 - **Cover has a strong seasonal structure independent of water.** Winter–spring against summer–autumn
   moves p05 by about **+10.85 pp** and p50 by about half that. This is farm-wide and cannot be
   flood-driven — which is a second, independent demonstration that the floor is the more responsive
