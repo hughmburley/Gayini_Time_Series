@@ -1,0 +1,416 @@
+{
+ "task": "Task K Gate 0 - independent Output census",
+ "date": "2026-07-19",
+ "read_only": true,
+ "db_sha256_start": "37c5d72de77ac9b10e7d38a787d32e725268624ed9d60f7890b5c0b4cca695e7",
+ "db_sha256_end": "37c5d72de77ac9b10e7d38a787d32e725268624ed9d60f7890b5c0b4cca695e7",
+ "db_unchanged": true,
+ "headline_verdict": "Design-seat structural picture holds; all DISK totals DIFFER by a 2-day snapshot drift (17->19 Jul, Task J outputs). No structural claim (registry, builder, code, Gate A) refuted. The load-bearing 431/0-registered Gate A claim and the MER/MODIS-CSV essentiality trap are CONFIRMED.",
+ "disk": {
+  "D1": {
+   "verdict": "DIFFER",
+   "measured": "1351 files / 146 folders-with-files (172 dirs incl empty) / 1.818 GB (1.693 GiB)",
+   "claimed": "1326 files / 158 folders / 1.569 GB",
+   "note": "2-day drift since 17 Jul CSV snapshot: Task J outputs, sampling_rebalance_smoke, loose Output-root files."
+  },
+  "D2": {
+   "verdict": "PARTIAL",
+   "measured": "304 files / 24 folders / 131 root / 173 sub",
+   "claimed": "300 / 21 / 131 root / 169 sub",
+   "note": "root count 131 MATCHES exactly; totals drift up via task_J subfolders."
+  },
+  "D3": {
+   "verdict": "DIFFER",
+   "measured": "ladder anywhere 340; figures-root 126",
+   "claimed": "330 anywhere; 122 root",
+   "note": "drift; token rule leading [A-Za-z]+[0-9]+[a-z]? in prefix set."
+  },
+  "D4": {
+   "verdict": "DIFFER",
+   "measured": "103 stems; ext {'.pdf': 166, '.png': 160, '.svg': 14}",
+   "claimed": "101 stems; 161 pdf/155 png/14 svg",
+   "note": "svg=14 MATCHES; pdf/png drift up."
+  },
+  "D5": {
+   "verdict": "MATCH",
+   "measured": "5 sites ['GA_001', 'GA_003', 'GA_019', 'GA_032', 'GA_052']",
+   "claimed": "5 sites GA_001,003,019,032,052",
+   "note": "site-dashboard coverage gap CONFIRMED: 5 of target 66."
+  },
+  "D6": {
+   "verdict": "MATCH",
+   "measured": "C1=21 paddocks+1 farm-wide; D1=4; F5c=4; D3=3",
+   "claimed": "C1=21(+1); D1=4; F5c=4; D3=3",
+   "note": "dashboard coverage gaps confirmed (D1 4/21, D3 3/9)."
+  },
+  "D7": {
+   "verdict": "PARTIAL",
+   "measured": "6 files / 0.815 GB / 44.8% / 0 registered",
+   "claimed": "6 files / 0.759 GB / 48.4% / 0 registered",
+   "note": "6 files + 0 registered MATCH; size larger (regenerated); % lower (larger denominator)."
+  },
+  "D8": {
+   "verdict": "DIFFER",
+   "measured": "388 files / 107.4 MB",
+   "claimed": "382 files / 102.3 MB",
+   "note": "drift."
+  },
+  "D9": {
+   "verdict": "PARTIAL",
+   "measured": "1-file=13; 0-file=26; <=2=60 (34.9%)",
+   "claimed": "13 one / 16 zero / 47 (30%) <=2",
+   "note": "one-file=13 MATCHES; zero-file 26 vs 16 (drift added empty wrapper dirs)."
+  },
+  "D10": {
+   "verdict": "DIFFER",
+   "measured": "figures subfolder max date 2026-07-18",
+   "claimed": "all figures subfolders <= 9 Jul",
+   "note": "REFUTED by Task J: figures/maps/task_J and figures/plots/task_J hold 18-Jul files."
+  }
+ },
+ "registry": {
+  "R1": {
+   "verdict": "MATCH",
+   "measured": "287 ({'figure_asset': 139, 'raster_asset': 109, 'report_asset': 38, 'census_asset': 1})",
+   "claimed": "287 (139/109/38/1)",
+   "note": ""
+  },
+  "R2": {
+   "verdict": "MATCH_PCT",
+   "measured": "1064 (78.8%)",
+   "claimed": "1039 (78%)",
+   "note": "proportion MATCHES; absolute drifts with file count."
+  },
+  "R3": {
+   "verdict": "MATCH",
+   "measured": "0 broken pointers",
+   "claimed": "0 broken pointers",
+   "note": "re-derived independently against disk."
+  },
+  "R4": {
+   "verdict": "MATCH",
+   "measured": "figure_asset run_ids=1; ladder-prefixed in figure_asset=0; ladder files registered=0",
+   "claimed": "1 run_id; 0 ladder; 330 unregistered",
+   "note": ""
+  },
+  "R5": {
+   "verdict": "MATCH",
+   "measured": "{'null': 2, 'db_build_20260701_114458': 98, 'tier2H_h2': 6, 'tier2H_h30': 2, 'tier2H_h6': 1}",
+   "claimed": "98 db_build / 6 h2 / 2 h30 / 1 h6 / 2 NULL",
+   "note": ""
+  },
+  "R6": {
+   "verdict": "MATCH",
+   "measured": "veg_regime_class_8058 registered = 1",
+   "claimed": "registered (C2 trap stale)",
+   "note": ""
+  },
+  "R7": {
+   "verdict": "MATCH",
+   "measured": "5 D:\\ paths; spatial_005 -> Murrumbidgee_Gauge_Workflow (different repo)",
+   "claimed": "5 D:\\ paths; spatial_005 other repo",
+   "note": ""
+  },
+  "R8": {
+   "verdict": "DIFFER",
+   "measured": "map_asset_index exists in live DB = 0",
+   "claimed": "map_asset_index stale; compare counts",
+   "note": "TABLE ABSENT from live DB. Builder creates it (:2750) but the live DB has no such table; comparison impossible. Reportable."
+  }
+ },
+ "builder": {
+  "B1": {
+   "verdict": "CONFIRMED",
+   "measured": "reset_file()->path.unlink() at :250-252, called reset_file(SQLITE_PATH) at :3157",
+   "claimed": "DB deleted+rebuilt each run",
+   "note": ""
+  },
+  "B2": {
+   "verdict": "CONFIRMED",
+   "measured": "unfiltered rglob('*') at :1466 over csv/figures/reports/rasters/diagnostics; suffix filter only",
+   "claimed": "stale snapshot not a filter",
+   "note": ""
+  },
+  "B3": {
+   "verdict": "CONFIRMED",
+   "measured": "second independent rglob at :2755 for map_asset_index (CREATE at :2750)",
+   "claimed": "exclusion = two edits",
+   "note": ""
+  },
+  "B4": {
+   "verdict": "CONFIRMED",
+   "measured": ".pdf routes to report_asset (:1520-1521); .png/.jpg->figure_asset (:1518-1519)",
+   "claimed": "166 ladder PDFs would register as reports",
+   "note": ""
+  },
+  "B5": {
+   "verdict": "CONFIRMED",
+   "measured": "grep census_asset in builder = 0 matches",
+   "claimed": "rebuild drops census_asset entirely",
+   "note": ""
+  },
+  "B6": {
+   "verdict": "CONFIRMED",
+   "measured": "live DB has 9 crs_epsg=8058 rasters + 2 NULL-run_id (28355 stack) + census_asset = 12 post-build rows the builder cannot reproduce",
+   "claimed": "crs_epsg/product/legend_status lost on rebuild",
+   "note": ""
+  }
+ },
+ "code": {
+  "C1": {
+   "verdict": "CONFIRMED_NUANCE",
+   "measured": "9 functions default out_dir to the figures dir: 7 in gayini_descriptive_figures.R (literal), 2 in gayini_sampling_design_map.R (via gayini_path); 0 in vector_prep_functions.R",
+   "claimed": "9 across descriptive_figures/sampling_design_map/vector_prep",
+   "note": "count=9 MATCHES; file attribution corrected (vector_prep_functions has none)."
+  },
+  "C2": {
+   "verdict": "CONFIRMED",
+   "measured": "gayini_output_paths.R multi-candidate first-existing resolver; status found_preferred/found_fallback; emits checks tibble with status",
+   "claimed": "fallback resolver, not a contract",
+   "note": ""
+  },
+  "C3": {
+   "verdict": "CONFIRMED",
+   "measured": "scripts/_deprecated/01_lag_diagnostics_inundation_gc.R present; smoke test asserts scripts/archive/ ABSENCE, so it does NOT catch _deprecated/",
+   "claimed": "violates scripts/archive/ convention",
+   "note": ""
+  },
+  "C4": {
+   "verdict": "CONFIRMED",
+   "measured": "GAYINI_ROOT defaults to 'D:/Github_repos/Gayini' in 4 files under scripts/09_qa/",
+   "claimed": "hardcoded machine path",
+   "note": ""
+  },
+  "C5": {
+   "verdict": "CONFIRMED",
+   "measured": "09_qa/01 checks Output/rasters/inundation_pre_post; 09_qa/internal/02 references pre_conservation/post_conservation frequency (:409-410)",
+   "claimed": "both 09_qa checks validate retired pre/post",
+   "note": ""
+  },
+  "C6": {
+   "verdict": "CONFIRMED",
+   "measured": "gayini_gradient_helpers.R:167 writes Output/figures/figures_manifest.csv (present on disk); gayini_figure_manifest.R richer schema (figure_id/deck_section/intended_slide/caption/caveat/qa_status)",
+   "claimed": "two shadow registries, neither feeds the DB",
+   "note": ""
+  },
+  "C7": {
+   "verdict": "CONFIRMED",
+   "measured": "06_MER_inundation and 12_lag_diagnostics referenced in R code; both absent under Output/figures and Output/diagnostics",
+   "claimed": "dead writer dirs",
+   "note": ""
+  },
+  "C8": {
+   "verdict": "CONFIRMED",
+   "measured": "Output/csv/canonical/plot_rs_analysis_base.csv present, mtime 2026-06-24; stg_canonical_plot_rs_analysis_base = 66 rows",
+   "claimed": "present here; 'missing' note refers to a different (source RS) repo location",
+   "note": ""
+  }
+ },
+ "checksum_verify": {
+  "total": 285,
+  "ok": 283,
+  "bad": 2,
+  "missing": 0,
+  "method": "full-file SHA-256 vs recorded checksum_sha256, all four asset tables",
+  "builder_50MB_note": "Builder sha256(path,max_bytes=50MB) RETURNS NULL past the cap (not a truncated hash). No non-null recorded checksum belongs to a >50MB file, so the spec's 'large rasters mismatch spuriously' trap does not arise; full-file comparison is valid for all 285.",
+  "failures": [
+   {
+    "path": "Output/reports/spine_smoke_test/spine_smoke_test_report.md",
+    "table": "report_asset",
+    "reason": "regenerated .md; disk content drifted from recorded checksum (not corruption)"
+   },
+   {
+    "path": "Output/reports/database/Gayini_results_database_build_report.md",
+    "table": "report_asset",
+    "reason": "regenerated build report; disk content drifted from recorded checksum"
+   }
+  ]
+ },
+ "workstream": {
+  "counts": {
+   "unclassified": 83,
+   "infrastructure": 28,
+   "old_deck": 74,
+   "ALL_PIXEL": 109,
+   "MER": 176,
+   "MODIS": 84,
+   "ground_cover": 15,
+   "hydrology": 39,
+   "pre_post": 68,
+   "background_scenarios": 176,
+   "RS_coverage": 44,
+   "LADDER": 77,
+   "repo_audits": 73,
+   "tier1_bundles": 305
+  },
+  "classified_pct": 93.9,
+  "unclassified": 83,
+  "note": "My path/token rules classify 93.9% vs design-seat 79% (DIFFER +~15pp). Drivers: (a) all review_bundles bucketed as tier1_bundles (+305), (b) diagnostics subfolders classified by embedded MER/MODIS/background/RS_coverage tokens rather than left generic. unclassified=83 concentrated in Output/diagnostics.",
+  "unclassified_top_folders": [
+   [
+    "Output/diagnostics",
+    13
+   ],
+   [
+    "Output/diagnostics/sampling_rebalance_smoke",
+    10
+   ],
+   [
+    "Output/diagnostics/check_curated_outputs",
+    9
+   ],
+   [
+    "Output/reports/figure_refresh",
+    9
+   ],
+   [
+    "Output/rasters/fc_intermediate",
+    5
+   ],
+   [
+    "Output/diagnostics/curate_rs_analysis_base",
+    4
+   ],
+   [
+    "Output/figures",
+    4
+   ],
+   [
+    "Output/figures/maps/context",
+    4
+   ],
+   [
+    "Output/figures/maps/inundation",
+    4
+   ],
+   [
+    "Output/csv/canonical",
+    3
+   ],
+   [
+    "Output/csv/extraction",
+    3
+   ],
+   [
+    "Output/csv",
+    3
+   ],
+   [
+    "Output/figures/review",
+    3
+   ],
+   [
+    "Output/reports",
+    3
+   ],
+   [
+    "Output/csv/inundation",
+    2
+   ]
+  ]
+ },
+ "essential": {
+  "counts": {
+   "no": 1183,
+   "yes": 168
+  },
+  "migration_blockers": [
+   [
+    "Output/csv/MER/mer_annual_max_by_plot.csv",
+    "MER",
+    "builder_csv_input"
+   ],
+   [
+    "Output/csv/MER/mer_period_summary_by_plot.csv",
+    "MER",
+    "builder_csv_input|path_module_resolved"
+   ],
+   [
+    "Output/csv/MER/mer_period_summary_by_vegetation_group.csv",
+    "MER",
+    "builder_csv_input"
+   ],
+   [
+    "Output/csv/MER/mer_vs_annual_occurrence_raster_comparison_by_plot.csv",
+    "MER",
+    "builder_csv_input|path_module_resolved"
+   ],
+   [
+    "Output/csv/ground_cover/10a_ground_cover_prepost_plot_summary.csv",
+    "pre_post",
+    "builder_csv_input|path_module_resolved"
+   ],
+   [
+    "Output/csv/ground_cover/10a_ground_cover_prepost_plot_summary_interpretation.csv",
+    "pre_post",
+    "path_module_resolved"
+   ],
+   [
+    "Output/csv/review_deck/candidate_dashboard_set_for_review_updated.csv",
+    "old_deck",
+    "path_module_resolved"
+   ],
+   [
+    "Output/csv/review_deck/mer_metric_comparison_table.csv",
+    "MER",
+    "builder_csv_input"
+   ],
+   [
+    "Output/rasters/MER/period_summaries/mer_post_annual_max_observed_frequency_pct.tif",
+    "MER",
+    "path_module_resolved"
+   ],
+   [
+    "Output/rasters/MER/period_summaries/mer_post_minus_pre_annual_max_frequency_pct_points.tif",
+    "MER",
+    "path_module_resolved"
+   ],
+   [
+    "Output/rasters/MER/period_summaries/mer_pre_annual_max_observed_frequency_pct.tif",
+    "MER",
+    "path_module_resolved"
+   ],
+   [
+    "Output/rasters/inundation_pre_post/post_conservation_inundation_frequency_pct.tif",
+    "pre_post",
+    "path_module_resolved"
+   ],
+   [
+    "Output/rasters/inundation_pre_post/post_minus_pre_inundation_frequency_pct_points.tif",
+    "pre_post",
+    "path_module_resolved"
+   ],
+   [
+    "Output/rasters/inundation_pre_post/pre_conservation_inundation_frequency_pct.tif",
+    "pre_post",
+    "path_module_resolved"
+   ]
+  ],
+  "trap_verdict": "CONFIRMED: MER/MODIS CSVs in CSV_INPUTS are load-bearing. 4 MER CSVs + review_deck MER CSV + 2 MODIS CSVs are builder inputs; retired pre/post rasters+CSVs are resolved by the path module. workstream=MER/pre_post does NOT imply essential=no."
+ },
+ "gate_a": {
+  "total_files": 431,
+  "total_folders": 43,
+  "registered": 0,
+  "essential_yes": 0,
+  "verdict": "CONFIRMED",
+  "groups": {
+   "review_bundles_tier1": [
+    274,
+    32,
+    0
+   ],
+   "rasters_inundation_background": [
+    138,
+    6,
+    0
+   ],
+   "figures_review_refresh": [
+    19,
+    5,
+    0
+   ]
+  },
+  "note": "431 files / 43 folders / 0 registry rows / 0 essential - EXACTLY as claimed. Before->after totals shift to 1351->920 (not 1326->895) due to drift; the archive-set counts themselves match precisely."
+ }
+}

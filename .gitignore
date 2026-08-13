@@ -197,6 +197,26 @@ Output/runs/*
 Output/unzoned/*
 !Output/unzoned/*.csv
 !Output/unzoned/*.md
+# GITTIDY-1 section 3.1 (13 Aug 2026): the Task K Gate 0 and Gate A recovery. Both branches
+# predate the no-PR rule and never reached main, so a 1,351-row Output census with its
+# registry join, folder shape and checksum verification has been invisible to anyone reading
+# the repository. Recovered by extraction, never by merge. Placed HERE, at the end of the
+# Output rules, for the reason Ruling CU records - a re-include above the directory-exclusion
+# that governs it is silently inert. Six lines, not two: 'Output/*' excludes the archive
+# DIRECTORY, so it must be re-included before either subfolder can be. Verified with
+# 'git check-ignore -v' and by result, never by reading (I-60).
+!Output/archive/
+Output/archive/*
+!Output/archive/taskK_gate0/
+Output/archive/taskK_gate0/*
+!Output/archive/taskK_gate0/*.csv
+!Output/archive/taskK_gate0/*.md
+!Output/archive/taskK_gate0/*.json
+!Output/archive/taskK_gateA/
+Output/archive/taskK_gateA/*
+!Output/archive/taskK_gateA/*.csv
+!Output/archive/taskK_gateA/*.md
+!Output/archive/taskK_gateA/*.json
 # MAP-1 (spec section 8, on the citability grounds of Rulings BB and CL): the inclusion
 # class table only. The run report cites it. Figures and the geopackage stay untracked
 # like every other PNG and spatial output. Verified with 'git check-ignore -v' (I-60).
@@ -235,3 +255,9 @@ scratch_parity/
 # Output/ blocks above, which need the four-line shape. Verified with
 # 'git check-ignore -v' and by result, never by reading (I-60).
 docs/reports/**/Gayini_reports_for_CC_*/
+
+# Ruling C (13 Aug 2026): the THIRD copy of the report builder, 7 files, also a 4 August
+# snapshot superseded by origin/feature/reports - report_build.js 32,891 bytes against the
+# recovered 51,984. Moved to the private archive beside the bundle; this rule stops it
+# returning. Tested against a probe, not assumed (I-42).
+docs/reports/Gayini_Paddock_reports_V2/
