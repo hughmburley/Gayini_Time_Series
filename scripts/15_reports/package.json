@@ -1,0 +1,9 @@
+{
+  "name": "gayini-report-builder",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Document builder for the Gayini per-unit paddock and site reports",
+  "main": "report_build.js",
+  "scripts": { "build": "node report_build.js" },
+  "dependencies": { "docx": "^8.5.0" }
+}

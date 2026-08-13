@@ -1,0 +1,6 @@
+# Python dependencies for the Gayini report builder
+pandas>=2.0
+matplotlib>=3.7
+geopandas>=1.0
+pillow>=10.0
+numpy>=1.24

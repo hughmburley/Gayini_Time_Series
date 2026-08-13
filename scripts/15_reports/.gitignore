@@ -1,0 +1,4 @@
+# Installed dependencies and bytecode — never committed.
+node_modules/
+__pycache__/
+*.pyc

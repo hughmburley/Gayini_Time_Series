@@ -1,0 +1,13 @@
+{
+  "_comment": "Single source of paths for the report builder. Repoint these once; all four scripts read this file. Environment variable GAYINI_ROOT overrides the repo root at run time. figure_source_c1 and figure_source_d2 are separate: C1 paddock renders and D2 site dashboards do not share a folder.",
+  "repo_root": "D:/Github_repos/Gayini",
+  "db": "{repo_root}/Output/database/Gayini_Results.sqlite",
+  "gpkg": "{repo_root}/Output/database/Gayini_Results.gpkg",
+  "units_dir": "{repo_root}/Output/reports/_units",
+  "figs_dir": "{repo_root}/Output/figures/reports",
+  "docs_dir": "{repo_root}/Output/reports",
+  "figure_source_c1": "{repo_root}/Output/figures",
+  "figure_source_d2": "{repo_root}/Output/figures/dashboards",
+  "tables": "{repo_root}/Output/tables",
+  "partreg": "{repo_root}/Output/pack/PARTREG/tables/PARTREG_part_residuals.csv"
+}
