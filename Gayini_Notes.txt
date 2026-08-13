@@ -1,0 +1,236 @@
+#######################
+
+## Updates from Adrian
+
+- Please summarise the notes below into a new .docx. The go through and 
+  create individual markdown files for the codex tasks.
+  
+- There are two big tasks in here from adrian; 1). Incorporate new
+  Remote sesning code into our workflow:
+
+  https://github.com/andressutton/Flow_MER  
+  
+  2). obtain water gague data from
+  NSW Water, but only for the Gayin Area (murrumbidgee), from 1988-Current:
+  
+  https://datasets.seed.nsw.gov.au/dataset/water-data-online
+
+  https://www.waternsw.com.au/water-services/water-data
+  https://www.bom.gov.au/cgi-bin/wrap_fwo.pl?IDN60174.html
+  https://mdbwip.bom.gov.au/murrumbidgee
+  
+  RE extracting the water gauge data, we should look for repos 
+  that already do this om GitHub, etc...they will exist! EG:
+  Note we only want water flow type data for the relevant 
+  gagues on the Murrumbidgee, nothing else:
+  
+  https://github.com/MDBAuth/MDBA_Gauge_Getter
+  https://github.com/buzacott/bomWater
+  
+  
+  - Each of those tasks needs it's own dedicated markdown file for Codex,
+  and we might need to workshop it ourselves first?
+  
+  - then the rest of the comments are mostly just tweaking what we already 
+  have...?
+
+
+#########################################
+
+## NOTES Begin
+
+## The Nari Nari land council runs Gayini, they are the client:
+
+https://www.narinari.org/copy-of-conservation-land-management
+
+
+## Nari Nari has an agreement with BCT, that is then paying UNSW by contract.
+
+- The 1ha plots (and methods for measuring the plots) have been specified by 
+  BCT, UNSW has to try and keep then happy. 
+  
+- BCT wants to see if grazing and biodiversity can co-exist, which is similar to
+  UTAS. 
+
+- There's an agreement between Gayini & BCT, under which the field plots where 
+  measured. UNSW needed to follow their protocols.
+
+- Nari Nari council got control of Gayini in 2013, but we still don't reallu know
+  when they did the land managenent changes (we are assuming mid 2019 for now).
+
+- What we really need to do in our analysis is get the NSW Water data for the 
+water gagues on the relevant parts of the Murrumbidgee, and then plot the river
+flow* data against ground cover. This will give a better indication than just 
+using Remote sensing inundation - we will of course keep the RS data, but need to
+add in the water gague data for a more proximal analyis.
+
+- Adrian will also do a 'difference DEM' using Lidar from 2009 and 2021.
+This will show what earthworks Nari Nari have done (we might not get a map of this,
+so might need to make it oursevles). So the DEM can show what channel changes 
+might do to river flow.
+
+- RE the Inundation time series analysis, we could pick two years that are similar 
+  in terms of Inundation, and plot them to together. For example 2016/2017 wsa a 
+  La Nina event with strong winter raingall. 2021/22 or 22/23 might have been 
+  similar, so we could pick those two for comparison in our time series plots.
+  
+  - We also want to have graphs/plots which show inundation frequency by Vegetation
+  type. Ground cover time series plots should have water gague data over the same 
+  period.
+  
+  - All the GC plots should just show "total veg", let's remove bare ground please.
+  
+  - We should also use the older landsat inundation data (1988-2015) to create 
+  a 'background flood pattern' dataset. So let's please do a similar set of inundation
+  frequrency rasters for the pre-2015 period. Please see the attached code from Andres
+  Sutton for tips
+  
+  - Similarly, we need to try out Andres RS inundation code (attaced) for all our inundation
+  work. Basically, this code is designed for the same kind of data, but is more thorough
+  than what we have done already. We need to create another analysis that incoporates his
+  code into our analysis.
+
+  - RE our results plots, we should try to do these for different veg groups. So veg
+  type becomes a key cateogorical or context variable.
+
+  - RE the plots in treed areas, these are any plots which are labelled as Floodplain 
+  forest or Floodplain Woodland. We should exlude these plots from our analyses, because
+  they have too many trees affecting the GC analyses. We can make a map of those plots
+  over the veg community map, and just say we are excluding them.
+
+  - RE the grazing categories, we are collapsing them into just two categories:
+  ANY grazing vs NO grazing.
+
+  - RE the dashboards, let's remove the bare ground and also add in the water gague data
+  (when we get it). We also want to re-arrange the plots so the time series plots of
+   GC and water gague data line up exactly on the X axis with the inundation frequency.
+
+- The time series data will be only the left of the landscape format, then we can have
+  ANOVA style box and wisker plots for both GC and Inundation, for both pre and post 
+  periods, much smaller width and on the right. So the time series will be 3/4 of the page
+  width, and the box plots 1/4.
+
+https://github.com/andressutton/Flow_MER
+
+
+
+#########################################
+
+## Latest Adrian Chat:
+
+
+this chat was had with Adrian (15/07/2026), while he was looking at our latest slides.
+We need to take his comments, then create a table that groupd them together. Note that
+some comments are obseravations/musings and we are still in an exploratory phase.
+
+
+- Earnest is the volunteer student who is helping Adrian. He has a surveying background 
+  and is analysing the nearmap data. For each site, he is making a table of the recent
+  environment. EG can structures such as furrows be seen in the images that reflect land
+  management? EG cropping structures that give way to Native veg, etc.
+
+- Earnest has the NSW land managment layers which are developed by the NSW remote sening team.
+
+- It could be that we could develop a generlaized mixed effect model with random factors that
+  combines gauge data with remote sensing (RS) data, where the RS data is adjusted using the 
+  gauge data. EG a mixed model that says: "Given X water (station), we expect Y inundation (RS).
+  The residuals of such a model (more or less flooding than expected from the time series) 
+  could start getting at the potential effects of land managemet. EG is the landscape wetter over
+  time than expected, due to the removal of irrigation structures from the farm? Jason Evans from
+  the UNSW CC CRC has a similar model for rainfall and vegetation, which basically predicts the 
+  vegetation response for a given rainfall amount. He has a publication and code, Adrian can inquire.
+  
+  
+- The biggest item which came up today was that Adrian thinks the sampling approach is interesting.
+  However, we thinks that we should actually try our analyses again, but this time using ALL the pixels.
+  So for Veg * Wetness matrix on p18, we would be sampling ALL the pixels in each category. This is a pure
+  geospatial approach, not a statistical one.
+
+- He also suggested that we should make rasters* of total veg too, as we have done for inundation. This would
+  be basically rasters of the Total_veg (Green + dead fractions) lower percentiles*, eg 5, 10, 20, 30, 50 percentiles.
+  (50 basically being the median?). This percentile approach could be better than just taking the mean/median
+  across the time series. The logic is that when the veg is really struggling, if there is still someting left,
+  that can be a sign of a healthy ecossytem.
+
+
+- With a raster of total veg across the time series, we could then do the analysis vs inundation using ALL pixels
+  in each combo of veg type and wetness class. This could be quite a useful analysis.
+  
+- Similarly, Adrian liked the flood trend analysis on page 21. But he suggested that it should be done usign ALL the
+  pixels in each category. This is a useful analysis for determining if the change in inundation is systematic or 
+  stochastic. Currently, it's hard to conclude either way based on a small sample...
+
+- Similarly, the plots on page 24 should be done for ALL pixels. In most cases, ALL pixel plots need to change, so that
+  we don't see thousands of points, we just see a grey confidence interval band around a potential trend, and/or a 'heat
+  map / kernel density' approach (lots of examples in remote sensing lit, include Adrian's work).
+
+- Adrian also liked slide 25, which shows the correlation lags between veg cover and inundation lead time.
+  However, again he suggested we should be doing this same analysis across all pixels in our 3 * 3 matrix of
+  veg type * wetness. So that would give us a matrix of corrleation lags. He also thinks we should be using the
+  total veg lower percentiles here, eg 5/10/30 %-iles (rather than just median cover across the time series).
+  
+- Slide 26 does show the matrix, but again we want that analysis done with ALL pixels in each category, and again
+  using the total veg percentile (5/10/20) that shows the strongest relationship with inundation.
+  
+- RE the dashboards, these could be a good deliverable for the Gayini Managers, especially the Site-level dasboards (eg slide 28).
+  But for a final submission, we need more info on the sites, eg we can combine info from Earnests attribute table
+  compiled using nearmap data, with the RS output I have created, and then hopefully input from Gayini management, to 
+  create a richer picture for each site. Each site could have a report .md/html file, which contains text for the context/
+  history, and also includes the dashboards. We can work on designing the Report doc (incl the dashboards) as a key deliverable
+  for Gayini.
+  
+- Choosing the summary stat for each year and across the time series can be tricky (eg mean, median, min, max, etc).
+  The lower percentiles are similar to the min, but not as extreme, so we can try those and see how it goes. Our 
+  anaylis can be inclusive, in that we want to store all the potential variables in our Database. We might need a separate
+  DB for the full pixel extractions? Otherwise perhaps using CVS files is another option.
+  
+- Another point is that our analyses are mainly done across the whole time series (1988-2023). Can we try doign an analysis 
+  for each year, just to explore the variation in the data more?
+
+- Also, for the display of vegetation time series on the dashboards, we could try "anualizing" them, so they match the RS 
+  Annual inundation time series.
+
+- The veg plot should NOT say (green cover), because it includes dead veg too.
+- The scatterplots on the dashboards should also use the Veg percentiles (5/10/20) next time (pick one across all).
+
+- EG can some of the changes Earnest is detecting show up in the dashboard? Every site is different, so can RS help classify
+  pixels based on change, in combo with land management history? We could use this approach to working with Gayini on 
+  interpretting the site results, or making new sites based specifically on their management actions. These site results
+  could be the basis of an article where Gayini staff are co-authors, providng vital context.
+
+- RE the CSIRO HCAS and Biodiversity (LOOC-B) data, we shouldn't compare this with ground cover due to circularity. BUT, we can
+  take the CSIRO variables as generalised measures of annual condition, and then compare it with inundation, which is totally
+  independent. This could an interesting analysis, again we want to do it for ALL valid pixels, not subsampled.
+
+- A very important point when interpreting vegetation change from RS data, is that we need to think about structure, 
+  not just measures of condition from prett coarse satellties like Landsat. EG for each site and paddock, there may have 
+  been gradual changes over time, shifting from cropping to grazing, and from little/no native veg to then native shrubs
+  like chenopod re-establishing over time. EG if inundation does increase with management change, the veg structure* may
+  change too. In the earlier part of the time series (when the sites were cropped), the veg cover signal from landsat 
+  could be coming from irrigated cropping, eg wheat, cotton, etc! Then as grazing and inundation increase, the chenopod 
+  shrubs could re-colonize the area aroun sites, and thus later in the time series, Landsat could be picking up ground
+  cover signals from native veg. 
+
+- Ultimately, Adrian suggests that using LS fractional cover data in this way might not work in they way we'd hoped to 
+  actually tease out the details of water-veg dynamics that could be attributed to management change. But the "NULL" result
+  could still be use to tell a story, EG: we might end of needing to use higher res data, such as LiDAR and nearmap, to track
+  stucture over time, which may should a clearer response to management change.
+
+
+-  
+  
+  #######################################################
+  The one thing worth carrying forward: the refugia number is the open item, and the state that matters isn't in your project docs — it's in this conversation. Given how much of today was correcting stale docs, it's worth pasting the key findings somewhere durable before the context goes cold.
+
+The short version to pick up from:
+
+Parquet is verified — checksum matches census_asset, diff=0 across all 11 strata, and the S21/S24/S26 figure claims all reconcile. Gate E's raster-built workaround was sound.
+Refugia claim doesn't reproduce — "~4,300 ha majority-green" computes to 40,936 ha at p05 ≥ 50; the companion "97% dead at median" is actually 0.9%. Likely a p05 ≥ 80 (4,179 ha) result that drifted in prose.
+D2 is fixed, D7 (dead 9.23 pp in v_presentation_headlines) and D8 (refugia definition) are new and open.
+Next step was: settle the refugia framing, then write the gated CC spec.
+  
+
+  
+ 
+  
+   
