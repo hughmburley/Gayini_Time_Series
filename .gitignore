@@ -225,3 +225,13 @@ __pycache__/
 
 # --- D2 parity render (Gate 0 scratch; kept for inspection, delete after Gate 2) ---
 scratch_parity/
+
+# GITTIDY-1 (13 Aug 2026): a delivered report bundle had been copied back INTO docs/ -
+# 248 files and 36 MB, carrying its own Output/ and scripts/15_reports/ trees. It was a
+# 4 August snapshot, superseded in every file by origin/feature/reports, which is now
+# recovered at scripts/15_reports/ (report_build.js 51,984 bytes against the bundle's
+# 32,606). The directory was moved outside the repository; this rule stops it returning.
+# Nothing under docs/ is directory-excluded, so one line is sufficient here - unlike the
+# Output/ blocks above, which need the four-line shape. Verified with
+# 'git check-ignore -v' and by result, never by reading (I-60).
+docs/reports/**/Gayini_reports_for_CC_*/
