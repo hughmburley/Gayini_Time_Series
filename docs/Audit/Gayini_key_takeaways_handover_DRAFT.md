@@ -183,17 +183,29 @@ classification. A five-class variant exists in the project files and must not be
 
 This is where the reusable value sits.
 
-### Four things that are genuinely pipelines
+### Three things that are genuinely pipelines
 
 Re-runnable as new years accumulate, on the same or similar inputs:
 
 1. **Fractional cover → seasonal composites → per-pixel temporal percentile stack.** The core
    product. Extends by adding water years.
-2. **Inundation scenes → counted flood-frequency surface + annual wet/valid layers.** Note *counted*,
-   not interpolated — an earlier interpolated surface was wrong and was replaced.
+2. **Inundation scenes → annual wet and valid layers.** Everything counts from these. A separate
+   *counted* flood-frequency raster is built from them as a map product — note *counted*, not
+   interpolated, an earlier interpolated surface was wrong and was replaced — but it is not an
+   analysis input. The per-cell values already live in the census, which is the source of truth.
 3. **Census join** — every pixel assigned to zone, part, paddock and community, emitted as Parquet
    (~1.08 million rows). This is the substrate everything else reads.
-4. **Zonal summary** — any metric over any polygon set, with support recorded.
+
+### Zonal summary is not a component, and you will need it
+
+**There is no general "summarise any metric over any polygon set" script.** What exists is a family
+of task-specific loaders, each hard-wired to its own metric, its own polygon set and its own output
+table. They work and they are readable, and several travel with the handover as worked examples —
+but **producing a zonal summary of a new metric means writing one**, using the census Parquet as the
+substrate.
+
+This is the largest single gap between what the documentation describes and what exists as runnable
+code. It is flagged here so nobody discovers it three weeks in.
 
 ### Things that are one-off analyses, not infrastructure
 

@@ -11,7 +11,7 @@ off on its `UNRESOLVED` rows. If HANDOFF-1 has not run, halt and say so.
 
 ## 0 · Standing execution rule
 
-Three gates, each ending in a **STOP**. Run to the STOP, report, wait. This task is the only one in
+Four gates, each ending in a **STOP**. Run to the STOP, report, wait. This task is the only one in
 the project that creates a second tree, and a wrong copy is harder to notice than a wrong number.
 
 `mode=ro`, `PRAGMA query_only=1` on every read of `Gayini_Results.sqlite`. Recon first — `git fetch`,
@@ -65,7 +65,7 @@ Read HANDOFF-1's manifest. Every `MIGRATE` row maps to a destination path. Repor
 ```
 README.md              clone to running pipeline
 ATTRIBUTION.md         authorship, sources, reuse terms
-CLAUDE.md              working rules, distilled
+CONTRIBUTING.md        working practice and the data traps
 docs/                  methods (frozen), key takeaways, established facts, data contract
 R/  scripts/           the dependency closure — the four pipelines
 data/README.md         what to fetch, from where, how big, what CRS
@@ -81,6 +81,13 @@ sidelines/             off-mainline work, unsupported
 single files above 100 MB and degrades well below a gigabyte. The census Parquet alone is 1,080,157
 rows.
 
+**Small vector data does travel — Ruling GA.** The four polygon sets the pipelines require —
+management zones, vegetation classes, property boundary, hectare plots — are megabytes, not
+gigabytes. **Copy every sidecar file of each shapefile**, not the `.shp` alone; a shapefile missing
+its `.prj` has no CRS and a silently wrong one is worse than an absent layer. **Measure each and
+report the total**; if any single set exceeds 50 MB, stop and report rather than copying it. These
+are sourced **from disk, not from git** — they are gitignored in the archive.
+
 Instead, **generate `data/README.md` from measured properties, not from a registry column** —
 `file_bytes` is NULL on 171 of 192 raster rows and has never been a measurement of the whole. For
 each required input: filename, size on disk, CRS, and a placeholder for the location the design seat
@@ -89,7 +96,34 @@ will supply.
 **Rasters and Parquet are excluded by `.gitignore` as well as by omission**, so a later accidental
 `git add` cannot pull 15 GB into the tree.
 
-### 2.2 · The database
+### 2.2 · There are three pipelines, not four — Ruling GB
+
+HANDOFF-1 established that no general zonal-summary component exists. What exists is a family of
+task-specific loaders, each hard-wired to its own metric, polygon set and output table.
+
+**The destination describes three pipelines.** EP1 the percentile stack, EP2 the annual inundation
+layers, EP3 the census join. The counted flood-frequency raster is a **map product built from EP2**,
+not an analysis input — its own header says so, and the per-cell values already live in the census,
+which is the source of truth. Describe it that way; do not present it as a fourth chain.
+
+**Three worked zonal loaders travel, into `examples/`** — the design seat nominates which at Gate A
+sign-off. They are not a component and must not be described as one. They exist so the pattern is
+visible to someone writing their own, which HANDOFF-1 established every new metric will require.
+**Copy them unchanged. Do not generalise, merge or parameterise them** — that is the §3.2 boundary,
+and building the missing component is out of scope in every sense.
+
+### 2.3 · Two corrections to carry into the documentation
+
+**The constants file is not imported by any entry script.** The archive's lint enforces a
+single-source-of-constants rule repository-wide, but none of the pipelines that define the numbers
+references it. **Do not fix this during the migration.** Record it in `CONTRIBUTING.md` as a known
+divergence between the stated convention and the code.
+
+**Two `Output/csv/` inputs to the ground-cover chain are absent from disk entirely.** Report their
+status at Gate A; if they are genuinely gone, EP1 cannot complete and Gate C must run against EP2 or
+EP3 instead.
+
+### 2.4 · The database
 
 `Gayini_Results.sqlite` **cannot be rebuilt** — the builder destroys manually registered rows and no
 non-destructive registration path exists. **Do not run the builder, do not `reset_file`, do not
@@ -99,7 +133,7 @@ For Gate A, using HANDOFF-1's table-level classification: report which tables an
 pipelines read, their combined size, and whether the whole file is under 100 MB. **Propose nothing
 and extract nothing.** If a subset is needed, that is a design-seat decision and a separate task.
 
-### 2.3 · The frozen methods document
+### 2.5 · The frozen methods document
 
 `Gayini_RS_methods_doc_V13.docx` is 10.6 MB and does not diff. It travels as a **frozen versioned
 deliverable** — the `.docx` and a PDF, both named for their version — and is **not** a living
@@ -128,9 +162,10 @@ truncation on a large file is exactly the failure this catches.
 
 Then write four documents, generated from the manifest wherever possible so they cannot drift:
 
-**`README.md`** — what this is, what it is not, the four pipelines named, run order, where the data
-comes from, and the archived-history line from §1. Written for a competent GIS analyst who has never
-seen the project.
+**`README.md`** — what this is, what it is not, **the three pipelines named** (see §2.2), run order,
+where the data comes from, and the archived-history line from §1. Written for a competent GIS analyst
+who has never seen the project. **State the zonal-summary gap plainly in the README**, not in a
+footnote — it is the first thing a new user will hit.
 
 **`INDEX.md`** — **derived from the manifest, not written by hand.** One row per script: path, which
 pipeline reaches it, closure depth, and **the artefacts it writes** — tables, rasters, and
@@ -143,10 +178,12 @@ repository cite at least one file that does not exist.
 their own terms, and a plain statement that reuse terms are to be confirmed in writing. **No reuse
 grant is made here**; the design seat supplies the wording.
 
-**`CLAUDE.md`** — the nine rules from `Gayini_RETRO1_gateB_learnings.md`, plus the number rules: five
-qualifiers on every registered value, additive-only, and the two-metric prohibition. **Not the source
-`CLAUDE.md`**, whose database summary was stale on six counts and which encodes dashboard and report
-governance with no counterpart here.
+**`CONTRIBUTING.md`** — the working rules, restated as ordinary engineering practice per §5.2, plus
+the number rules: five qualifiers on every registered value, additive-only, and the two-metric
+prohibition. **Source material is `Gayini_RETRO1_gateB_learnings.md`; the framing does not survive
+the copy.** Do not carry the source `CLAUDE.md` in any form — its database summary was stale on six
+counts, it encodes dashboard and report governance with no counterpart here, and §5.1 deletes it
+outright.
 
 ### 3.1 · `sidelines/`
 
@@ -184,7 +221,12 @@ Report:
 - Which pipeline was run, and its entry script
 - Whether it completed
 - The produced value and the archived value, and whether they agree
-- **Every import, `source()` or file read that failed** — each one is a file the closure missed
+- **Every import, `source()` or file read that failed** — each one is a file the closure missed.
+  HANDOFF-1 recorded **65 dynamically constructed paths** it could not resolve statically, so the
+  manifest is known to be incomplete and this gate is the only thing that can close the gap
+
+**Do not select EP1 for Gate C without first confirming its two missing CSV inputs.** EP2 or EP3 are
+the safer choices and both are upstream.
 
 **A failure here is the task working.** It means a producer did not travel, and finding that now is
 the entire point. **Report it; do not fix it by copying additional files from the source without
@@ -202,7 +244,87 @@ that reads them. **The build gate is where R11 is enforced rather than merely st
 
 ---
 
-## 5 · Checks on this task's own checks
+## 5 · Gate D — the cleanse · **STOP, and this is the last gate before the tree is permanent**
+
+Only after Gate C. **Runs before the client makes the first commit**, because a commit is what makes
+a stray reference permanent.
+
+The destination is a clean-slate engineering repository. Someone who clones it should find code,
+data documentation and results — **no trace of the tooling that produced it, and none of the internal
+process apparatus that governed this project.**
+
+**This is two jobs and they must not be conflated.** Deleting tooling artefacts is mechanical.
+Removing the process apparatus is mostly right but not wholesale — some of that apparatus is the
+safety net, and stripping it would hand the next reader a repository with no guardrails.
+
+### 5.1 · Deleted outright
+
+Nothing in this list travels, in any form:
+
+- `CLAUDE.md`, `.claude/` and every settings or deny-rule file
+- `docs/Chats/` entirely — the JSON exports and their `.md` and `.pdf` copies
+- Every `*_CC_spec_*` document, every gate report, every change report
+- The ruling registry and the issues log
+- `Output/audit/**` in its entirety, including this task's own outputs
+- The status-change and budget documents
+
+**Git authorship is already clean** under standing policy, and the fresh `init` of §1 means there is
+no history to sanitise. **Do not attempt to rewrite history** — there is none.
+
+### 5.2 · Rewritten, not deleted
+
+**The working rules and the data traps are the most valuable non-code material in the project.** They
+are currently written as rules governing an interface between two seats. **That framing goes; the
+content stays**, restated as ordinary engineering practice in `CONTRIBUTING.md`:
+
+| current framing | general form |
+|---|---|
+| A ruling is usable only if quotable from a durable artefact | Decisions that govern future work are written to the repository when they are made |
+| The exit code is not the check | A command whose result is relied upon is run separately and its output queried |
+| A persisted verdict cannot notice it has aged | Never consult a stored existence flag; check live |
+| A number travels only with its producer | Register a value in the same commit as the script that writes it |
+| Registration confers no test coverage | Track *registered* and *reproduced* as separate columns |
+| A check that cannot fail is not a check | Every control ships with a fixture that makes it return a wrong answer |
+| A substring check matches the record of a correction | Text-matching checks exclude comments and documentation |
+
+**The data traps travel unchanged in substance.** Percentiles do not subtract; mask uint8 nodata
+before summing; the season threshold does two jobs; mapped area is not property area; support is not
+encoded in any metric name; the two percentile products are never compared. **These are properties of
+the data, not of how anyone worked**, and they are what stops the next reader fabricating cover over
+open water.
+
+**Data-domain identifiers stay.** Registry column names, metric slugs and parameter constants are
+schema. **Only task identifiers, gate labels and ruling letters go.**
+
+### 5.3 · The sweep, and why it cannot be blind
+
+**Build a named term list first** — tool and model names, task identifiers, gate labels, ruling
+letters, seat names, spec prefixes. Sweep **file contents, filenames and directory names**, and
+include **code comments and docstrings**, which is where task references hide. This project's own
+audit found rulings that survived only as code comments.
+
+**Every hit is read by a human before anything is changed.** A blind replace is the failure this
+project already has measured precedent for: a lint reported four violations of which three were
+comments *prohibiting* the construct they matched. **A term list matches the discussion of a thing as
+readily as the thing.** Report the hits with surrounding context; **change nothing automatically.**
+
+**Verify by result, in a second pass over the destination after the copy** — not by asserting during
+it. The gate passes when a fresh sweep of the destination tree returns zero unresolved hits and that
+sweep's output is in the report. **A sweep that reports clean without having traversed anything is
+indistinguishable from one that passed** (I-53, R8).
+
+### 5.4 · What Gate D does not decide
+
+**`ATTRIBUTION.md` states what is actually granted, which today is nothing.** Reuse terms are
+unsettled and the design seat supplies the wording. **Write no reuse grant, no licence file, and no
+permission statement** — an unreviewed licence in a repository is harder to withdraw than to add.
+
+Report anything the term list flags that looks like a judgement call rather than a deletion. **Leave
+it in and list it.**
+
+---
+
+
 
 - **Every copy verified by checksum**, source against destination. Assert on the written file, never
   on the copy logic (I-53).
@@ -218,7 +340,7 @@ that reads them. **The build gate is where R11 is enforced rather than merely st
 
 ---
 
-## 6 · Outputs
+## 7 · Outputs
 
 ```
 Output/audit/
@@ -226,6 +348,7 @@ Output/audit/
   HANDOFF2_gateA_report.md
   HANDOFF2_gateB_report.md
   HANDOFF2_gateC_build.md
+  HANDOFF2_gateD_cleanse.md    term list, every hit with context, second-pass verification
 ```
 
 Written to the **source** repository under Ruling BB, in the shape of CL. Verify the un-ignore with
@@ -236,7 +359,7 @@ repository and makes the first commit.
 
 ---
 
-## 7 · What this is not
+## 8 · What this is not
 
 It does not create a GitHub repository, push anything, or make a commit in the destination. It moves
 no file, deletes nothing, and modifies nothing in the source. It re-derives no number, registers

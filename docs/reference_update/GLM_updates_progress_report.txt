@@ -1,0 +1,34 @@
+What finished
+Ruling BB — done, committed 46adc34. Output/diag/ un-ignored for *.md, *.csv, *.txt and analysis/*.csv; panels stay ignored. 22 files now tracked. The analysis/ subfolder needed its own re-include pair — Output/diag/* excludes the directory, the same trap the pack rules document four lines above. Those three boundary CSVs are the bytes every result row's checksum refers to, so a citation can't be verified without them.
+
+Ruling BC — done, same commit. Idempotent, 142 rows unchanged, and the script asserts pinned_value/spread_min/spread_max byte-identical before and after. Worth knowing: the old caveat already recorded the n versus n−1 divisor. What it didn't say is that this makes the interval not an alternative-definition range — which is what spread means on every other row. That's the sharpening.
+
+Ruling BA — no code needed. DIAG-1 already deletes the cluster; both rules are in DIAG1_influence.csv under an explicit deletion_rule column.
+
+SPAT-1 — done, committed ededecd. It fires.
+
+Excluding within-paddock pairs makes the adjacency statistic larger, not smaller: +0.152 → +0.267, 2.68 SD above the permutation mean. Inverse distance agrees at 3.38 SD. It fires in all three periods. Decay is about 4 km — +0.355 inside 2 km, +0.131 at 2–4, +0.046 at 4–6, gone by 6–8. Cross-paddock adjacent pairs sit a median 3.4 km apart, so the range is one paddock out and no further.
+
+Two things I'd flag in the result itself. Everything was run on the raw residual and on residual_z_local, because a raw Moran's I can't tell autocorrelation from a spatially patterned variance — and local standardisation roughly halves the statistic for the whole record and cropping era, though not for post-management. And the strong negative band at 15–20 km is not a second scale; it's one broad gradient across the property seen three times.
+
+One correction to the commission's scope. No bootstrap interval is registered in dim_headline_number — the slope rows pin points, and their spread is a weighted-versus-unweighted range, not a sampling interval. The bootstrap intervals live in PARTREG_S2_regression_coefficients.csv and the pack. The exposure is real for every reported interval; it doesn't touch a registered value.
+
+Since SPAT-1 reproduces no prior number, I verified the estimator instead: an independent double-loop implementation agrees to 1.1×10⁻¹⁶, the permutation mean lands on −1/(m−1), and rewiring the 110 links at random collapses I from +0.267 to −0.004. Had it stayed high the run would have halted.
+
+Sizing input only, no remedy chosen: at 4 km a paddock has a median of 2 neighbours inside it — blocks of ~3 paddocks, order 20–25 effective clusters rather than 64.
+
+GLM-1 pre-registration — committed alone at e891fad, with no model output in the tree. P5 is written as the criterion that limits the other four, before any results, with the anti-criteria recorded so they can't be renegotiated.
+
+What did not finish
+GLM-1 itself. R/diag/GLM1_models.R is written but has never executed — committed as 4db2ed6 explicitly labelled partial. No output exists under Output/glm/ except the pre-registration, so that guarantee is still intact.
+
+Two things established before pausing that are worth keeping: betareg, glmmTMB, mvabund and ecostats are all absent and could not be installed — no network. So M2 is hand-implemented by maximum likelihood rather than dropped, and M4 is not attempted, which the spec permits.
+
+One known defect, left in place rather than fixed blind: within_set() carries a dead placeholder field n_out_lin whose expression is wrong. It must be resolved before the file is run. There is also no figures script, no comparison-table writer and no findings document yet.
+
+Also not done: the two METHODS-REG carry-forwards (your §6 wording, and §8.5's non-replicating community ordering) are recorded only in this conversation and in DIAG1_diagnostics.md §8.5 — not yet in a METHODS-REG handoff note.
+
+Uncommitted
+One file, and it isn't from this task: Output/figures/F5_cover_vs_water_64_paddocks.png is modified — the Ruling AZ-a re-render from the previous turn. The figure_asset row was updated and the pack sealed with it, but the tracked PNG in Output/figures/ was never staged. Your call whether it should be.
+
+The other ~30 untracked paths were already untracked at session start and are not mine.
