@@ -41,6 +41,16 @@ Across the census, from the driest to the wettest ground:
 The gap between them compresses from **32.6 pp to 12.6 pp**. The floor rises about twice as fast as
 the middle.
 
+> **On the size of the census, before you use it as a sample size.** The analysed set is **988,829
+> cells**, and its **effective independent sample size is about 229** — a factor of roughly 4,300,
+> measured by variance inflation over a fitted spherical correlation function. The cells are
+> neighbours and behave like neighbours. **A confidence interval computed on a million cells is
+> meaningless**, and none appears anywhere in this work.
+>
+> The shrinkage depends entirely on grain. At paddock grain, 64 paddocks give an effective **59** —
+> almost nothing is lost. At paddock × community grain, 115 parts give **75**. It is only at pixel
+> grain that the number collapses. **Aggregate first, then count your sample.** See §4.5.
+
 **Why this matters more than it looks.** If you summarise cover by its mean or median — which is the
 default almost everywhere — the flood signal is roughly halved and you will conclude the relationship
 is weak. It is not weak. It is in a different part of the distribution. This is the transferable
@@ -201,7 +211,9 @@ Re-runnable as new years accumulate, on the same or similar inputs:
    interpolated, an earlier interpolated surface was wrong and was replaced — but it is not an
    analysis input. The per-cell values already live in the census, which is the source of truth.
 3. **Census join** — every pixel assigned to zone, part, paddock and community, emitted as Parquet
-   (~1.08 million rows). This is the substrate everything else reads.
+   (~1.08 million rows; **988,829 of them in the analysed non-treed set, with an effective
+   independent sample size of about 229** — see §1 and §4.5). This is the substrate everything else
+   reads, and its row count is not a sample size.
 
 ### Zonal summary is not a component, and you will need it
 

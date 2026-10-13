@@ -1,11 +1,13 @@
 # Gayini CC spec — HANDOFF-2
 
-**The migration: copy the manifest into a new tree, then prove it builds.**
-Design seat, 12 August 2026. Copies only. Moves nothing, deletes nothing, modifies nothing in the
-source repository.
+**The migration: copy the registered set into a new tree, then prove it builds.**
+Design seat, 12 August 2026. **Amended 17 August** — Gate A now sources from `script_io`, and the
+destination is named. Copies only. Moves nothing, deletes nothing, modifies nothing in the source
+repository.
 
-**Blocked on HANDOFF-1.** Do not start this until the manifest exists and the design seat has signed
-off on its `UNRESOLVED` rows. If HANDOFF-1 has not run, halt and say so.
+**Sourced from SCRIPTREG-1, reconciled against HANDOFF-1.** The migration set comes from four
+queries against the working copy of the database, not from a hand-assembled list — see §2.0. If
+`script_asset` and `script_io` are absent from the working copy, halt and say so.
 
 ---
 
@@ -42,8 +44,13 @@ implies completeness it does not have.
 `git check-ignore -v` and by result — `git status --porcelain` plus a dry-run `git add` — never by
 reading it (I-60).
 
-Working name `gayini-floor`; the design seat may rename before the repository is created. **Do not
-hard-code the directory name anywhere inside the tree.**
+**The repository is `gayini-cover-floor`**, at `D:\Github_repos\gayini-cover-floor`. Lowercase and
+hyphenated throughout — GitHub URLs are case-sensitive and some clients are not, and the name is
+deliberately unlike `Gayini_Time_Series` on the same drive, because two repositories one token apart
+with identical internal structure is how a commit lands in the frozen tree.
+
+**Do not hard-code the directory name anywhere inside the tree.** Paths inside the repository are
+relative to its root.
 
 ---
 
@@ -51,7 +58,46 @@ hard-code the directory name anywhere inside the tree.**
 
 **Produce the copy plan and copy nothing.**
 
-Read HANDOFF-1's manifest. Every `MIGRATE` row maps to a destination path. Report:
+### 2.0 · The four queries that define the migration set
+
+**Build the copy plan from the database, not from prose.** Every source path is the result of a query
+against `_Gayini_newrepo_drafts\db\Gayini_Results.sqlite`, and the query is stated in the report so
+it can be re-run.
+
+| set | query | expected |
+|---|---|---|
+| **The closure** | `script_asset` where the closure verdict holds after Ruling GT | **160** |
+| **Entry seeds** | `reached_by = 'entry_seed'` | **4** |
+| **Run surfaces** | `note` carries GX bucket `run_surface`, including the three added by GZ | **11** |
+| **Sidelines** | GX buckets `report_tooling` and `test`, where the test's target travels | report chain only |
+
+**Union them.** A script in more than one set travels once. **Report the union count and each set's
+contribution** — that number is the migration's headline and it is not the same as any single query.
+
+**Nothing outside the union travels**, with one exception: §5 documents and §2.1 vector data, which
+are not scripts and are named directly.
+
+**Excluded by rule, and each must be confirmed absent from the plan:** the 25 co-reference-only rows
+(Ruling GT), the `figure_builder` and `qa_diagnostic` buckets, the `retired_chain` bucket (Ruling GZ),
+and the three `testthat` files whose targets stay behind (Ruling HA).
+
+### 2.0.1 · Reconcile against HANDOFF-1, and report the disagreements
+
+HANDOFF-1 computed a 13-file closure by parsing imports from four entry points. This plan will be far
+larger, because it traces both directions and includes run surfaces a reference trace cannot see.
+**That difference is expected and is not the finding.**
+
+**The finding is any file HANDOFF-1 marked `MIGRATE` that this union excludes.** Report each one with
+its verdict from both sources. HANDOFF-1's report remains live on every point `script_io` does not
+cover — that EP4 does not exist as runnable code, that `IP_HOLD` was empty because nothing in the
+closure is generalised, the 65 dynamic paths, the CRS heterogeneity, and the five inputs absent from
+git.
+
+Where the two disagree, **`script_io` wins and the disagreement is reported.**
+
+### 2.0.2 · Then plan the copy
+
+Every path in the union maps to a destination. Report:
 
 - The count and total size of files to be copied
 - The destination tree, as a listing
@@ -60,7 +106,7 @@ Read HANDOFF-1's manifest. Every `MIGRATE` row maps to a destination path. Repor
 - Any destination collision — two source paths mapping to one destination
 - Any `UNRESOLVED` row still unresolved. **These do not travel.** List them; do not decide them
 
-**The intended shape**, subject to what the manifest returns:
+**The intended shape**, subject to what the four queries return:
 
 ```
 README.md              clone to running pipeline
@@ -73,7 +119,7 @@ outputs/               small tabular outputs only
 sidelines/             off-mainline work, unsupported
 ```
 
-**Where the manifest and this shape disagree, the manifest wins and the disagreement is reported.**
+**Where the union and this shape disagree, the union wins and the disagreement is reported.**
 
 ### 2.1 · Data does not travel
 
@@ -129,8 +175,8 @@ EP3 instead.
 non-destructive registration path exists. **Do not run the builder, do not `reset_file`, do not
 propose a clean rebuild under any name.**
 
-For Gate A, using HANDOFF-1's table-level classification: report which tables and views the four
-pipelines read, their combined size, and whether the whole file is under 100 MB. **Propose nothing
+For Gate A, query `script_io` for `artefact_type = 'sqlite_table'`: report which tables and views the
+migrating scripts read, their combined size, and whether the whole file is under 100 MB. **Propose nothing
 and extract nothing.** If a subset is needed, that is a design-seat decision and a separate task.
 
 ### 2.5 · The frozen methods document
@@ -160,16 +206,22 @@ Only after Gate A sign-off.
 `docs/`. **Verify each copy by checksum against its source** and report any mismatch; a silent
 truncation on a large file is exactly the failure this catches.
 
-Then write four documents, generated from the manifest wherever possible so they cannot drift:
+Then write four documents, generated from the database wherever possible so they cannot drift:
 
 **`README.md`** — what this is, what it is not, **the three pipelines named** (see §2.2), run order,
 where the data comes from, and the archived-history line from §1. Written for a competent GIS analyst
 who has never seen the project. **State the zonal-summary gap plainly in the README**, not in a
 footnote — it is the first thing a new user will hit.
 
-**`INDEX.md`** — **derived from the manifest, not written by hand.** One row per script: path, which
-pipeline reaches it, closure depth, and **the artefacts it writes** — tables, rasters, and
-`number_id`s. Keying the index on outputs rather than descriptions is what makes it checkable: a
+**Two further knowns go in the README as knowns, per Rulings GI and HA:** the Node half of the report
+chain cannot run on this machine and has never been executed here, with the command that answers it;
+and **the repository arrives with no R unit tests at all**, because the three testthat suites test
+helpers the pipelines do not use and stayed behind with their targets. HA supplies the wording. **Do
+not close either gap** — do not install Node, do not write tests.
+
+**`INDEX.md`** — **generated from `script_asset` and `script_io`, not written by hand.** One row per
+script: path, `purpose` as recorded, chain, whether it is an entry point, and **the artefacts it
+writes** — tables, rasters, and `number_id`s, from the output edges. Keying the index on outputs rather than descriptions is what makes it checkable: a
 script whose listed outputs do not appear after a build is caught immediately. A hand-written index
 becomes stale within a month and there is measured precedent — 36 of 113 specs in the source
 repository cite at least one file that does not exist.
@@ -187,7 +239,7 @@ outright.
 
 ### 3.1 · `sidelines/`
 
-Off-mainline work travels **only if the manifest marks it so**, into `sidelines/`, each item with a
+Off-mainline work travels **only if a query in §2.0 returns it**, into `sidelines/`, each item with a
 one-line README stating what it did, why it is off the main line, and that it is unsupported.
 Expected: the LiDAR structural work, the LOOC-B condition work, the reference-state stream.
 
@@ -197,7 +249,10 @@ maintenance.
 ### 3.2 · The IP boundary holds through the copy
 
 Per HANDOFF-1 §6: Gayini-specific working code travels as it is; anything that generalises it does
-not. **Copy no file the manifest marked `IP_HOLD`, and generalise nothing during the copy.** If a
+not. HANDOFF-1 found **no generalised file in the closure** — hard-coded CRS, grid and boundary
+throughout — so `IP_HOLD` was empty and the boundary is intact because the work was never done.
+**Generalise nothing during the copy**, and if a copied script proves already partly
+configuration-driven, report it and copy it unchanged. If a
 copied script is already partly configuration-driven, copy it unchanged — do not extend it and do not
 un-generalise it.
 
@@ -222,15 +277,16 @@ Report:
 - Whether it completed
 - The produced value and the archived value, and whether they agree
 - **Every import, `source()` or file read that failed** — each one is a file the closure missed.
-  HANDOFF-1 recorded **65 dynamically constructed paths** it could not resolve statically, so the
-  manifest is known to be incomplete and this gate is the only thing that can close the gap
+  HANDOFF-1 recorded 65 unresolvable dynamic paths and `script_io` records **171 `unresolved`
+  edges**, so the plan is known to be incomplete by construction and this gate is the only thing that
+  can close the gap
 
 **Do not select EP1 for Gate C without first confirming its two missing CSV inputs.** EP2 or EP3 are
 the safer choices and both are upstream.
 
 **A failure here is the task working.** It means a producer did not travel, and finding that now is
 the entire point. **Report it; do not fix it by copying additional files from the source without
-design-seat sign-off** — an unreviewed file arriving through a build failure defeats the manifest.
+design-seat sign-off** — an unreviewed file arriving through a build failure defeats the plan.
 
 **Do not weaken the test to make it pass.** Not a smaller extent, not a stubbed input, not a relaxed
 tolerance. If the pipeline cannot run — because the data is not mounted, or a required input is
@@ -328,7 +384,7 @@ it in and list it.**
 
 - **Every copy verified by checksum**, source against destination. Assert on the written file, never
   on the copy logic (I-53).
-- **Coverage alongside verdict** (I-53): how many manifest rows were processed against the manifest
+- **Coverage alongside verdict** (I-53): how many rows in the union were processed against the union
   total, at every gate.
 - **A fixture that errors is not a fixture** (I-42): the copy verification must fail against a
   **corrupted** destination file, not only against a missing one.
@@ -380,4 +436,6 @@ equally a deliverable** — and is the more useful of the two.
 **Named patterns in force:** I-42, I-46, I-53, I-56, I-60.
 **Learnings in force:** R7 (no stored existence flags), R8 (the exit code is not the check), R11 (a
 number travels only with its producer).
-**Blocked on:** HANDOFF-1 manifest, and design-seat sign-off on its `UNRESOLVED` rows.
+**Sourced from:** `script_asset` and `script_io` in the working copy, per Rulings GN, GS, GT, GU, GX,
+GZ and HA. **Reconciled against** HANDOFF-1's manifest, which remains live on everything §2.0.1 names.
+**Destination:** `D:\Github_repos\gayini-cover-floor`.
